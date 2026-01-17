@@ -39,7 +39,7 @@ It provides a centralized platform for managing assets, users, maintenance, repo
 ### 1. Clone Repository
 
 ```bash
-git clone git@github.com:AbduldbDev/FuwaFuwa
+git clone https://github.com/AbduldbDev/FuwaFuwa.git
 cd FuwaFuwa
 ```
 
