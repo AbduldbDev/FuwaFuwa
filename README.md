@@ -79,8 +79,8 @@ php artisan key:generate
 #### Edit .env with your database credentials:
 
 ```
-APP_NAME="IT Lifecycle Management System"
-APP_URL=http://localhost
+APP_NAME="Fuwa Fuwa"
+APP_URL=http://localhost:8000
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
