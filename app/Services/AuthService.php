@@ -39,9 +39,7 @@ class AuthService
     public function login(array $credentials): void
     {
         $remember = $credentials['remember'] ?? false;
-
-        // Find user by email
-        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if (!$user) {
             throw ValidationException::withMessages([
@@ -49,25 +47,18 @@ class AuthService
             ]);
         }
 
-        // Check if the user is required to reset password
         if ($user->must_reset_password) {
-
-            // Validate OTP (temporary password)
             if ($credentials['password'] !== $user->otp) {
                 throw ValidationException::withMessages([
                     'email' => 'Invalid One Time Password.',
                 ]);
             }
 
-            // Store user ID in session temporarily
             session(['first_login_user_id' => $user->id]);
-
-            // Redirect to first-time password reset form
             redirect()->route('password.reset.first')->send();
             return;
         }
 
-        // Normal password check
         if (!Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => 'Invalid email or password.',
@@ -104,8 +95,6 @@ class AuthService
     public function updateAccount(array $data, int $id): User
     {
         return DB::transaction(function () use ($data, $id) {
-
-            // Find the user first
             $user = User::findOrFail($id);
 
             // Update the user
@@ -117,11 +106,6 @@ class AuthService
                 'status'      => $data['status']      ?? $user->status,
                 'user_type'   => $data['user_type']   ?? $user->user_type,
             ]);
-
-            // Assign role (Spatie) if needed
-            // $role = Role::where('name', $data['role'])->first();
-            // $user->syncRoles($role);
-
             return $user;
         });
     }
