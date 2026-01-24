@@ -61,6 +61,14 @@
                 <span class="filter-pill">Pending Approval</span>
                 <span class="filter-pill">In Procurement</span>
                 <span class="filter-pill">Procured</span>
+
+                <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
+                    <option value="All Priority">All Priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="emergency">Emergency</option>
+                </select>
             </div>
 
             <!-- requests card -->
@@ -133,32 +141,7 @@
     </div>
 
     @include('Components.Modal.requestAsset')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const filterPills = document.querySelectorAll('.filter-pill');
-            const requestWrappers = document.querySelectorAll('.request-card-wrapper');
-
-            filterPills.forEach(pill => {
-                pill.addEventListener('click', function() {
-                    filterPills.forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-
-                    const filter = pill.textContent.trim().toLowerCase();
-
-                    requestWrappers.forEach(wrapper => {
-                        const status = wrapper.querySelector('.request-status').textContent
-                            .trim().toLowerCase();
-
-                        if (filter === 'all' || status === filter) {
-                            wrapper.style.display = 'block';
-                        } else {
-                            wrapper.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('/js/assetRequestFilter.js') }}"></script>
 @endsection
 
 @push('css')

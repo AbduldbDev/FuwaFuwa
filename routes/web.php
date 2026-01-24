@@ -6,6 +6,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AssetRequestController;
+use App\Http\Controllers\MaintenanceRepairController;
+use App\Http\Controllers\ReportAnalyticsController;
+use App\Http\Controllers\SystemConfigurationController;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -46,21 +50,15 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
         Route::delete('/delete-user/{id}', 'delete')->name('delete');
     });
 
-    Route::prefix('/maintenance-repair')->name('maintenance-repair.')->group(function () {
-        Route::get('/', function () {
-            return view('Pages/maintenance');
-        });
+    Route::prefix('/maintenance-repair')->name('maintenance-repair.')->controller(MaintenanceRepairController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 
-    Route::prefix('/reports-analytics')->name('reports-analytics.')->group(function () {
-        Route::get('/', function () {
-            return view('Pages/reports');
-        });
+    Route::prefix('/reports-analytics')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 
-    Route::prefix('/system-configuration')->name('system-configuration.')->group(function () {
-        Route::get('/', function () {
-            return view('Pages/system');
-        });
+    Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 });

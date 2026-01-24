@@ -64,11 +64,44 @@
                 </div>
             </div>
         </div>
+        <div class="controls mb-3">
+            <h3>User Profiles</h3>
+
+            <!-- filters -->
+            <div class="filters">
+                <!-- department -->
+                <select class="form-select form-select-sm w-auto shadow-none" id="departmentFilter">
+                    <option value="all">All Departments</option>
+                    <option value="IT">IT</option>
+                    <option value="HR">HR</option>
+                    <option value="Finance">Finance</option>
+                </select>
+
+                <!-- role -->
+                <select class="form-select form-select-sm w-auto shadow-none" id="roleFilter" style="border-radius: 10px">
+                    <option value="all">All Roles</option>
+                    <option value="admin">Admin</option>
+                    <option value="encoder">Encoder</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+
+                <!-- account status -->
+                <select class="form-select form-select-sm w-auto shadow-none" id="accountStatusFilter"
+                    style="border-radius: 10px">
+                    <option value="all">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+
+        </div>
 
         <!-- profiles -->
         <div class="row my-4">
             @foreach ($items as $item)
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-3 col-md-6 user-card" data-department="{{ $item->department }}"
+                    data-role="{{ $item->user_type }}" data-status="{{ ucfirst($item->status) }}">
+
                     <div class="profile-card">
                         <!-- profile picture and name -->
                         <div class="profile-info">
@@ -77,7 +110,9 @@
                             <!-- name -->
                             <div class="profile-name">
                                 <strong>{{ $item->name }}</strong><br />
-                                <small>@<span>{{ $item->username }}</span></small>
+                                <small>@<span>{{ $item->username }}</span></small> <br />
+                                <span
+                                    class="user-status {{ $item->status === 'active' ? 'active-user' : 'inactive-user' }}">{{ ucfirst($item->status) }}</span>
                             </div>
                         </div>
 
@@ -125,6 +160,7 @@
     @include('Components/Modal/adduser')
 
     <script src="{{ asset('/js/userSearch.js') }}"></script>
+    <script src="{{ asset('/js/userFilter.js') }}"></script>
     <script src="{{ asset('/js/deleteAlert.js') }}"></script>
 @endsection
 

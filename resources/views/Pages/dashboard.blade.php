@@ -86,16 +86,25 @@
                             <input type="text" id="searchInput" placeholder="Search assets..." />
                         </div>
 
-                        <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter"
-                            style="border-radius: 10px">
-                            <option value="all">All Assets</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Desktop">Desktop</option>
-                            <option value="Server">Server</option>
-                            <option value="Network Switch">Network Switch</option>
-                            <option value="Firewall">Firewall</option>
-                            <option value="Software License">Software License</option>
-                        </select>
+                        <div class="filters">
+                            <!-- time range filter -->
+                            <select class="form-select form-select-sm w-auto shadow-none" id="timeRangeFilter">
+                                <option value="today">Today</option>
+                                <option value="7days">Last 7 Days</option>
+                                <option value="30days">Last 30 Days</option>
+                            </select>
+
+                            <!-- asset status -->
+                            <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="Active">Active</option>
+                                <option value="In Use">In Use</option>
+                                <option value="Under Maintenance">
+                                    Under Maintenance
+                                </option>
+                                <option value="Retired">Retired</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Table -->
@@ -117,7 +126,9 @@
                                 @foreach ($items as $item)
                                     <tr>
                                         <td><input type="checkbox" /></td>
-                                        <td><a class="asset-link">{{ $item->asset_tag }}</a></td>
+                                        <td><a class="asset-link"
+                                                href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
+                                        </td>
                                         <td data-category="Laptop">{{ $item->asset_category }}</td>
                                         <td>{{ $item->asset_name }}</td>
                                         <td>Active</td>

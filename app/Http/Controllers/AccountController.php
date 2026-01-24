@@ -19,7 +19,7 @@ class AccountController extends Controller
 
     public function index()
     {
-        $items = User::where('status', 'active')->get();
+        $items = User::get();
 
         $counts = User::selectRaw("
             COUNT(*) as total,

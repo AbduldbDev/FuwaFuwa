@@ -24,28 +24,47 @@
                 <div class="table-container">
                     <!-- seach, filter & pagination -->
                     <div class="controls">
-                        <div class="searfil">
-                            <!-- search -->
-                            <div class="search-box">
-                                <i class="fa fa-search"></i>
-                                <input type="text" id="searchInput" placeholder="Search assets..." />
-                            </div>
 
-                            <!-- filter -->
-                            <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter"
-                                style="border-radius: 5px">
-                                <option value="all">All Assets</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Desktop">Desktop</option>
-                                <option value="Server">Server</option>
-                                <option value="Network Switch">Network Switch</option>
-                                <option value="Firewall">Firewall</option>
-                                <option value="Software License">Software License</option>
-                            </select>
+                        <!-- search -->
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search assets..." />
                         </div>
 
-                        <!-- pagination -->
-                        <div class="pagination" id="pagination"></div>
+                        <div class="filters">
+                            <!-- category -->
+                            <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
+                                <option value="all">All Categories</option>
+                                <option value="PC">PC</option>
+                                <option value="Laptop">Laptop</option>
+                                <option value="Router">Router</option>
+                                <option value="Switch">Switch</option>
+                                <option value="Modem">Modem</option>
+                                <option value="Communication Cabinet">Communication Cabinet</option>
+                                <option value="Server Cabinet">Server Cabinet</option>
+                                <option value="License">License</option>
+                                <option value="Software">Software</option>
+                            </select>
+
+                            <!-- Status -->
+                            <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter"
+                                style="border-radius: 10px">
+                                <option value="all">All Status</option>
+                                <option value="Available">Available</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="Under Maintenance">Under Maintenance</option>
+                                <option value="Retired">Retired</option>
+                            </select>
+
+                            <!-- Compliance Type -->
+                            <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
+                                style="border-radius: 10px">
+                                <option value="all">All Compliance</option>
+                                <option value="Licensed">Licensed</option>
+                                <option value="Non-Licensed">Non-Licensed</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Table -->
@@ -70,7 +89,7 @@
                                         <td><a class="asset-link"
                                                 href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                         </td>
-                                        <td data-category="Laptop">{{ $item->asset_category }}</td>
+                                        <td data-category="{{ $item->asset_type }}">{{ $item->asset_type }}</td>
                                         <td>{{ $item->asset_name }}</td>
                                         <td>Active</td>
                                         <td class="text-danger">{{ $item->compliance_status }}</td>
@@ -86,31 +105,7 @@
         </div>
     </section>
 
-    <script>
-        const searchInput = document.getElementById("searchInput");
-        const categoryFilter = document.getElementById("categoryFilter");
-        const rows = document.querySelectorAll("#assetTable tbody tr");
-
-        function filterTable() {
-            const searchValue = searchInput.value.toLowerCase();
-            const categoryValue = categoryFilter.value;
-
-            rows.forEach((row) => {
-                const rowText = row.innerText.toLowerCase();
-                const rowCategory =
-                    row.querySelector("[data-category]").dataset.category;
-
-                const matchesSearch = rowText.includes(searchValue);
-                const matchesCategory =
-                    categoryValue === "all" || rowCategory === categoryValue;
-
-                row.style.display = matchesSearch && matchesCategory ? "" : "none";
-            });
-        }
-
-        searchInput.addEventListener("keyup", filterTable);
-        categoryFilter.addEventListener("change", filterTable);
-    </script>
+    <script src="{{ asset('/js/assetFilter.js') }}"></script>
 @endsection
 
 @push('css')

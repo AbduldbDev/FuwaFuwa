@@ -337,6 +337,106 @@ body {
     transform: scale(1.1);
 }
 
+.notif-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 50%;
+}
+
+.notif-panel {
+    position: absolute;
+    top: 70px;
+    right: 60px;
+    width: 320px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 1;
+}
+
+.notif-panel.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.notif-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+.notif-list {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.notif-item:hover {
+    background: #f8f9fa;
+}
+
+.notif-item i {
+    font-size: 16px;
+    margin-top: 2px;
+    color: #6c757d;
+}
+
+.notif-item p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.notif-item small {
+    color: #999;
+}
+
+.notif-item.unread {
+    background: #f0f6ff;
+}
+
+.notif-item.unread i {
+    color: #0d6efd;
+}
+
+.notif-footer {
+    padding: 12px;
+    text-align: center;
+}
+
+.notif-footer a {
+    font-size: 13px;
+    text-decoration: none;
+    color: #0d6efd;
+}
+
 /* ============================ NAVBAR ================================ */
 
 /* ============================ TABLE ================================ */
@@ -350,12 +450,16 @@ body {
 .controls {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 15px;
+    align-items: center;
     flex-wrap: wrap;
 }
 
-.searfil {
+.controls select {
+    cursor: pointer;
+    border-radius: var(--radius);
+}
+
+.filters {
     display: flex;
     gap: 10px;
 }
@@ -461,6 +565,7 @@ table td {
 /* ============================ ASSETS ================================ */
 .pagination {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 6px;
 }
@@ -556,14 +661,18 @@ table td {
 }
 
 .request-container {
-    padding: 0 20px 10px 20px;
+    padding: 0 15px;
+}
+
+.request-container select {
+    cursor: pointer;
+    border-radius: var(--radius);
 }
 
 .request-control {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
 }
 
 .request-control i {
@@ -691,6 +800,9 @@ table td {
     border: none;
     box-shadow: var(--box-shadow);
 }
+.users-container {
+    padding: 0 20px;
+}
 
 /* modal */
 .add-user-modal {
@@ -802,6 +914,24 @@ select option {
 .profile-contacts p {
     margin: 0;
     font-size: var(--text-16px);
+}
+
+.profile-name .user-status {
+    font-size: var(--text-12px);
+}
+
+.user-status.active-user {
+    background-color: #27a857;
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--text-white);
+}
+
+.user-status.inactive-user {
+    background-color: #e63131;
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--text-white);
 }
 
 .email,
