@@ -2,7 +2,7 @@
       <div class="modal-dialog modal-lg modal-dialog-centered sta">
           <div class="modal-content">
               <!-- modal header -->
-              <form action="{{ route('asset.store') }}" method="POST">
+              <form action="{{ route('assets.store') }}" method="POST">
                   @csrf
                   <div class="modal-header">
                       <h3 class="modal-title w-100 text-center fw-semibold">

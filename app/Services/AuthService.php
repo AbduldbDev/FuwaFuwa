@@ -126,7 +126,6 @@ class AuthService
         });
     }
 
-
     public function deleteAccount(int $id)
     {
         $user = User::findOrFail($id);

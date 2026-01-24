@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AssetRequestController;
 
 
 Route::middleware('guest')->group(function () {
@@ -23,11 +24,19 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
     });
 
-
-    Route::prefix('/asset')->name('asset.')->controller(AssetController::class)->group(function () {
+    Route::prefix('/asset')->name('assets.')->controller(AssetController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/store', 'store')->name('store');
+    });
+
+    Route::prefix('/asset-request')->name('asset-request.')->controller(AssetRequestController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/status/{assetRequest}', 'updateStatus')->name('statusupdate');
+        Route::put('/approve/{assetRequest}', 'approveStatus')->name('approveStatus');
+        Route::put('/reject/{assetRequest}', 'rejectStatus')->name('rejectStatus');
     });
 
     Route::prefix('/user-management')->name('user-management.')->controller(AccountController::class)->group(function () {
@@ -37,13 +46,11 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
         Route::delete('/delete-user/{id}', 'delete')->name('delete');
     });
 
-
     Route::prefix('/maintenance-repair')->name('maintenance-repair.')->group(function () {
         Route::get('/', function () {
             return view('Pages/maintenance');
         });
     });
-
 
     Route::prefix('/reports-analytics')->name('reports-analytics.')->group(function () {
         Route::get('/', function () {

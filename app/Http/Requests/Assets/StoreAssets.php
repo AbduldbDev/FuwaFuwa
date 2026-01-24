@@ -6,45 +6,66 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAssets extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'asset_name'         => 'required|string|max:255',
             'asset_category'     => 'required|string',
             'asset_type'         => 'required|string',
+            'operational_status' => 'required|string',
+            'assigned_to'        => 'required|string',
+            'department'         => 'required|string',
+            'location'           => 'required|string',
+            'vendor'             => 'required|string',
+            'purchase_date'      => 'required|date',
+            'purchase_cost'      => 'required|numeric',
+            'useful_life_years'  => 'required|integer',
+            'salvage_value'      => 'required|numeric',
+            'compliance_status'  => 'required|string',
+            'warranty_start'     => 'required|date',
+            'warranty_end'       => 'required|date',
+            'next_maintenance'   => 'required|date',
+            'specs'              => 'required|array',
+            'specs.*'            => 'required|string',
+        ];
+    }
 
-            'operational_status' => 'nullable|string',
-            'assigned_to'        => 'nullable|string',
-            'department'         => 'nullable|string',
-            'location'           => 'nullable|string',
-            'vendor'             => 'nullable|string',
+    public function messages(): array
+    {
+        return [
+            'asset_name.required'     => 'Asset name is required.',
+            'asset_name.string'       => 'Asset name must be a valid string.',
+            'asset_name.max'          => 'Asset name must not exceed 255 characters.',
 
-            'purchase_date'      => 'nullable|date',
-            'purchase_cost'      => 'nullable|numeric',
-            'useful_life_years'  => 'nullable|integer',
-            'salvage_value'      => 'nullable|numeric',
+            'asset_category.required' => 'Asset category is required.',
+            'asset_category.string'   => 'Asset category must be a valid string.',
 
-            'compliance_status'  => 'nullable|string',
-            'warranty_start'     => 'nullable|date',
-            'warranty_end'       => 'nullable|date',
-            'next_maintenance'   => 'nullable|date',
+            'asset_type.required'     => 'Asset type is required.',
+            'asset_type.string'       => 'Asset type must be a valid string.',
 
-            // Technical specs (dynamic)
-            'specs'              => 'nullable|array',
-            'specs.*'            => 'nullable|string',
+            'operational_status.string' => 'Operational status must be a valid string.',
+            'assigned_to.string'        => 'Assigned to must be a valid string.',
+            'department.string'         => 'Department must be a valid string.',
+            'location.string'           => 'Location must be a valid string.',
+            'vendor.string'             => 'Vendor must be a valid string.',
+
+            'purchase_date.date'      => 'Purchase date must be a valid date.',
+            'purchase_cost.numeric'   => 'Purchase cost must be a valid number.',
+            'useful_life_years.integer' => 'Useful life years must be a whole number.',
+            'salvage_value.numeric'   => 'Salvage value must be a valid number.',
+
+            'compliance_status.string' => 'Compliance status must be a valid string.',
+            'warranty_start.date'     => 'Warranty start date must be a valid date.',
+            'warranty_end.date'       => 'Warranty end date must be a valid date.',
+            'next_maintenance.date'   => 'Next maintenance must be a valid date.',
+
+            'specs.array'             => 'Technical specifications must be a valid list.',
+            'specs.*.string'          => 'Each technical specification must be a valid string.',
         ];
     }
 }
