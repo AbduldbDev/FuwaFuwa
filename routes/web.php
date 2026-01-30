@@ -38,9 +38,9 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/store', 'store')->name('store');
+        Route::put('/update/{id}', 'update')->name('update');
         Route::post('/delete/{id}', 'delete')->name('delete');
     });
-
 
     Route::prefix('/asset-archive')->name('assets-archive.')->controller(AssetArchiveController::class)->group(function () {
         Route::get('/', 'index')->name('index');

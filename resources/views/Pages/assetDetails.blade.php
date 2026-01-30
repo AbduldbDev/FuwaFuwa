@@ -36,7 +36,16 @@
                             'License' => 'fa-key',
                             'Software' => 'fa-code',
                         ];
+                        $statusColors = [
+                            'Active' => 'bg-success',
+                            'Inactive' => 'bg-secondary',
+                            'In Stock' => 'bg-primary',
+                            'Under Maintenance' => 'bg-warning',
+                            'Retired' => 'bg-dark',
+                            'Expired' => 'bg-danger',
+                        ];
 
+                        $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
                         $icon = $icons[$item->asset_category] ?? 'fa-box';
                     @endphp
 
@@ -48,7 +57,7 @@
                     <div>
                         <div class="d-flex align-items-center gap-3">
                             <h4 class="mb-1 fw-semibold">{{ $item->asset_tag }}</h4>
-                            <span class="badge bg-success ">{{ ucwords($item->status) }}</span>
+                            <span class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
                         </div>
 
                         <div class="asset-meta text-muted">
@@ -95,16 +104,22 @@
 
                     <!-- asset details -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Asset Details</h6>
                             </div>
-                            <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+
+                            <!-- edit asset btn -->
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="asset-details"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
+
                         </div>
 
                         <div class="section-body">
@@ -127,7 +142,8 @@
                             <div class="row detail-row">
                                 <div class="col-4 label">Operational Status</div>
                                 <div class="col-8 value">
-                                    <span class="badge bg-success">{{ $item->operational_status }}</span>
+                                    <span
+                                        class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -135,16 +151,20 @@
 
                     <!-- technical specification -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Technical Specification</h6>
                             </div>
                             <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="technical-specs"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="section-body">
@@ -166,46 +186,56 @@
 
                     <!-- assignment and location -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Assignment & Location</h6>
                             </div>
                             <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="assignment-location"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="section-body">
                             <div class="row detail-row">
                                 <div class="col-4 label">Assigned To</div>
-                                <div class="col-8 value">{{ $item->assigned_to }}</div>
+                                <div class="col-8 value">{{ $item->assigned_to ?? 'N/A' }}</div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-4 label">Department</div>
-                                <div class="col-8 value">{{ $item->department }}</div>
+                                <div class="col-8 value">{{ $item->department ?? 'N/A' }}</div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-4 label">Location</div>
-                                <div class="col-8 value">{{ $item->location }}</div>
+                                <div class="col-8 value">{{ $item->location ?? 'N/A' }}</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- purchase information -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Purchase Information</h6>
                             </div>
                             <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="purchase-info"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="section-body">
@@ -231,16 +261,21 @@
 
                     <!-- pmaintenance & audit -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Maintenance & Audit</h6>
                             </div>
                             <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="maintenance-audit"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="section-body">
@@ -263,29 +298,34 @@
                                 <div class="col-8 value">
                                     {{ \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') }}</div>
                             </div>
-                            <div class="row detail-row">
+                            {{-- <div class="row detail-row">
                                 <div class="col-4 label">Useful Life (years)</div>
                                 <div class="col-8 value">{{ $item->useful_life_years }} years</div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-4 label">Salvage Value</div>
                                 <div class="col-8 value">Php {{ number_format($item->salvage_value, 2) }}</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
                     <!-- documents -->
                     <div class="card section-card mb-4">
-                        <div class="section-toggle" onclick="toggleSection(this)">
+                        <div class="section-toggle">
                             <!-- asset title header -->
-                            <div class="asset-title">
+                            <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Documents</h6>
                             </div>
+
                             <!-- edi asset btn -->
-                            <div class="edit-asset-btn">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </div>
+                            @if (Auth::user()->canAccess('Assets', 'write'))
+                                <div class="edit-asset-btn">
+                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                        data-bs-target="#updateAssetModal" data-section="documents"
+                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="section-body">
@@ -362,6 +402,7 @@
         </div>
 
     </section>
+    @include('Components/Modal/updateAsset')
     <script src="{{ asset('/js/Accordion.js') }}"></script>
     <script src="{{ asset('/js/ArchiveAlert.js') }}"></script>
 @endsection

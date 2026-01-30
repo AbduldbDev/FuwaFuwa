@@ -6,8 +6,10 @@ use App\Models\Assets;
 use App\Models\TechnicalSpecification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Vendors;
 
 class AssetService
 {
@@ -35,13 +37,18 @@ class AssetService
         return User::where('status', 'active')->get();
     }
 
+
+    public function getActiveVendors()
+    {
+        return Vendors::where('status', 'Active')->get();
+    }
+
     public function getAssetArchive()
     {
         return Assets::where('operational_status', 'archived')->get();
     }
 
     public function store(array $data): Assets
-
     {
         foreach (['contract', 'purchase_order'] as $fileField) {
             if (!empty($data[$fileField])) {
@@ -62,8 +69,6 @@ class AssetService
         $data['asset_id'] = $this->generateAssetId();
         $asset = Assets::create($data);
 
-
-
         if (!empty($data['specs'])) {
             foreach ($data['specs'] as $key => $value) {
                 if ($value !== null && $value !== '') {
@@ -75,6 +80,39 @@ class AssetService
                 }
             }
         }
+
+        return $asset;
+    }
+
+    public function updateAsset(Assets $asset, array $data): Assets
+    {
+
+        if (isset($data['technical'])) {
+            foreach ($data['technical'] as $specId => $value) {
+                $spec = $asset->technicalSpecifications()->find($specId);
+                if ($spec) {
+                    $spec->update(['spec_value' => $value]);
+                }
+            }
+            unset($data['technical']);
+        }
+
+        foreach (['contract', 'purchase_order'] as $fileField) {
+            if (!empty($data[$fileField]) && $data[$fileField] instanceof \Illuminate\Http\UploadedFile) {
+                if ($asset->{$fileField}) {
+                    Storage::delete(str_replace('/storage/', '', $asset->{$fileField}));
+                }
+
+                $file = $data[$fileField];
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $filename = $originalName . '_' . time() . '.' . $extension;
+
+                $path = $file->storeAs('AssetDocuments', $filename, 'public');
+                $data[$fileField] = '/storage/' . $path;
+            }
+        }
+        $asset->update($data);
 
         return $asset;
     }

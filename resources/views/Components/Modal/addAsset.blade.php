@@ -1,5 +1,5 @@
 <div class="modal fade" id="assetModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered sta">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
         <div class="modal-content">
             <!-- modal header -->
             <form action="{{ route('assets.store') }}" method="POST" id="assetForm" enctype="multipart/form-data">
@@ -561,9 +561,9 @@
                             <label class="form-label">Vendor</label>
                             <select class="form-select" name="vendor">
                                 <option value="">Select vendor</option>
-                                <option>Vendor A</option>
-                                <option>Vendor B</option>
-                                <option>Vendor C</option>
+                                @foreach ($vendors as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
