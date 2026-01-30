@@ -57,4 +57,21 @@ class AssetController extends Controller
             ]);
         }
     }
+
+    public function delete($id)
+    {
+        if (!user()->canAccess('Assets', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
+        try {
+            $this->assetService->deleteAsset($id);
+
+            return redirect()->route('assets.index')->with('success', 'Asset deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
 }

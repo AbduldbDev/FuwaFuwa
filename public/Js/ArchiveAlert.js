@@ -5,7 +5,7 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
         const deleteUrl = btn.dataset.url;
 
         Swal.fire({
-            title: "Delete This User?",
+            title: "Delete This Item?",
             text: "This action cannot be undone.",
             icon: "warning",
             showCancelButton: true,
@@ -32,7 +32,7 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
                 const method = document.createElement("input");
                 method.type = "hidden";
                 method.name = "_method";
-                method.value = "DELETE";
+                method.value = "POST";
 
                 form.appendChild(token);
                 form.appendChild(method);

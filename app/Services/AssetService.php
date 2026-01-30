@@ -13,7 +13,7 @@ class AssetService
 {
     public function getAllAssetsWithDepreciation()
     {
-        $assets = Assets::get();
+        $assets = Assets::where('operational_status',  '!=', 'archived')->get();
 
         return $assets->map(function ($asset) {
             $cost = $asset->purchase_cost ?? 0;
@@ -37,7 +37,7 @@ class AssetService
 
     public function getAssetArchive()
     {
-        return Assets::where('status', 'archived')->get();
+        return Assets::where('operational_status', 'archived')->get();
     }
 
     public function store(array $data): Assets
@@ -103,5 +103,15 @@ class AssetService
         } while (Assets::where('asset_id', $assetId)->exists());
 
         return $assetId;
+    }
+
+
+    public function deleteAsset(int $id)
+    {
+        $asset = Assets::findOrFail($id);
+        $asset->operational_status = 'archived';
+        $asset->save();
+
+        return $asset;
     }
 }

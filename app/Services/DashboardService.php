@@ -9,22 +9,22 @@ class DashboardService
 {
     public function getLatestAssets($limit = 10)
     {
-        return Assets::orderBy('created_at', 'desc')->take($limit)->get();
+        return Assets::where('operational_status',  '!=', 'archived')->orderBy('created_at', 'desc')->take($limit)->get();
     }
 
     public function getTotalAssets()
     {
-        return Assets::count();
+        return Assets::where('operational_status',  '!=', 'archived')->count();
     }
 
     public function getTotalOnHand()
     {
-        return Assets::where('assigned_to', null)->count();
+        return Assets::where('operational_status',  '!=', 'archived')->where('assigned_to', null)->count();
     }
 
     public function getTotalCost()
     {
-        return Assets::sum('purchase_cost');
+        return Assets::where('operational_status',  '!=', 'archived')->sum('purchase_cost');
     }
 
     public function getDepreciationSum()
@@ -42,7 +42,7 @@ class DashboardService
 
     public function getAssetCategories()
     {
-        return Assets::selectRaw('asset_category, COUNT(*) as total')
+        return Assets::where('operational_status',  '!=', 'archived')->selectRaw('asset_category, COUNT(*) as total')
             ->groupBy('asset_category')
             ->pluck('total', 'asset_category')
             ->toArray();
@@ -50,7 +50,7 @@ class DashboardService
 
     public function getComplianceStatuses()
     {
-        return Assets::selectRaw('compliance_status, COUNT(*) as total')
+        return Assets::where('operational_status',  '!=', 'archived')->selectRaw('compliance_status, COUNT(*) as total')
             ->groupBy('compliance_status')
             ->pluck('total', 'compliance_status')
             ->toArray();
