@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered sta">
         <div class="modal-content">
             <!-- modal header -->
-            <form action="{{ route('assets.store') }}" method="POST" id="assetForm">
+            <form action="{{ route('assets.store') }}" method="POST" id="assetForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center fw-semibold">
@@ -623,6 +623,22 @@
                                 name="next_maintenance" />
                         </div>
                     </div>
+
+                    <div id="slide7" style="display: none">
+                        <h4 class="mb-3">Documents</h4>
+                        <div class="mb-3">
+                            <label class="form-label">Contract</label>
+                            <input type="file" class="form-control required-field" data-required="true"
+                                name="contract" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Purchase Order</label>
+                            <input type="file" class="form-control required-field" data-required="true"
+                                name="purchase_order" />
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer modal-footer-custom">
@@ -907,6 +923,12 @@
         }
 
         if (currentSlide === 6) {
+            showSlide(7);
+            return;
+        }
+
+
+        if (currentSlide === 7) {
             // Disable only hidden tech-group inputs
             document.querySelectorAll(".tech-group").forEach(group => {
                 if (group.style.display === "none" || group.style.display === "") {
@@ -1046,7 +1068,8 @@
             '#slide3 input, #slide3 select, #slide3 textarea, ' +
             '#slide4 input, #slide4 select, #slide4 textarea, ' +
             '#slide5 input, #slide5 select, #slide5 textarea, ' +
-            '#slide6 input, #slide6 select, #slide6 textarea').forEach(el => {
+            '#slide6 input, #slide5 select, #slide5 textarea, ' +
+            '#slide7 input, #slide6 select, #slide6 textarea').forEach(el => {
             el.disabled = true;
         });
 

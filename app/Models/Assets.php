@@ -29,7 +29,9 @@ class Assets extends Model
         'warranty_start',
         'warranty_end',
         'next_maintenance',
-        'status'
+        'status',
+        'contract',
+        'purchase_order'
     ];
 
     protected $casts = [

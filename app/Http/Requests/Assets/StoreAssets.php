@@ -32,6 +32,8 @@ class StoreAssets extends FormRequest
             'next_maintenance'   => 'required|date',
             'specs'              => 'required|array',
             'specs.*'            => 'required|string',
+            'contract'           => 'nullable|file|mimes:pdf|max:25600',
+            'purchase_order'     => 'nullable|file|mimes:pdf|max:25600',
         ];
     }
 

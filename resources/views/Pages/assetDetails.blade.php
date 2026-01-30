@@ -292,13 +292,25 @@
                             <div class="row detail-row">
                                 <div class="col-4 label">Contract</div>
                                 <div class="col-8 value">
-                                    <a href="contract.pdf">contract.pdf</a>
+                                    @if ($item->contract)
+                                        <a href="{{ $item->contract }}" target="_blank">
+                                            {{ str_replace('/storage/AssetDocuments/', '', $item->contract) }}
+                                        </a>
+                                    @else
+                                        N/A
+                                    @endif
                                 </div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Warranty Start Date</div>
+                                <div class="col-4 label">Purchase Order</div>
                                 <div class="col-8 value">
-                                    <a href="purchase_order.pdf">purchase_order.pdf</a>
+                                    @if ($item->purchase_order)
+                                        <a href="{{ $item->purchase_order }}" target="_blank">
+                                            {{ str_replace('/storage/AssetDocuments/', '', $item->purchase_order) }}
+                                        </a>
+                                    @else
+                                        N/A
+                                    @endif
                                 </div>
                             </div>
                         </div>

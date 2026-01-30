@@ -98,6 +98,12 @@ DB_PASSWORD=
 php artisan migrate
 ```
 
+#### Link file storage:
+
+```
+php artisan storage:link
+```
+
 #### Running the Application
 
 ```

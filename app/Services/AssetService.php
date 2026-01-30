@@ -41,11 +41,28 @@ class AssetService
     }
 
     public function store(array $data): Assets
+
     {
+        foreach (['contract', 'purchase_order'] as $fileField) {
+            if (!empty($data[$fileField])) {
+                $file = $data[$fileField];
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $filename = $originalName . '_' . time() . '.' . $extension;
+                $path = $file->storeAs('AssetDocuments', $filename, 'public');
+
+                // Save path in data
+                $data[$fileField] = '/storage/' . $path;
+            }
+        }
+
+
         $data['created_by'] = Auth::id();
         $data['asset_tag'] = $this->generateAssetTag();
         $data['asset_id'] = $this->generateAssetId();
         $asset = Assets::create($data);
+
+
 
         if (!empty($data['specs'])) {
             foreach ($data['specs'] as $key => $value) {
