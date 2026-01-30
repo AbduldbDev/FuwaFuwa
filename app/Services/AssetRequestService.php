@@ -50,24 +50,11 @@ class AssetRequestService
 
     public function store(array $data): AssetRequest
     {
-        return DB::transaction(function () use ($data) {
+        $data['request_id'] = $this->generateRequestId();
+        $data['user_id'] = Auth::id();
+        $assetRequest =  AssetRequest::create($data);
 
-            return AssetRequest::create([
-                'request_id'      => $this->generateRequestId(),
-                'user_id'         => Auth::id(),
-                'requested_by'    => $data['requested_by'],
-                'department'      => $data['department'],
-                'asset_category'  => $data['asset_category'],
-                'asset_type'      => $data['asset_type'],
-                'quantity'        => $data['quantity'],
-                'model'           => $data['model'] ?? null,
-                'request_reason'  => $data['request_reason'],
-                'detailed_reason' => $data['detailed_reason'] ?? null,
-                'cost'            => $data['cost'] ?? null,
-                'priority'        => $data['priority'],
-                'remarks'         => $data['remarks'] ?? null,
-            ]);
-        });
+        return $assetRequest;
     }
 
     public function updateStatus(AssetRequest $request, array $data): AssetRequest

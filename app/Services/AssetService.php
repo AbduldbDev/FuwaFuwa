@@ -42,45 +42,24 @@ class AssetService
 
     public function store(array $data): Assets
     {
-        return DB::transaction(function () use ($data) {
+        $data['created_by'] = Auth::id();
+        $data['asset_tag'] = $this->generateAssetTag();
+        $data['asset_id'] = $this->generateAssetId();
+        $asset = Assets::create($data);
 
-            $asset = Assets::create([
-                'created_by'         => Auth::id(),
-                'asset_tag'          => $this->generateAssetTag(),
-                'asset_id'           => $this->generateAssetId(),
-                'asset_name'         => $data['asset_name'],
-                'asset_category'     => $data['asset_category'],
-                'asset_type'         => $data['asset_type'],
-                'operational_status' => $data['operational_status'] ?? null,
-                'assigned_to'        => $data['assigned_to'] ?? null,
-                'department'         => $data['department'] ?? null,
-                'location'           => $data['location'] ?? null,
-                'vendor'             => $data['vendor'] ?? null,
-                'purchase_date'      => $data['purchase_date'] ?? null,
-                'purchase_cost'      => $data['purchase_cost'] ?? null,
-                'useful_life_years'  => $data['useful_life_years'] ?? null,
-                'salvage_value'      => $data['salvage_value'] ?? null,
-                'compliance_status'  => $data['compliance_status'] ?? null,
-                'warranty_start'     => $data['warranty_start'] ?? null,
-                'warranty_end'       => $data['warranty_end'] ?? null,
-                'next_maintenance'   => $data['next_maintenance'] ?? null,
-            ]);
-
-
-            if (!empty($data['specs'])) {
-                foreach ($data['specs'] as $key => $value) {
-                    if ($value !== null && $value !== '') {
-                        TechnicalSpecification::create([
-                            'asset_id'   => $asset->id,
-                            'spec_key'   => $key,
-                            'spec_value' => $value,
-                        ]);
-                    }
+        if (!empty($data['specs'])) {
+            foreach ($data['specs'] as $key => $value) {
+                if ($value !== null && $value !== '') {
+                    TechnicalSpecification::create([
+                        'asset_id'   => $asset->id,
+                        'spec_key'   => $key,
+                        'spec_value' => $value,
+                    ]);
                 }
             }
+        }
 
-            return $asset;
-        });
+        return $asset;
     }
 
     private function generateAssetTag(): string

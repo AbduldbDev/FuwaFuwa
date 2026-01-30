@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\StoreRequest;
 use App\Http\Requests\Auth\UpdateRequest;
-use App\Services\AuthService;
+use App\Services\UserService;
 use App\Models\User;
 
 class AccountController extends Controller
 {
-    protected $authService;
+    protected UserService $userService;
 
-    public function __construct(AuthService $authService)
+
+    public function __construct(UserService $userService)
     {
-        $this->authService = $authService;
+        $this->userService = $userService;
     }
 
     public function index()
@@ -46,7 +47,7 @@ class AccountController extends Controller
         }
 
         try {
-            $this->authService->createAccount($request->validated());
+            $this->userService->createAccount($request->validated());
 
             return redirect()->route('user-management.index')->with('success', 'Account created successfully.');
         } catch (\Throwable $e) {
@@ -56,14 +57,15 @@ class AccountController extends Controller
         }
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
         if (!user()->canAccess('User', 'write')) {
             abort(403, 'Unauthorized');
         }
 
         try {
-            $this->authService->updateAccount($request->validated(), $id);
+            $this->userService->updateAccount($request->validated(), $user);
+
 
             return redirect()->route('user-management.index')->with('success', 'Account updated successfully.');
         } catch (\Throwable $e) {
@@ -80,7 +82,7 @@ class AccountController extends Controller
         }
 
         try {
-            $this->authService->deleteAccount($id);
+            $this->userService->deleteAccount($id);
 
             return redirect()->route('user-management.index')->with('success', 'Account Deleted successfully.');
         } catch (\Throwable $e) {

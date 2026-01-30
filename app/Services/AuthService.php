@@ -14,28 +14,15 @@ class AuthService
 {
     public function createAccount(array $data): User
     {
-        return DB::transaction(function () use ($data) {
+        $otp = $this->generateStrongPassword();
+        $data['password'] = Hash::make($otp);
+        $data['otp'] = $otp;
+        $user = User::create($data);
+        Mail::to($user->email)->send(new OneTimePasswordMail($user));
 
-
-            $otp = $this->generateStrongPassword();
-
-            $user = User::create([
-                'employee_id' => $data['employee_id'],
-                'department'  => $data['department'],
-                'name'        => $data['name'],
-                'username'    => $data['username'],
-                'email'       => $data['email'],
-                'password'    => Hash::make($otp),
-                'status'      => $data['status'],
-                'user_type'   => $data['user_type'],
-                'otp'         => $otp,
-            ]);
-
-            Mail::to($user->email)->send(new OneTimePasswordMail($user));
-            return $user;
-        });
+        return $user;
     }
-
+    
     public function login(array $credentials): void
     {
         $remember = $credentials['remember'] ?? false;

@@ -27,6 +27,13 @@ class VendorService
         return Vendors::all();
     }
 
+    public function create(array $data)
+    {
+        $data['vendor_id'] = $this->generateVendorId();
+
+        return Vendors::create($data);
+    }
+
     public function updateVendor(array $data, Vendors $vendor): Vendors
     {
 
@@ -52,13 +59,6 @@ class VendorService
             'totalInactive' => $this->getTotalInactiveVendors(),
             'items' => $this->getVendors(),
         ];
-    }
-
-    public function create(array $data)
-    {
-        $data['vendor_id'] = $this->generateVendorId();
-
-        return Vendors::create($data);
     }
 
     private function generateVendorId(): string

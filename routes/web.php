@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AssetArchiveController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AssetRequestController;
@@ -13,17 +13,18 @@ use App\Http\Controllers\ReportAnalyticsController;
 use App\Http\Controllers\SystemConfigurationController;
 use App\Http\Controllers\VendorController;
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [LoginController::class, 'show'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate'])->name('login.store');
 
-    Route::get('/password-reset-first', [LoginController::class, 'showForm'])->name('password.reset.first');
-    Route::post('/password-reset-first', [LoginController::class, 'reset'])->name('password.reset.first.post');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'show'])->name('login');
+    Route::post('/login', [AuthController::class, 'authenticate'])->name('login.store');
+
+    Route::get('/password-reset-first', [AuthController::class, 'showForm'])->name('password.reset.first');
+    Route::post('/password-reset-first', [AuthController::class, 'reset'])->name('password.reset.first.post');
 });
 
 
 Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () {
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::prefix('/')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -57,7 +58,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
     Route::prefix('/user-management')->name('user-management.')->controller(AccountController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/create-user', 'store')->name('store');
-        Route::put('/update-user/{id}', 'update')->name('update');
+        Route::put('/update-user/{user}', 'update')->name('update');
         Route::delete('/delete-user/{id}', 'delete')->name('delete');
     });
 
