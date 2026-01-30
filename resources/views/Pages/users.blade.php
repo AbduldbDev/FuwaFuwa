@@ -10,10 +10,13 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                    <i class="fa-solid fa-plus"></i>
-                    Add New User
-                </button>
+                @if (Auth::user()->canAccess('User', 'write'))
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="fa-solid fa-plus"></i>
+                        Add New User
+                    </button>
+                @endif
+
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>
@@ -148,19 +151,21 @@
                                     </div>
 
                                     <!-- buttons -->
-                                    <div class="control-buttons mt-4">
-                                        <!-- edit -->
-                                        <button class="edit-btn" data-bs-toggle="modal"
-                                            data-bs-target="#editUserModal{{ $item->id }}">
-                                            <i class="fa-regular fa-pen-to-square"></i>
-                                            Edit
-                                        </button>
-                                        <!-- delete -->
-                                        <button class="delete-btn"
-                                            data-url="{{ route('user-management.delete', $item->id) }}">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </button>
-                                    </div>
+                                    @if (Auth::user()->canAccess('User', 'write'))
+                                        <div class="control-buttons mt-4">
+                                            <!-- edit -->
+                                            <button class="edit-btn" data-bs-toggle="modal"
+                                                data-bs-target="#editUserModal{{ $item->id }}">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                Edit
+                                            </button>
+                                            <!-- delete -->
+                                            <button class="delete-btn"
+                                                data-url="{{ route('user-management.delete', $item->id) }}">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

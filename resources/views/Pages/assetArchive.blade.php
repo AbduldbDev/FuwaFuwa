@@ -4,22 +4,17 @@
     <section id="assets" class="content-section">
         <!-- navbar -->
         <div class="navbar">
-            <h2>Asset Management</h2>
+            <h2>Asset Archive</h2>
             <div class="group-box">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                @if (Auth::user()->canAccess('Assets', 'write'))
-                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
-                        <i class="fa-solid fa-plus"></i>
-                        Add New Asset
-                    </button>
-                @endif
+
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>
-        @include('Components/Modal/addAsset')
+
         <!-- Data Table -->
         <div class="row">
             <div class="container mt-4">

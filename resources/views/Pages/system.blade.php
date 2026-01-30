@@ -163,294 +163,74 @@
             <h4 class="mb-1">User Management Settings</h4>
             <p class="subtitle">Access control and user role configurations</p>
 
-            <!-- admin -->
-            <div class="role-header">ADMIN</div>
-            <!-- table -->
-            <div class="table-responsive mb-5">
-                <table class="table permission-table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 50%">Module</th>
-                            <th>Permissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- modules -->
-                        <tr>
-                            <td>Dashboard</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none active">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
+            <form action="{{ route('system-configuration.saveRole') }}" method="POST">
+                @csrf
 
-                        <tr>
-                            <td>Assets</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
+                @foreach ($roles as $role)
+                    <div class="role-header text-uppercase">{{ $role }}</div>
+                    <div class="table-responsive mb-5">
+                        <table class="table permission-table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%">Module</th>
+                                    <th>Permissions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($modules as $module)
+                                    @php
+                                        $savedAccess = $permissions[$role][$module] ?? 'none';
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $module }}</td>
+                                        <td>
+                                            <div class="btn-group gap-2">
+                                                @foreach ($accessTypes as $key => $label)
+                                                    <input type="radio"
+                                                        id="{{ $role }}_{{ $module }}_{{ $key }}"
+                                                        name="permissions[{{ $role }}][{{ $module }}]"
+                                                        value="{{ $key }}"
+                                                        @if ($savedAccess === $key) checked @endif
+                                                        style="display:none;">
+                                                    <label class="perm-btn {{ $key }}"
+                                                        for="{{ $role }}_{{ $module }}_{{ $key }}">
+                                                        {{ $label }}
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
-                        <tr>
-                            <td>User Management</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endforeach
 
-                        <tr>
-                            <td>Maintenance & Repair</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read active">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Reports & Analytics</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>System Configuration</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- encoder -->
-            <div class="role-header">ENCODER</div>
-            <!-- table -->
-            <div class="table-responsive mb-5">
-                <table class="table permission-table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 50%">Module</th>
-                            <th>Permissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- modules -->
-                        <tr>
-                            <td>Dashboard</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none active">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Assets</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>User Management</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Maintenance & Repair</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read active">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Reports & Analytics</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>System Configuration</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- viewer -->
-            <div class="role-header">VIEWER</div>
-            <!-- table -->
-            <div class="table-responsive mb-5">
-                <table class="table permission-table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th style="width: 50%">Module</th>
-                            <th>Permissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- modules -->
-                        <tr>
-                            <td>Dashboard</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none active">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Assets</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>User Management</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Maintenance & Repair</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read active">Read</button>
-                                    <button class="perm-btn write">Read/Write</button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Reports & Analytics</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>System Configuration</td>
-                            <td>
-                                <div class="btn-group gap-2">
-                                    <button class="perm-btn none">None</button>
-                                    <button class="perm-btn read">Read</button>
-                                    <button class="perm-btn write active">
-                                        Read/Write
-                                    </button>
-                                    <button class="perm-btn custom">Custom</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div class="text-end">
+                    <button type="submit" class=" submit-btn">Save Permissions</button>
+                </div>
+            </form>
         </div>
+
+        <script>
+            document.querySelectorAll('.btn-group').forEach(group => {
+                const checkedInput = group.querySelector('input:checked');
+                if (checkedInput) {
+                    const label = group.querySelector(`label[for="${checkedInput.id}"]`);
+                    label.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('.perm-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const parent = btn.closest('.btn-group');
+                    parent.querySelectorAll('.perm-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        </script>
+
     </div>
 @endsection
 

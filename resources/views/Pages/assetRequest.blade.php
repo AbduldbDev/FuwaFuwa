@@ -10,10 +10,12 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                <button class="add-btn" data-bs-toggle="modal" data-bs-target="#requestAsset">
-                    <i class="fa-solid fa-plus"></i>
-                    Request Asset
-                </button>
+                @if (Auth::user()->canAccess('Asset Request', 'write'))
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#requestAsset">
+                        <i class="fa-solid fa-plus"></i>
+                        Request Asset
+                    </button>
+                @endif
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>

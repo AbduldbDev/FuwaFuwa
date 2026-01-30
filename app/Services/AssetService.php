@@ -35,6 +35,11 @@ class AssetService
         return User::where('status', 'active')->get();
     }
 
+    public function getAssetArchive()
+    {
+        return Assets::where('status', 'archived')->get();
+    }
+
     public function store(array $data): Assets
     {
         return DB::transaction(function () use ($data) {

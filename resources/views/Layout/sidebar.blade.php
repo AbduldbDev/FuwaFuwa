@@ -43,6 +43,13 @@
                 </a>
             @endif
 
+            @if (Auth::user()->canAccess('Asset Archive', 'read'))
+                <a href="{{ route('assets-archive.index') }}"
+                    class="menu-link {{ request()->routeIs('assets-archive.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-trash"></i> Asset Archive
+                </a>
+            @endif
+
             @if (Auth::user()->canAccess('Maintenance', 'read'))
                 <a href="{{ route('maintenance-repair.index') }}"
                     class="menu-link {{ request()->routeIs('maintenance-repair.*') ? 'active' : '' }}">

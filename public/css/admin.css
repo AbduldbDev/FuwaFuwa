@@ -240,11 +240,11 @@ body {
 }
 
 .content-section {
+   
     padding: 20px 30px;
 }
 
-.content-section.active {
-}
+
 
 .logout-btn {
     cursor: pointer;
@@ -937,7 +937,7 @@ select option {
 }
 
 .form-label {
-    font-size: var(--text-16px);
+    font-size: var(--text-12px);
 }
 
 /* users */
@@ -1185,6 +1185,67 @@ select option {
     color: var(--text-white);
 }
 
+/* table modal */
+.doc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.doc-table thead {
+    background-color: #f8fafc;
+}
+
+.doc-table th {
+    text-align: left;
+    font-size: var(--text-14px);
+    font-weight: var(--text-600);
+    color: var(--text-gray);
+    padding: 12px;
+    border-bottom: 1px solid var(--search-icon);
+}
+
+.doc-table td {
+    padding: 14px 12px;
+    font-size: var(--text-12px);
+    color: #334155;
+    border-bottom: 1px solid var(--search-border);
+    vertical-align: middle;
+}
+
+.file-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+.file-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #0d6efd;
+    max-width: 260px;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+.file-name {
+    display: inline-block;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
 /* ============================ VENDOR MANAGEMENT ================================ */
 
 /* ============================ MAINTENANCE & REPAIR ================================ */
@@ -1421,7 +1482,7 @@ select option {
 .form-control {
     background-color: var(--search-bg);
     border: 1px solid var(--search-border);
-    padding: 10px 12px;
+    padding: 6px 12px;
     transition: all 0.5s ease;
 }
 

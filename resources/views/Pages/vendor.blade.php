@@ -10,13 +10,18 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addVendorModal">
-                    <i class="fa-solid fa-plus"></i>
-                    Add Vendor
-                </button>
+
+                @if (Auth::user()->canAccess('Vendor', 'write'))
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addVendorModal">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Vendor
+                    </button>
+                @endif
+
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>
+        @include('Components/Modal/addVendor')
 
         <!-- numbers -->
         <div class="row my-4">

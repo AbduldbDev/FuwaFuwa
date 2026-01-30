@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AssetArchiveController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
@@ -38,6 +39,13 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::post('/store', 'store')->name('store');
     });
 
+
+    Route::prefix('/asset-archive')->name('assets-archive.')->controller(AssetArchiveController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::post('/store', 'store')->name('store');
+    });
+
     Route::prefix('/asset-request')->name('asset-request.')->controller(AssetRequestController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
@@ -65,6 +73,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
     Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/update-or-create', 'updateOrCreate')->name('updateOrCreate');
+        Route::post('/save-role', 'saveRole')->name('saveRole');
     });
 
     Route::prefix('/vendors')->name('vendors.')->controller(VendorController::class)->group(function () {
