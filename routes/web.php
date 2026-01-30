@@ -77,5 +77,8 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
 
     Route::prefix('/vendors')->name('vendors.')->controller(VendorController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/create-vendor', 'store')->name('store');
+        Route::put('/update-vendor/{vendor}', 'update')->name('update');
+        Route::post('/delete-vendor/{id}', 'delete')->name('delete');
     });
 });

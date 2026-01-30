@@ -17,7 +17,7 @@ class AssetArchiveController extends Controller
 
     public function index()
     {
-        if (!user()->canAccess('Assets', 'read')) {
+        if (!user()->canAccess('Asset Archive', 'read')) {
             abort(403, 'Unauthorized');
         }
 

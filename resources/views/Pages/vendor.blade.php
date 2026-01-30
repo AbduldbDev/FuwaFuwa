@@ -34,7 +34,7 @@
                     </div>
                     <!-- number and label -->
                     <div class="entity-count">
-                        <h2>12</h2>
+                        <h2>{{ $totalVendors }}</h2>
                         <h6>Total Vendors</h6>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     </div>
                     <!-- number and label -->
                     <div class="entity-count">
-                        <h2>18</h2>
+                        <h2>{{ $totalActive }}</h2>
                         <h6>Active Vendor</h6>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                     </div>
                     <!-- number and label -->
                     <div class="entity-count">
-                        <h2>5</h2>
+                        <h2>{{ $totalInactive }}</h2>
                         <h6>Inactive Vendor</h6>
                     </div>
                 </div>
@@ -78,12 +78,6 @@
 
                 <!-- filters -->
                 <div class="filters">
-                    <!-- compliance -->
-                    <select class="form-select form-select-sm w-auto shadow-none" id="departmentFilter">
-                        <option value="all">All Compliance Status</option>
-                        <option value="Compliant">Compliant</option>
-                        <option value="Non-Compliant">Non-Compliant</option>
-                    </select>
 
                     <!-- vendor status -->
                     <select class="form-select form-select-sm w-auto shadow-none" id="accountStatusFilter">
@@ -96,110 +90,71 @@
 
             <div class="vendor-container">
                 <!-- profiles -->
-                <div class="vendor-card">
 
-                    <!-- header -->
-                    <div class="vendor-header">
-                        <div class="vendor-avatar">
-                            <i class="fa-solid fa-store"></i>
+                @foreach ($items as $item)
+                    <div class="vendor-card" data-status="{{ ucfirst($item->status) }}">
+
+                        <!-- header -->
+                        <div class="vendor-header">
+                            <div class="vendor-avatar">
+                                <i class="fa-solid fa-store"></i>
+                            </div>
+                            <div class="vendor-main">
+                                <h5 class="vendor-name">{{ $item->name }}</h5>
+                                <span
+                                    class="vendor-status {{ $item->status === 'Active' ? 'active-vendor' : 'inactive-vendor' }}">{{ $item->status }}</span>
+                            </div>
+                            <div class="vendor-actions">
+                                <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
+                                    data-bs-target="#editVendorModal{{ $item->id }}">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                @if (Auth::user()->canAccess('Vendor', 'write'))
+                                    <button class="icon-btn delete-btn" title="DeleteVendor"
+                                        data-url="{{ route('vendors.delete', $item->id) }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                @endif
+                            </div>
                         </div>
-                        <div class="vendor-main">
-                            <h5 class="vendor-name">Fuwa Fuwa</h5>
-                            <span class="vendor-status active-vendor">Active</span>
-                        </div>
-                        <div class="vendor-actions">
-                            <button class="icon-btn" title="Edit Vendor">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button class="icon-btn" title="Vendor Details">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+
+                        <!-- body -->
+                        <div class="vendor-body">
+                            <div class="info-row">
+                                <span class="label">Vendor ID</span>
+                                <span class="value">{{ $item->vendor_id }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Contact Person</span>
+                                <span class="value">{{ $item->contact_person }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Email</span>
+                                <span class="value">{{ $item->contact_email }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Phone</span>
+                                <span class="value">{{ $item->contact_number }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Category</span>
+                                <span class="value">{{ $item->category }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Last Transaction</span>
+                                <span class="value">Jan 20, 2026</span>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- body -->
-                    <div class="vendor-body">
-                        <div class="info-row">
-                            <span class="label">Vendor ID</span>
-                            <span class="value">VND-00123</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Contact Person</span>
-                            <span class="value">Juan Dela Cruz</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Email</span>
-                            <span class="value">vendor@email.com</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Phone</span>
-                            <span class="value">+63 912 345 6789</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Category</span>
-                            <span class="value">Office Equipment</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Last Transaction</span>
-                            <span class="value">Jan 20, 2026</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="vendor-card">
-
-                    <!-- header -->
-                    <div class="vendor-header">
-                        <div class="vendor-avatar">
-                            <i class="fa-solid fa-store"></i>
-                        </div>
-                        <div class="vendor-main">
-                            <h5 class="vendor-name">Fuwa Fuwa</h5>
-                            <span class="vendor-status inactive-vendor">Inactive</span>
-                        </div>
-                        <div class="vendor-actions">
-                            <button class="icon-btn" title="Edit Vendor">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button class="icon-btn" title="Vendor Details">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- body -->
-                    <div class="vendor-body">
-                        <div class="info-row">
-                            <span class="label">Vendor ID</span>
-                            <span class="value">VND-00123</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Contact Person</span>
-                            <span class="value">Juan Dela Cruz</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Email</span>
-                            <span class="value">vendor@email.com</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Phone</span>
-                            <span class="value">+63 912 345 6789</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Category</span>
-                            <span class="value">Office Equipment</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Last Transaction</span>
-                            <span class="value">Jan 20, 2026</span>
-                        </div>
-                    </div>
-                </div>
+                    @include('Components/Modal/editVendor')
+                @endforeach
 
             </div>
 
         </div>
     </div>
+    <script src="{{ asset('/js/vendorFilter.js') }}"></script>
+    <script src="{{ asset('/js/ArchiveAlert.js') }}"></script>
 @endsection
 
 @push('css')
