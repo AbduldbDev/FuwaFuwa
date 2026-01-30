@@ -19,13 +19,9 @@ class AssetRequestController extends Controller
 
     public function index()
     {
-        $items = AssetRequest::get();
+        $data = $this->assetRequestService->getDashboardData();
 
-        $TotalProcured = AssetRequest::where('status', 'Procured')->count();
-        $TotalRequests = AssetRequest::where('status', '!=', 'Procured')->count();
-        $TotalEmergency = AssetRequest::where('priority', 'Emergency')->count();
-
-        return view('Pages/assetRequest', compact('items', 'TotalProcured', 'TotalRequests', 'TotalEmergency'));
+        return view('Pages/assetRequest', $data);
     }
 
     public function store(StoreAssetRequest $request)

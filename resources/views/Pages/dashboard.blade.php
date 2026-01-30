@@ -25,19 +25,19 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card">
                     <h5>On Hand Stocks</h5>
-                    <h1>0</h1>
+                    <h1>{{ $totalonhand }}</h1>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="card">
                     <h5>Total Cost of Assets</h5>
-                    <h1>0</h1>
+                    <h1>₱{{ number_format($totalCost, 2) }}</h1>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="card">
                     <h5>Asset Value</h5>
-                    <h1>0</h1>
+                    <h1>₱{{ number_format($depreciationSum, 2) }}</h1>
                 </div>
             </div>
 
@@ -75,78 +75,106 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="container mt-4">
+                    <div class="table-container">
+                        <!-- seach, filter & pagination -->
+                        <div class="controls">
 
-            <!-- Data Table -->
-            <div class="container mt-4">
-                <div class="table-container">
-                    <!-- Search & Filter -->
-                    <div class="controls">
-                        <div class="search-box">
-                            <i class="fa fa-search"></i>
-                            <input type="text" id="searchInput" placeholder="Search assets..." />
+                            <!-- search -->
+                            <div class="search-box">
+                                <i class="fa fa-search"></i>
+                                <input type="text" id="searchInput" placeholder="Search assets..." />
+                            </div>
+
+                            <div class="filters">
+                                <!-- category -->
+                                <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
+                                    <option value="all">All Categories</option>
+                                    <option value="PC">PC</option>
+                                    <option value="Laptop">Laptop</option>
+                                    <option value="Router">Router</option>
+                                    <option value="Switch">Switch</option>
+                                    <option value="Modem">Modem</option>
+                                    <option value="Communication Cabinet">Communication Cabinet</option>
+                                    <option value="Server Cabinet">Server Cabinet</option>
+                                    <option value="License">License</option>
+                                    <option value="Software">Software</option>
+                                </select>
+
+                                <!-- Status -->
+                                <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter"
+                                    style="border-radius: 10px">
+                                    <option value="all">All Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="In Stock">In Stock</option>
+                                    <option value="Under Maintenance">Under Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+
+                                <!-- Compliance Type -->
+                                <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
+                                    style="border-radius: 10px">
+                                    <option value="all">All Compliance</option>
+                                    <option value="Compliant">Compliant</option>
+                                    <option value="Non-Compliant">Non-Compliant</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="filters">
-                            <!-- time range filter -->
-                            <select class="form-select form-select-sm w-auto shadow-none" id="timeRangeFilter">
-                                <option value="today">Today</option>
-                                <option value="7days">Last 7 Days</option>
-                                <option value="30days">Last 30 Days</option>
-                            </select>
-
-                            <!-- asset status -->
-                            <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter">
-                                <option value="all">All Status</option>
-                                <option value="Active">Active</option>
-                                <option value="In Use">In Use</option>
-                                <option value="Under Maintenance">
-                                    Under Maintenance
-                                </option>
-                                <option value="Retired">Retired</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Table -->
-                    <div class="table-responsive">
-                        <table class="table table-borderless align-middle" id="assetTable">
-                            <thead class="border-bottom">
-                                <tr>
-                                    <th></th>
-                                    <th>Asset ID</th>
-                                    <th>Category</th>
-                                    <th>Model</th>
-                                    <th>Status</th>
-                                    <th>Compliance Type</th>
-                                    <th>Purchase Cost</th>
-                                    <th>Asset Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($items as $item)
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-striped align-middle" id="assetTable">
+                                <thead class="border-bottom">
                                     <tr>
-                                        <td><input type="checkbox" /></td>
-                                        <td><a class="asset-link"
-                                                href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
-                                        </td>
-                                        <td data-category="Laptop">{{ $item->asset_category }}</td>
-                                        <td>{{ $item->asset_name }}</td>
-                                        <td>Active</td>
-                                        <td class="text-danger">{{ $item->compliance_status }}</td>
-                                        <td>{{ $item->purchase_cost }}</td>
-                                        <td>{{ $item->location }}</td>
+                                        <th></th>
+                                        <th>Asset ID</th>
+                                        <th>Category</th>
+                                        <th>Model Name</th>
+                                        <th>Status</th>
+                                        <th>Compliance Type</th>
+                                        <th>Purchase Cost</th>
+                                        <th>Asset Value</th>
                                     </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($items as $item)
+                                        <tr>
+                                            <td><input type="checkbox" /></td>
+                                            <td><a class="asset-link"
+                                                    href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
+                                            </td>
+                                            <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
+                                            <td>{{ $item->asset_name }}</td>
+                                            <td>Active</td>
+                                            <td
+                                                class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                                {{ $item->compliance_status }}
+                                            </td>
+                                            <td>{{ $item->purchase_cost }}</td>
+                                            <td>{{ $item->location }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
     <script>
+        const assetData = @json(array_values($assetCategories));
+        const assetLabels = @json(array_keys($assetCategories));
+
+        const complianceData = @json(array_values($complianceStatuses));
+        const complianceLabels = @json(array_keys($complianceStatuses));
+
+        const usersData = @json(array_values($usersByType));
+        const usersLabels = @json(array_keys($usersByType));
+
         const options = {
             type: "doughnut",
             options: {
@@ -154,7 +182,7 @@
                 plugins: {
                     legend: {
                         display: false
-                    },
+                    }
                 },
             },
         };
@@ -162,46 +190,44 @@
         new Chart(document.getElementById("assetChart"), {
             ...options,
             data: {
+                labels: assetLabels,
                 datasets: [{
-                    data: [28, 22, 15, 12, 10, 5],
+                    data: assetData,
                     backgroundColor: [
-                        "#5B8DEF",
-                        "#7C4DFF",
-                        "#F062F2",
-                        "#FF5252",
-                        "#FF9800",
-                        "#FDD835",
-                    ],
-                }, ],
-            },
+                        "#5B8DEF", "#7C4DFF", "#F062F2", "#FF5252", "#FF9800", "#FDD835"
+                    ]
+                }]
+            }
+
         });
 
         new Chart(document.getElementById("complianceChart"), {
             ...options,
             data: {
+                labels: complianceLabels,
                 datasets: [{
-                    data: [40, 30, 15, 10, 5],
+                    data: complianceData,
                     backgroundColor: [
-                        "#F062F2",
-                        "#FF5252",
-                        "#FF7043",
-                        "#FDD835",
-                        "#42A5F5",
-                    ],
-                }, ],
-            },
+                        "#F062F2", "#FF5252", "#FF7043", "#FDD835", "#42A5F5"
+                    ]
+                }]
+            }
         });
 
         new Chart(document.getElementById("usersChart"), {
             ...options,
             data: {
+                labels: usersLabels,
                 datasets: [{
-                    data: [35, 25, 20, 10],
-                    backgroundColor: ["#FF5252", "#FF7043", "#FDD835", "#4DD0E1"],
-                }, ],
-            },
+                    data: usersData,
+                    backgroundColor: [
+                        "#FF5252", "#FF7043", "#FDD835", "#4DD0E1", "#5B8DEF"
+                    ]
+                }]
+            }
         });
     </script>
+
     <script src="{{ asset('/js/tablesearch.js') }}"></script>
 @endsection
 

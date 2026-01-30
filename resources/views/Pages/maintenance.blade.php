@@ -87,7 +87,7 @@
                 <div class="table-container">
                     <!-- seach, filter & pagination -->
                     <div class="controls">
-                        <div class="searfil">
+                        <div class="filters">
                             <!-- search -->
                             <div class="search-box">
                                 <i class="fa fa-search"></i>

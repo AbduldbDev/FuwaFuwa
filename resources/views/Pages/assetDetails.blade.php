@@ -17,6 +17,7 @@
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>
+        @include('Components/Modal/addAsset')
 
         <!-- asset name -->
         <div class="asset-header my-4">
@@ -373,5 +374,5 @@
 @endsection
 
 @push('css')
-    <link href="{{ asset('css/admin.css') }}?v={{ time() }}" rel="stylesheet">
+    <link href="{{ asset('/css/admin.css') }}?v={{ time() }}" rel="stylesheet">
 @endpush

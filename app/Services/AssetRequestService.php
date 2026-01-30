@@ -11,6 +11,37 @@ use Carbon\Carbon;
 
 class AssetRequestService
 {
+
+    public function getAllRequests()
+    {
+        return AssetRequest::get();
+    }
+
+    public function getTotalProcured()
+    {
+        return AssetRequest::where('status', 'Procured')->count();
+    }
+
+    public function getTotalPendingRequests()
+    {
+        return AssetRequest::whereNotIn('status', ['Procured', 'Rejected'])->count();
+    }
+
+    public function getTotalEmergency()
+    {
+        return AssetRequest::where('priority', 'Emergency')->count();
+    }
+
+    public function getDashboardData()
+    {
+        return [
+            'items' => $this->getAllRequests(),
+            'TotalProcured' => $this->getTotalProcured(),
+            'TotalRequests' => $this->getTotalPendingRequests(),
+            'TotalEmergency' => $this->getTotalEmergency(),
+        ];
+    }
+
     public function store(array $data): AssetRequest
     {
         return DB::transaction(function () use ($data) {

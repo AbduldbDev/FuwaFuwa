@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Assets;
-
+use App\Services\DashboardService;
 
 class DashboardController extends Controller
 {
+    protected $dashboardService;
+
+    public function __construct(DashboardService $dashboardService)
+    {
+        $this->dashboardService = $dashboardService;
+    }
+
     public function index()
     {
-        $items = Assets::get();
-        $totalAssets = Assets::get()->count();
+        $data = $this->dashboardService->getDashboardData();
 
-        return view('Pages/dashboard',  compact('items', 'totalAssets'));
+        return view('Pages/dashboard', $data);
     }
 }

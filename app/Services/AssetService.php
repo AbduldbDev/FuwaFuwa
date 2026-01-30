@@ -7,9 +7,34 @@ use App\Models\TechnicalSpecification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 class AssetService
 {
+    public function getAllAssetsWithDepreciation()
+    {
+        $assets = Assets::get();
+
+        return $assets->map(function ($asset) {
+            $cost = $asset->purchase_cost ?? 0;
+            $salvage = $asset->salvage_value ?? 0;
+            $usefulLife = $asset->useful_life_years ?? 1;
+
+            $depreciation = ($cost - $salvage) / $usefulLife;
+            $currentValue = $cost - $depreciation;
+
+            $asset->depreciation_expense = $depreciation;
+            $asset->current_value = $currentValue;
+
+            return $asset;
+        });
+    }
+
+    public function getActiveUsers()
+    {
+        return User::where('status', 'active')->get();
+    }
+
     public function store(array $data): Assets
     {
         return DB::transaction(function () use ($data) {

@@ -18,9 +18,9 @@ class StoreAssets extends FormRequest
             'asset_category'     => 'required|string',
             'asset_type'         => 'required|string',
             'operational_status' => 'required|string',
-            'assigned_to'        => 'required|string',
-            'department'         => 'required|string',
-            'location'           => 'required|string',
+            'assigned_to'        => 'nullable|string',
+            'department'         => 'nullable|string',
+            'location'           => 'nullable|string',
             'vendor'             => 'required|string',
             'purchase_date'      => 'required|date',
             'purchase_cost'      => 'required|numeric',
@@ -49,9 +49,6 @@ class StoreAssets extends FormRequest
             'asset_type.string'       => 'Asset type must be a valid string.',
 
             'operational_status.string' => 'Operational status must be a valid string.',
-            'assigned_to.string'        => 'Assigned to must be a valid string.',
-            'department.string'         => 'Department must be a valid string.',
-            'location.string'           => 'Location must be a valid string.',
             'vendor.string'             => 'Vendor must be a valid string.',
 
             'purchase_date.date'      => 'Purchase date must be a valid date.',

@@ -50,8 +50,8 @@
                             <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter"
                                 style="border-radius: 10px">
                                 <option value="all">All Status</option>
-                                <option value="Available">Available</option>
-                                <option value="Assigned">Assigned</option>
+                                <option value="Active">Active</option>
+                                <option value="In Stock">In Stock</option>
                                 <option value="Under Maintenance">Under Maintenance</option>
                                 <option value="Retired">Retired</option>
                             </select>
@@ -60,16 +60,15 @@
                             <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
                                 style="border-radius: 10px">
                                 <option value="all">All Compliance</option>
-                                <option value="Licensed">Licensed</option>
-                                <option value="Non-Licensed">Non-Licensed</option>
-                                <option value="Expired">Expired</option>
+                                <option value="Compliant">Compliant</option>
+                                <option value="Non-Compliant">Non-Compliant</option>
                             </select>
                         </div>
                     </div>
 
                     <!-- Table -->
                     <div class="table-responsive">
-                        <table class="table table-borderless align-middle" id="assetTable">
+                        <table class="table table-borderless table-striped  align-middle" id="assetTable">
                             <thead class="border-bottom">
                                 <tr>
                                     <th></th>
@@ -89,12 +88,15 @@
                                         <td><a class="asset-link"
                                                 href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                         </td>
-                                        <td data-category="{{ $item->asset_type }}">{{ $item->asset_type }}</td>
+                                        <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                         <td>{{ $item->asset_name }}</td>
                                         <td>Active</td>
-                                        <td class="text-danger">{{ $item->compliance_status }}</td>
+                                        <td
+                                            class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->compliance_status }}
+                                        </td>
                                         <td>{{ $item->purchase_cost }}</td>
-                                        <td>{{ $item->location }}</td>
+                                        <td>{{ number_format($item->current_value, 2) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

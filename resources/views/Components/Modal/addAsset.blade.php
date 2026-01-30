@@ -15,7 +15,7 @@
                   <div class="modal-body px-4">
                       <!-- ===== Asset Category and Type ===== -->
                       <div id="slide1">
-                          <p class="form-label">Select Asset Category</p>
+                          <p class="form-label">Select Asset Type</p>
 
                           <div class="row mb-4">
                               <div class="col-md-6">
@@ -33,7 +33,7 @@
                           </div>
 
                           <div>
-                              <label class="form-label">Asset Type</label>
+                              <label class="form-label">Asset Category</label>
                               <select class="form-select shadow-none" id="assetType" disabled>
                                   <option value="">Select asset category first</option>
                               </select>
@@ -45,29 +45,25 @@
                           <h4 class="mb-3">Basic Information</h4>
 
                           <div class="mb-3">
-                              <label class="form-label">Asset Tag</label>
-                              <input type="text" class="form-control" />
-                          </div>
-
-                          <div class="mb-3">
                               <label class="form-label">Asset Name</label>
                               <input type="text" class="form-control" name="asset_name" required />
                           </div>
 
                           <div class="mb-3">
-                              <label class="form-label">Asset Category</label>
-                              <input type="text" id="summaryCategory" class="form-control" name="asset_category"
+                              <label class="form-label">Asset Type</label>
+                              <input type="text" id="summaryCategory" class="form-control" name="asset_type"
                                   readonly />
                           </div>
 
                           <div class="mb-3">
-                              <label class="form-label">Asset Type</label>
-                              <input type="text" id="summaryType" class="form-control" name="asset_type" readonly />
+                              <label class="form-label">Asset Category</label>
+                              <input type="text" id="summaryType" class="form-control" name="asset_category"
+                                  readonly />
                           </div>
 
                           <div class="mb-3">
                               <label class="form-label">Operational Status</label>
-                              <select id="operationalStatus" class="form-select" name="operational_status">
+                              <select id="operationalStatus" class="form-select" name="operational_status" required>
                                   <option value="">Select status</option>
                               </select>
                           </div>
@@ -464,12 +460,17 @@
 
                           <div class="mb-3">
                               <label class="form-label">Assigned To</label>
-                              <input type="text" class="form-control" name="assigned_to" />
+                              <select type="text" class="form-control" name="assigned_to" >
+                                  <option value="">Select Employee</option>
+                                  @foreach ($users as $user)
+                                      <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                  @endforeach
+                              </select>
                           </div>
 
                           <div class="mb-3">
                               <label class="form-label">Department</label>
-                              <select class="form-select" name="department">
+                              <select class="form-select" name="department" >
                                   <option value="">Select department</option>
                                   <option>IT Department</option>
                                   <option>HR Department</option>
@@ -481,7 +482,7 @@
 
                           <div class="mb-3">
                               <label class="form-label">Location</label>
-                              <select class="form-select" name="location">
+                              <select class="form-select" name="location" >
                                   <option value="">Select location</option>
                                   <option>Main Office</option>
                                   <option>Branch Office</option>
@@ -537,7 +538,6 @@
                                   <option value="">Select status</option>
                                   <option>Compliant</option>
                                   <option>Non-Compliant</option>
-                                  <option>Pending Review</option>
                               </select>
                           </div>
 
@@ -606,7 +606,7 @@
 
           const assetTypeSelect = document.getElementById("assetType");
           assetTypeSelect.disabled = false;
-          assetTypeSelect.innerHTML = '<option value="">Select type</option>';
+          assetTypeSelect.innerHTML = '<option value="">Select Category</option>';
 
           assetTypes[category].forEach((type) => {
               const option = document.createElement("option");
@@ -618,7 +618,7 @@
 
       function populateOperationalStatus() {
           const statusSelect = document.getElementById("operationalStatus");
-          statusSelect.innerHTML = '<option value="">Select status</option>';
+          statusSelect.innerHTML = '<option value="">Select Status</option>';
 
           operationalStatusOptions[selectedCategory].forEach((status) => {
               const option = document.createElement("option");
@@ -636,7 +636,7 @@
               const type = document.getElementById("assetType").value;
 
               if (!selectedCategory || !type) {
-                  alert("Please select asset category and asset type.");
+                  alert("Please Select Asset Category and Asset Type.");
                   return;
               }
 
@@ -748,10 +748,10 @@
 
           const assetTypeSelect = document.getElementById("assetType");
           assetTypeSelect.disabled = true;
-          assetTypeSelect.innerHTML = '<option value="">Select asset category first</option>';
+          assetTypeSelect.innerHTML = '<option value="">Select Asset Type First</option>';
 
           const operationalStatus = document.getElementById("operationalStatus");
-          if (operationalStatus) operationalStatus.innerHTML = '<option value="">Select status</option>';
+          if (operationalStatus) operationalStatus.innerHTML = '<option value="">Select Status</option>';
 
           // Reset all inputs
           document.querySelectorAll("#assetModal input, #assetModal select").forEach((el) => {

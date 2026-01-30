@@ -7,10 +7,10 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AssetRequestController;
 use App\Http\Controllers\MaintenanceRepairController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportAnalyticsController;
 use App\Http\Controllers\SystemConfigurationController;
-
-
+use App\Http\Controllers\VendorController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
@@ -26,6 +26,10 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
 
     Route::prefix('/')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('/notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 
     Route::prefix('/asset')->name('assets.')->controller(AssetController::class)->group(function () {
@@ -59,6 +63,10 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
     });
 
     Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
+    Route::prefix('/vendors')->name('vendors.')->controller(VendorController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
 });

@@ -51,7 +51,7 @@ body {
 }
 
 .login .form-group {
-    margin-top: 18px;
+    margin-bottom: 18px;
 }
 
 .login .form-control {
@@ -240,7 +240,12 @@ body {
 }
 
 .content-section {
+    
     padding: 20px 30px;
+}
+
+.content-section.active {
+   
 }
 
 .logout-btn {
@@ -250,6 +255,15 @@ body {
 
 .logout-btn:hover {
     transform: scale(1.1);
+}
+
+.menu-section {
+    padding: 12px 16px 6px;
+    font-size: var(--text-12px);
+    font-weight: var(--text-600);
+    color: var(--text-gray);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 /* ============================ SIDEBAR ================================ */
@@ -280,7 +294,7 @@ body {
     align-items: center;
     background-color: var(--search-bg);
     border: 1px solid var(--search-border);
-    padding: 10px 15px;
+    padding: 8px 15px;
     border-radius: var(--radius);
     width: 300px;
 }
@@ -378,10 +392,10 @@ body {
 
 .notif-header {
     padding: 14px 16px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--search-border);
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
+    font-weight: var(--text-600);
 }
 
 .notif-list {
@@ -393,9 +407,9 @@ body {
     display: flex;
     gap: 12px;
     padding: 14px 16px;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid var(--search-bg);
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.3s;
 }
 
 .notif-item:hover {
@@ -403,27 +417,27 @@ body {
 }
 
 .notif-item i {
-    font-size: 16px;
+    font-size: var(--text-16px);
     margin-top: 2px;
-    color: #6c757d;
+    color: var(--search-icon);
 }
 
 .notif-item p {
     margin: 0;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: var(--text-14px);
+    font-weight: var(--text-600);
 }
 
 .notif-item small {
-    color: #999;
+    color: var(--text-gray);
 }
 
 .notif-item.unread {
-    background: #f0f6ff;
+    background: #fff3e3;
 }
 
 .notif-item.unread i {
-    color: #0d6efd;
+    color: var(--button);
 }
 
 .notif-footer {
@@ -432,12 +446,113 @@ body {
 }
 
 .notif-footer a {
-    font-size: 13px;
-    text-decoration: none;
-    color: #0d6efd;
+    font-size: var(--text-12px);
+    color: var(--button);
 }
 
 /* ============================ NAVBAR ================================ */
+
+/* ============================ NOTIFICATION ================================ */
+.notif-container {
+    padding: 0 15px;
+}
+
+.notifs {
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--box-shadow);
+    min-height: 50vh;
+}
+
+.notif-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--white);
+    border: 1px solid var(--search-border);
+    border-left: 4px solid var(--search-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: box-shadow 0.25s ease;
+    margin-bottom: 10px;
+}
+
+.notif-row:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.notif-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 85%;
+}
+
+.notif-box {
+    width: 36px;
+    height: 36px;
+    background: #f0ab4b;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.notif-box i {
+    color: var(--text-white);
+    font-size: 16px;
+}
+
+.notif-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notif-title {
+    font-size: 16px;
+    font-weight: var(--text-600);
+    color: var(--black);
+}
+
+.notif-desc {
+    font-size: var(--text-12px);
+    color: var(--text-gray);
+}
+
+.notif-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.notif-time {
+    font-size: var(--text-12px);
+    color: var(--text-gray);
+    white-space: nowrap;
+}
+
+/* unread */
+.notif-row.unread {
+    border-left-color: #f0ab4b;
+}
+
+.notif-row.unread .notif-dot {
+    background: #f0ab4b;
+}
+
+/* read */
+.notif-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--search-border);
+    border-radius: 50%;
+}
+
+/* ============================ NOTIFICATION ================================ */
 
 /* ============================ TABLE ================================ */
 .table-container {
@@ -451,7 +566,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .controls select {
@@ -463,28 +577,6 @@ body {
     display: flex;
     gap: 10px;
 }
-
-/* .table-container .search-box {
-  display: flex;
-  align-items: center;
-  background: #f1f1f1;
-  border-radius: 5px;
-  padding: 6px 10px;
-  width: 250px;
-}
-
-.table-container .search-box i {
-  color: #777;
-}
-
-.table-container .search-box input {
-  border: none;
-  outline: none;
-  background: transparent;
-  margin-left: 8px;
-  width: 100%;
-  font-size: 14px;
-} */
 
 table th {
     font-size: 20px;
@@ -789,19 +881,23 @@ table td {
     justify-content: center;
 }
 
+/* ============================ ASSET REQUEST ================================ */
+
 /* ============================ USER MANAGEMENT ================================ */
 #users .card {
     border-radius: var(--radius);
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 20px;
     padding: 20px 30px;
     border: none;
     box-shadow: var(--box-shadow);
 }
+
 .users-container {
-    padding: 0 20px;
+    margin: 0 20px;
 }
 
 /* modal */
@@ -846,42 +942,29 @@ select option {
     font-size: var(--text-16px);
 }
 
-/* number of users */
-#users .card {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-    padding: 20px 30px;
-}
-
-#users i {
-    font-size: 20px;
-}
-
 /* users */
-.all-users {
+.all-entity {
     background-color: #fef9ec;
     border-radius: var(--radius);
     padding: 15px;
     color: #f5ca47;
 }
 
-.active-users {
+.active-entity {
     background-color: #e7f5ec;
     border-radius: var(--radius);
     padding: 15px;
     color: #27a857;
 }
 
-.inactive-users {
+.inactive-entity {
     background-color: #ffd3d3;
     border-radius: var(--radius);
     padding: 15px;
     color: #e63131;
 }
 
-.user-count h6 {
+.entity-count h6 {
     color: var(--text-gray);
 }
 
@@ -896,24 +979,19 @@ select option {
 
 .profile-info {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 12px;
 }
 
 .profile-info img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
 }
 
-.profile-name {
-    font-size: var(--text-16px);
-}
-
-.profile-contacts p {
-    margin: 0;
-    font-size: var(--text-16px);
+.profile-name strong {
+    font-size: var(--text-20px);
 }
 
 .profile-name .user-status {
@@ -934,12 +1012,9 @@ select option {
     color: var(--text-white);
 }
 
-.email,
-.department,
-.user-type {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.profile-contacts {
+    border-top: 1px solid var(--search-border);
+    padding: 12px 0;
 }
 
 .control-buttons {
@@ -987,6 +1062,132 @@ select option {
 }
 
 /* ============================ USER MANAGEMENT ================================ */
+
+/* ============================ VENDOR MANAGEMENT ================================ */
+#vendors .card {
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 30px;
+    border: none;
+    box-shadow: var(--box-shadow);
+}
+
+.entity-container {
+    margin: 0 20px;
+}
+
+.vendor-container {
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.vendor-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    width: calc(33.333% - 10px); /* 3 per row */
+    min-width: 320px;
+}
+
+.vendor-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.vendor-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: var(--button);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-black);
+    font-size: 20px;
+}
+
+.vendor-main {
+    flex: 1;
+}
+
+.vendor-name {
+    font-size: var(--text-20px);
+    font-weight: var(--text-600);
+    color: var(--text-black);
+}
+
+.vendor-status {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: var(--text-12px);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.vendor-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+}
+
+.vendor-body {
+    border-top: 1px solid #e5e7eb;
+    padding: 12px 0;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-14px);
+    margin-bottom: 8px;
+}
+
+.info-row .label {
+    color: var(--text-gray);
+}
+
+.info-row .value {
+    color: var(--text-black);
+    font-weight: 500;
+}
+
+.vendor-status.active-vendor {
+    background-color: #27a857;
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--text-white);
+}
+
+.vendor-status.inactive-vendor {
+    background-color: #e63131;
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--text-white);
+}
+
+/* ============================ VENDOR MANAGEMENT ================================ */
 
 /* ============================ MAINTENANCE & REPAIR ================================ */
 #maintenance span {

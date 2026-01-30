@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Assets\StoreAssets;
 use App\Models\Assets;
+use App\Models\User;
 use App\Services\AssetService;
 
 
@@ -19,14 +20,17 @@ class AssetController extends Controller
 
     public function index()
     {
-        $items = Assets::get();
-        return view('Pages/assets', compact('items'));
-    }
+        $items = $this->assetService->getAllAssetsWithDepreciation();
+        $users = $this->assetService->getActiveUsers();
+
+        return view('Pages.assets', compact('items', 'users'));
+    } 
 
     public function show($id)
     {
         $item = Assets::with(['technicalSpecifications', 'users'])->where('asset_tag', $id)->first();
-        return view('Pages/assetDetails', compact('item'));
+        $users = $this->assetService->getActiveUsers();
+        return view('Pages/assetDetails', compact('item', 'users'));
     }
 
     public function store(StoreAssets $request)
