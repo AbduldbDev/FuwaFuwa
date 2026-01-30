@@ -37,8 +37,8 @@
                     <div class="row">
                         <!-- category -->
                         <div class="col-lg-6 mb-3">
-                            <label class="form-label">Asset Category</label>
-                            <select class="form-select" name="asset_category" required>
+                            <label class="form-label">Asset Type</label>
+                            <select class="form-select" name="asset_type" required>
                                 <option value="" selected disabled>Choose asset category</option>
                                 <option>Physical Asset</option>
                                 <option>Digital Asset</option>
@@ -47,15 +47,18 @@
 
                         <!-- type -->
                         <div class="col-lg-6 mb-3">
-                            <label class="form-label">Asset Type</label>
-                            <select class="form-select" name="asset_type" required>
-                                <option value="" selected disabled>Choose asset type</option>
-                                <option>PC</option>
-                                <option>Laptop</option>
-                                <option>Modem</option>
-                                <option>Router</option>
-                                <option>Server Cabinet</option>
-                                <option>Communication Cabinet</option>
+                            <label class="form-label">Asset Category</label>
+                            <select class="form-select" name="asset_category" required>
+                                <option value="PC">PC</option>
+                                <option value="Laptop">Laptop</option>
+                                <option value="Router">Router</option>
+                                <option value="Firewall">Firewall</option>
+                                <option value="Switch">Switch</option>
+                                <option value="Modem">Modem</option>
+                                <option value="Communication Cabinet">Communication Cabinet</option>
+                                <option value="Server Cabinet">Server Cabinet</option>
+                                <option value="License">License</option>
+                                <option value="Software">Software</option>
                             </select>
                         </div>
 

@@ -23,9 +23,25 @@
         <div class="asset-header my-4">
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <!-- Asset Icon -->
+                    @php
+                        $icons = [
+                            'PC' => 'fa-desktop',
+                            'Laptop' => 'fa-laptop',
+                            'Router' => 'fa-wifi',
+                            'Firewall' => 'fa-shield-halved',
+                            'Switch' => 'fa-network-wired',
+                            'Modem' => 'fa-signal',
+                            'Communication Cabinet' => 'fa-server',
+                            'Server Cabinet' => 'fa-server',
+                            'License' => 'fa-key',
+                            'Software' => 'fa-code',
+                        ];
+
+                        $icon = $icons[$item->asset_category] ?? 'fa-box';
+                    @endphp
+
                     <div class="asset-icon">
-                        <i class="fa-solid fa-laptop"></i>
+                        <i class="fa-solid {{ $icon }}"></i>
                     </div>
 
                     <!-- Asset Info -->

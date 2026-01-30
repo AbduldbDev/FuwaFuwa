@@ -93,8 +93,24 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
                                 <div class="d-flex align-items-center gap-3">
+                                    @php
+                                        $icons = [
+                                            'PC' => 'fa-desktop',
+                                            'Laptop' => 'fa-laptop',
+                                            'Router' => 'fa-wifi',
+                                            'Firewall' => 'fa-shield-halved',
+                                            'Switch' => 'fa-network-wired',
+                                            'Modem' => 'fa-signal',
+                                            'Communication Cabinet' => 'fa-server',
+                                            'Server Cabinet' => 'fa-server',
+                                            'License' => 'fa-key',
+                                            'Software' => 'fa-code',
+                                        ];
+
+                                        $icon = $icons[$item->asset_category] ?? 'fa-box';
+                                    @endphp
                                     <div class="asset-icon">
-                                        <i class="fa-solid fa-laptop"></i>
+                                        <i class="fa-solid {{ $icon }}"></i>
                                     </div>
                                     <div>
                                         <h6 class="mb-1 fw-semibold">{{ $item->asset_type }} - {{ $item->model }}</h6>
