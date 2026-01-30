@@ -32,6 +32,11 @@ class AssetRequestService
         return AssetRequest::where('priority', 'Emergency')->count();
     }
 
+    public function getTotalOnHand()
+    {
+        return Assets::where('assigned_to', null)->count();
+    }
+
     public function getDashboardData()
     {
         return [
@@ -39,6 +44,7 @@ class AssetRequestService
             'TotalProcured' => $this->getTotalProcured(),
             'TotalRequests' => $this->getTotalPendingRequests(),
             'TotalEmergency' => $this->getTotalEmergency(),
+            'TotalOnHand' => $this->getTotalOnHand(),
         ];
     }
 

@@ -240,12 +240,10 @@ body {
 }
 
 .content-section {
-    
     padding: 20px 30px;
 }
 
 .content-section.active {
-   
 }
 
 .logout-btn {
@@ -1800,4 +1798,15 @@ select option {
     100% {
         transform: scale(1);
     }
+}
+.submit-btn {
+    background: var(--button);
+    border: none;
+    padding: 8px 28px;
+    border-radius: var(--radius);
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.01);
 }

@@ -21,7 +21,7 @@ Route::middleware('guest')->group(function () {
 });
 
 
-Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
+Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::prefix('/')->name('dashboard.')->group(function () {
@@ -64,6 +64,7 @@ Route::middleware(['auth', 'UserType:admin,encoder'])->group(function () {
 
     Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/update-or-create', 'updateOrCreate')->name('updateOrCreate');
     });
 
     Route::prefix('/vendors')->name('vendors.')->controller(VendorController::class)->group(function () {

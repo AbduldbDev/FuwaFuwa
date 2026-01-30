@@ -10,10 +10,6 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                <!-- <button class="add-btn">
-                            <i class="fa-solid fa-plus"></i>
-                            Add
-                          </button> -->
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
         </div>
@@ -23,19 +19,21 @@
             <h4 class="mb-1">Company Information</h4>
             <p class="subtitle">Update your company details and branding</p>
 
-            <form id="companyForm">
+            <form id="companyForm" action="{{ route('system-configuration.updateOrCreate') }}" method="POST">
+                @csrf
                 <!-- company name -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label>Company Name</label>
-                        <input type="text" class="form-control" id="companyName" value="Nippon Premium Bakery Inc."
-                            required />
+                        <input type="text" class="form-control" id="companyName"
+                            value="{{ $CompanyProfile->company_name ?? '' }}" required name="company_name" />
                     </div>
 
                     <!-- brand name -->
                     <div class="col-md-6">
                         <label>Brand Name</label>
-                        <input type="text" class="form-control" id="brandName" value="Fuwa Fuwa" required />
+                        <input type="text" class="form-control" id="brandName"
+                            value="{{ $CompanyProfile->brand_name ?? '' }}" required name="brand_name" />
                     </div>
                 </div>
 
@@ -43,17 +41,19 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label>Contact Email</label>
-                        <input type="email" class="form-control" id="email" value="it@fuwafuwa.com" required />
+                        <input type="email" class="form-control" id="email"
+                            value="{{ $CompanyProfile->contact_email ?? '' }}" required name="contact_email" />
                     </div>
 
                     <!-- contact phone -->
                     <div class="col-md-6">
                         <label>Contact Phone</label>
-                        <input type="tel" class="form-control" id="phone" value="+81 3-1234-5678" required />
+                        <input type="tel" class="form-control" id="phone"
+                            value="{{ $CompanyProfile->contact_phone ?? '' }}" required name="contact_phone" />
                     </div>
                 </div>
 
-                <button class="save-btn">Save Changes</button>
+                <button type="submit" class="save-btn">Save Changes</button>
             </form>
         </div>
 

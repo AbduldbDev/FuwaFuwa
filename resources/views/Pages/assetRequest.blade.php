@@ -41,7 +41,7 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card">
                     <h5>On-hand Stocks</h5>
-                    <h1>0</h1>
+                    <h1>{{ $TotalOnHand }}</h1>
                 </div>
             </div>
         </div>

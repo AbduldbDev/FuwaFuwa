@@ -38,6 +38,7 @@
                                 <option value="PC">PC</option>
                                 <option value="Laptop">Laptop</option>
                                 <option value="Router">Router</option>
+                                <option value="Firewall">Firewall</option>
                                 <option value="Switch">Switch</option>
                                 <option value="Modem">Modem</option>
                                 <option value="Communication Cabinet">Communication Cabinet</option>
