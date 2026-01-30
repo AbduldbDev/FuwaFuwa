@@ -19,6 +19,10 @@ class AssetRequestController extends Controller
 
     public function index()
     {
+        if (!user()->canAccess('Asset Request', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         $data = $this->assetRequestService->getDashboardData();
 
         return view('Pages/assetRequest', $data);
@@ -26,6 +30,10 @@ class AssetRequestController extends Controller
 
     public function store(StoreAssetRequest $request)
     {
+        if (!user()->canAccess('Asset Request', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->assetRequestService->store($request->validated());
 
@@ -39,6 +47,10 @@ class AssetRequestController extends Controller
 
     public function updateStatus(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
     {
+        if (!user()->canAccess('Asset Request', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->assetRequestService->updateStatus($assetRequest, $request->only(['status', 'remarks']));
 
@@ -52,6 +64,10 @@ class AssetRequestController extends Controller
 
     public function approveStatus(Request $request, AssetRequest $assetRequest)
     {
+        if (!user()->canAccess('Asset Request', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->assetRequestService->updateApproval($assetRequest, [
                 'is_approved' => 'approved',
@@ -68,6 +84,10 @@ class AssetRequestController extends Controller
 
     public function rejectStatus(Request $request, AssetRequest $assetRequest)
     {
+        if (!user()->canAccess('Asset Request', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->assetRequestService->updateApproval($assetRequest, [
                 'is_approved' => 'rejected',

@@ -19,12 +19,20 @@ class SystemConfigurationController extends Controller
 
     public function index()
     {
+        if (!user()->canAccess('System', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         $CompanyProfile = CompanyProfile::first();
         return view('Pages/system', compact('CompanyProfile'));
     }
 
     public function updateOrCreate(CompanyProfileRequest $request)
     {
+        if (!user()->canAccess('System', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->CompanyProfileService->updateOrCreate($request->validated());
 

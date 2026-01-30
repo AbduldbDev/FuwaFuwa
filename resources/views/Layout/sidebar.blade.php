@@ -4,61 +4,94 @@
     </div>
 
     <div class="menu">
-        <!-- OPERATIONS -->
-        <div class="menu-section">OPERATIONS</div>
-        <a href="{{ route('dashboard.index') }}"
-            class="menu-link {{ request()->routeIs('dashboard.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-house"></i> Dashboard
-        </a>
 
-        <a href="{{ route('notifications.index') }}"
-            class="menu-link {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-bell"></i> Notifications
-        </a>
+        {{-- OPERATIONS --}}
+        @php
+            $showOperations =
+                Auth::user()->canAccess('Dashboard', 'read') ||
+                Auth::user()->canAccess('Assets', 'read') ||
+                Auth::user()->canAccess('Asset Request', 'read') ||
+                Auth::user()->canAccess('Maintenance', 'read');
+        @endphp
 
-        <a href="{{ route('assets.index') }}" class="menu-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-boxes-stacked"></i> Assets
-        </a>
+        @if ($showOperations)
+            <div class="menu-section">OPERATIONS</div>
 
-        @if (Auth::user()->user_type === 'admin' || Auth::user()->user_type === 'encoder')
-            <a href="{{ route('asset-request.index') }}"
-                class="menu-link {{ request()->routeIs('asset-request.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-dolly"></i> Asset Request
+            @if (Auth::user()->canAccess('Dashboard', 'read'))
+                <a href="{{ route('dashboard.index') }}"
+                    class="menu-link {{ request()->routeIs('dashboard.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+            @endif
+
+            <a href="{{ route('notifications.index') }}"
+                class="menu-link {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-bell"></i> Notifications
             </a>
+
+            @if (Auth::user()->canAccess('Assets', 'read'))
+                <a href="{{ route('assets.index') }}"
+                    class="menu-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-boxes-stacked"></i> Assets
+                </a>
+            @endif
+
+            @if (Auth::user()->canAccess('Asset Request', 'read'))
+                <a href="{{ route('asset-request.index') }}"
+                    class="menu-link {{ request()->routeIs('asset-request.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-dolly"></i> Asset Request
+                </a>
+            @endif
+
+            @if (Auth::user()->canAccess('Maintenance', 'read'))
+                <a href="{{ route('maintenance-repair.index') }}"
+                    class="menu-link {{ request()->routeIs('maintenance-repair.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-screwdriver-wrench"></i> Maintenance & Repair
+                </a>
+            @endif
         @endif
 
-        @if (Auth::user()->user_type === 'admin' || Auth::user()->user_type === 'encoder')
-            <a href="{{ route('maintenance-repair.index') }}"
-                class="menu-link {{ request()->routeIs('maintenance-repair.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-screwdriver-wrench"></i> Maintenance & Repair
-            </a>
-        @endif
+        {{-- ADMINISTRATION --}}
+        @php
+            $showAdmin = Auth::user()->canAccess('User', 'read') || Auth::user()->canAccess('Vendor', 'read');
+        @endphp
 
-        @if (Auth::user()->user_type === 'admin')
-            <!-- ADMINISTRATION -->
+        @if ($showAdmin)
             <div class="menu-section">ADMINISTRATION</div>
 
-            <a href="{{ route('user-management.index') }}"
-                class="menu-link {{ request()->routeIs('user-management.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-users"></i> User Management
-            </a>
+            @if (Auth::user()->canAccess('User', 'read'))
+                <a href="{{ route('user-management.index') }}"
+                    class="menu-link {{ request()->routeIs('user-management.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users"></i> User Management
+                </a>
+            @endif
 
-            <a href="{{ route('vendors.index') }}"
-                class="menu-link {{ request()->routeIs('vendors.*') ? 'active' : '' }}" data-target="vendors">
-                <i class="fa-solid fa-shop"></i> Vendor Management
-            </a>
+            @if (Auth::user()->canAccess('Vendor', 'read'))
+                <a href="{{ route('vendors.index') }}"
+                    class="menu-link {{ request()->routeIs('vendors.*') ? 'active' : '' }}" data-target="vendors">
+                    <i class="fa-solid fa-shop"></i> Vendor Management
+                </a>
+            @endif
         @endif
 
-        <!-- INSIGHTS -->
-        <div class="menu-section">INSIGHTS</div>
+        {{-- INSIGHTS --}}
+        @php
+            $showInsights = Auth::user()->canAccess('Reports', 'read');
+        @endphp
 
-        <a href="{{ route('reports-analytics.index') }}"
-            class="menu-link {{ request()->routeIs('reports-analytics.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-chart-column"></i> Reports & Analytics
-        </a>
+        @if ($showInsights)
+            <div class="menu-section">INSIGHTS</div>
 
-        @if (Auth::user()->user_type === 'admin')
-            <!-- SYSTEM -->
+            @if (Auth::user()->canAccess('Reports', 'read'))
+                <a href="{{ route('reports-analytics.index') }}"
+                    class="menu-link {{ request()->routeIs('reports-analytics.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-chart-column"></i> Reports & Analytics
+                </a>
+            @endif
+        @endif
+
+        {{-- SYSTEM --}}
+        @if (Auth::user()->canAccess('System', 'read'))
             <div class="menu-section">SYSTEM</div>
 
             <a href="{{ route('system-configuration.index') }}"

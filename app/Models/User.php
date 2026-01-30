@@ -6,17 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Permission;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'employee_id',
         'department',
@@ -30,26 +25,35 @@ class User extends Authenticatable
         'must_reset_password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function canAccess(string $module, string $action = 'read'): bool
+    {
+        $permission = Permission::where('role', $this->user_type)
+            ->where('module', $module)
+            ->first();
+
+        if (!$permission) {
+            return false;
+        }
+
+        $access = $permission->access;
+
+        if ($access === 'write') return true; // full access
+        if ($access === 'read' && $action === 'read') return true;
+        if ($access === 'custom') return true; // optional custom logic
+
+        return false; // none
     }
 }

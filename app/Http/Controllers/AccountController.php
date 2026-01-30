@@ -19,6 +19,10 @@ class AccountController extends Controller
 
     public function index()
     {
+        if (!user()->canAccess('User', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         $items = User::get();
 
         $counts = User::selectRaw("
@@ -37,6 +41,10 @@ class AccountController extends Controller
 
     public function store(StoreRequest $request)
     {
+        if (!user()->canAccess('User', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->authService->createAccount($request->validated());
 
@@ -50,6 +58,10 @@ class AccountController extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
+        if (!user()->canAccess('User', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->authService->updateAccount($request->validated(), $id);
 
@@ -63,6 +75,10 @@ class AccountController extends Controller
 
     public function delete($id)
     {
+        if (!user()->canAccess('User', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->authService->deleteAccount($id);
 

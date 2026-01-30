@@ -7,7 +7,7 @@ use App\Http\Requests\Assets\StoreAssets;
 use App\Models\Assets;
 use App\Models\User;
 use App\Services\AssetService;
-
+use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -20,14 +20,22 @@ class AssetController extends Controller
 
     public function index()
     {
+        if (!user()->canAccess('Assets', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         $items = $this->assetService->getAllAssetsWithDepreciation();
         $users = $this->assetService->getActiveUsers();
 
         return view('Pages.assets', compact('items', 'users'));
-    } 
+    }
 
     public function show($id)
     {
+        if (!user()->canAccess('Assets', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         $item = Assets::with(['technicalSpecifications', 'users'])->where('asset_tag', $id)->first();
         $users = $this->assetService->getActiveUsers();
         return view('Pages/assetDetails', compact('item', 'users'));
@@ -35,6 +43,10 @@ class AssetController extends Controller
 
     public function store(StoreAssets $request)
     {
+        if (!user()->canAccess('Assets', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+
         try {
             $this->assetService->store($request->validated());
 

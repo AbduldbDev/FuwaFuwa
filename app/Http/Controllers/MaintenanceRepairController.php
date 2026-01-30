@@ -8,6 +8,10 @@ class MaintenanceRepairController extends Controller
 {
     public function index()
     {
+        if (!user()->canAccess('Maintenance', 'read')) {
+            abort(403, 'Unauthorized');
+        }
+
         return view('Pages/maintenance');
     }
 }
