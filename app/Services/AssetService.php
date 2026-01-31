@@ -11,12 +11,20 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Vendors;
+use App\Services\NotificationService;
 
 class AssetService
 {
+    protected $notification;
+
+    public function __construct(NotificationService $notification)
+    {
+        $this->notification = $notification;
+    }
+
     public function getAllAssetsWithDepreciation()
     {
-        $assets = Assets::where('operational_status', '!=', 'archived')->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->latest()->get();
 
         return $assets->map(function ($asset) {
             $cost = $asset->purchase_cost ?? 0;
@@ -50,7 +58,7 @@ class AssetService
 
     public function getAssetArchive()
     {
-        return Assets::where('operational_status', 'archived')->get();
+        return Assets::where('operational_status', 'archived')->latest()->get();
     }
 
     public function getAssetLogs($id)
@@ -87,6 +95,14 @@ class AssetService
                 }
             }
         }
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Assets',
+            'read',
+            'Asset Created',
+            "Asset " . $asset->asset_tag . " has been created by: " . Auth::user()->name . ".",
+            'info'
+        );
 
         $this->logAssetChange($asset, 'Created: ', $asset->asset_tag, null,  $asset->asset_name);
         return $asset;
@@ -142,6 +158,14 @@ class AssetService
             }
         }
 
+        $this->notification->notifyUsersWithModuleAccess(
+            'Assets',
+            'read',
+            'Asset Updated',
+            "Asset " . $asset->asset_tag . " has been updated by: " . Auth::user()->name . ".",
+            'info'
+        );
+
         $asset->update($data);
         return $asset;
     }
@@ -172,6 +196,15 @@ class AssetService
     {
         $asset = Assets::findOrFail($id);
         $asset->operational_status = 'archived';
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Assets',
+            'read',
+            'Asset Deleted',
+            "Asset " . $asset->asset_tag . " has been deleted by: " . Auth::user()->name . ".",
+            'warning'
+        );
+
         $asset->save();
 
         return $asset;

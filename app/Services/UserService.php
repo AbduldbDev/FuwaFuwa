@@ -31,7 +31,7 @@ class UserService
 
         $this->notification->notifyUsersWithModuleAccess(
             'User',
-            'write',
+            'read',
             'New User Created',
             "User " . $user->name . " has registered with the email " . $user->email . ".",
             'info'
@@ -48,8 +48,8 @@ class UserService
 
         $this->notification->notifyUsersWithModuleAccess(
             'User',
-            'write',
-            'New User Updated',
+            'read',
+            'User Updated',
             "User " . $user->name . " has been updated by: " . Auth::user()->name . ".",
             'info'
         );
@@ -61,6 +61,15 @@ class UserService
     public function deleteAccount(int $id)
     {
         $user = User::findOrFail($id);
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'User',
+            'read',
+            'User Deleted',
+            "User " . $user->name . " has been deleted by: " . Auth::user()->name . ".",
+            'warning'
+        );
+
         $user->delete();
 
         return $user;

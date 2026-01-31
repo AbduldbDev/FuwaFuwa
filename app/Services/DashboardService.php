@@ -9,7 +9,7 @@ class DashboardService
 {
     public function getLatestAssets($limit = 10)
     {
-        return Assets::where('operational_status',  '!=', 'archived')->orderBy('created_at', 'desc')->take($limit)->get();
+        return Assets::where('operational_status',  '!=', 'archived')->latest()->take($limit)->get();
     }
 
     public function getTotalAssets()

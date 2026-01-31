@@ -26,8 +26,9 @@
                                 @case('success') fa-solid fa-circle-check @break
                                 @default fa-solid fa-bell @endswitch"></i>
                     <div>
-                        <p>New asset request submitted</p>
-                        <small>2 minutes ago</small>
+                        <p>{{ $notif->title }}</p>
+                        <small>{{ $notif->message }}</small><br>
+                        <small>{{ \Carbon\Carbon::parse($notif->created_at)->diffForHumans(['short' => true, 'parts' => 1]) }}</small>
                     </div>
                 </a>
             @empty

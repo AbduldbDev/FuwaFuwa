@@ -8,13 +8,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Services\NotificationService;
 
 class AssetRequestService
 {
+    protected $notification;
+
+    public function __construct(NotificationService $notification)
+    {
+        $this->notification = $notification;
+    }
 
     public function getAllRequests()
     {
-        return AssetRequest::get();
+        return AssetRequest::orderByRaw("FIELD(priority, 'emergency', 'high', 'medium', 'low')")->get();
     }
 
     public function getTotalProcured()
@@ -54,6 +61,14 @@ class AssetRequestService
         $data['user_id'] = Auth::id();
         $assetRequest =  AssetRequest::create($data);
 
+        $this->notification->notifyUsersWithModuleAccess(
+            'Asset Request',
+            'read',
+            'New Asset Request',
+            "New " . $assetRequest->priority . " priority asset request #" . $assetRequest->request_id . " has been submitted by " . Auth::user()->name . ".",
+            'info'
+        );
+
         return $assetRequest;
     }
 
@@ -63,6 +78,15 @@ class AssetRequestService
             'status'  => $data['status'],
             'remarks' => $data['remarks'] ?? $request->remarks,
         ]);
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Asset Request',
+            'read',
+            'Asset Request Status Updated',
+            "Asset request #{$request->request_id} status was updated to " . $request->status . " by " . Auth::user()->name . ".",
+            'info'
+        );
+
 
         return $request;
     }
@@ -77,6 +101,15 @@ class AssetRequestService
             'remarks'     => $data['remarks'] ?? $assetRequest->remarks,
             'status'      => $newStatus,
         ]);
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Asset Request',
+            'read',
+            'Asset Request ' . ucfirst($approvalStatus),
+            "Asset request #{$assetRequest->request_id} status was " . $approvalStatus . " by " . Auth::user()->name . ".",
+            'info'
+        );
+
 
         return $assetRequest;
     }

@@ -72,11 +72,13 @@
 
                     <select class="form-select form-select-sm w-auto shadow-none" id="notificationType">
                         <option value="Notification type">Notification Type</option>
-                        <option value="Asset notifs">Asset</option>
-                        <option value="Asset req notifs">Asset Request</option>
-                        <option value="Maintenance notifs">Maintenance</option>
-                        <option value="User notif">Users</option>
-                        <option value="Vendor notif">Vendors</option>
+                        <option value="Assets">Asset</option>
+                        <option value="Asset Request">Asset Request</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="User">Users</option>
+                        <option value="Vendor">Vendors</option>
+                        <option value="Reports">Reports</option>
+                        <option value="System">System</option>
                     </select>
                 </div>
             </div>
@@ -85,7 +87,10 @@
                 <!-- notif 1 -->
                 @foreach ($items as $item)
                     <a class="notif-row {{ is_null($item->read_at) ? 'unread' : 'read' }}" role="button" tabindex="0"
-                        style="text-decoration: none" href="{{ route('notifications.read', $item->id) }}">
+                        style="text-decoration: none" href="{{ route('notifications.read', $item->id) }}"
+                        data-read="{{ is_null($item->read_at) ? 'unread' : 'read' }}" data-module="{{ $item->module }}"
+                        data-created="{{ $item->created_at->toIsoString() }}">
+
                         <div class="notif-left">
                             <div class="notif-box">
                                 <i
@@ -116,6 +121,78 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifRows = document.querySelectorAll('.notif-row');
+            const filterPills = document.querySelectorAll('.filter-pill');
+            const typeSelect = document.getElementById('notificationType');
+            const timeSelect = document.getElementById('timeRangeFilter');
+
+            let currentFilter = 'all'; // all, read, unread
+            let currentType = 'all'; // module type
+            let currentTime = 'today'; // today, 7days, 30days
+
+            // Read/Unread filter
+            filterPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    filterPills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.textContent.toLowerCase();
+                    filterNotifications();
+                });
+            });
+
+            // Type filter
+            typeSelect.addEventListener('change', function() {
+                currentType = this.value.toLowerCase();
+                filterNotifications();
+            });
+
+            // Time range filter
+            timeSelect.addEventListener('change', function() {
+                currentTime = this.value;
+                filterNotifications();
+            });
+
+            function filterNotifications() {
+                const now = new Date();
+
+                notifRows.forEach(row => {
+                    const readStatus = row.dataset.read;
+                    const moduleType = row.dataset.module.toLowerCase();
+                    const notifDate = new Date(row.dataset.created); // parse ISO string
+
+                    // Read/unread match
+                    const filterMatch = (currentFilter === 'all' || readStatus === currentFilter);
+
+                    // Type match
+                    const typeMatch = (currentType === 'notification type'.toLowerCase() || currentType ===
+                        moduleType);
+
+                    // Time match
+                    let timeMatch = true;
+                    const diffDays = (now - notifDate) / (1000 * 60 * 60 * 24); // difference in days
+
+                    switch (currentTime) {
+                        case 'today':
+                            timeMatch = diffDays < 1;
+                            break;
+                        case '7days':
+                            timeMatch = diffDays <= 7;
+                            break;
+                        case '30days':
+                            timeMatch = diffDays <= 30;
+                            break;
+                        default:
+                            timeMatch = true;
+                    }
+
+                    // Show/hide row
+                    row.style.display = (filterMatch && typeMatch && timeMatch) ? '' : 'none';
+                });
+            }
+        });
+    </script>
 @endsection
 
 @push('css')

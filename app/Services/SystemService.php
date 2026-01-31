@@ -5,12 +5,21 @@ namespace App\Services;
 use App\Models\Permission;
 use App\Models\CompanyProfile;
 use Illuminate\Support\Arr;
+use App\Services\NotificationService;
+use Illuminate\Support\Facades\Auth;
 
 class SystemService
 {
     protected array $roles = ['admin', 'encoder', 'viewer'];
     protected array $modules = ['Dashboard', 'Assets', 'Asset Request', 'Asset Archive', 'Maintenance', 'User', 'Vendor', 'Reports', 'System'];
     protected array $accessTypes = ['none' => 'None', 'read' => 'Read', 'write' => 'Read/Write', 'custom' => 'Custom'];
+
+    protected $notification;
+
+    public function __construct(NotificationService $notification)
+    {
+        $this->notification = $notification;
+    }
 
     public function getRoles(): array
     {
@@ -73,6 +82,14 @@ class SystemService
     public function updateOrCreate(array $data)
     {
         $fillableData = Arr::only($data, (new CompanyProfile)->getFillable());
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'System',
+            'read',
+            'Company Profile Updated',
+            "Company information was updated by " . Auth::user()->name . ".",
+            'info'
+        );
 
         return CompanyProfile::updateOrCreate(['id' => 1], $fillableData);
     }

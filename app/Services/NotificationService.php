@@ -9,27 +9,37 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationService
 {
-    public function notify(string $title, string $message, ?int $userId = null, string $type)
+    public function notify(string $module, string $title, string $message, ?int $userId = null, string $type)
     {
         return Notification::create([
             'user_id' => $userId,
             'title' => $title,
             'message' => $message,
             'type' => $type,
+            'module' => $module,
         ]);
     }
 
     public function notifyUsersWithModuleAccess(string $module, string $access, string $title, string $message, string $type): void
     {
-        $roles = Permission::where('module', $module)
-            ->where('access', $access)
-            ->pluck('role');
+        $allowedAccesses = $access === 'read'
+            ? ['write', 'read']
+            : ['write'];
 
-        if ($roles->isEmpty()) return;
+        $roles = Permission::where('module', $module)
+            ->whereIn('access', $allowedAccesses)
+            ->pluck('role')
+            ->unique();
+
+
+        if ($roles->isEmpty()) {
+            return;
+        }
+
         $users = User::whereIn('user_type', $roles)->get();
 
         foreach ($users as $user) {
-            $this->notify($title, $message, $user->id, $type);
+            $this->notify($module, $title, $message, $user->id, $type);
         }
     }
 
