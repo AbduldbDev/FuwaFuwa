@@ -16,22 +16,27 @@ class AssetService
 {
     public function getAllAssetsWithDepreciation()
     {
-        $assets = Assets::where('operational_status',  '!=', 'archived')->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->get();
 
         return $assets->map(function ($asset) {
             $cost = $asset->purchase_cost ?? 0;
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
 
+            $yearsUsed = $asset->created_at->diffInYears(now());
             $depreciation = ($cost - $salvage) / $usefulLife;
-            $currentValue = $cost - $depreciation;
+            $totalDepreciation = $depreciation * $yearsUsed;
+            $currentValue = max($cost - $totalDepreciation, $salvage);
 
             $asset->depreciation_expense = $depreciation;
             $asset->current_value = $currentValue;
-
+            $asset->years_used = $yearsUsed;
+            $asset->remaining_life = max($usefulLife - $yearsUsed, 0);
+            $asset->depreciation_rate = (($cost - $salvage) / $cost / $usefulLife) * 100;
             return $asset;
         });
     }
+
 
     public function getActiveUsers()
     {
@@ -83,15 +88,7 @@ class AssetService
             }
         }
 
-        AssetLogs::create([
-            'asset_id'   => $asset->id,
-            'user_id'    => Auth::id(),
-            'action'     => 'Created: ',
-            'field_name' => $asset->asset_tag,
-            'old_value'  => null,
-            'new_value'  =>  $asset->asset_name,
-        ]);
-
+        $this->logAssetChange($asset, 'Created: ', $asset->asset_tag, null,  $asset->asset_name);
         return $asset;
     }
 
@@ -104,13 +101,7 @@ class AssetService
                 $spec = $asset->technicalSpecifications()->find($specId);
 
                 if ($spec && $spec->spec_value != $value) {
-                    $this->logAssetChange(
-                        $asset,
-                        'changed',
-                        'Technical spec: ' . $spec->spec_key,
-                        $spec->spec_value,
-                        $value
-                    );
+                    $this->logAssetChange($asset, 'changed', 'Technical spec: ' . $spec->spec_key, $spec->spec_value, $value);
                     $spec->update(['spec_value' => $value]);
                 }
             }
@@ -135,33 +126,19 @@ class AssetService
                 $path = $file->storeAs('AssetDocuments', $filename, 'public');
                 $data[$fileField] = '/storage/' . $path;
 
-                // 🔹 Extract filename only for logging
                 $oldFilename = $oldFile ? basename($oldFile) : null;
                 $newFilename = $filename;
 
-                $this->logAssetChange(
-                    $asset,
-                    'changed',
-                    $fileField,
-                    $oldFilename,
-                    $newFilename
-                );
+                $this->logAssetChange($asset, 'changed', $fileField, $oldFilename, $newFilename);
             }
         }
-
 
         foreach ($data as $field => $newValue) {
             if (
                 array_key_exists($field, $original) &&
                 $original[$field] != $newValue
             ) {
-                $this->logAssetChange(
-                    $asset,
-                    'changed ',
-                    $field,
-                    $original[$field],
-                    $newValue
-                );
+                $this->logAssetChange($asset, 'changed ', $field, $original[$field], $newValue);
             }
         }
 

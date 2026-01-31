@@ -71,6 +71,7 @@
 
                     <!-- Table -->
                     <div class="table-responsive">
+
                         <table class="table table-borderless table-striped  align-middle" id="assetTable">
                             <thead class="border-bottom">
                                 <tr>
@@ -86,6 +87,19 @@
                             </thead>
                             <tbody>
                                 @foreach ($items as $item)
+                                    @php
+                                        $statusColors = [
+                                            'Active' => 'bg-success',
+                                            'Inactive' => 'bg-secondary',
+                                            'In Stock' => 'bg-primary',
+                                            'Under Maintenance' => 'bg-warning',
+                                            'Retired' => 'bg-dark',
+                                            'Expired' => 'bg-danger',
+                                            'archived' => 'bg-danger',
+                                        ];
+
+                                        $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
+                                    @endphp
                                     <tr>
                                         <td><input type="checkbox" /></td>
                                         <td><a class="asset-link"
@@ -93,7 +107,9 @@
                                         </td>
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                         <td>{{ $item->asset_name }}</td>
-                                        <td>{{ $item->operational_status }}</td>
+                                        <td>
+                                            {{ ucwords($item->operational_status) }}
+                                        </td>
                                         <td
                                             class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
                                             {{ $item->compliance_status }}

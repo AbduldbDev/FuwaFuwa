@@ -29,15 +29,29 @@ class DashboardService
 
     public function getDepreciationSum()
     {
-        return Assets::where('status', 'active')
-            ->get()
-            ->sum(function ($asset) {
-                $cost = $asset->purchase_cost ?? 0;
-                $salvage = $asset->salvage_value ?? 0;
-                $totalUnits = $asset->useful_life_years ?? 1;
+        $assets = Assets::where('operational_status', '!=', 'archived')->get();
 
-                return ($cost - $salvage) / $totalUnits;
-            });
+        $assetsWithDepreciation = $assets->map(function ($asset) {
+            $cost = $asset->purchase_cost ?? 0;
+            $salvage = $asset->salvage_value ?? 0;
+            $usefulLife = $asset->useful_life_years ?? 1;
+
+            $yearsUsed = $asset->created_at->diffInYears(now());
+            $depreciation = ($cost - $salvage) / $usefulLife;
+            $totalDepreciation = $depreciation * $yearsUsed;
+            $currentValue = max($cost - $totalDepreciation, $salvage);
+
+            $asset->depreciation_expense = $depreciation;
+            $asset->current_value = $currentValue;
+            $asset->years_used = $yearsUsed;
+            $asset->remaining_life = max($usefulLife - $yearsUsed, 0);
+            $asset->depreciation_rate = (($cost - $salvage) / $cost / $usefulLife) * 100;
+
+            return $asset;
+        });
+
+        $totalAssetValue = $assetsWithDepreciation->sum('current_value');
+        return $totalAssetValue;
     }
 
     public function getAssetCategories()

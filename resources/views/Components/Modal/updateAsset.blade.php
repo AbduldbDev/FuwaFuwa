@@ -121,7 +121,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Purchase Date</label>
-                        <input type="date" name="purchase_date" class="form-control" value="${asset.purchase_date ?? ''}">
+                        <input type="date" name="purchase_date" class="form-control" value="${asset.purchase_date ? new Date(asset.purchase_date).toISOString().split('T')[0] : ''}">
                     </div>
 
                     <div class="mb-3">
@@ -143,17 +143,17 @@
 
                     <div class="mb-3">
                         <label class="form-label">Warranty Start</label>
-                        <input type="date" name="warranty_start" class="form-control" value="${asset.warranty_start ?? ''}">
+                        <input type="date" name="warranty_start" class="form-control" value="${asset.warranty_start ? new Date(asset.warranty_start).toISOString().split('T')[0] : ''}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Warranty End</label>
-                        <input type="date" name="warranty_end" class="form-control" value="${asset.warranty_end ?? ''}">
+                        <input type="date" name="warranty_end" class="form-control" value="${asset.warranty_end ? new Date(asset.warranty_end).toISOString().split('T')[0] : ''}">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Next Maintenance</label>
-                        <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ?? ''}">
+                        <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ? new Date(asset.next_maintenance).toISOString().split('T')[0] : ''}">
                     </div>
                 `;
                     break;
