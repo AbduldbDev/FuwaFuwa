@@ -117,7 +117,9 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="asset-details"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)' data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
 
@@ -163,7 +165,9 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="technical-specs"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)' data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
                         </div>
@@ -199,7 +203,10 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="assignment-location"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)'
+                                        data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
                         </div>
@@ -234,7 +241,10 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="purchase-info"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)'
+                                        data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
                         </div>
@@ -274,7 +284,10 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="maintenance-audit"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)'
+                                        data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
                         </div>
@@ -324,7 +337,10 @@
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="documents"
-                                        data-url="{{ route('assets.update', $item->id) }}"></i>
+                                        data-url="{{ route('assets.update', $item->id) }}"
+                                        data-asset='@json($item)'
+                                        data-users='@json($users)'
+                                        data-vendors='@json($vendors)'></i>
                                 </div>
                             @endif
                         </div>
@@ -367,23 +383,22 @@
                         </div>
 
                         <div class="card-body history-list">
-                            <div class="history-item">
-                                <strong>Ryan Bacon</strong> changed fields
-                                <small>Warranty: 12 → 24 months</small>
-                                <span class="date">2025-01-10</span>
-                            </div>
-
-                            <div class="history-item">
-                                <strong>Ryan Bacon</strong> changed status
-                                <small>Available → Assigned</small>
-                                <span class="date">2025-01-02</span>
-                            </div>
-
-                            <div class="history-item">
-                                <strong>John Miller</strong> changed location
-                                <small>Denver → Ankara</small>
-                                <span class="date">2025-01-01</span>
-                            </div>
+                            @foreach ($AssetLogs->take(5) as $item)
+                                <div class="history-item">
+                                    <strong>{{ $item->user->name }}</strong> {{ ucfirst($item->action) }}
+                                    {{ ucfirst(str_replace('_', ' ', $item->field_name)) }}
+                                    <small>
+                                        @if (!is_null($item->old_value))
+                                            {{ $item->old_value }} → {{ $item->new_value }}
+                                        @else
+                                            {{ $item->new_value }}
+                                        @endif
+                                    </small>
+                                    <span
+                                        class="date">{{ \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y h:iA') }}
+                                    </span>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -392,12 +407,30 @@
 
         <!-- history tab -->
         <div id="history" class="tab-content">
-            <div class="card section-card">
-                <div class="card-body">
-                    <h6 class="fw-semibold mb-3">Full Asset History</h6>
-                    <p class="text-muted">
-                        This is where the full history table or timeline will go.
-                    </p>
+            <div class="section-card pb-3">
+                <div class="history-header d-flex justify-content-between">
+                    <h6 class="fw-semibold ">Full Asset History</h6>
+                </div>
+                <div class="section-body">
+                    <div class="history-list">
+                        @foreach ($AssetLogs as $item)
+                            <div class="history-item border-bottom pb-2">
+                                <strong>{{ $item->user->name }}</strong> {{ ucfirst($item->action) }}
+                                {{ ucfirst(str_replace('_', ' ', $item->field_name)) }}
+                                <small>
+                                    @if (!is_null($item->old_value))
+                                        {{ $item->old_value }} → {{ $item->new_value }}
+                                    @else
+                                        {{ $item->new_value }}
+                                    @endif
+                                </small>
+                                <span
+                                    class="date">{{ \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y h:iA') }}
+                                </span>
+
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

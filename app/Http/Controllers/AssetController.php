@@ -40,7 +40,8 @@ class AssetController extends Controller
         $item = Assets::with(['technicalSpecifications', 'users'])->where('asset_tag', $id)->first();
         $users = $this->assetService->getActiveUsers();
         $vendors = $this->assetService->getActiveVendors();
-        return view('Pages/assetDetails', compact('item', 'users', 'vendors'));
+        $AssetLogs = $this->assetService->getAssetLogs($item->id);
+        return view('Pages/assetDetails', compact('item', 'users', 'vendors', 'AssetLogs'));
     }
 
     public function store(StoreAssets $request)

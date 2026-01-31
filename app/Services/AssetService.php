@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AssetLogs;
 use App\Models\Assets;
 use App\Models\TechnicalSpecification;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,6 @@ class AssetService
         return User::where('status', 'active')->get();
     }
 
-
     public function getActiveVendors()
     {
         return Vendors::where('status', 'Active')->get();
@@ -46,6 +46,11 @@ class AssetService
     public function getAssetArchive()
     {
         return Assets::where('operational_status', 'archived')->get();
+    }
+
+    public function getAssetLogs($id)
+    {
+        return AssetLogs::where('asset_id', $id)->with(['asset', 'user'])->latest()->get();
     }
 
     public function store(array $data): Assets
@@ -57,12 +62,9 @@ class AssetService
                 $extension = $file->getClientOriginalExtension();
                 $filename = $originalName . '_' . time() . '.' . $extension;
                 $path = $file->storeAs('AssetDocuments', $filename, 'public');
-
-                // Save path in data
                 $data[$fileField] = '/storage/' . $path;
             }
         }
-
 
         $data['created_by'] = Auth::id();
         $data['asset_tag'] = $this->generateAssetTag();
@@ -81,16 +83,34 @@ class AssetService
             }
         }
 
+        AssetLogs::create([
+            'asset_id'   => $asset->id,
+            'user_id'    => Auth::id(),
+            'action'     => 'Created: ',
+            'field_name' => $asset->asset_tag,
+            'old_value'  => null,
+            'new_value'  =>  $asset->asset_name,
+        ]);
+
         return $asset;
     }
 
     public function updateAsset(Assets $asset, array $data): Assets
     {
+        $original = $asset->getOriginal();
 
         if (isset($data['technical'])) {
             foreach ($data['technical'] as $specId => $value) {
                 $spec = $asset->technicalSpecifications()->find($specId);
-                if ($spec) {
+
+                if ($spec && $spec->spec_value != $value) {
+                    $this->logAssetChange(
+                        $asset,
+                        'changed',
+                        'Technical spec: ' . $spec->spec_key,
+                        $spec->spec_value,
+                        $value
+                    );
                     $spec->update(['spec_value' => $value]);
                 }
             }
@@ -98,9 +118,13 @@ class AssetService
         }
 
         foreach (['contract', 'purchase_order'] as $fileField) {
+
             if (!empty($data[$fileField]) && $data[$fileField] instanceof \Illuminate\Http\UploadedFile) {
-                if ($asset->{$fileField}) {
-                    Storage::delete(str_replace('/storage/', '', $asset->{$fileField}));
+
+                $oldFile = $asset->{$fileField};
+
+                if ($oldFile) {
+                    Storage::delete(str_replace('/storage/', '', $oldFile));
                 }
 
                 $file = $data[$fileField];
@@ -110,10 +134,38 @@ class AssetService
 
                 $path = $file->storeAs('AssetDocuments', $filename, 'public');
                 $data[$fileField] = '/storage/' . $path;
+
+                // 🔹 Extract filename only for logging
+                $oldFilename = $oldFile ? basename($oldFile) : null;
+                $newFilename = $filename;
+
+                $this->logAssetChange(
+                    $asset,
+                    'changed',
+                    $fileField,
+                    $oldFilename,
+                    $newFilename
+                );
             }
         }
-        $asset->update($data);
 
+
+        foreach ($data as $field => $newValue) {
+            if (
+                array_key_exists($field, $original) &&
+                $original[$field] != $newValue
+            ) {
+                $this->logAssetChange(
+                    $asset,
+                    'changed ',
+                    $field,
+                    $original[$field],
+                    $newValue
+                );
+            }
+        }
+
+        $asset->update($data);
         return $asset;
     }
 
@@ -139,7 +191,6 @@ class AssetService
         return $assetId;
     }
 
-
     public function deleteAsset(int $id)
     {
         $asset = Assets::findOrFail($id);
@@ -147,5 +198,17 @@ class AssetService
         $asset->save();
 
         return $asset;
+    }
+
+    protected function logAssetChange(Assets $asset, string $action, ?string $field, $old, $new)
+    {
+        AssetLogs::create([
+            'asset_id'  => $asset->id,
+            'user_id'   => Auth::id(),
+            'action'    => $action,
+            'field_name' => $field,
+            'old_value' => is_array($old) ? json_encode($old) : $old,
+            'new_value' => is_array($new) ? json_encode($new) : $new,
+        ]);
     }
 }
