@@ -18,26 +18,58 @@
         <div class="row my-4">
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Total Assets</h5>
-                    <h1>{{ $totalAssets }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $totalAssets }}</h1>
+                            <h5>Total Assets</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>On Hand Stocks</h5>
-                    <h1>{{ $totalonhand }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $totalonhand }}</h1>
+                            <h5>On Hand Stocks</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Total Cost of Assets</h5>
-                    <h1>₱{{ number_format($totalCost, 2) }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
+                            <i class="fa-solid fa-peso-sign"></i>
+                        </div>
+                        <div>
+                            <h1>₱{{ number_format($totalCost, 2) }}</h1>
+                            <h5>Total Cost of Assets</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Asset Value</h5>
-                    <h1>₱{{ number_format($depreciationSum, 2) }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
+                        <div>
+                            <h1>₱{{ number_format($depreciationSum, 2) }}</h1>
+
+                            <h5>Asset Value</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
 

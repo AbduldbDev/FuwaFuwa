@@ -24,26 +24,57 @@
         <div class="row my-4">
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Total Request</h5>
-                    <h1>{{ $TotalRequests }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $TotalRequests }}</h1>
+                            <h5>Total Request</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Total Procured</h5>
-                    <h1>{{ $TotalProcured }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
+                            <i class="fa-solid fa-cart-flatbed"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $TotalProcured }}</h1>
+                            <h5>Total Procured</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>Emergency Priority</h5>
-                    <h1>{{ $TotalEmergency }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $TotalEmergency }}</h1>
+                            <h5>Emergency Priority</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="card">
-                    <h5>On-hand Stocks</h5>
-                    <h1>{{ $TotalOnHand }}</h1>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $TotalOnHand }}</h1>
+                            <h5>On-Hand Stocks</h5>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

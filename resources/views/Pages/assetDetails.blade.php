@@ -43,6 +43,7 @@
                             'Under Maintenance' => 'bg-warning',
                             'Retired' => 'bg-dark',
                             'Expired' => 'bg-danger',
+                            'archived' => 'bg-danger',
                         ];
 
                         $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
@@ -103,7 +104,7 @@
                 <div class="col-lg-8">
 
                     <!-- asset details -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -150,7 +151,7 @@
                     </div>
 
                     <!-- technical specification -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -185,7 +186,7 @@
                     </div>
 
                     <!-- assignment and location -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -220,7 +221,7 @@
                     </div>
 
                     <!-- purchase information -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -260,7 +261,7 @@
                     </div>
 
                     <!-- pmaintenance & audit -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -310,7 +311,7 @@
                     </div>
 
                     <!-- documents -->
-                    <div class="card section-card mb-4">
+                    <div class="section-card mb-4">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -359,7 +360,7 @@
 
                 <!-- right side -->
                 <div class="col-lg-4">
-                    <div class="card section-card">
+                    <div class="section-card">
                         <div class="history-header d-flex justify-content-between">
                             <h6 class="mb-0 fw-semibold">Recent History</h6>
                             <a href="#" class="see-all">See All</a>

@@ -5,11 +5,11 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
         const deleteUrl = btn.dataset.url;
 
         Swal.fire({
-            title: "Delete This User?",
-            text: "This action cannot be undone.",
+            title: "Delete User?",
+            text: "This user account will be permanently removed.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete",
+            confirmButtonText: "Yes, delete user",
             cancelButtonText: "Cancel",
             reverseButtons: true,
             confirmButtonColor: "#d33",

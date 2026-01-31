@@ -289,7 +289,7 @@ body {
     align-items: center;
     background-color: var(--search-bg);
     border: 1px solid var(--search-border);
-    padding: 8px 15px;
+    padding: 6px 12px;
     border-radius: var(--radius);
     width: 300px;
 }
@@ -317,7 +317,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 6px 15px;
     background-color: var(--button);
     color: var(--text-black);
     border: none;
@@ -600,25 +600,35 @@ table td {
 
 /* ============================ TABLE ================================ */
 
-/* ============================ DASHBOARD ================================ */
-/* .contents-box {
-  padding: 0 30px;
-} */
+/* ============================ CARD ================================ */
+.card {
+    box-shadow: var(--box-shadow);
+    padding: 20px 30px;
+    border: none;
+    display: flex;
+    border-radius: var(--radius);
+}
 
-#dashboard h5 {
+.card h5 {
     color: var(--text-gray);
 }
 
-#dashboard .card {
-    border-radius: 5px;
+.number-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
-    border: none;
-    box-shadow: var(--box-shadow);
+    justify-content: center;
+    font-size: 1.25rem;
 }
+
+.number-icon i {
+    font-size: 25px;
+}
+/* ============================ CARD ================================ */
+
+/* ============================ DASHBOARD ================================ */
 
 /* chart */
 .chart-card {
@@ -732,20 +742,6 @@ table td {
 /* ============================ ASSETS ================================ */
 
 /* ============================ ASSET REQUEST ================================ */
-#asset-request .card h5 {
-    color: var(--text-gray);
-}
-
-#asset-request .card {
-    border-radius: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-    border: none;
-    box-shadow: var(--box-shadow);
-}
 
 .request-container {
     padding: 0 15px;
@@ -879,18 +875,6 @@ table td {
 /* ============================ ASSET REQUEST ================================ */
 
 /* ============================ USER MANAGEMENT ================================ */
-#users .card {
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-    padding: 20px 30px;
-    border: none;
-    box-shadow: var(--box-shadow);
-}
-
 .users-container {
     margin: 0 20px;
 }
@@ -935,6 +919,7 @@ select option {
 
 .form-label {
     font-size: var(--text-12px);
+    font-weight: 500;
 }
 
 /* users */
@@ -965,7 +950,7 @@ select option {
 
 /* profiles */
 .profile-card {
-    min-height: 35vh;
+    min-height: 30vh;
     padding: 20px;
     box-shadow: var(--box-shadow);
     border-radius: var(--radius);
@@ -974,7 +959,7 @@ select option {
 
 .profile-info {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 12px;
 }
@@ -1012,17 +997,12 @@ select option {
     padding: 12px 0;
 }
 
-.control-buttons {
-    display: flex;
-    gap: 5px;
-}
-
 .edit-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 6px 15px;
     background: var(--button);
     color: var(--text-black);
     border: none;
@@ -1059,18 +1039,6 @@ select option {
 /* ============================ USER MANAGEMENT ================================ */
 
 /* ============================ VENDOR MANAGEMENT ================================ */
-#vendors .card {
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-    padding: 20px 30px;
-    border: none;
-    box-shadow: var(--box-shadow);
-}
-
 .entity-container {
     margin: 0 20px;
 }
@@ -1298,40 +1266,6 @@ select option {
     color: var(--text-gray);
 }
 
-/* maintenance table */
-/* #maintenance .card {
-  border-radius: 14px;
-  border: 1px solid #f1e7db;
-  box-shadow: none;
-}
-
-#maintenance .card-title {
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-#maintenance table {
-  margin-bottom: 0;
-}
-
-#maintenance thead th {
-  font-size: 14px;
-  font-weight: 600;
-  color: #9c8f83;
-  border-bottom: 1px solid #f1e7db;
-}
-
-#maintenance tbody td {
-  font-size: 14px;
-  padding: 18px 8px;
-  border-bottom: 1px solid #f1e7db;
-  vertical-align: middle;
-}
-
-#maintenance tbody tr:last-child td {
-  border-bottom: none;
-} */
-
 /* colored pills */
 .pill {
     padding: 5px 14px;
@@ -1386,21 +1320,6 @@ select option {
 /* ============================ MAINTENANCE & REPAIR ================================ */
 
 /* ============================ REPORTS & ANALYTICS ================================ */
-#reports .card {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    border-radius: var(--radius);
-    padding: 20px 25px;
-    border: none;
-    box-shadow: var(--box-shadow);
-}
-
-#reports h6 {
-    color: var(--text-gray);
-}
-
 .report-control {
     display: flex;
     justify-content: space-between;
@@ -1732,9 +1651,12 @@ select option {
 
 .section-card {
     border: none;
+    background-color: var(--card-bg);
     border-radius: 5px;
     box-shadow: var(--box-shadow);
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.3s ease;
+    border: none;
+    border-radius: var(--radius);
 }
 
 .asset-title {
@@ -1814,6 +1736,7 @@ select option {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    padding: 10px 20px;
 }
 
 .history-item {

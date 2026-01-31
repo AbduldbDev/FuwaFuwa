@@ -25,47 +25,44 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <!-- all vendors -->
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="all-entity">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $totalVendors }}</h2>
-                        <h6>Total Vendors</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $totalVendors }}</h1>
+                            <h5>Total Vendors</h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- active vendor -->
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="active-entity">
-                        <i class="fa-solid fa-store"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $totalActive }}</h2>
-                        <h6>Active Vendor</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
+                            <i class="fa-solid fa-shop"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $totalActive }}</h1>
+                            <h5>Active Vendors</h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- inactive vendor -->
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="inactive-entity">
-                        <i class="fa-solid fa-store-slash"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $totalInactive }}</h2>
-                        <h6>Inactive Vendor</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
+                            <i class="fa-solid fa-shop-slash"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $totalInactive }}</h1>
+                            <h5>Inactive Vendors</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,7 +104,7 @@
                             <div class="vendor-actions">
                                 <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
                                     data-bs-target="#editVendorModal{{ $item->id }}">
-                                    <i class="fa-solid fa-pen"></i>
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                                 @if (Auth::user()->canAccess('Vendor', 'write'))
                                     <button class="icon-btn delete-btn" title="DeleteVendor"

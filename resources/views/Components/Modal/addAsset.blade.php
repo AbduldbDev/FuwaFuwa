@@ -5,10 +5,9 @@
             <form action="{{ route('assets.store') }}" method="POST" id="assetForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center fw-semibold">
-                        ADD NEW ASSET
-                    </h3>
-                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+                    <i class="fa-solid fa-square-plus me-2"></i>
+                    <h5 class="modal-title fw-semibold">ADD NEW ASSET</h5>
+                    <button class="btn-close shadow-none" data-bs-dismiss="modal"></button>
                 </div>
 
                 <!-- modal body -->
@@ -42,7 +41,10 @@
 
                     <!-- ===== Basic Information ===== -->
                     <div id="slide2" style="display: none">
-                        <h4 class="mb-3">Basic Information</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-regular fa-user"></i>
+                            <h6>Basic Information</h6>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Asset Name</label>
@@ -71,7 +73,10 @@
 
                     <!-- ===== Technical Specifications ===== -->
                     <div id="slide3" style="display: none">
-                        <h4 class="mb-3">Technical Specifications</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-sliders"></i>
+                            <h6>Technical Specifications</h6>
+                        </div>
 
                         <!-- PC / Laptop -->
                         <div class="tech-group" data-type="PC Laptop">
@@ -516,7 +521,10 @@
 
                     <!-- ===== Assignment & Location ===== -->
                     <div id="slide4" style="display: none">
-                        <h4 class="mb-3">Assignment & Location</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                            <h6>Assignment & Location</h6>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
@@ -555,7 +563,10 @@
 
                     <!-- ===== Purchase Information ===== -->
                     <div id="slide5" style="display: none">
-                        <h4 class="mb-3">Purchase Information</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <h6>Purchase Information</h6>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Vendor</label>
@@ -594,7 +605,10 @@
 
                     <!-- ===== Maintenance & Audit ===== -->
                     <div id="slide6" style="display: none">
-                        <h4 class="mb-3">Maintenance & Audit</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-tools"></i>
+                            <h6>Maintenance & Audit</h6>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Compliance Status</label>
@@ -625,7 +639,11 @@
                     </div>
 
                     <div id="slide7" style="display: none">
-                        <h4 class="mb-3">Documents</h4>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-file"></i>
+                            <h6>Documents</h6>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Contract</label>
                             <input type="file" class="form-control required-field" data-required="true"

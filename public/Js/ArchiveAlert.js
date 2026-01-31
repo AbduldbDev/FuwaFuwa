@@ -27,8 +27,7 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
                 token.value = document
                     .querySelector('meta[name="csrf-token"]')
                     .getAttribute("content");
-
-                // DELETE method spoofing
+                    
                 const method = document.createElement("input");
                 method.type = "hidden";
                 method.name = "_method";

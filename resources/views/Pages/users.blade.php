@@ -23,46 +23,44 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <!-- all users -->
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="all-entity">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $total }}</h2>
-                        <h6>Total User</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $total }}</h1>
+                            <h5>Total Users</h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- active users -->
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="active-entity">
-                        <i class="fa-solid fa-user-check"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $active }}</h2>
-                        <h6>Active User</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $active }}</h1>
+                            <h5>Active Users</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- inactive users -->
+
             <div class="col-lg-4 col-md-6">
                 <div class="card">
-                    <!-- icon -->
-                    <div class="inactive-entity">
-                        <i class="fa-solid fa-user-xmark"></i>
-                    </div>
-                    <!-- number and label -->
-                    <div class="entity-count">
-                        <h2>{{ $inactive }}</h2>
-                        <h6>Inactive User</h6>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
+                            <i class="fa-solid fa-user-xmark"></i>
+                        </div>
+                        <div>
+                            <h1>{{ $inactive }}</h1>
+                            <h5>Inactive Users</h5>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,15 +110,30 @@
                             <div class="profile-card">
                                 <!-- profile picture and name -->
                                 <div class="profile-info">
-                                    <!-- image -->
-                                    <img src="assets/user.png" alt="User" />
-                                    <!-- name -->
-                                    <div class="profile-name">
-                                        <strong>{{ $item->name }}</strong><br />
-                                        <small>@<span>{{ $item->username }}</span></small> <br />
-                                        <span
-                                            class="user-status {{ $item->status === 'active' ? 'active-user' : 'inactive-user' }}">{{ ucfirst($item->status) }}</span>
+                                    <div class="d-flex gap-3">
+                                        <!-- image -->
+                                        <img src="assets/user.png" alt="User" />
+                                        <!-- name -->
+                                        <div class="profile-name">
+                                            <strong>{{ $item->name }}</strong><br />
+                                            <small>@<span>{{ $item->username }}</span></small> <br />
+                                            <span
+                                                class="user-status {{ $item->status === 'active' ? 'active-user' : 'inactive-user' }}">{{ ucfirst($item->status) }}</span>
+                                        </div>
                                     </div>
+                                    @if (Auth::user()->canAccess('User', 'write'))
+                                        <div class="control-buttons d-flex">
+                                            <button class="icon-btn" data-bs-toggle="modal"
+                                                data-bs-target="#editUserModal{{ $item->id }}">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                            <!-- delete -->
+                                            <button class="delete-btn delete-user" title="Delete User"
+                                                data-url="{{ route('user-management.delete', $item->id) }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <!-- profile contacts and button -->
@@ -149,23 +162,6 @@
                                         <span class="label">User Role</span>
                                         <span class="value">{{ ucfirst($item->user_type) }}</span>
                                     </div>
-
-                                    <!-- buttons -->
-                                    @if (Auth::user()->canAccess('User', 'write'))
-                                        <div class="control-buttons mt-4">
-                                            <!-- edit -->
-                                            <button class="edit-btn" data-bs-toggle="modal"
-                                                data-bs-target="#editUserModal{{ $item->id }}">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                                Edit
-                                            </button>
-                                            <!-- delete -->
-                                            <button class="delete-btn"
-                                                data-url="{{ route('user-management.delete', $item->id) }}">
-                                                <i class="fa-regular fa-trash-can"></i>
-                                            </button>
-                                        </div>
-                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -180,7 +176,7 @@
 
     <script src="{{ asset('/js/userSearch.js') }}"></script>
     <script src="{{ asset('/js/userFilter.js') }}"></script>
-    <script src="{{ asset('/js/deleteAlert.js') }}"></script>
+    <script src="{{ asset('/js/SweetAlert/UserDelete.js') }}"></script>
 @endsection
 
 @push('css')

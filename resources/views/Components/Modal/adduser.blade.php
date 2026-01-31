@@ -3,15 +3,16 @@
      <div class="modal-dialog modal-lg modal-dialog-centered">
          <div class="modal-content add-user-modal">
              <div class="modal-header">
-                 <h3 class="modal-title w-100 text-center fw-semibold">
-                     ADD NEW USER
-                 </h3>
+                 <i class="fa-solid fa-user-plus me-2"></i>
+                 <h5 class="modal-title fw-semibold">Add New User</h5>
                  <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
              </div>
              <form method="POST" action="{{ route('user-management.store') }}">
                  <div class="modal-body px-4">
-                     <h4 class="mb-3">User Information</h4>
-
+                     <div class="mb-3 d-flex align-items-center gap-2">
+                         <i class="fa-regular fa-user"></i>
+                         <h6>User Information</h6>
+                     </div>
                      @csrf
                      <!-- employee id -->
                      <div class="mb-3">
@@ -46,7 +47,10 @@
                      </div>
 
                      <!-- login credentials -->
-                     <h4 class="mb-3">Login Credentials</h4>
+                     <div class="mb-3 d-flex align-items-center gap-2">
+                         <i class="fa-regular fa-address-card"></i>
+                         <h6>Login Credentials</h6>
+                     </div>
 
                      <div class="mb-3">
                          <label class="form-label">
