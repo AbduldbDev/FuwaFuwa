@@ -168,12 +168,6 @@
                                             data-bs-target="#requestDetailsModal{{ $item->id }}">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
-                                        {{-- <button class="btn btn-outline-success action-btn">
-                                            <i class="fa-solid fa-check"></i>
-                                        </button>
-                                        <button class="btn btn-outline-danger action-btn">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </button> --}}
                                     </div>
                                 </div>
                             </div>
@@ -181,11 +175,7 @@
                     </div>
                     @include('Components.Modal.requestAssetDetails')
                 @endforeach
-
             </div>
-
-            <!-- modal -->
-
         </div>
     </div>
 

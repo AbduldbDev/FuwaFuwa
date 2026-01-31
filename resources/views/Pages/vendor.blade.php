@@ -102,11 +102,12 @@
                                     class="vendor-status {{ $item->status === 'Active' ? 'active-vendor' : 'inactive-vendor' }}">{{ $item->status }}</span>
                             </div>
                             <div class="vendor-actions">
-                                <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
-                                    data-bs-target="#editVendorModal{{ $item->id }}">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
                                 @if (Auth::user()->canAccess('Vendor', 'write'))
+                                    <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
+                                        data-bs-target="#editVendorModal{{ $item->id }}">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+
                                     <button class="icon-btn delete-btn" title="DeleteVendor"
                                         data-url="{{ route('vendors.delete', $item->id) }}">
                                         <i class="fa-solid fa-trash"></i>

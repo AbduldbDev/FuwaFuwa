@@ -29,7 +29,7 @@ class DashboardService
 
     public function getDepreciationSum()
     {
-        $assets = Assets::where('operational_status', '!=', 'archived')->get();
+        $assets = Assets::where('operational_status', 'Active')->get();
 
         $assetsWithDepreciation = $assets->map(function ($asset) {
             $cost = $asset->purchase_cost ?? 0;
