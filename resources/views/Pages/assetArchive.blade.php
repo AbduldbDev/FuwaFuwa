@@ -80,7 +80,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($items as $item)
+                                @forelse  ($items as $item)
                                     <tr>
                                         <td><input type="checkbox" /></td>
                                         <td><a class="asset-link"
@@ -96,7 +96,21 @@
                                         <td>{{ $item->purchase_cost }}</td>
                                         <td>{{ number_format($item->current_value, 2) }}</td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center py-5">
+                                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                                <i class="fa fa-archive mb-3" style="font-size: 4rem; color: #6c757d;"></i>
+                                                <h4 class="mb-2" style="color: #6c757d; font-weight: 500;">
+                                                    No Assets Archived
+                                                </h4>
+                                                <small class="text-muted">
+                                                    Add new assets to see them listed here.
+                                                </small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

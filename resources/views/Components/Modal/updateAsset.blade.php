@@ -130,6 +130,22 @@
                     </div>
                 `;
                     break;
+                case 'depreciation-insights':
+                    modalFields.innerHTML = `
+
+                    <div class="mb-3">
+                        <label class="form-label">Useful Life Years</label>
+                        <input type="number" name="useful_life_years" class="form-control" value="${asset.useful_life_years ?? ''}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Salvage Value</label>
+                        <input type="number" name="salvage_value" class="form-control" value="${asset.salvage_value ?? ''}">
+                    </div>
+
+                   
+                `;
+                    break;
 
                 case 'maintenance-audit':
                     modalFields.innerHTML = `

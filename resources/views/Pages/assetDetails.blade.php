@@ -283,7 +283,7 @@
                             @if (Auth::user()->canAccess('Assets', 'write'))
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
-                                        data-bs-target="#updateAssetModal" data-section="purchase-info"
+                                        data-bs-target="#updateAssetModal" data-section="depreciation-insights"
                                         data-url="{{ route('assets.update', $item->id) }}"
                                         data-asset='@json($item)'
                                         data-users='@json($users)'
