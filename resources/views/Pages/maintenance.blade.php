@@ -14,7 +14,8 @@
                     <i class="fa-solid fa-plus"></i>
                     Schedule Maintenance
                 </button>
-                <i class="fa-regular fa-bell notif-bell"></i>
+
+                <x-notification-dropdown />
             </div>
         </div>
 

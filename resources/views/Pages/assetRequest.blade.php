@@ -16,7 +16,8 @@
                         Request Asset
                     </button>
                 @endif
-                <i class="fa-regular fa-bell notif-bell"></i>
+
+                <x-notification-dropdown />
             </div>
         </div>
 

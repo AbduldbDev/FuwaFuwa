@@ -32,6 +32,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
 
     Route::prefix('/notifications')->name('notifications.')->controller(NotificationController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/read/{id}', 'read')->name('read');
     });
 
     Route::prefix('/asset')->name('assets.')->controller(AssetController::class)->group(function () {

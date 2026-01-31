@@ -17,7 +17,7 @@
                     </button>
                 @endif
 
-                <i class="fa-regular fa-bell notif-bell"></i>
+                <x-notification-dropdown />
             </div>
         </div>
 
@@ -104,7 +104,7 @@
 
                 <div class="row my-4">
                     @foreach ($items as $item)
-                        <div class="col-lg-3 col-md-6 user-card" data-department="{{ $item->department }}"
+                        <div class="col-lg-3 col-md-6 user-card mb-4" data-department="{{ $item->department }}"
                             data-role="{{ $item->user_type }}" data-status="{{ ucfirst($item->status) }}">
 
                             <div class="profile-card">

@@ -11,7 +11,7 @@
                     <input type="text" placeholder="Search..." />
                 </div>
 
-                <i class="fa-regular fa-bell notif-bell"></i>
+                <x-notification-dropdown />
             </div>
         </div>
 

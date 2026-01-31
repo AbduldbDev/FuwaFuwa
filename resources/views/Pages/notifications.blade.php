@@ -11,10 +11,7 @@
                     <input type="text" placeholder="Search..." />
                 </div>
 
-                <div class="notif-icon" id="notifToggle">
-                    <i class="fa-regular fa-bell notif-bell"></i>
-                    <span class="notif-badge">3</span>
-                </div>
+                <x-notification-dropdown />
             </div>
         </div>
 
@@ -86,104 +83,36 @@
 
             <div class="notifs mt-3">
                 <!-- notif 1 -->
-                <div class="notif-row unread" role="button" tabindex="0">
-                    <div class="notif-left">
-                        <div class="notif-box">
-                            <i class="fa-solid fa-coins"></i>
-                        </div>
+                @foreach ($items as $item)
+                    <a class="notif-row {{ is_null($item->read_at) ? 'unread' : 'read' }}" role="button" tabindex="0"
+                        style="text-decoration: none" href="{{ route('notifications.read', $item->id) }}">
+                        <div class="notif-left">
+                            <div class="notif-box">
+                                <i
+                                    class="@switch($item->type)
+                                @case('info') fa-solid fa-circle-info  @break
+                                @case('warning') fa-solid fa-triangle-exclamation  @break
+                                @case('danger') fa-solid fa-circle-exclamation @break
+                                @case('success') fa-solid fa-circle-check @break
+                                @default fa-solid fa-bell @endswitch">
+                                </i>
+                            </div>
 
-                        <div class="notif-text">
-                            <div class="notif-title">New User Added</div>
-                            <div class="notif-desc">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Laborum voluptate architecto aut non esse excepturi
-                                deserunt voluptates nobis, fugit incidunt velit.
-                                Laboriosam, dolorem tempore reprehenderit quo inventore
-                                aut eveniet repudiandae.
+                            <div class="notif-text">
+                                <div class="notif-title">{{ $item->title }}</div>
+                                <div class="notif-desc">
+                                    {{ $item->message }}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="notif-right">
-                        <span class="notif-time">24m ago</span>
-                        <span class="notif-dot"></span>
-                    </div>
-                </div>
-
-                <!-- notif 2 -->
-                <div class="notif-row read" role="button" tabindex="0">
-                    <div class="notif-left">
-                        <div class="notif-box">
-                            <i class="fa-solid fa-coins"></i>
+                        <div class="notif-right">
+                            <span
+                                class="notif-time">{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans(['short' => true, 'parts' => 1]) }}</span>
+                            <span class="notif-dot"></span>
                         </div>
-
-                        <div class="notif-text">
-                            <div class="notif-title">New User Added</div>
-                            <div class="notif-desc">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Laborum voluptate architecto aut non esse excepturi
-                                deserunt voluptates nobis, fugit incidunt velit.
-                                Laboriosam, dolorem tempore reprehenderit quo inventore
-                                aut eveniet repudiandae.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="notif-right">
-                        <span class="notif-time">24m ago</span>
-                        <span class="notif-dot"></span>
-                    </div>
-                </div>
-
-                <!-- notif 3 -->
-                <div class="notif-row read" role="button" tabindex="0">
-                    <div class="notif-left">
-                        <div class="notif-box">
-                            <i class="fa-solid fa-coins"></i>
-                        </div>
-
-                        <div class="notif-text">
-                            <div class="notif-title">New User Added</div>
-                            <div class="notif-desc">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Laborum voluptate architecto aut non esse excepturi
-                                deserunt voluptates nobis, fugit incidunt velit.
-                                Laboriosam, dolorem tempore reprehenderit quo inventore
-                                aut eveniet repudiandae.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="notif-right">
-                        <span class="notif-time">24m ago</span>
-                        <span class="notif-dot"></span>
-                    </div>
-                </div>
-
-                <!-- notif 4 -->
-                <div class="notif-row read" role="button" tabindex="0">
-                    <div class="notif-left">
-                        <div class="notif-box">
-                            <i class="fa-solid fa-coins"></i>
-                        </div>
-
-                        <div class="notif-text">
-                            <div class="notif-title">New User Added</div>
-                            <div class="notif-desc">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Laborum voluptate architecto aut non esse excepturi
-                                deserunt voluptates nobis, fugit incidunt velit.
-                                Laboriosam, dolorem tempore reprehenderit quo inventore
-                                aut eveniet repudiandae.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="notif-right">
-                        <span class="notif-time">24m ago</span>
-                        <span class="notif-dot"></span>
-                    </div>
-                </div>
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

@@ -10,11 +10,8 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search..." />
                 </div>
-                <!-- <button class="add-btn">
-                                    <i class="fa-solid fa-plus"></i>
-                                    Add
-                                  </button> -->
-                <i class="fa-regular fa-bell notif-bell"></i>
+
+                <x-notification-dropdown />
             </div>
         </div>
 

@@ -10,10 +10,17 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OneTimePasswordMail;
 use Illuminate\Support\Arr;
-
+use App\Services\NotificationService;
 
 class UserService
 {
+    protected $notification;
+
+    public function __construct(NotificationService $notification)
+    {
+        $this->notification = $notification;
+    }
+
     public function createAccount(array $data): User
     {
         $otp = $this->generateStrongPassword();
@@ -21,8 +28,16 @@ class UserService
         $data['otp'] = $otp;
 
         $user = User::create($data);
-        Mail::to($user->email)->send(new OneTimePasswordMail($user));
 
+        $this->notification->notifyUsersWithModuleAccess(
+            'User',
+            'write',
+            'New User Created',
+            "User " . $user->name . " has registered with the email " . $user->email . ".",
+            'info'
+        );
+
+        Mail::to($user->email)->send(new OneTimePasswordMail($user));
         return $user;
     }
 
@@ -30,6 +45,14 @@ class UserService
     {
         $fillableData = Arr::only($data, $user->getFillable());
         $user->update($fillableData);
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'User',
+            'write',
+            'New User Updated',
+            "User " . $user->name . " has been updated by: " . Auth::user()->name . ".",
+            'info'
+        );
 
         return $user;
     }
@@ -39,7 +62,7 @@ class UserService
     {
         $user = User::findOrFail($id);
         $user->delete();
-    
+
         return $user;
     }
 

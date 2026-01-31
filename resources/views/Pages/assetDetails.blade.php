@@ -14,7 +14,8 @@
                     <i class="fa-solid fa-plus"></i>
                     Add New Asset
                 </button>
-                <i class="fa-regular fa-bell notif-bell"></i>
+
+                <x-notification-dropdown />
             </div>
         </div>
         @include('Components/Modal/addAsset')
