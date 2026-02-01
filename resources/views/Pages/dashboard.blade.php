@@ -1,7 +1,7 @@
 @extends('Layout.app')
 
 @section('content')
-    <section id="dashboard" class="content-section active">
+    <section id="dashboard" class="content-section">
         <!-- navbar -->
         <div class="navbar">
             <h2>Dashboard</h2>
