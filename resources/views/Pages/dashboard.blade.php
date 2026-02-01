@@ -17,62 +17,17 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $totalAssets }}</h1>
-                            <h5>Total Assets</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-boxes-stacked" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Assets"
+                :value="$totalAssets" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
-                            <i class="fa-solid fa-boxes-packing"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $totalonhand }}</h1>
-                            <h5>On Hand Stocks</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#166534" icon-bg="#DCFCE7" title="On Hand Stocks"
+                :value="$totalonhand" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
-                            <i class="fa-solid fa-peso-sign"></i>
-                        </div>
-                        <div>
-                            <h1>₱{{ number_format($totalCost, 2) }}</h1>
-                            <h5>Total Cost of Assets</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-peso-sign" icon-color="#92400E" icon-bg="#FFEDD5" title="Total Cost of Assets"
+                :value="'₱' . number_format($totalCost, 2)" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
-                            <i class="fa-solid fa-chart-simple"></i>
-                        </div>
-                        <div>
-                            <h1>₱{{ number_format($depreciationSum, 2) }}</h1>
-
-                            <h5>Asset Value</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-chart-simple" icon-color="#6D28D9" icon-bg="#EDE9FE" title="Asset Value"
+                :value="'₱' . number_format($depreciationSum, 2)" />
 
             <!-- Pie Charts -->
             <div class="container mt-4">

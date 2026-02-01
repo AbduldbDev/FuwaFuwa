@@ -25,47 +25,15 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
-                            <i class="fa-solid fa-building"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $totalVendors }}</h1>
-                            <h5>Total Vendors</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-building" icon-color="#1E40AF" icon-bg="#E0E7FF"
+                title="Total Vendors" :value="$totalVendors" />
 
-            <div class="col-lg-4 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
-                            <i class="fa-solid fa-shop"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $totalActive }}</h1>
-                            <h5>Active Vendors</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-shop" icon-color="#166534" icon-bg="#DCFCE7"
+                title="Active Vendors" :value="$totalActive" />
 
-            <div class="col-lg-4 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
-                            <i class="fa-solid fa-shop-slash"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $totalInactive }}</h1>
-                            <h5>Inactive Vendors</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-shop-slash" icon-color="#92400E" icon-bg="#FFEDD5"
+                title="Inactive Vendors" :value="$totalInactive" />
+
         </div>
 
         <!-- vendors -->

@@ -23,61 +23,17 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
-                            <i class="fa-solid fa-file-circle-plus"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $TotalRequests }}</h1>
-                            <h5>Total Request</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Request"
+                :value="$TotalRequests" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
-                            <i class="fa-solid fa-cart-flatbed"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $TotalProcured }}</h1>
-                            <h5>Total Procured</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-cart-flatbed" icon-color="#166534" icon-bg="#DCFCE7" title="Total Procured"
+                :value="$TotalProcured" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $TotalEmergency }}</h1>
-                            <h5>Emergency Priority</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-triangle-exclamation" icon-color="#92400E" icon-bg="#FFEDD5"
+                title="Emergency Priority" :value="$TotalEmergency" />
 
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
-                            <i class="fa-solid fa-boxes-packing"></i>
-                        </div>
-                        <div>
-                            <h1>{{ $TotalOnHand }}</h1>
-                            <h5>On-Hand Stocks</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE" title="On-Hand Stocks"
+                :value="$TotalOnHand" />
         </div>
 
         <!-- overview -->
