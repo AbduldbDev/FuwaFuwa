@@ -199,7 +199,7 @@ class AssetService
             'Assets',
             'read',
             'Asset Updated',
-            "Asset " . $asset->asset_tag . " has been updated by: " . Auth::user()->name . ".",
+            "Asset #" . $asset->asset_tag . " has been updated by: " . Auth::user()->name . ".",
             'info'
         );
 
@@ -243,7 +243,7 @@ class AssetService
             'Assets',
             'read',
             'Asset Deleted',
-            "Asset " . $asset->asset_tag . " has been deleted by: " . Auth::user()->name . ".",
+            "Asset #" . $asset->asset_tag . " has been deleted by: " . Auth::user()->name . ".",
             'warning'
         );
 
