@@ -23,7 +23,7 @@
                             <i class="fa-regular fa-user"></i>
                             <h6>Basic Information</h6>
                         </div>
-                        <input type="text" name="AssetRequestId" id="AssetRequestId">
+                        <input type="hidden" name="AssetRequestId" id="AssetRequestId">
 
                         <div class="mb-3">
                             <label class="form-label">Asset Name</label>
