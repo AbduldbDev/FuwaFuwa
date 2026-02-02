@@ -34,11 +34,9 @@ class AuthController extends Controller
                 ->intended('/')
                 ->with('success', 'Welcome back!');
         } catch (\Throwable $e) {
-            return back()
-                ->withInput($request->only('email', 'remember'))
-                ->withErrors([
-                    'email' => $e->getMessage(),
-                ]);
+            return back()->withInput($request->only('email', 'remember'))->withErrors([
+                'email' => $e->getMessage(),
+            ]);
         }
     }
 

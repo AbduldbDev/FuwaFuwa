@@ -16,6 +16,6 @@ class StatCard extends Component
 
     public function render()
     {
-        return view('components.stat-card');
+        return view('Components/stat-card');
     }
 }

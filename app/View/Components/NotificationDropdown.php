@@ -30,6 +30,6 @@ class NotificationDropdown extends Component
 
     public function render()
     {
-        return view('components.notification-dropdown');
+        return view('Components/notification-dropdown');
     }
 }
