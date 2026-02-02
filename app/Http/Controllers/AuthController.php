@@ -50,7 +50,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return view('auth.firstreset', compact('user'));
+        return view('Auth/firstreset', compact('user'));
     }
 
     public function reset(Request $request)
