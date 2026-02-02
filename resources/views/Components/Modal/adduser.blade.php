@@ -86,9 +86,9 @@
                              </div>
                              <div class="form-check">
                                  <input class="form-check-input shadow-none" type="radio" name="status"
-                                     id="inactive" value="inactive" />
+                                     id="inactive" value="deactivate" />
                                  <label class="form-check-label" for="inactive">
-                                     Inactive
+                                     deactivate
                                  </label>
                              </div>
                          </div>

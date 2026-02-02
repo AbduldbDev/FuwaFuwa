@@ -8,24 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyFilters() {
         requestWrappers.forEach((wrapper) => {
-            const status = wrapper
-                .querySelector(".request-status")
-                .textContent.trim()
-                .toLowerCase();
-
-            const priority = wrapper
-                .querySelector(".priority-badge")
-                .textContent.trim()
-                .toLowerCase();
+            const status = wrapper.dataset.status;
+            const priority = wrapper.dataset.priority;
 
             const statusMatch =
                 activeStatus === "all" || status === activeStatus;
 
             const priorityMatch =
                 activePriority === "all priority" ||
-                priority.includes(activePriority);
+                priority === activePriority;
 
-            wrapper.style.display =
+            wrapper.closest(".col-lg-4").style.display =
                 statusMatch && priorityMatch ? "block" : "none";
         });
     }
@@ -33,9 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
     filterPills.forEach((pill) => {
         pill.addEventListener("click", function () {
             filterPills.forEach((p) => p.classList.remove("active"));
-            pill.classList.add("active");
+            this.classList.add("active");
 
-            activeStatus = pill.textContent.trim().toLowerCase();
+            activeStatus = this.textContent.trim().toLowerCase();
             applyFilters();
         });
     });

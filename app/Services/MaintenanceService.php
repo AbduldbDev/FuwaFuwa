@@ -38,15 +38,22 @@ class MaintenanceService
 
     public function getInProgress()
     {
-        return Maintenance::whereNot('status', 'Pending')
+        return Maintenance::whereIn('status', ['Inspection', 'Corrective', 'Preventive', 'Completed'])
             ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")
             ->latest()
             ->get();
     }
 
-    public function getPending()
+    public function getPendingCorrective()
     {
-        return Maintenance::where('status', 'Pending')
+        return Maintenance::where('maintenance_type', 'Corrective')->whereNull('start_date')
+            ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")
+            ->get();
+    }
+
+    public function getForInspection()
+    {
+        return Maintenance::where('status', 'For Inspection')
             ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")
             ->get();
     }
@@ -72,12 +79,13 @@ class MaintenanceService
 
     public function getDashboardData(): array
     {
-        $pending = $this->getPending();
+
         $inProgress = $this->getInProgress();
 
         return [
-            'Pending' => $pending,
+            'PendingCorrective' => $this->getPendingCorrective(),
             'Assets'  => $this->getAllAssets(),
+            'ForInspection' => $this->getForInspection(),
             'InProgress' => $inProgress,
             'maintenanceEvents' => $this->getMaintenanceEvents($inProgress),
             'TotalMaintenance' => $this->getTotalMaintenance(),
@@ -90,7 +98,7 @@ class MaintenanceService
     public function store(array $data)
     {
 
-        if (isset($data['document']) && is_array($data['document'])) {
+        if (!empty($data['document']) && is_array($data['document'])) {
             $paths = [];
             foreach ($data['document'] as $file) {
                 if ($file instanceof \Illuminate\Http\UploadedFile) {
@@ -105,7 +113,7 @@ class MaintenanceService
         $data['maintenance_id'] = $this->generateMaintenanceId($data['maintenance_type'] ?? null);
         $data['reported_by'] = Auth::id();
         $data['department'] = Auth::user()->department;
-        $data['status'] = is_null($data['start_date']) ? 'Pending' : 'In Progress';
+        $data['status'] = $data['maintenance_type'];
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -123,7 +131,103 @@ class MaintenanceService
         $maintenance->update([
             'start_date' => $data['start_date'],
             'technician' => $data['technician'],
-            'status' => 'In Progress'
+            'status' => 'Corrective'
+        ]);
+
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Maintenance',
+            'read',
+            'Maintenance Updated',
+            "Maintenance " . $maintenance->maintenance_id . " has been updated by: " . Auth::user()->name,
+            'info'
+        );
+
+        return $maintenance;
+    }
+
+    public function updateInspectionSchedule(Maintenance $maintenance, array $data): Maintenance
+    {
+        $maintenance->update([
+            'maintenance_id' => $this->generateMaintenanceId('Corrective'),
+            'maintenance_type' => 'Corrective',
+            'start_date' => $data['start_date'],
+            'technician' => $data['technician'],
+            'status' => 'Corrective'
+        ]);
+
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Maintenance',
+            'read',
+            'Maintenance Updated',
+            "Maintenance " . $maintenance->maintenance_id . " has been updated by: " . Auth::user()->name,
+            'info'
+        );
+
+        return $maintenance;
+    }
+
+
+    public function updateCorrective(Maintenance $maintenance, array $data): Maintenance
+    {
+        if (!empty($data['post_attachments']) && is_array($data['post_attachments'])) {
+            $paths = [];
+            foreach ($data['post_attachments'] as $file) {
+                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                    $file->storeAs('maintenance_docs', $filename, 'public');
+                    $paths[] = '/storage/maintenance_docs/' . $filename;
+                }
+            }
+            $data['post_attachments'] = json_encode($paths);
+        }
+
+        $maintenance->update([
+            'post_description' => $data['post_description'],
+            'post_replacements' => $data['post_replacements'],
+            'technician_notes' => $data['technician_notes'],
+            'post_attachments' => $data['post_attachments'] ?? '',
+            'status' => 'Completed',
+
+        ]);
+
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Maintenance',
+            'read',
+            'Maintenance Updated',
+            "Maintenance " . $maintenance->maintenance_id . " has been updated by: " . Auth::user()->name,
+            'info'
+        );
+
+        return $maintenance;
+    }
+
+    public function updateInspection(Maintenance $maintenance, array $data): Maintenance
+    {
+        if (!empty($data['document']) && is_array($data['document'])) {
+            $paths = [];
+            foreach ($data['document'] as $file) {
+                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                    $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                    $file->storeAs('maintenance_docs', $filename, 'public');
+                    $paths[] = '/storage/maintenance_docs/' . $filename;
+                }
+            }
+            $data['document'] = json_encode($paths);
+        }
+
+
+        $status =  $data['condition'] === 'Excellent - No Issues Found' ? 'Completed' : 'For Inspection';
+
+
+        $maintenance->update([
+            'documents' =>  $data['document'] ?? '',
+            'technician' =>  $data['technician'],
+            'description' => $data['description'],
+            'post_description' => $data['condition'],
+            'status' => $status,
         ]);
 
 

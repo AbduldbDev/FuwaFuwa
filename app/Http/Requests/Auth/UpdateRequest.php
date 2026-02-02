@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
                 Rule::unique('users', 'username')->ignore($userId),
             ],
             'user_type'   => 'sometimes|string',
-            'status'      => 'sometimes|in:active,inactive',
+            'status'      => 'sometimes|in:active,deactivate',
         ];
     }
 }

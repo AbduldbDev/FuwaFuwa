@@ -113,7 +113,7 @@
                             </div>
 
                             <!-- edit asset btn -->
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="asset-details"
@@ -161,7 +161,7 @@
                                 <h6 class="mb-0 fw-semibold">Technical Specification</h6>
                             </div>
                             <!-- edi asset btn -->
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="technical-specs"
@@ -199,7 +199,7 @@
                             </div>
                             <!-- edi asset btn -->
 
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="assignment-location"
@@ -237,7 +237,7 @@
                             </div>
                             <!-- edi asset btn -->
 
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="purchase-info"
@@ -280,7 +280,7 @@
                                 </div>
                                 <!-- edi asset btn -->
 
-                                @if (Auth::user()->canAccess('Assets', 'write'))
+                                @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                     <div class="edit-asset-btn">
                                         <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                             data-bs-target="#updateAssetModal" data-section="depreciation-insights"
@@ -364,7 +364,7 @@
                             </div>
                             <!-- edi asset btn -->
 
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="maintenance-audit"
@@ -434,7 +434,7 @@
                             </div>
 
                             <!-- edi asset btn -->
-                            @if (Auth::user()->canAccess('Assets', 'write'))
+                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
                                         data-bs-target="#updateAssetModal" data-section="documents"

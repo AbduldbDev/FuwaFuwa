@@ -115,7 +115,7 @@
                                 <thead class="border-bottom">
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th>Asset ID</th>
+                                        <th>Asset Tag</th>
                                         <th>Category</th>
                                         <th>Model Name</th>
                                         <th>Status</th>

@@ -84,43 +84,55 @@
             <!-- repair card -->
             <section class="repair-wrapper overflow-auto">
                 <header class="repair-header">
-                    <h4>For Repair <span>({{ $Pending->count() }})</span></h4>
+                    <h4>Findings from Inspection <span>({{ $ForInspection->count() }})</span></h4>
                 </header>
-
-                @foreach ($Pending as $item)
-                    @php
-                        $priorityClass = match ($item->priority) {
-                            'Low' => 'bg-primary text-white',
-                            'Medium' => 'bg-success text-white',
-                            'High' => 'bg-warning text-dark',
-                            'Emergency' => 'bg-danger text-white',
-                            default => 'bg-secondary text-white',
-                        };
-                    @endphp
+                @foreach ($ForInspection as $item)
                     <article class="repair-row">
                         <div class="repair-info">
                             <div class="repair-top mb-1">
                                 <span class="repair-id">{{ $item->maintenance_id }}</span>
-                                <span class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
-                                    Priority
-                                </span>
                             </div>
-                            <span class="issue-reason">{{ $item->description ?? 'N/A' }}</span>
+                            <span class="issue-reason">{{ $item->description }}</span>
+                            <div class="repair-meta">
+                                <span>Asset: {{ $item->asset_tag }}</span>
+                                <span>Issued by: {{ $item->reporter->name }}</span>
+
+                            </div>
+                        </div>
+                        <button class="schedule-btn" data-bs-toggle="modal"
+                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
+                            Maintenance</button>
+                    </article>
+                    @include('Components.Modal.Maintenance.inspectionRepair')
+                @endforeach
+            </section>
+
+            <!-- repair card -->
+            <section class="repair-wrapper overflow-auto">
+                <header class="repair-header">
+                    <h4>For Repair <span>({{ $PendingCorrective->count() }})</span></h4>
+                </header>
+                @foreach ($PendingCorrective as $item)
+                    <article class="repair-row">
+                        <div class="repair-info">
+                            <div class="repair-top mb-1">
+                                <span class="repair-id">{{ $item->maintenance_id }}</span>
+                            </div>
+                            <span class="issue-reason">{{ $item->description }}</span>
                             <div class="repair-meta">
                                 <span>Asset: {{ $item->asset_name }}</span>
                                 <span>Issued by: {{ $item->reporter->name }}</span>
+
                             </div>
                         </div>
-                        @if (Auth::user()->canAccess('Maintenance', 'write'))
-                            <button class="schedule-btn" data-bs-toggle="modal"
-                                data-bs-target="#viewMaintenance{{ $item->id }}">
-                                Schedule Maintenance
-                            </button>
-                        @endif
-                        @include('Components/Modal/scheduleMaintenance')
+                        <button class="schedule-btn" data-bs-toggle="modal"
+                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
+                            Maintenance</button>
                     </article>
+                    @include('Components.Modal.Maintenance.correctiveRepair')
                 @endforeach
             </section>
+
         </div>
 
         <!-- overview -->
@@ -141,8 +153,9 @@
             <!-- filters -->
             <div class="d-flex gap-2 mb-4">
                 <span class="filter-pill all active">All</span>
-                <span class="filter-pill inspection-findings">Findings from Inspection</span>
-                <span class="filter-pill in-progress">In Progress</span>
+                <span class="filter-pill inspection">Inspection</span>
+                <span class="filter-pill preventive">Preventive</span>
+                <span class="filter-pill corrective">Corrective</span>
                 <span class="filter-pill completed">Completed</span>
             </div>
 
@@ -152,69 +165,72 @@
                 @foreach ($InProgress as $item)
                     @php
                         $priorityClass = match ($item->priority) {
-                            'Low' => 'bg-primary text-white',
-                            'Medium' => 'bg-success text-white',
-                            'High' => 'bg-warning text-dark',
-                            'Emergency' => 'bg-danger text-white',
-                            default => 'bg-secondary text-white',
-                        };
-                        $CardClass = match ($item->status) {
-                            'For Review' => 'for-review',
-                            'Pending Approval' => 'pending-approval',
-                            'In Procurement' => 'in-procurement',
-                            'Procured' => 'procured',
-                            default => 'for-review',
+                            'Low' => 'low',
+                            'Medium' => 'medium',
+                            'High' => 'high',
+                            'Emergency' => 'high',
+                            default => 'low',
                         };
 
+                        $CardClass = match ($item->status) {
+                            'Inspection' => 'inspection',
+                            'Preventive' => 'preventive',
+                            'Corrective' => 'corrective',
+                            'Completed' => 'completed',
+                            default => 'inspection',
+                        };
                     @endphp
-                    <div class="col-lg-4 mb-4">
-                        <div class="request-card {{ $CardClass }} request-card-wrapper">
+
+                    <div class="col-lg-4">
+                        <div class="request-card request-card-wrapper {{ $CardClass }}"
+                            data-status="{{ strtolower($item->status) }}"
+                            data-priority="{{ strtolower($item->priority) }}">
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
-
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="asset-icon">
                                         <i class="fa-solid fa-laptop"></i>
                                     </div>
                                     <div>
                                         <h6 class="mb-1 fw-semibold">{{ $item->maintenance_id }}</h6>
-                                        <small class="text-muted truncate">{{ $item->asset_tag }} |
-                                            {{ $item->asset_name }}</small>
+                                        <small class="text-muted">{{ $item->asset_tag ?? 'N/A' }}</small>
                                         <br>
-                                        <small class="text-muted">{{ $item->description ?? 'N/A' }}</small>
+                                        <small class="text-muted">{{ $item->asset_name ?? 'N/A' }}</small>
                                         <div class="mt-1">
-                                            <span class="request-status for-review">{{ $item->status }}</span>
                                             <span
-                                                class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
-                                                Priority
-                                            </span>
+                                                class="priority-badge {{ $priorityClass }}">{{ $item->priority }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- time and buttons -->
                                 <div class="d-flex flex-column align-items-end gap-5">
                                     <small
                                         class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans(['short' => true, 'parts' => 1]) }}</small>
-
-                                    <!-- action buttons -->
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-outline-primary action-btn" data-bs-toggle="modal"
-                                            data-bs-target="#requestDetailsModal">
+                                            data-bs-target="#viewCorrectiveMaintenance{{ $item->id }}">
                                             <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline-success action-btn">
-                                            <i class="fa-regular fa-calendar-check"></i>
-                                        </button>
-                                        <button class="btn btn-outline-danger action-btn">
-                                            <i class="fa-regular fa-trash-can"></i>
                                         </button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
+
+                    @if ($item->maintenance_type === 'Corrective' && $item->status !== 'Completed')
+                        @include('Components.Modal.Maintenance.correctiveInprogress')
+                    @elseif(
+                        $item->maintenance_type === 'Preventive' ||
+                            ($item->maintenance_type === 'Inspection' && $item->status !== 'Completed'))
+                        @include('Components.Modal.Maintenance.inspectionInprogress')
+                    @elseif(
+                        $item->maintenance_type === 'Preventive' ||
+                            ($item->maintenance_type === 'Inspection' && $item->status == 'Completed'))
+                        @include('Components.Modal.Maintenance.inpsectionCompleted')
+                    @else
+                        @include('Components.Modal.Maintenance.correctiveCompleted')
+                    @endif
                 @endforeach
             </div>
 

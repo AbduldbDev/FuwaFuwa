@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OneTimePasswordMail;
 
 class AuthService
-{   
+{
     public function createAccount(array $data): User
     {
         $otp = $this->generateStrongPassword();
@@ -22,7 +22,7 @@ class AuthService
 
         return $user;
     }
-    
+
     public function login(array $credentials): void
     {
         $remember = $credentials['remember'] ?? false;
@@ -33,6 +33,13 @@ class AuthService
                 'email' => 'Invalid email or password.',
             ]);
         }
+
+        if ($user->status === 'deactivate') {
+            throw ValidationException::withMessages([
+                'email' => 'Your account has been deactivated. Please contact the administrator.',
+            ]);
+        }
+
 
         if ($user->must_reset_password) {
             if ($credentials['password'] !== $user->otp) {
@@ -98,7 +105,7 @@ class AuthService
     {
         $user = User::findOrFail($id);
         $user->delete();
-        
+
         return $user;
     }
 

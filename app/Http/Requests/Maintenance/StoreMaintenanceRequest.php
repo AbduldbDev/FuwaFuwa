@@ -24,6 +24,9 @@ class StoreMaintenanceRequest extends FormRequest
             'start_date' => 'nullable|date',
             'frequency' => 'nullable|string|max:50',
             'technician' => 'nullable|string|max:255',
+            'post_description' => 'nullable|string|max:255',
+            'post_replacements' => 'nullable|string|max:255',
+            'technician_notes'  => 'nullable|string|max:255',
         ];
     }
 }

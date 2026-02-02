@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Services\MaintenanceService;
 use App\Http\Requests\Maintenance\StoreMaintenanceRequest;
 use App\Http\Requests\Maintenance\UpdateMaintenanceRequest;
+use App\Http\Requests\Maintenance\UpdateCorrectiveMaintenance;
+use App\Http\Requests\Maintenance\UpdateInspectionMaintenance;
 use App\Models\Maintenance;
 use Carbon\Carbon;
 
@@ -66,7 +68,53 @@ class MaintenanceRepairController extends Controller
         try {
             $this->maintenanceService->updateSchedule($maintenance, $request->validated());
 
-            return redirect()->back()->with('success', 'Maintenance schedule updated successfully.');
+            return redirect()->back()->with('success', 'Maintenance updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateInspectionSchedule(UpdateMaintenanceRequest $request, Maintenance $maintenance)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->maintenanceService->updateInspectionSchedule($maintenance, $request->validated());
+
+            return redirect()->back()->with('success', 'Maintenance updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateCorrective(UpdateCorrectiveMaintenance $request, Maintenance $maintenance)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->maintenanceService->updateCorrective($maintenance, $request->validated());
+
+            return redirect()->back()->with('success', 'Maintenance updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
+    public function updateInspection(UpdateInspectionMaintenance $request, Maintenance $maintenance)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->maintenanceService->updateInspection($maintenance, $request->validated());
+
+            return redirect()->back()->with('success', 'Maintenance updated successfully.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->withErrors([
                 'system' => $e->getMessage(),

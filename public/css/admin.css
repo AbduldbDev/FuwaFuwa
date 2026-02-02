@@ -814,16 +814,17 @@ table td {
     border: 1px solid var(--search-border);
 }
 
-.filter-pill.for-review {
+.filter-pill.for-review,
+.filter-pill.inspection {
     background-color: #92400e;
 }
 
-.filter-pill.inspection-findings,
+.filter-pill.preventive,
 .filter-pill.pending-approval {
     background-color: #6d28d9;
 }
 
-.filter-pill.in-progress,
+.filter-pill.corrective,
 .filter-pill.in-procurement {
     background-color: #1e40af;
 }
@@ -841,6 +842,7 @@ table td {
     border-left: 6px solid transparent;
     transition: all 0.3s ease;
     margin-bottom: 20px;
+    color: var(--text-black);
 }
 
 .request-card:hover {
@@ -848,16 +850,17 @@ table td {
 }
 
 /* for asset request and maintenance */
-.request-card.for-review {
+.request-card.for-review,
+.request-card.inspection {
     border-color: #92400e;
 }
 
-.request-card.inspection-findings,
-.request-card.pending-approval {
+.request-card.pending-approval,
+.request-card.preventive {
     border-color: #6d28d9;
 }
 
-.request-card.in-progress,
+.request-card.corrective,
 .request-card.in-procurement {
     border-color: #1e40af;
 }
@@ -1246,7 +1249,7 @@ select option {
 }
 
 .repair-wrapper {
-    width: 72%;
+    width: 35%;
     max-height: 520px;
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -1330,9 +1333,9 @@ select option {
 .schedule-btn {
     background: var(--button);
     border: none;
-    padding: 10px 18px;
+    padding: 5px 15px;
     border-radius: var(--radius);
-    font-size: var(--text-16px);
+    font-size: var(--text-12px);
     cursor: pointer;
     font-weight: var(--text-600);
     transition: all 0.3s ease;

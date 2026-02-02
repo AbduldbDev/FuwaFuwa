@@ -20,7 +20,7 @@ class StoreRequest extends FormRequest
             'username'    => 'required|string|max:100|unique:users,username',
             'email'       => 'required|email|unique:users,email',
             'user_type'   => 'required|string',
-            'status'      => 'required|in:active,inactive',
+            'status'      => 'required|in:active,deactivate',
         ];
     }
 }

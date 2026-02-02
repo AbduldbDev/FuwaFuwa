@@ -159,7 +159,7 @@
 
                                <div class="mb-3">
                                    <label class="form-label">Assign Technician</label>
-                                   <input type="date" name="technician" class="form-control">
+                                   <input type="text" name="technician" class="form-control">
                                </div>
                            </div>
                        </form>

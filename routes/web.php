@@ -66,6 +66,9 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::put('/update/{maintenance}', 'update')->name('update');
+        Route::put('/update-corrective/{maintenance}', 'updateCorrective')->name('updateCorrective');
+        Route::put('/update-inspection/{maintenance}', 'updateInspection')->name('updateInspection');
+        Route::put('/update-inspection-schedule/{maintenance}', 'updateInspectionSchedule')->name('updateInspectionSchedule');
     });
 
     Route::prefix('/reports-analytics')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {

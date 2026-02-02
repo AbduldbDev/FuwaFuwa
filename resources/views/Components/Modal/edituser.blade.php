@@ -86,10 +86,10 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input shadow-none" type="radio" name="status"
-                                    id="edit_inactive{{ $item->id }}" value="inactive"
-                                    {{ $item->status == 'inactive' ? 'checked' : '' }} />
+                                    id="edit_inactive{{ $item->id }}" value="deactivate"
+                                    {{ $item->status == 'deactivate' ? 'checked' : '' }} />
                                 <label class="form-check-label" for="edit_inactive{{ $item->id }}">
-                                    Inactive
+                                    Deactivate
                                 </label>
                             </div>
                         </div>

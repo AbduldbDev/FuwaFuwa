@@ -38,7 +38,7 @@ class UserService
 
     public function getInactiveCount(): int
     {
-        return User::where('status', 'inactive')->count();
+        return User::where('status', 'deactivate')->count();
     }
 
     public function getIndexData(): array
