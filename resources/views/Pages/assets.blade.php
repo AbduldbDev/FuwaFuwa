@@ -141,7 +141,7 @@
         </div>
     </section>
 
-    <script src="{{ asset('./js/Assets/assetFilter.js') }}"></script>
+    <script src="{{ asset('js/Assets/assetFilter.js') }}"></script>
 @endsection
 
 @push('css')
