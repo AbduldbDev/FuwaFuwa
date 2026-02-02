@@ -114,7 +114,7 @@
                             <table class="table table-borderless table-striped align-middle" id="assetTable">
                                 <thead class="border-bottom">
                                     <tr>
-                                        <th></th>
+                                        <th class="text-center">#</th>
                                         <th>Asset ID</th>
                                         <th>Category</th>
                                         <th>Model Name</th>
@@ -125,9 +125,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($items as $item)
+                                    @foreach ($items as $index => $item)
                                         <tr>
-                                            <td><input type="checkbox" /></td>
+                                            <td class="text-center">{{ $index + 1 }}</td>
                                             <td><a class="asset-link"
                                                     href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                             </td>

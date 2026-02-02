@@ -41,7 +41,7 @@
                                 <option value="Communication Cabinet">Communication Cabinet</option>
                                 <option value="Server Cabinet">Server Cabinet</option>
                                 <option value="License">License</option>
-                        
+
                             </select>
 
                             <!-- Status -->
@@ -69,7 +69,7 @@
                         <table class="table table-borderless table-striped  align-middle" id="assetTable">
                             <thead class="border-bottom">
                                 <tr>
-                                    <th></th>
+                                    <th class="text-center">#</th>
                                     <th>Asset ID</th>
                                     <th>Category</th>
                                     <th>Model Name</th>
@@ -80,9 +80,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse  ($items as $item)
+                                @forelse   ($items  as $index =>  $item)
                                     <tr>
-                                        <td><input type="checkbox" /></td>
+                                        <td class="text-center">{{ $index + 1 }}</td>
                                         <td><a class="asset-link"
                                                 href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                         </td>

@@ -37,7 +37,7 @@ class NotificationService
         }
 
         $users = User::whereIn('user_type', $roles)->get();
-        
+
         foreach ($users as $user) {
             $this->notify($module, $title, $message, $user->id, $type);
         }
@@ -58,5 +58,41 @@ class NotificationService
             $notification->save();
         }
         return $notification;
+    }
+
+    public function getRedirectUrl(Notification $notif): string
+    {
+        switch ($notif->module) {
+            case 'Asset Request':
+                return route('asset-request.index');
+
+            case 'Asset Archive':
+                return route('assets-archive.index');
+
+            case 'Maintenance':
+                return route('maintenance-repair.index');
+
+            case 'User':
+                return route('user-management.index');
+
+            case 'Vendor':
+                return route('vendors.index');
+
+            case 'Reports':
+                return route('reports-analytics.index');
+
+            case 'System':
+                return route('system-configuration.index');
+
+            case 'Assets':
+                if (preg_match('/#([\w-]+)/', $notif->message, $matches)) {
+                    $assetId = trim($matches[1]);
+                    return url("/asset/show/{$assetId}");
+                }
+                return url()->previous(); 
+
+            default:
+                return url()->previous();
+        }
     }
 }

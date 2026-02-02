@@ -137,7 +137,7 @@ class AssetService
             'Assets',
             'read',
             'Asset Created',
-            "Asset " . $asset->asset_tag . " has been created by: " . Auth::user()->name . ".",
+            "Asset #" . $asset->asset_tag . " has been created by: " . Auth::user()->name . ".",
             'info'
         );
 
