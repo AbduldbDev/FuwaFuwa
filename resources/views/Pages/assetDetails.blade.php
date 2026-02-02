@@ -522,8 +522,8 @@
 
     </section>
     @include('Components/Modal/updateAsset')
-    <script src="{{ asset('/js/AssetDetails/Accordion.js') }}"></script>
-    <script src="{{ asset('/js/SweetAlert/ArchiveAlert.js') }}"></script>
+    <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}"></script>
 @endsection
 
 @push('css')

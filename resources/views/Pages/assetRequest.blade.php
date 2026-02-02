@@ -138,7 +138,7 @@
 
     @include('Components.Modal.requestAsset')
     @include('Components.Modal.addRequestAsset')
-    <script src="{{ asset('/js/Assets/assetRequestFilter.js') }}"></script>
+    <script src="{{ asset('/Js/Assets/assetRequestFilter.js') }}"></script>
 @endsection
 
 @push('css')

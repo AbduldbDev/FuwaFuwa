@@ -119,8 +119,8 @@
 
         </div>
     </div>
-    <script src="{{ asset('/js/Vendor/vendorFilter.js') }}"></script>
-    <script src="{{ asset('/js/SweetAlert/ArchiveAlert.js') }}"></script>
+    <script src="{{ asset('/Js/Vendor/vendorFilter.js') }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}"></script>
 @endsection
 
 @push('css')

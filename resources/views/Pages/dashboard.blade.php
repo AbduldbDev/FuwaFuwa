@@ -216,7 +216,7 @@
         });
     </script>
 
-    <script src="{{ asset('/js/tablesearch.js') }}"></script>
+    <script src="{{ asset('/Js/tablesearch.js') }}"></script>
 @endsection
 
 @push('css')

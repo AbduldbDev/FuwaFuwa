@@ -183,4 +183,4 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('/js/Vendor/AddVendor.js') }}"></script>
+<script src="{{ asset('/Js/Vendor/AddVendor.js') }}"></script>

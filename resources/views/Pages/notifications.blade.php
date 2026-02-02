@@ -122,7 +122,7 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('/js/Notification/Filter.js') }}"></script>
+    <script src="{{ asset('/Js/Notification/Filter.js') }}"></script>
 @endsection
 
 @push('css')
