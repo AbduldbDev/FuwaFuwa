@@ -58,7 +58,7 @@
                                 <option value="Communication Cabinet">Communication Cabinet</option>
                                 <option value="Server Cabinet">Server Cabinet</option>
                                 <option value="License">License</option>
-                              
+
                             </select>
                         </div>
 
@@ -159,3 +159,4 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('/Js/Assets/assetCategorySelect.js') }}"></script>
