@@ -13,7 +13,7 @@ const assetTypes = {
         "Communication Cabinet",
         "Server Cabinet",
     ],
-    "Digital Asset": ["License", "Software"],
+    "Digital Asset": ["License"],
 };
 
 const operationalStatusOptions = {
@@ -220,88 +220,105 @@ function validateSlide1() {
 
     return true;
 }
+function handleSlide5Extras() {
+    const depreciationTab = document.getElementById("depreciation-tab");
+    if (!depreciationTab) return;
+
+    if (selectedType === "License") {
+        depreciationTab.style.display = "none";
+    } else {
+        depreciationTab.style.display = ""; // show normally
+    }
+}
 
 /* ===============================
        SLIDE NAVIGATION
     =============================== */
 function nextSlide() {
     // Validate current slide
-    if (!validateCurrentSlide()) {
-        return;
-    }
+    if (!validateCurrentSlide()) return;
 
-    // Navigation logic
-    if (currentSlide === 1) {
-        const type = document.getElementById("assetType").value;
-        selectedType = type;
-        document.getElementById("summaryCategory").value = selectedCategory;
-        document.getElementById("summaryType").value = selectedType;
-        populateOperationalStatus();
+    switch (currentSlide) {
+        case 1:
+            selectedType = document.getElementById("assetType").value;
+            document.getElementById("summaryCategory").value = selectedCategory;
+            document.getElementById("summaryType").value = selectedType;
 
-        showSlide(2);
-        return;
-    }
+            console.log("Type", selectedType);
+            console.log("selectedCategory", selectedCategory);
 
-    if (currentSlide === 2) {
-        showSlide(3);
-        showTechnicalFields();
-        return;
-    }
+            populateOperationalStatus();
+            showSlide(2);
+            break;
 
-    if (currentSlide === 3) {
-        showSlide(4);
-        return;
-    }
+        case 2:
+            showSlide(3);
+            showTechnicalFields();
+            break;
 
-    if (currentSlide === 4) {
-        showSlide(5);
-        return;
-    }
-
-    if (currentSlide === 5) {
-        showSlide(6);
-        return;
-    }
-
-    if (currentSlide === 6) {
-        showSlide(7);
-        return;
-    }
-
-    if (currentSlide === 7) {
-        // Disable only hidden tech-group inputs
-        document.querySelectorAll(".tech-group").forEach((group) => {
-            if (group.style.display === "none" || group.style.display === "") {
-                group
-                    .querySelectorAll("input, select, textarea")
-                    .forEach((el) => {
-                        el.disabled = true;
-                    });
+        case 3:
+            if (selectedType !== "License") {
+                showSlide(4);
+            } else {
+                showSlide(5);
+                handleSlide5Extras();
             }
-        });
+            break;
 
-        // Submit the form
-        document.querySelector("#assetModal form").submit();
+        case 4:
+            showSlide(5);
+            handleSlide5Extras();
+            break;
+
+        case 5:
+            showSlide(6);
+            break;
+
+        case 6:
+            showSlide(7);
+            break;
+
+        case 7:
+            // Disable hidden tech-group inputs
+            document.querySelectorAll(".tech-group").forEach((group) => {
+                if (
+                    group.style.display === "none" ||
+                    group.style.display === ""
+                ) {
+                    group
+                        .querySelectorAll("input, select, textarea")
+                        .forEach((el) => (el.disabled = true));
+                }
+            });
+
+            document.querySelector("#assetModal form").submit();
+            break;
     }
 }
 
 function prevSlide() {
-    if (currentSlide > 1) {
-        // Remove error styles when going back
-        const currentSlideElement = document.getElementById(
-            `slide${currentSlide}`,
-        );
-        currentSlideElement.querySelectorAll(".error").forEach((field) => {
-            field.classList.remove("error");
-            const errorMsg = field.nextElementSibling;
-            if (errorMsg && errorMsg.classList.contains("error-message")) {
-                errorMsg.remove();
-            }
-        });
+    let prev = currentSlide - 1;
 
-        showSlide(currentSlide - 1);
-        if (currentSlide - 1 === 3) showTechnicalFields();
+    // Skip slide 4 if type is not License
+    if (prev === 4 && selectedType == "License") {
+        prev = 3;
     }
+
+    if (prev < 1) return; // prevent going before first slide
+
+    // Remove error styles
+    const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+    currentSlideElement.querySelectorAll(".error").forEach((field) => {
+        field.classList.remove("error");
+        const errorMsg = field.nextElementSibling;
+        if (errorMsg && errorMsg.classList.contains("error-message")) {
+            errorMsg.remove();
+        }
+    });
+
+    showSlide(prev);
+
+    if (prev === 3) showTechnicalFields();
 }
 
 /* ===============================

@@ -274,30 +274,6 @@
                             </div>
                         </div>
 
-                        <!-- Software -->
-                        <div class="tech-group" data-type="Software">
-                            <div class="mb-3">
-                                <label class="form-label">Software Version
-                                    <span class="required-text">* Required</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Software_Version]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Hosting Location
-                                    <span class="required-text">* Required</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Hosting_Location]">
-                                    <option value="">Select Hosting Location</option>
-                                    <option>On-premise</option>
-                                    <option>Cloud (SaaS)</option>
-                                    <option>Hybrid</option>
-                                    <option>Private Cloud</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- License -->
                         <div class="tech-group" data-type="License">
                             <div class="mb-3">
@@ -666,7 +642,7 @@
             "Communication Cabinet",
             "Server Cabinet",
         ],
-        "Digital Asset": ["License", "Software"],
+        "Digital Asset": ["License"],
     };
 
     const operationalStatusOptions = {
@@ -921,66 +897,105 @@
         }
     }
 
+    function handleSlide5Extras() {
+        const depreciationTab = document.getElementById("depreciation-tab");
+        if (!depreciationTab) return;
+
+        if (selectedType === "License") {
+            depreciationTab.style.display = "none";
+        } else {
+            depreciationTab.style.display = ""; // show normally
+        }
+    }
+
+    /* ===============================
+           SLIDE NAVIGATION
+        =============================== */
     function nextSlide() {
-        if (!validateCurrentSlide()) {
-            return;
-        }
+        // Validate current slide
+        if (!validateCurrentSlide()) return;
 
-        if (currentSlide === 2) {
-            showSlide(3);
-            showTechnicalFields();
-            return;
-        }
+        switch (currentSlide) {
+            case 1:
+                selectedType = document.getElementById("assetType").value;
+                document.getElementById("summaryCategory").value = selectedCategory;
+                document.getElementById("summaryType").value = selectedType;
 
-        if (currentSlide === 3) {
-            showSlide(4);
-            return;
-        }
+                console.log("Type", selectedType);
+                console.log("selectedCategory", selectedCategory);
 
-        if (currentSlide === 4) {
-            showSlide(5);
-            return;
-        }
+                populateOperationalStatus();
+                showSlide(2);
+                break;
 
-        if (currentSlide === 5) {
-            showSlide(6);
-            return;
-        }
+            case 2:
+                showSlide(3);
+                showTechnicalFields();
+                break;
 
-        if (currentSlide === 6) {
-            showSlide(7);
-            return;
-        }
-
-        if (currentSlide === 7) {
-            document.querySelectorAll(".tech-group").forEach(group => {
-                if (group.style.display === "none" || group.style.display === "") {
-                    group.querySelectorAll("input, select, textarea").forEach(el => {
-                        el.disabled = true;
-                    });
+            case 3:
+                if (selectedType !== "License") {
+                    showSlide(4);
+                } else {
+                    showSlide(5);
+                    handleSlide5Extras();
                 }
-            });
+                break;
 
-            document.querySelector("#assetModal form").submit();
+            case 4:
+                showSlide(5);
+                handleSlide5Extras();
+                break;
+
+            case 5:
+                showSlide(6);
+                break;
+
+            case 6:
+                showSlide(7);
+                break;
+
+            case 7:
+                // Disable hidden tech-group inputs
+                document.querySelectorAll(".tech-group").forEach((group) => {
+                    if (
+                        group.style.display === "none" ||
+                        group.style.display === ""
+                    ) {
+                        group
+                            .querySelectorAll("input, select, textarea")
+                            .forEach((el) => (el.disabled = true));
+                    }
+                });
+
+                document.querySelector("#assetModal form").submit();
+                break;
         }
     }
 
     function prevSlide() {
-        if (currentSlide > 2) {
-            const currentSlideElement = document.getElementById(`slide${currentSlide}`);
-            if (currentSlideElement) {
-                currentSlideElement.querySelectorAll('.error').forEach(field => {
-                    field.classList.remove('error');
-                    const errorMsg = field.nextElementSibling;
-                    if (errorMsg && errorMsg.classList.contains('error-message')) {
-                        errorMsg.remove();
-                    }
-                });
-            }
+        let prev = currentSlide - 1;
 
-            showSlide(currentSlide - 1);
-            if (currentSlide - 1 === 3) showTechnicalFields();
+        // Skip slide 4 if type is not License
+        if (prev === 4 && selectedType == "License") {
+            prev = 3;
         }
+
+        if (prev < 1) return; // prevent going before first slide
+
+        // Remove error styles
+        const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+        currentSlideElement.querySelectorAll(".error").forEach((field) => {
+            field.classList.remove("error");
+            const errorMsg = field.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains("error-message")) {
+                errorMsg.remove();
+            }
+        });
+
+        showSlide(prev);
+
+        if (prev === 3) showTechnicalFields();
     }
 
     // ===============================

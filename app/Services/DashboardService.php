@@ -12,6 +12,16 @@ class DashboardService
         $assets = Assets::where('operational_status', '!=', 'archived')->latest()->take($limit)->get();
 
         return $assets->map(function ($asset) {
+
+            if ($asset->asset_type === 'Digital Asset') {
+                $asset->depreciation_expense = 0;
+                $asset->current_value =  0;
+                $asset->years_used = 0;
+                $asset->remaining_life = $asset->useful_life_years ?? 0;
+                $asset->depreciation_rate = 0;
+                return $asset;
+            }
+
             $cost = $asset->purchase_cost ?? 0;
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
@@ -50,6 +60,16 @@ class DashboardService
         $assets = Assets::where('operational_status', '!=', 'archived')->get();
 
         $assetsWithDepreciation = $assets->map(function ($asset) {
+
+            if ($asset->asset_type === 'Digital Asset') {
+                $asset->depreciation_expense = 0;
+                $asset->current_value = 0;
+                $asset->years_used = 0;
+                $asset->remaining_life = $asset->useful_life_years ?? 0;
+                $asset->depreciation_rate = 0;
+                return $asset;
+            }
+
             $cost = $asset->purchase_cost ?? 0;
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
@@ -67,6 +87,7 @@ class DashboardService
 
             return $asset;
         });
+
 
         $totalAssetValue = $assetsWithDepreciation->sum('current_value');
         return $totalAssetValue;

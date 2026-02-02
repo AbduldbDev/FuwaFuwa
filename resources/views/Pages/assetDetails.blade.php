@@ -35,7 +35,6 @@
                             'Communication Cabinet' => 'fa-server',
                             'Server Cabinet' => 'fa-server',
                             'License' => 'fa-key',
-                            'Software' => 'fa-code',
                         ];
                         $statusColors = [
                             'Active' => 'bg-success',
@@ -74,7 +73,7 @@
 
                 <!-- Delete Icon -->
 
-                @if (Auth::user()->canAccess('Assets', 'write'))
+                @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                     <button class="delete-btn" data-url="{{ route('assets.delete', $item->id) }}">
                         <i class="fa-regular fa-trash-can"></i>
                     </button>
@@ -271,90 +270,90 @@
                         </div>
                     </div>
 
-                    {{-- Depreciation Insights --}}
-                    <div class="section-card mb-4">
-                        <div class="section-toggle">
-                            <!-- asset title header -->
-                            <div class="asset-title" onclick="toggleSection(this)">
-                                <i class="fa-solid fa-chevron-down"></i>
-                                <h6 class="mb-0 fw-semibold">Depreciation Insights</h6>
-                            </div>
-                            <!-- edi asset btn -->
-
-                            @if (Auth::user()->canAccess('Assets', 'write'))
-                                <div class="edit-asset-btn">
-                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
-                                        data-bs-target="#updateAssetModal" data-section="depreciation-insights"
-                                        data-url="{{ route('assets.update', $item->id) }}"
-                                        data-asset='@json($item)'
-                                        data-users='@json($users)'
-                                        data-vendors='@json($vendors)'></i>
+                    @if ($item->asset_type === 'Physical Asset')
+                        <div class="section-card mb-4">
+                            <div class="section-toggle">
+                                <!-- asset title header -->
+                                <div class="asset-title" onclick="toggleSection(this)">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                    <h6 class="mb-0 fw-semibold">Depreciation Insights</h6>
                                 </div>
-                            @endif
+                                <!-- edi asset btn -->
+
+                                @if (Auth::user()->canAccess('Assets', 'write'))
+                                    <div class="edit-asset-btn">
+                                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                            data-bs-target="#updateAssetModal" data-section="depreciation-insights"
+                                            data-url="{{ route('assets.update', $item->id) }}"
+                                            data-asset='@json($item)'
+                                            data-users='@json($users)'
+                                            data-vendors='@json($vendors)'></i>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="section-body">
+
+                                @php
+                                    $purchaseCost = $item->purchase_cost;
+                                    $usefulLife = $item->useful_life_years;
+                                    $salvageValue = $item->salvage_value;
+
+                                    $purchaseYear = $item->purchase_date->year;
+                                    $yearsUsed = $item->purchase_date->diffInYears(now());
+                                    $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
+                                    $depreciationRate =
+                                        (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
+
+                                    $totalDepreciation = $depreciationPerYear * $yearsUsed;
+                                    $assetValue = max($purchaseCost - $totalDepreciation, $salvageValue);
+                                    $remainingLife = max($usefulLife - $yearsUsed, 0);
+                                @endphp
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Purchase Year</div>
+                                    <div class="col-8 value">{{ $purchaseYear }}</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Useful Life (Remaining)</div>
+                                    <div class="col-8 value">{{ round($remainingLife) }} yrs </div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Years Used</div>
+                                    <div class="col-8 value">{{ round($yearsUsed) }} yrs</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Purchase Cost</div>
+                                    <div class="col-8 value">Php {{ number_format($purchaseCost, 2) }}</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Salvage Value</div>
+                                    <div class="col-8 value">Php {{ number_format($salvageValue, 2) }}</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Depreciation Rate</div>
+                                    <div class="col-8 value">{{ number_format($depreciationRate, 2) }}% per year</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Total Depreciation</div>
+                                    <div class="col-8 value">Php {{ number_format($totalDepreciation, 2) }}</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Asset Value</div>
+                                    <div class="col-8 value">Php {{ number_format($assetValue, 2) }}</div>
+                                </div>
+
+                            </div>
+
                         </div>
-
-                        <div class="section-body">
-
-                            @php
-                                $purchaseCost = $item->purchase_cost;
-                                $usefulLife = $item->useful_life_years;
-                                $salvageValue = $item->salvage_value;
-
-                                $purchaseYear = $item->purchase_date->year;
-                                $yearsUsed = $item->purchase_date->diffInYears(now());
-                                $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
-                                $depreciationRate =
-                                    (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
-
-                                $totalDepreciation = $depreciationPerYear * $yearsUsed;
-                                $assetValue = max($purchaseCost - $totalDepreciation, $salvageValue);
-                                $remainingLife = max($usefulLife - $yearsUsed, 0);
-                            @endphp
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Purchase Year</div>
-                                <div class="col-8 value">{{ $purchaseYear }}</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Useful Life (Remaining)</div>
-                                <div class="col-8 value">{{ round($remainingLife) }} yrs </div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Years Used</div>
-                                <div class="col-8 value">{{ round($yearsUsed) }} yrs</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Purchase Cost</div>
-                                <div class="col-8 value">Php {{ number_format($purchaseCost, 2) }}</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Salvage Value</div>
-                                <div class="col-8 value">Php {{ number_format($salvageValue, 2) }}</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Depreciation Rate</div>
-                                <div class="col-8 value">{{ number_format($depreciationRate, 2) }}% per year</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Total Depreciation</div>
-                                <div class="col-8 value">Php {{ number_format($totalDepreciation, 2) }}</div>
-                            </div>
-
-                            <div class="row detail-row">
-                                <div class="col-4 label">Asset Value</div>
-                                <div class="col-8 value">Php {{ number_format($assetValue, 2) }}</div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                    @endif
                     <!-- pmaintenance & audit -->
                     <div class="section-card mb-4">
                         <div class="section-toggle">

@@ -58,7 +58,7 @@
                                 <option value="Communication Cabinet">Communication Cabinet</option>
                                 <option value="Server Cabinet">Server Cabinet</option>
                                 <option value="License">License</option>
-                                <option value="Software">Software</option>
+                              
                             </select>
                         </div>
 

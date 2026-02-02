@@ -100,7 +100,6 @@
                                             'Communication Cabinet' => 'fa-server',
                                             'Server Cabinet' => 'fa-server',
                                             'License' => 'fa-key',
-                                            'Software' => 'fa-code',
                                         ];
 
                                         $icon = $icons[$item->asset_category] ?? 'fa-box';

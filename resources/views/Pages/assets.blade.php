@@ -47,7 +47,6 @@
                                 <option value="Communication Cabinet">Communication Cabinet</option>
                                 <option value="Server Cabinet">Server Cabinet</option>
                                 <option value="License">License</option>
-                                <option value="Software">Software</option>
                             </select>
 
                             <!-- Status -->
@@ -116,7 +115,9 @@
                                             {{ $item->compliance_status }}
                                         </td>
                                         <td>{{ $item->purchase_cost }}</td>
-                                        <td>{{ number_format($item->current_value, 2) }}</td>
+                                        <td>
+                                            {{ number_format($item->current_value, 2) }}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

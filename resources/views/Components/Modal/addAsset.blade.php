@@ -295,30 +295,6 @@
                             </div>
                         </div>
 
-                        <!-- Software -->
-                        <div class="tech-group" data-type="Software">
-                            <div class="mb-3">
-                                <label class="form-label">Software Version
-                                    <span class="required-text">* Required</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Software_Version]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Hosting Location
-                                    <span class="required-text">* Required</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Hosting_Location]">
-                                    <option value="">Select Hosting Location</option>
-                                    <option>On-premise</option>
-                                    <option>Cloud (SaaS)</option>
-                                    <option>Hybrid</option>
-                                    <option>Private Cloud</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <!-- License -->
                         <div class="tech-group" data-type="License">
                             <div class="mb-3">
@@ -582,16 +558,16 @@
                                 name="purchase_cost" />
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Useful Life (Years)</label>
-                            <input type="number" class="form-control required-field" data-required="true"
-                                name="useful_life_years" />
-                        </div>
+                        <div id="depreciation-tab">
+                            <div class="mb-3">
+                                <label class="form-label">Useful Life (Years)</label>
+                                <input type="number" class="form-control required-field" name="useful_life_years" />
+                            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Salvage Value</label>
-                            <input type="number" class="form-control required-field" data-required="true"
-                                name="salvage_value" />
+                            <div class="mb-3">
+                                <label class="form-label">Salvage Value</label>
+                                <input type="number" class="form-control required-field" name="salvage_value" />
+                            </div>
                         </div>
                     </div>
 
@@ -630,6 +606,7 @@
                         </div>
                     </div>
 
+                    <!-- ===== Documents ===== -->
                     <div id="slide7" style="display: none">
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <i class="fa-solid fa-file"></i>
