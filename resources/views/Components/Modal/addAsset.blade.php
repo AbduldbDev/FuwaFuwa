@@ -323,7 +323,7 @@
                                 <label class="form-label">Cost per License
                                     <span class="required-text">* Required</span>
                                 </label>
-                                <input type="text" class="form-control required-field" data-required="true"
+                                <input type="number" class="form-control required-field" data-required="true"
                                     name="specs[Cost_per_License]" />
                             </div>
                             <div class="mb-3">
@@ -588,19 +588,20 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Warranty Start Date</label>
+                            <label class="form-label" id="warranty_start_date">Warranty Start Date</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="warranty_start" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Warranty End Date</label>
+                            <label class="form-label" id="warranty_end_date">Warranty End Date</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="warranty_end" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Last Scheduled Maintenance</label>
+                            <label class="form-label" id="last_schedule_maintenance">Last Scheduled
+                                Maintenance</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="next_maintenance" />
                         </div>
@@ -638,4 +639,4 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('/Js/Assets/addAsset.js') }}"></script>
+<script src="{{ asset('/Js/Assets/addAsset.js') }}?v={{ time() }}"></script>

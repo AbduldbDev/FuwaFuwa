@@ -470,7 +470,7 @@
         renderCalendar();
     </script>
 
-    <script src="{{ asset('/Js/Maintenance/maintenanceFilter.js') }}"></script>
+    <script src="{{ asset('/Js/Maintenance/maintenanceFilter.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')

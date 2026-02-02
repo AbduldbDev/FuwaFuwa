@@ -382,20 +382,37 @@
                                 <div class="col-8 value">{{ $item->compliance_status }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Warranty Start Date</div>
+                                <div class="col-4 label">
+                                    @if ($item->asset_type === 'Digital Asset')
+                                        Activation Date
+                                    @else
+                                        Warranty End Date
+                                    @endif
+                                </div>
+
                                 <div class="col-8 value">
                                     {{ \Carbon\Carbon::parse($item->warranty_start)->format('F d, Y') }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Warranty End Date</div>
+                                <div class="col-4 label">
+                                    @if ($item->asset_type === 'Digital Asset')
+                                        Expiration Date
+                                    @else
+                                        Warranty End Date
+                                    @endif
+                                </div>
+
                                 <div class="col-8 value">
                                     {{ \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y') }}</div>
                             </div>
-                            <div class="row detail-row">
-                                <div class="col-4 label">Last Maintenance Schedule</div>
-                                <div class="col-8 value">
-                                    {{ \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') }}</div>
-                            </div>
+
+                            @if ($item->asset_type !== 'Digital Asset')
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Last Maintenance Schedule</div>
+                                    <div class="col-8 value">
+                                        {{ \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') }}</div>
+                                </div>
+                            @endif
                             {{-- <div class="row detail-row">
                                 <div class="col-4 label">Useful Life (years)</div>
                                 <div class="col-8 value">{{ $item->useful_life_years }} years</div>
@@ -521,8 +538,8 @@
 
     </section>
     @include('Components/Modal/updateAsset')
-    <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}"></script>
-    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}"></script>
+    <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')

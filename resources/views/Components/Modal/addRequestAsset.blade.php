@@ -302,7 +302,7 @@
                                 <label class="form-label">Cost per License
                                     <span class="required-text">* Required</span>
                                 </label>
-                                <input type="text" class="form-control required-field" data-required="true"
+                                <input type="number" class="form-control required-field" data-required="true"
                                     name="specs[Cost_per_License]" />
                             </div>
                             <div class="mb-3">
@@ -575,19 +575,20 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Warranty Start Date</label>
+                            <label class="form-label" id="warranty_start_date">Warranty Start Date</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="warranty_start" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Warranty End Date</label>
+                            <label class="form-label" id="warranty_end_date">Warranty End Date</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="warranty_end" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Last Scheduled Maintenance</label>
+                            <label class="form-label" id="last_schedule_maintenance">Last Scheduled
+                                Maintenance</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="next_maintenance" />
                         </div>
@@ -908,6 +909,55 @@
         }
     }
 
+    function handleSlide6Extras() {
+        if (currentSlide !== 6) return;
+
+        // Only proceed if slide 6 exists
+        const slide6 = document.getElementById("slide6");
+        if (!slide6) return;
+
+        const warrantyStartDiv = slide6
+            .querySelector("#warranty_start_date")
+            ?.closest(".mb-3");
+        const warrantyEndDiv = slide6
+            .querySelector("#warranty_end_date")
+            ?.closest(".mb-3");
+        const lastMaintenanceDiv = slide6
+            .querySelector("#last_schedule_maintenance")
+            ?.closest(".mb-3");
+
+        if (selectedType === "License") {
+            // Change labels
+            if (warrantyStartDiv) {
+                warrantyStartDiv.querySelector("label").textContent =
+                    "Activation Date";
+            }
+
+            if (warrantyEndDiv) {
+                warrantyEndDiv.querySelector("label").textContent =
+                    "Expiration Date";
+            }
+
+            // Remove last scheduled maintenance
+            if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
+        } else {
+            // If not License, ensure defaults are restored
+            if (warrantyStartDiv) {
+                warrantyStartDiv.querySelector("label").textContent =
+                    "Warranty Start Date";
+            }
+
+            if (warrantyEndDiv) {
+                warrantyEndDiv.querySelector("label").textContent =
+                    "Warranty End Date";
+            }
+
+            // Optionally, restore last maintenance if needed
+            // This requires the original HTML to be present or recreated dynamically
+        }
+    }
+
+
     /* ===============================
            SLIDE NAVIGATION
         =============================== */
@@ -949,6 +999,7 @@
 
             case 5:
                 showSlide(6);
+                handleSlide6Extras();
                 break;
 
             case 6:

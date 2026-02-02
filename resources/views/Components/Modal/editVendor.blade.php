@@ -254,4 +254,4 @@
     </div>
 </div>
 
-<script src="{{ asset('/Js/Vendor/EditVendor.js') }}"></script>
+<script src="{{ asset('/Js/Vendor/EditVendor.js') }}?v={{ time() }}"></script>

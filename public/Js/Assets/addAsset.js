@@ -231,6 +231,54 @@ function handleSlide5Extras() {
     }
 }
 
+function handleSlide6Extras() {
+    if (currentSlide !== 6) return;
+
+    // Only proceed if slide 6 exists
+    const slide6 = document.getElementById("slide6");
+    if (!slide6) return;
+
+    const warrantyStartDiv = slide6
+        .querySelector("#warranty_start_date")
+        ?.closest(".mb-3");
+    const warrantyEndDiv = slide6
+        .querySelector("#warranty_end_date")
+        ?.closest(".mb-3");
+    const lastMaintenanceDiv = slide6
+        .querySelector("#last_schedule_maintenance")
+        ?.closest(".mb-3");
+
+    if (selectedType === "License") {
+        // Change labels
+        if (warrantyStartDiv) {
+            warrantyStartDiv.querySelector("label").textContent =
+                "Activation Date";
+        }
+
+        if (warrantyEndDiv) {
+            warrantyEndDiv.querySelector("label").textContent =
+                "Expiration Date";
+        }
+
+        // Remove last scheduled maintenance
+        if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
+    } else {
+        // If not License, ensure defaults are restored
+        if (warrantyStartDiv) {
+            warrantyStartDiv.querySelector("label").textContent =
+                "Warranty Start Date";
+        }
+
+        if (warrantyEndDiv) {
+            warrantyEndDiv.querySelector("label").textContent =
+                "Warranty End Date";
+        }
+
+        // Optionally, restore last maintenance if needed
+        // This requires the original HTML to be present or recreated dynamically
+    }
+}
+
 /* ===============================
        SLIDE NAVIGATION
     =============================== */
@@ -272,6 +320,7 @@ function nextSlide() {
 
         case 5:
             showSlide(6);
+            handleSlide6Extras();
             break;
 
         case 6:

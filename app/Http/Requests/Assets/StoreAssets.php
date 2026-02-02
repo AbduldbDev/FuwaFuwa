@@ -29,7 +29,7 @@ class StoreAssets extends FormRequest
             'compliance_status'  => 'required|string',
             'warranty_start'     => 'required|date',
             'warranty_end'       => 'required|date',
-            'next_maintenance'   => 'required|date',
+            'next_maintenance'   => 'nullable|date',
             'specs'              => 'required|array',
             'specs.*'            => 'required|string',
             'contract'           => 'nullable|file|mimes:pdf|max:25600',

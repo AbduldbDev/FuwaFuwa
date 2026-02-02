@@ -119,10 +119,10 @@
 
         </div>
     </div>
-    <script src="{{ asset('/Js/Vendor/vendorFilter.js') }}"></script>
-    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}"></script>
+    <script src="{{ asset('/Js/Vendor/vendorFilter.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')
-    <link href="{{ asset('css/admin.css') }}?v={{ time() }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}?v={{ time() }}?v={{ time() }}" rel="stylesheet">
 @endpush

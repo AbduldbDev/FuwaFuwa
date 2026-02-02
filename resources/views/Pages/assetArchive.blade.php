@@ -119,7 +119,7 @@
         </div>
     </section>
 
-    <script src="{{ asset('/Js/Assets/assetFilter.js') }}"></script>
+    <script src="{{ asset('/Js/Assets/assetFilter.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')

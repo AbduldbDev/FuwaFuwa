@@ -150,30 +150,37 @@
                     break;
 
                 case 'maintenance-audit':
+                    // Determine the Warranty End label
+                    let warrantyEndLabel = asset.asset_type === 'Digital Asset' ?
+                        'Expiration Date' :
+                        'Warranty End Date';
+
                     modalFields.innerHTML = `
-                    <div class="mb-3">
-                        <label class="form-label">Compliance Status</label>
-                        <select class="form-select" name="compliance_status">
-                            <option value="Compliant" ${asset.compliance_status === 'Compliant' ? 'selected' : ''}>Compliant</option>
-                            <option value="Non-Compliant" ${asset.compliance_status === 'Non-Compliant' ? 'selected' : ''}>Non-Compliant</option>
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Compliance Status</label>
+                            <select class="form-select" name="compliance_status">
+                                <option value="Compliant" ${asset.compliance_status === 'Compliant' ? 'selected' : ''}>Compliant</option>
+                                <option value="Non-Compliant" ${asset.compliance_status === 'Non-Compliant' ? 'selected' : ''}>Non-Compliant</option>
+                            </select>
+                        </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Warranty Start</label>
-                        <input type="date" name="warranty_start" class="form-control" value="${asset.warranty_start ? new Date(asset.warranty_start).toISOString().split('T')[0] : ''}">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Warranty Start</label>
+                            <input type="date" name="warranty_start" class="form-control" value="${asset.warranty_start ? new Date(asset.warranty_start).toISOString().split('T')[0] : ''}">
+                        </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Warranty End</label>
-                        <input type="date" name="warranty_end" class="form-control" value="${asset.warranty_end ? new Date(asset.warranty_end).toISOString().split('T')[0] : ''}">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">${warrantyEndLabel}</label>
+                            <input type="date" name="warranty_end" class="form-control" value="${asset.warranty_end ? new Date(asset.warranty_end).toISOString().split('T')[0] : ''}">
+                        </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Last Maintenance</label>
-                        <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ? new Date(asset.next_maintenance).toISOString().split('T')[0] : ''}">
-                    </div>
-                `;
+                      ${asset.asset_type !== 'Digital Asset' ? `
+                        <div class="mb-3">
+                            <label class="form-label">Last Maintenance</label>
+                            <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ? new Date(asset.next_maintenance).toISOString().split('T')[0] : ''}">
+                        </div>
+                        ` : ''}
+                    `;
                     break;
 
                 case 'documents':

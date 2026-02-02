@@ -142,9 +142,9 @@
     </div>
     @include('Components/Modal/adduser')
 
-    <script src="{{ asset('/Js/User/userSearch.js') }}"></script>
-    <script src="{{ asset('/Js/User/userFilter.js') }}"></script>
-    <script src="{{ asset('/Js/SweetAlert/UserDelete.js') }}"></script>
+    <script src="{{ asset('/Js/User/userSearch.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('/Js/User/userFilter.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/UserDelete.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')
