@@ -38,7 +38,7 @@ class MaintenanceService
 
     public function getInProgress()
     {
-        return Maintenance::whereIn('status', ['Inspection', 'Corrective', 'Preventive', 'Completed'])
+        return Maintenance::whereIn('status', ['Inspection', 'Corrective', 'Preventive', 'Completed'])->whereNotNull('start_date')
             ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")
             ->latest()
             ->get();
