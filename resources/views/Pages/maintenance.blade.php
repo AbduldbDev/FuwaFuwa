@@ -141,10 +141,10 @@
 
             <!-- filters -->
             <div class="d-flex gap-2 mb-4">
-                <span class="filter-pill active">All</span>
-                <span class="filter-pill">Findings from Inspection</span>
-                <span class="filter-pill">In Progress</span>
-                <span class="filter-pill">Completed</span>
+                <span class="filter-pill all active">All</span>
+                <span class="filter-pill inspection-findings">Findings from Inspection</span>
+                <span class="filter-pill in-progress">In Progress</span>
+                <span class="filter-pill completed">Completed</span>
             </div>
 
             <!-- requests card -->

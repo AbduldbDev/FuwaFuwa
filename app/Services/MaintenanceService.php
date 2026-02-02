@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Maintenance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Assets;
 
 class MaintenanceService
 {
@@ -50,6 +51,11 @@ class MaintenanceService
             ->get();
     }
 
+    public function getAllAssets()
+    {
+        return Assets::where('operational_status', '!=', 'archived')->latest()->get();
+    }
+
     public function getMaintenanceEvents($maintenances)
     {
         $events = [];
@@ -71,6 +77,7 @@ class MaintenanceService
 
         return [
             'Pending' => $pending,
+            'Assets'  => $this->getAllAssets(),
             'InProgress' => $inProgress,
             'maintenanceEvents' => $this->getMaintenanceEvents($inProgress),
             'TotalMaintenance' => $this->getTotalMaintenance(),

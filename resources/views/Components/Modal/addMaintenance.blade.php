@@ -87,8 +87,17 @@
                            <!-- Shared Asset Info -->
                            <div class="row mb-3">
                                <div class="col-md-4">
-                                   <label class="form-label">Asset Tag</label>
-                                   <input type="text" name="asset_tag" class="form-control">
+                                   <label class="form-label">Asset</label>
+                                   <select name="asset_tag" id="assetSelect" class="form-control">
+                                       <option value="">-- Select Asset --</option>
+                                       @foreach ($Assets as $item)
+                                           <option value="{{ $item->asset_tag }}" data-tag="{{ $item->asset_tag }}"
+                                               data-name="{{ $item->asset_name }}"
+                                               data-last-maintenance="{{ $item->last_maintenance_date }}">
+                                               {{ $item->asset_tag }} - {{ $item->asset_name }}
+                                           </option>
+                                       @endforeach
+                                   </select>
                                </div>
                                <div class="col-md-4">
                                    <label class="form-label">Asset Name</label>
@@ -142,10 +151,7 @@
 
                                <div class="mb-3">
                                    <label class="form-label">Assign Technician</label>
-                                   <select name="technician" class="form-select">
-                                       <option>Technician A</option>
-                                       <option>Technician B</option>
-                                   </select>
+                                   <input type="date" name="technician" class="form-control">
                                </div>
                            </div>
                        </form>
@@ -161,6 +167,35 @@
            </div>
        </div>
    </div>
+   <script>
+       document.addEventListener('DOMContentLoaded', function() {
+
+           const modal = document.getElementById('assetIssueModal');
+
+           modal.addEventListener('shown.bs.modal', function() {
+
+               if (!$('#assetSelect').hasClass("select2-hidden-accessible")) {
+                   $('#assetSelect').select2({
+                       placeholder: 'Search asset...',
+                       width: '100%',
+                       dropdownParent: $('#assetIssueModal') // 🔥 REQUIRED
+                   });
+               }
+
+           });
+
+           $('#assetSelect').on('change', function() {
+               let selected = $(this).find(':selected');
+
+               $('input[name="asset_name"]').val(selected.data('name') ?? '');
+               $('input[name="last_maintenance_date"]').val(
+                   selected.data('last-maintenance') ?? ''
+               );
+           });
+
+       });
+   </script>
+
    <script>
        document.addEventListener('DOMContentLoaded', () => {
 

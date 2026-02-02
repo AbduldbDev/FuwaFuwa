@@ -46,11 +46,11 @@
 
             <!-- filters -->
             <div class="d-flex gap-2 mb-4">
-                <span class="filter-pill active">All</span>
-                <span class="filter-pill">For Review</span>
-                <span class="filter-pill">Pending Approval</span>
-                <span class="filter-pill">In Procurement</span>
-                <span class="filter-pill">Procured</span>
+                <span class="filter-pill all active">All</span>
+                <span class="filter-pill for-review">For Review</span>
+                <span class="filter-pill pending-approval">Pending Approval</span>
+                <span class="filter-pill in-procurement">In Procurement</span>
+                <span class="filter-pill procured">Procured</span>
 
                 <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
                     <option value="All Priority">All Priority</option>
@@ -74,10 +74,18 @@
                             'emergency' => 'bg-danger text-white',
                             default => 'bg-secondary text-white',
                         };
+
+                        $CardClass = match ($item->status) {
+                            'For Review' => 'for-review',
+                            'Pending Approval' => 'pending-approval',
+                            'In Procurement' => 'in-procurement',
+                            'Procured' => 'procured',
+                            default => 'for-review',
+                        };
                     @endphp
 
                     <div class="col-lg-4 col-md-6 mb-4 request-card-wrapper">
-                        <div class="request-card low">
+                        <div class="request-card {{ $CardClass }}">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
                                 <div class="d-flex align-items-center gap-3">
