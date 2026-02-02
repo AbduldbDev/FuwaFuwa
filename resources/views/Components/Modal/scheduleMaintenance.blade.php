@@ -143,12 +143,8 @@
                                 <label for="assignedTechnician" class="form-label text-muted">
                                     Assigned Technician
                                 </label>
-                                <select name="technician" id="assignedTechnician" class="form-select">
-                                    <option value="" disabled selected>Select Technician</option>
-                                    <option value="john-doe">John Doe</option>
-                                    <option value="jane-smith">Jane Smith</option>
-                                    <option value="mark-lee">Mark Lee</option>
-                                </select>
+                                <input type="text" name="assignedTechnician" class="form-control"
+                                    name="technician" />
                             </div>
                         </div>
                     </form>

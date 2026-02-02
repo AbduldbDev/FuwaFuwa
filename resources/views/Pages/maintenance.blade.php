@@ -135,7 +135,7 @@
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
-                    <option value="Urgent">Urgent</option>
+                    <option value="Emergency">Emergency</option>
                 </select>
             </div>
 
@@ -159,9 +159,17 @@
                             'Emergency' => 'bg-danger text-white',
                             default => 'bg-secondary text-white',
                         };
+                        $CardClass = match ($item->status) {
+                            'For Review' => 'for-review',
+                            'Pending Approval' => 'pending-approval',
+                            'In Procurement' => 'in-procurement',
+                            'Procured' => 'procured',
+                            default => 'for-review',
+                        };
+
                     @endphp
                     <div class="col-lg-4 mb-4">
-                        <div class="request-card low">
+                        <div class="request-card {{ $CardClass }} request-card-wrapper">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
 
@@ -462,6 +470,8 @@
 
         renderCalendar();
     </script>
+
+    <script src="{{ asset('/Js/Maintenance/maintenanceFilter.js') }}"></script>
 @endsection
 
 @push('css')

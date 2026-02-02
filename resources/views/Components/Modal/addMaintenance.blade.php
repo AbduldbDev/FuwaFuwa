@@ -88,7 +88,7 @@
                            <div class="row mb-3">
                                <div class="col-md-4">
                                    <label class="form-label">Asset</label>
-                                   <select name="asset_tag" id="assetSelect" class="form-control">
+                                   <select name="asset_tag" id="assetSelect" class="form-select">
                                        <option value="">-- Select Asset --</option>
                                        @foreach ($Assets as $item)
                                            <option value="{{ $item->asset_tag }}" data-tag="{{ $item->asset_tag }}"
@@ -178,7 +178,7 @@
                    $('#assetSelect').select2({
                        placeholder: 'Search asset...',
                        width: '100%',
-                       dropdownParent: $('#assetIssueModal') // 🔥 REQUIRED
+                       dropdownParent: $('#assetIssueModal')
                    });
                }
 

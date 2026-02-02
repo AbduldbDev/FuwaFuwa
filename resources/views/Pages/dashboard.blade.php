@@ -20,7 +20,7 @@
             <x-stat-card icon="fa-solid fa-boxes-stacked" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Assets"
                 :value="$totalAssets" />
 
-            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#166534" icon-bg="#DCFCE7" title="On Hand Stocks"
+            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#166534" icon-bg="#DCFCE7" title="In Stocks"
                 :value="$totalonhand" />
 
             <x-stat-card icon="fa-solid fa-peso-sign" icon-color="#92400E" icon-bg="#FFEDD5" title="Total Cost of Assets"
