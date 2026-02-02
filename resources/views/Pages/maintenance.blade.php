@@ -220,13 +220,9 @@
 
                     @if ($item->maintenance_type === 'Corrective' && $item->status !== 'Completed')
                         @include('Components.Modal.Maintenance.correctiveInprogress')
-                    @elseif(
-                        $item->maintenance_type === 'Preventive' ||
-                            ($item->maintenance_type === 'Inspection' && $item->status !== 'Completed'))
+                    @elseif (in_array($item->maintenance_type, ['Inspection', 'Preventive']) && $item->status !== 'Completed')
                         @include('Components.Modal.Maintenance.inspectionInprogress')
-                    @elseif(
-                        $item->maintenance_type === 'Preventive' ||
-                            ($item->maintenance_type === 'Inspection' && $item->status == 'Completed'))
+                    @elseif (in_array($item->maintenance_type, ['Inspection', 'Preventive']) && $item->status === 'Completed')
                         @include('Components.Modal.Maintenance.inpsectionCompleted')
                     @else
                         @include('Components.Modal.Maintenance.correctiveCompleted')
