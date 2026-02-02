@@ -101,7 +101,6 @@
                         <div class="repair-info">
                             <div class="repair-top mb-1">
                                 <span class="repair-id">{{ $item->maintenance_id }}</span>
-                                <span class="status-badge warning">{{ $item->status }}</span>
                                 <span class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
                                     Priority
                                 </span>

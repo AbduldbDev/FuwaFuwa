@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AssetLogs;
 use App\Models\Assets;
+use App\Models\SystemSettings;
 use App\Models\TechnicalSpecification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -199,8 +200,13 @@ class AssetService
 
     private function generateAssetTag(): string
     {
+        $setting = SystemSettings::first();
+
+        $Prefix = $setting->asset_tag_prefix ?? 'Asset';
+
+
         do {
-            $tag = 'Asset' . strtoupper(Str::random(4));
+            $tag = $Prefix . strtoupper(Str::random(4));
         } while (Assets::where('asset_tag', $tag)->exists());
 
         return $tag;

@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\Permission;
 use App\Models\CompanyProfile;
+use App\Models\SystemSettings;
 use Illuminate\Support\Arr;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class SystemService
 {
@@ -56,6 +58,11 @@ class SystemService
         return CompanyProfile::first();
     }
 
+    public function getSystemsettings()
+    {
+        return SystemSettings::first();
+    }
+
     public function getRolesData()
     {
         return [
@@ -64,6 +71,7 @@ class SystemService
             'accessTypes' => $this->getAccessTypes(),
             'permissions' => $this->getPermissions(),
             'CompanyProfile' => $this->getCompanyProfile(),
+            'settings' => $this->getSystemsettings(),
         ];
     }
 
@@ -92,5 +100,20 @@ class SystemService
         );
 
         return CompanyProfile::updateOrCreate(['id' => 1], $fillableData);
+    }
+
+    public function saveSettings(array $data)
+    {
+        $fillableData = Arr::only($data, (new SystemSettings)->getFillable());
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'System',
+            'read',
+            'System Settings Updated',
+            "System settings was updated by " . Auth::user()->name . ".",
+            'warning'
+        );
+
+        return  SystemSettings::updateOrCreate(['id' => 1], $fillableData);
     }
 }

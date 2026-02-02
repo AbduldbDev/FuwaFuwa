@@ -60,103 +60,90 @@
 
         <!-- asset management settings -->
         <div class="company-info my-4">
-            <h4 class="mb-1">Asset Management Settings</h4>
-            <p class="subtitle">
-                Configure asset tracking and depression settings
-            </p>
+            <form id="companyForm" action="{{ route('system-configuration.saveSettings') }}" method="POST">
+                @csrf
 
-            <!-- asset tag and depreciation -->
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label>Asset Tag Prefix</label>
-                    <input type="text" value="NPB" class="form-control" readonly />
+                <h4 class="mb-1">Asset Management Settings</h4>
+                <p class="subtitle">
+                    Configure asset tracking and notification settings
+                </p>
+
+                <!-- asset tag and depreciation -->
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Asset Tag Prefix</label>
+                        <input type="text" value="{{ $settings->asset_tag_prefix ?? '' }}" class="form-control"
+                            name="asset_tag_prefix" />
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label>Depreciation Method</label>
+                        <input type="text" value="Straight-Line Depreciation" class="form-control" disabled />
+                    </div>
                 </div>
 
-                <div class="col-md-6 form-group">
-                    <label>Depreciation Method</label>
-                    <input type="text" value="Written-Down Value (WDV)" class="form-control" disabled />
+                <div class="setting-row">
+                    <div class="setting-text">
+                        <h4>Warranty Expiry Alerts</h4>
+                        <p>Send notifications for assets with expiring warranties</p>
+                    </div>
+                    <label class="switch">
+                        <input type="hidden" name="warranty_expiry_alerts" value="0">
+                        <input type="checkbox" name="warranty_expiry_alerts" value="1"
+                            {{ old('warranty_expiry_alerts', $settings->warranty_expiry_alerts ?? 0) ? 'checked' : '' }}
+                            onclick="this.blur()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-            </div>
 
-            <!-- auto generate -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Auto-generate Asset Tags</h4>
-                    <p>Automatically generate asset tags when adding new assets</p>
+                <div class="setting-row">
+                    <div class="setting-text">
+                        <h4>Maintenance Reminders</h4>
+                        <p>Enable automatic maintenance scheduling reminders</p>
+                    </div>
+                    <label class="switch">
+                        <input type="hidden" name="maintenance_reminders" value="0">
+                        <input type="checkbox" name="maintenance_reminders" value="1"
+                            {{ old('maintenance_reminders', $settings->maintenance_reminders ?? 0) ? 'checked' : '' }}
+                            onclick="this.blur()">
+                        <span class="slider"></span>
+                    </label>
+
                 </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
 
-            <!-- warranty alerts -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Warranty Expiry Alerts</h4>
-                    <p>Send notifications for assets with expiring warranties</p>
+                <div class="setting-row">
+                    <div class="setting-text">
+                        <h4>Asset Assignment Alerts</h4>
+                        <p>Get notified when assets are assigned or unassigned</p>
+                    </div>
+                    <label class="switch">
+                        <input type="hidden" name="asset_assignment_alerts" value="0">
+                        <input type="checkbox" name="asset_assignment_alerts" value="1"
+                            {{ old('asset_assignment_alerts', $settings->asset_assignment_alerts ?? 0) ? 'checked' : '' }}
+                            onclick="this.blur()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
 
-            <!-- maintenance reminders -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Maintenance Reminders</h4>
-                    <p>Enable automatic maintenance scheduling reminders</p>
+                <!-- report generation alerts -->
+                <div class="setting-row">
+                    <div class="setting-text">
+                        <h4>Report Generation Alerts</h4>
+                        <p>Notify when scheduled reports are ready</p>
+                    </div>
+                    <label class="switch">
+                        <input type="hidden" name="report_generation" value="0">
+                        <input type="checkbox" name="report_generation" value="1"
+                            {{ old('report_generation', $settings->report_generation ?? 0) ? 'checked' : '' }}
+                            onclick="this.blur()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
 
-        <!-- notification preference -->
-        <div class="company-info my-4">
-            <h4 class="mb-1">Notification Preferences</h4>
-            <p class="subtitle">
-                Configure how you receive system notifications
-            </p>
-
-            <!-- email notifications -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Email Notifications</h4>
-                    <p>Receive important updated via email</p>
+                <div class="text-end">
+                    <button type="submit" class=" mt-4 save-btn">Save Configuration</button>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- asset assignment alerts -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Asset Assignment Alerts</h4>
-                    <p>Get notified when assets are assigned or unassigned</p>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- report generation alerts -->
-            <div class="setting-row">
-                <div class="setting-text">
-                    <h4>Report Generation Alerts</h4>
-                    <p>Notify when scheduled reports are ready</p>
-                </div>
-                <label class="switch">
-                    <input type="checkbox" checked onclick="this.blur()" />
-                    <span class="slider"></span>
-                </label>
-            </div>
+            </form>
         </div>
 
         <!-- user management settings -->
@@ -209,7 +196,7 @@
                 @endforeach
 
                 <div class="text-end">
-                    <button type="submit" class=" submit-btn">Save Permissions</button>
+                    <button type="submit" class=" save-btn">Save Permissions</button>
                 </div>
             </form>
         </div>

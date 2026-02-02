@@ -76,6 +76,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/', 'index')->name('index');
         Route::post('/update-or-create', 'updateOrCreate')->name('updateOrCreate');
         Route::post('/save-role', 'saveRole')->name('saveRole');
+        Route::post('/save-settings', 'saveSettings')->name('saveSettings');
     });
 
     Route::prefix('/vendors')->name('vendors.')->controller(VendorController::class)->group(function () {

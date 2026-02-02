@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Permission;
 use App\Models\CompanyProfile;
 use App\Http\Requests\System\CompanyProfileRequest;
+use App\Http\Requests\System\StoreConfigurationRequest;
 
 class SystemConfigurationController extends Controller
 {
@@ -63,6 +64,21 @@ class SystemConfigurationController extends Controller
             $this->systemService->updateOrCreate($request->validated());
 
             return redirect()->back()->with('success', 'Company profile saved successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function saveSettings(StoreConfigurationRequest $request)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->systemService->saveSettings($request->validated());
+
+            return redirect()->back()->with('success', 'System configuration saved successfully.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->withErrors([
                 'system' => $e->getMessage(),

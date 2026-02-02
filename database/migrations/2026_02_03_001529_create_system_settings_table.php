@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notification_settings', function (Blueprint $table) {
+        Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->boolean('email_notifications')->default(true);
-            $table->boolean('asset_assignment_alerts')->default(true);
+            $table->string('asset_tag_prefix');
+            $table->string('maintenance_reminders');
+            $table->string('warranty_expiry_alerts');
+            $table->string('asset_assignment_alerts');
+            $table->string('report_generation');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notification_settings');
+        Schema::dropIfExists('system_settings');
     }
 };
