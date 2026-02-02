@@ -16,7 +16,7 @@ class DashboardService
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
 
-            $yearsUsed = $asset->created_at->diffInYears(now());
+            $yearsUsed = $asset->purchase_date->diffInYears(now());
             $depreciation = ($cost - $salvage) / $usefulLife;
             $totalDepreciation = $depreciation * $yearsUsed;
             $currentValue = max($cost - $totalDepreciation, $salvage);
@@ -47,14 +47,14 @@ class DashboardService
 
     public function getDepreciationSum()
     {
-        $assets = Assets::where('operational_status', 'Active')->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->get();
 
         $assetsWithDepreciation = $assets->map(function ($asset) {
             $cost = $asset->purchase_cost ?? 0;
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
 
-            $yearsUsed = $asset->created_at->diffInYears(now());
+            $yearsUsed = $asset->purchase_date->diffInYears(now());
             $depreciation = ($cost - $salvage) / $usefulLife;
             $totalDepreciation = $depreciation * $yearsUsed;
             $currentValue = max($cost - $totalDepreciation, $salvage);

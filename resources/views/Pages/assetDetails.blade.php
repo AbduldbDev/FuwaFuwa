@@ -300,8 +300,8 @@
                                 $usefulLife = $item->useful_life_years;
                                 $salvageValue = $item->salvage_value;
 
-                                $purchaseYear = $item->created_at->year;
-                                $yearsUsed = $item->created_at->diffInYears(now());
+                                $purchaseYear = $item->purchase_date->year;
+                                $yearsUsed = $item->purchase_date->diffInYears(now());
                                 $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
                                 $depreciationRate =
                                     (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;

@@ -134,7 +134,7 @@
                                             </td>
                                             <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                             <td>{{ $item->asset_name }}</td>
-                                            <td>Active</td>
+                                            <td>{{ $item->operational_status }}</td>
                                             <td
                                                 class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
                                                 {{ $item->compliance_status }}

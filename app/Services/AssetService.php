@@ -58,7 +58,7 @@ class AssetService
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
 
-            $yearsUsed = $asset->created_at->diffInYears(now());
+            $yearsUsed = $asset->purchase_date->diffInYears(now());
             $depreciation = ($cost - $salvage) / $usefulLife;
             $totalDepreciation = $depreciation * $yearsUsed;
             $currentValue = max($cost - $totalDepreciation, $salvage);
