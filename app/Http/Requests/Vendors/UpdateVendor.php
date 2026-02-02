@@ -22,7 +22,6 @@ class UpdateVendor extends FormRequest
             'category' => 'required|string|max:100',
             'status' => 'required|in:Active,Inactive',
 
-            // Existing documents
             'existing_documents' => 'array',
             'existing_documents.*.id' => 'required|integer|exists:vendor_documents,id',
             'existing_documents.*.name' => 'required|string|max:255',
@@ -31,15 +30,13 @@ class UpdateVendor extends FormRequest
             'delete_documents' => 'array',
             'delete_documents.*' => 'integer|exists:vendor_documents,id',
 
-            // New documents
             'new_documents.name' => 'array',
             'new_documents.name.*' => 'required|string|max:255',
             'new_documents.expiry' => 'array',
             'new_documents.expiry.*' => 'required|date',
             'new_documents.file_name' => 'array',
-            'new_documents.file_name.*' => 'required|string|max:255', // assuming file already uploaded
+            'new_documents.file_name.*' => 'required|string|max:255',
 
-            // Existing purchases
             'existing_purchases' => 'array',
             'existing_purchases.*.id' => 'required|integer|exists:vendor_purchases,id',
             'existing_purchases.*.po_id' => 'required|string|max:100',
@@ -51,7 +48,6 @@ class UpdateVendor extends FormRequest
             'delete_purchases' => 'array',
             'delete_purchases.*' => 'integer|exists:vendor_purchases,id',
 
-            // New purchases
             'new_purchases.order_id' => 'array',
             'new_purchases.order_id.*' => 'required|string|max:100',
             'new_purchases.item_name' => 'array',

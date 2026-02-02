@@ -24,20 +24,8 @@ class AccountController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        $items = User::get();
-
-        $counts = User::selectRaw("
-            COUNT(*) as total,
-            SUM(status = 'active') as active,
-            SUM(status = 'inactive') as inactive
-        ")->first();
-
-        return view('Pages/users', [
-            'items'    => $items,
-            'active'   => $counts->active,
-            'inactive' => $counts->inactive,
-            'total'    => $counts->total,
-        ]);
+        $data = $this->userService->getIndexData();
+        return view('Pages/users', $data);
     }
 
     public function store(StoreRequest $request)
@@ -65,7 +53,6 @@ class AccountController extends Controller
 
         try {
             $this->userService->updateAccount($request->validated(), $user);
-
 
             return redirect()->route('user-management.index')->with('success', 'Account updated successfully.');
         } catch (\Throwable $e) {

@@ -17,11 +17,23 @@ class AssetRequestController extends Controller
         $this->assetRequestService = $assetRequestService;
     }
 
-    public function index()
+    private function authorizeRead(): void
     {
         if (!user()->canAccess('Asset Request', 'read')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    private function authorizeWrite(): void
+    {
+        if (!user()->canAccess('Asset Request', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
 
         $data = $this->assetRequestService->getDashboardData();
 
@@ -30,9 +42,7 @@ class AssetRequestController extends Controller
 
     public function store(StoreAssetRequest $request)
     {
-        if (!user()->canAccess('Asset Request', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->assetRequestService->store($request->validated());
@@ -47,9 +57,7 @@ class AssetRequestController extends Controller
 
     public function updateStatus(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
     {
-        if (!user()->canAccess('Asset Request', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->assetRequestService->updateStatus($assetRequest, $request->only(['status', 'remarks']));
@@ -64,9 +72,7 @@ class AssetRequestController extends Controller
 
     public function approveStatus(Request $request, AssetRequest $assetRequest)
     {
-        if (!user()->canAccess('Asset Request', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->assetRequestService->updateApproval($assetRequest, [
@@ -84,9 +90,7 @@ class AssetRequestController extends Controller
 
     public function rejectStatus(Request $request, AssetRequest $assetRequest)
     {
-        if (!user()->canAccess('Asset Request', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->assetRequestService->updateApproval($assetRequest, [

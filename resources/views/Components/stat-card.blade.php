@@ -10,8 +10,8 @@
             </div>
 
             <div>
-                <h1>{{ $value }}</h1>
-                <h5>{{ $title }}</h5>
+                <h2>{{ $value }}</h2>
+                <h6>{{ $title }}</h6>
             </div>
         </div>
     </div>

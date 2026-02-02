@@ -143,79 +143,79 @@ class VendorService
 
     public function updateVendor(Vendors $vendor, array $data)
     {
-        DB::transaction(function () use ($vendor, $data) {
 
-            // 1️⃣ Update basic vendor info
-            $vendor->update([
-                'name' => $data['name'],
-                'contact_person' => $data['contact_person'],
-                'contact_email' => $data['contact_email'],
-                'contact_number' => $data['contact_number'],
-                'category' => $data['category'],
-                'status' => $data['status'],
-            ]);
+        $vendor->update([
+            'name' => $data['name'],
+            'contact_person' => $data['contact_person'],
+            'contact_email' => $data['contact_email'],
+            'contact_number' => $data['contact_number'],
+            'category' => $data['category'],
+            'status' => $data['status'],
+        ]);
 
-            // 2️⃣ Delete marked documents
-            if (!empty($data['delete_documents'])) {
-                VendorDocuments::whereIn('id', $data['delete_documents'])->delete();
-            }
+        if (!empty($data['delete_documents'])) {
+            VendorDocuments::whereIn('id', $data['delete_documents'])->delete();
+        }
 
-            // 3️⃣ Update existing documents
-            if (!empty($data['existing_documents'])) {
-                foreach ($data['existing_documents'] as $doc) {
-                    VendorDocuments::where('id', $doc['id'])
-                        ->update([
-                            'name' => $doc['name'],
-                            'expiration' => $doc['expiration'],
-                        ]);
-                }
-            }
-
-            // 4️⃣ Add new documents
-            if (!empty($data['new_documents']['name'])) {
-                foreach ($data['new_documents']['name'] as $i => $name) {
-                    VendorDocuments::create([
-                        'vendor_id' => $vendor->id,
-                        'name' => $name,
-                        'file' => $data['new_documents']['file_name'][$i], // adjust if handling real file upload
-                        'expiration' => $data['new_documents']['expiry'][$i],
+        if (!empty($data['existing_documents'])) {
+            foreach ($data['existing_documents'] as $doc) {
+                VendorDocuments::where('id', $doc['id'])
+                    ->update([
+                        'name' => $doc['name'],
+                        'expiration' => $doc['expiration'],
                     ]);
-                }
             }
+        }
 
-            // 5️⃣ Delete marked purchases
-            if (!empty($data['delete_purchases'])) {
-                VendorPurchase::whereIn('id', $data['delete_purchases'])->delete();
+        if (!empty($data['new_documents']['name'])) {
+            foreach ($data['new_documents']['name'] as $i => $name) {
+                VendorDocuments::create([
+                    'vendor_id' => $vendor->id,
+                    'name' => $name,
+                    'file' => $data['new_documents']['file_name'][$i],
+
+                    'expiration' => $data['new_documents']['expiry'][$i],
+                ]);
             }
+        }
 
-            // 6️⃣ Update existing purchases
-            if (!empty($data['existing_purchases'])) {
-                foreach ($data['existing_purchases'] as $purchase) {
-                    VendorPurchase::where('id', $purchase['id'])
-                        ->update([
-                            'order_id' => $purchase['po_id'],
-                            'item_name' => $purchase['item_name'],
-                            'quantity' => $purchase['quantity'],
-                            'cost' => $purchase['cost'],
-                            'expiration' => $purchase['expiration'],
-                        ]);
-                }
-            }
+        if (!empty($data['delete_purchases'])) {
+            VendorPurchase::whereIn('id', $data['delete_purchases'])->delete();
+        }
 
-            // 7️⃣ Add new purchases
-            if (!empty($data['new_purchases']['order_id'])) {
-                foreach ($data['new_purchases']['order_id'] as $i => $orderId) {
-                    VendorPurchase::create([
-                        'vendor_id' => $vendor->id,
-                        'order_id' => $orderId,
-                        'item_name' => $data['new_purchases']['item_name'][$i],
-                        'quantity' => $data['new_purchases']['quantity'][$i],
-                        'cost' => $data['new_purchases']['cost'][$i],
-                        'expiration' => $data['new_purchases']['expiration'][$i],
+        if (!empty($data['existing_purchases'])) {
+            foreach ($data['existing_purchases'] as $purchase) {
+                VendorPurchase::where('id', $purchase['id'])
+                    ->update([
+                        'order_id' => $purchase['po_id'],
+                        'item_name' => $purchase['item_name'],
+                        'quantity' => $purchase['quantity'],
+                        'cost' => $purchase['cost'],
+                        'expiration' => $purchase['expiration'],
                     ]);
-                }
             }
-        });
+        }
+
+        if (!empty($data['new_purchases']['order_id'])) {
+            foreach ($data['new_purchases']['order_id'] as $i => $orderId) {
+                VendorPurchase::create([
+                    'vendor_id' => $vendor->id,
+                    'order_id' => $orderId,
+                    'item_name' => $data['new_purchases']['item_name'][$i],
+                    'quantity' => $data['new_purchases']['quantity'][$i],
+                    'cost' => $data['new_purchases']['cost'][$i],
+                    'expiration' => $data['new_purchases']['expiration'][$i],
+                ]);
+            }
+        }
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Vendor',
+            'read',
+            'Vendor Updated',
+            "Vendor {$vendor->name} has been updated by: " . Auth::user()->name,
+            'info'
+        );
 
         return $vendor->fresh();
     }

@@ -17,11 +17,23 @@ class VendorController extends Controller
         $this->vendorService = $vendorService;
     }
 
-    public function index()
+    private function authorizeRead(): void
     {
         if (!user()->canAccess('Vendor', 'read')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    private function authorizeWrite(): void
+    {
+        if (!user()->canAccess('Vendor', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
 
         $data = $this->vendorService->getVendorsData();
 
@@ -30,9 +42,7 @@ class VendorController extends Controller
 
     public function store(StoreVendor $request)
     {
-        if (!user()->canAccess('Vendor', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->vendorService->create($request->validated());
@@ -47,9 +57,7 @@ class VendorController extends Controller
 
     public function update(UpdateVendor $request, Vendors $vendor)
     {
-        if (!user()->canAccess('Vendor', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->vendorService->updateVendor($vendor, $request->validated());
@@ -64,9 +72,7 @@ class VendorController extends Controller
 
     public function delete($id)
     {
-        if (!user()->canAccess('Vendor', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->vendorService->deleteVendor($id);

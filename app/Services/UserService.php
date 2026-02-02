@@ -21,6 +21,36 @@ class UserService
         $this->notification = $notification;
     }
 
+    public function getUsers()
+    {
+        return User::all();
+    }
+
+    public function getTotalCount(): int
+    {
+        return User::count();
+    }
+
+    public function getActiveCount(): int
+    {
+        return User::where('status', 'active')->count();
+    }
+
+    public function getInactiveCount(): int
+    {
+        return User::where('status', 'inactive')->count();
+    }
+
+    public function getIndexData(): array
+    {
+        return [
+            'items'    => $this->getUsers(),
+            'total'    => $this->getTotalCount(),
+            'active'   => $this->getActiveCount(),
+            'inactive' => $this->getInactiveCount(),
+        ];
+    }
+
     public function createAccount(array $data): User
     {
         $otp = $this->generateStrongPassword();
@@ -56,7 +86,6 @@ class UserService
 
         return $user;
     }
-
 
     public function deleteAccount(int $id)
     {

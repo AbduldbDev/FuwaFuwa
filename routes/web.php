@@ -22,7 +22,6 @@ Route::middleware('guest')->group(function () {
     Route::post('/password-reset-first', [AuthController::class, 'reset'])->name('password.reset.first.post');
 });
 
-
 Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -65,6 +64,8 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
 
     Route::prefix('/maintenance-repair')->name('maintenance-repair.')->controller(MaintenanceRepairController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/update/{maintenance}', 'update')->name('update');
     });
 
     Route::prefix('/reports-analytics')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {

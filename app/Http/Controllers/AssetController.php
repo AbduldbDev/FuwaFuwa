@@ -19,36 +19,40 @@ class AssetController extends Controller
         $this->assetService = $assetService;
     }
 
-    public function index()
+    private function authorizeRead(): void
     {
         if (!user()->canAccess('Assets', 'read')) {
             abort(403, 'Unauthorized');
         }
-
-        $items = $this->assetService->getAllAssetsWithDepreciation();
-        $users = $this->assetService->getActiveUsers();
-        $vendors = $this->assetService->getActiveVendors();
-        return view('Pages.assets', compact('items', 'users', 'vendors'));
     }
 
-    public function show($id)
-    {
-        if (!user()->canAccess('Assets', 'read')) {
-            abort(403, 'Unauthorized');
-        }
-
-        $item = Assets::with(['technicalSpecifications', 'users'])->where('asset_tag', $id)->first();
-        $users = $this->assetService->getActiveUsers();
-        $vendors = $this->assetService->getActiveVendors();
-        $AssetLogs = $this->assetService->getAssetLogs($item->id);
-        return view('Pages/assetDetails', compact('item', 'users', 'vendors', 'AssetLogs'));
-    }
-
-    public function store(StoreAssets $request)
+    private function authorizeWrite(): void
     {
         if (!user()->canAccess('Assets', 'write')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
+
+        $data =  $this->assetService->getIndexData();
+        return view('Pages.assets', $data);
+    }
+
+    public function show($id)
+    {
+        $this->authorizeRead();
+
+        $data = $this->assetService->getShowData($id);
+
+        return view('Pages/assetDetails', $data);
+    }
+
+    public function store(StoreAssets $request)
+    {
+        $this->authorizeWrite();
 
         try {
             $qty = (int) ($request->assetQuantity ?? 1);
@@ -67,9 +71,8 @@ class AssetController extends Controller
 
     public function update(UpdateAssetRequest $request, $id)
     {
-        if (!user()->canAccess('Assets', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
+
         try {
             $asset = Assets::findOrFail($id);
             $this->assetService->updateAsset($asset, $request->validated());
@@ -84,9 +87,7 @@ class AssetController extends Controller
 
     public function delete($id)
     {
-        if (!user()->canAccess('Assets', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->assetService->deleteAsset($id);

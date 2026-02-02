@@ -22,6 +22,33 @@ class AssetService
         $this->notification = $notification;
     }
 
+    public function getActiveUsers()
+    {
+        return User::where('status', 'active')->get();
+    }
+
+    public function getActiveVendors()
+    {
+        return Vendors::where('status', 'Active')->get();
+    }
+
+    public function getAssetArchive()
+    {
+        return Assets::where('operational_status', 'archived')->latest()->get();
+    }
+
+    public function getAssetLogs($id)
+    {
+        return AssetLogs::where('asset_id', $id)->with(['asset', 'user'])->latest()->get();
+    }
+
+    public function getAssetByTag(string $assetTag): Assets
+    {
+        return Assets::with(['technicalSpecifications', 'users'])
+            ->where('asset_tag', $assetTag)
+            ->firstOrFail();
+    }
+
     public function getAllAssetsWithDepreciation()
     {
         $assets = Assets::where('operational_status', '!=', 'archived')->latest()->get();
@@ -45,25 +72,25 @@ class AssetService
         });
     }
 
-
-    public function getActiveUsers()
+    public function getIndexData(): array
     {
-        return User::where('status', 'active')->get();
+        return [
+            'items'   => $this->getAllAssetsWithDepreciation(),
+            'users'   => $this->getActiveUsers(),
+            'vendors' => $this->getActiveVendors(),
+        ];
     }
 
-    public function getActiveVendors()
+    public function getShowData(string $assetTag): array
     {
-        return Vendors::where('status', 'Active')->get();
-    }
+        $asset = $this->getAssetByTag($assetTag);
 
-    public function getAssetArchive()
-    {
-        return Assets::where('operational_status', 'archived')->latest()->get();
-    }
-
-    public function getAssetLogs($id)
-    {
-        return AssetLogs::where('asset_id', $id)->with(['asset', 'user'])->latest()->get();
+        return [
+            'item'      => $asset,
+            'users'     => $this->getActiveUsers(),
+            'vendors'   => $this->getActiveVendors(),
+            'AssetLogs' => $this->getAssetLogs($asset->id),
+        ];
     }
 
     public function store(array $data): Assets

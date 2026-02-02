@@ -37,7 +37,7 @@ class NotificationService
         }
 
         $users = User::whereIn('user_type', $roles)->get();
-
+        
         foreach ($users as $user) {
             $this->notify($module, $title, $message, $user->id, $type);
         }

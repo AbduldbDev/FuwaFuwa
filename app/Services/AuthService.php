@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OneTimePasswordMail;
 
 class AuthService
-{
+{   
     public function createAccount(array $data): User
     {
         $otp = $this->generateStrongPassword();
@@ -52,7 +52,6 @@ class AuthService
             ]);
         }
 
-
         Auth::login($user, $remember);
         request()->session()->regenerate();
     }
@@ -83,8 +82,6 @@ class AuthService
     {
         return DB::transaction(function () use ($data, $id) {
             $user = User::findOrFail($id);
-
-            // Update the user
             $user->update([
                 'employee_id' => $data['employee_id'] ?? $user->employee_id,
                 'department'  => $data['department']  ?? $user->department,
@@ -100,9 +97,8 @@ class AuthService
     public function deleteAccount(int $id)
     {
         $user = User::findOrFail($id);
-
         $user->delete();
-
+        
         return $user;
     }
 

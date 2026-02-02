@@ -50,10 +50,10 @@ class User extends Authenticatable
 
         $access = $permission->access;
 
-        if ($access === 'write') return true; // full access
+        if ($access === 'write') return true;
         if ($access === 'read' && $action === 'read') return true;
-        if ($access === 'custom') return true; // optional custom logic
+        if ($access === 'custom') return true;
 
-        return false; // none
+        return false;
     }
 }

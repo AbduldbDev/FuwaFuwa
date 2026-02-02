@@ -14,15 +14,19 @@ class DashboardController extends Controller
         $this->dashboardService = $dashboardService;
     }
 
-    public function index()
+    private function authorizeRead(): void
     {
-
         if (!user()->canAccess('Dashboard', 'read')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
 
         $data = $this->dashboardService->getDashboardData();
-
+        
         return view('Pages/dashboard', $data);
     }
 }

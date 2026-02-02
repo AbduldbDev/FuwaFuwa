@@ -14,14 +14,19 @@ class AssetArchiveController extends Controller
         $this->assetService = $assetService;
     }
 
-
-    public function index()
+    private function authorizeRead(): void
     {
         if (!user()->canAccess('Asset Archive', 'read')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
 
         $items = $this->assetService->getAssetArchive();
+
         return view('Pages/assetArchive', compact('items'));
     }
 }

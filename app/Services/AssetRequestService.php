@@ -100,8 +100,6 @@ class AssetRequestService
             "Asset request #{$request->request_id} status was updated to " . $request->status . " by " . Auth::user()->name . ".",
             'info'
         );
-
-
         return $request;
     }
 
@@ -123,8 +121,6 @@ class AssetRequestService
             "Asset request #{$assetRequest->request_id} status was " . $approvalStatus . " by " . Auth::user()->name . ".",
             'info'
         );
-
-
         return $assetRequest;
     }
 

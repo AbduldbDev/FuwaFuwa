@@ -22,7 +22,7 @@ class UserType
 
         $user = Auth::user();
 
-        if (!in_array($user->user_type, $types)) { // make sure it's 'user_type' like in your DB
+        if (!in_array($user->user_type, $types)) {
             return redirect()->back()->with('error', 'Unauthorized action.');
         }
 

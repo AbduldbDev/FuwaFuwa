@@ -17,11 +17,23 @@ class SystemConfigurationController extends Controller
         $this->systemService = $systemService;
     }
 
-    public function index()
+    private function authorizeRead(): void
     {
         if (!user()->canAccess('System', 'read')) {
             abort(403, 'Unauthorized');
         }
+    }
+
+    private function authorizeWrite(): void
+    {
+        if (!user()->canAccess('System', 'write')) {
+            abort(403, 'Unauthorized');
+        }
+    }
+
+    public function index()
+    {
+        $this->authorizeRead();
 
         $data = $this->systemService->getRolesData();
 
@@ -30,9 +42,7 @@ class SystemConfigurationController extends Controller
 
     public function saveRole(Request $request)
     {
-        if (!user()->canAccess('System', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->systemService->savePermissions($request->permissions);
@@ -47,9 +57,7 @@ class SystemConfigurationController extends Controller
 
     public function updateOrCreate(CompanyProfileRequest $request)
     {
-        if (!user()->canAccess('System', 'write')) {
-            abort(403, 'Unauthorized');
-        }
+        $this->authorizeWrite();
 
         try {
             $this->systemService->updateOrCreate($request->validated());
