@@ -669,4 +669,4 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('/js/Assets/addAsset.js') }}"></script>
+<script src="{{ asset('Js/Assets/addAsset.js') }}"></script>
