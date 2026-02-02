@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Next Maintenance</label>
+                        <label class="form-label">Last Maintenance</label>
                         <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ? new Date(asset.next_maintenance).toISOString().split('T')[0] : ''}">
                     </div>
                 `;

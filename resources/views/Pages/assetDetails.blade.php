@@ -393,7 +393,7 @@
                                     {{ \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y') }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Next Schedule Maintenance</div>
+                                <div class="col-4 label">Last Maintenance Schedule</div>
                                 <div class="col-8 value">
                                     {{ \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') }}</div>
                             </div>

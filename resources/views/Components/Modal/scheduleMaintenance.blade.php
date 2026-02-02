@@ -143,8 +143,7 @@
                                 <label for="assignedTechnician" class="form-label text-muted">
                                     Assigned Technician
                                 </label>
-                                <input type="text" name="assignedTechnician" class="form-control"
-                                    name="technician" />
+                                <input type="text" class="form-control" name="technician" />
                             </div>
                         </div>
                     </form>

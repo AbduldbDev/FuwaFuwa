@@ -624,7 +624,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Next Scheduled Maintenance</label>
+                            <label class="form-label">Last Scheduled Maintenance</label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="next_maintenance" />
                         </div>

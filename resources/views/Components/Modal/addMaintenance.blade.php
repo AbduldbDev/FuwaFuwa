@@ -87,17 +87,25 @@
                            <!-- Shared Asset Info -->
                            <div class="row mb-3">
                                <div class="col-md-4">
-                                   <label class="form-label">Asset</label>
-                                   <select name="asset_tag" id="assetSelect" class="form-select">
-                                       <option value="">-- Select Asset --</option>
-                                       @foreach ($Assets as $item)
-                                           <option value="{{ $item->asset_tag }}" data-tag="{{ $item->asset_tag }}"
-                                               data-name="{{ $item->asset_name }}"
-                                               data-last-maintenance="{{ $item->last_maintenance_date }}">
-                                               {{ $item->asset_tag }} - {{ $item->asset_name }}
-                                           </option>
-                                       @endforeach
-                                   </select>
+                                   <div class="position-relative">
+                                       <label class="form-label">Asset Tags</label>
+                                       <input type="text" id="assetInput" class="form-control"
+                                           placeholder="Type to search asset">
+
+                                       <div id="assetDropdown" class="list-group position-absolute w-100 d-none"
+                                           style="max-height:200px; overflow:auto; z-index:1055;">
+                                           @foreach ($Assets as $item)
+                                               <button type="button" class="list-group-item list-group-item-action"
+                                                   data-tag="{{ $item->asset_tag }}" data-name="{{ $item->asset_name }}"
+                                                   data-next="{{ $item->next_maintenance }}">
+                                                   {{ $item->asset_tag }} - {{ $item->asset_name }}
+                                               </button>
+                                           @endforeach
+                                       </div>
+                                   </div>
+
+                                   <input type="hidden" name="asset_tag">
+
                                </div>
                                <div class="col-md-4">
                                    <label class="form-label">Asset Name</label>
@@ -168,29 +176,55 @@
        </div>
    </div>
    <script>
-       document.addEventListener('DOMContentLoaded', function() {
+       document.addEventListener('DOMContentLoaded', () => {
 
-           const modal = document.getElementById('assetIssueModal');
+           const input = document.getElementById('assetInput');
+           const dropdown = document.getElementById('assetDropdown');
+           const hidden = document.querySelector('input[name="asset_tag"]');
 
-           modal.addEventListener('shown.bs.modal', function() {
+           // Filter dropdown while typing
+           input.addEventListener('input', () => {
+               const filter = input.value.toLowerCase();
+               let hasMatch = false;
 
-               if (!$('#assetSelect').hasClass("select2-hidden-accessible")) {
-                   $('#assetSelect').select2({
-                       placeholder: 'Search asset...',
-                       width: '100%',
-                       dropdownParent: $('#assetIssueModal')
-                   });
-               }
+               dropdown.querySelectorAll('button').forEach(item => {
+                   const text = item.textContent.toLowerCase();
+                   const match = text.includes(filter);
+                   item.classList.toggle('d-none', !match);
+                   if (match) hasMatch = true;
+               });
 
+               dropdown.classList.toggle('d-none', !hasMatch);
            });
 
-           $('#assetSelect').on('change', function() {
-               let selected = $(this).find(':selected');
+           // Click to select an asset
+           dropdown.addEventListener('click', e => {
+               if (e.target.tagName === 'BUTTON') {
+                   const btn = e.target;
 
-               $('input[name="asset_name"]').val(selected.data('name') ?? '');
-               $('input[name="last_maintenance_date"]').val(
-                   selected.data('last-maintenance') ?? ''
-               );
+                   // Put the asset_tag in the input
+                   input.value = btn.dataset.tag;
+
+                   // Put the asset_tag in hidden for form submission
+                   hidden.value = btn.dataset.tag;
+
+                   // Fill asset name
+                   document.querySelector('input[name="asset_name"]').value =
+                       btn.dataset.name || '';
+
+                   // Fill next maintenance date (YYYY-MM-DD)
+                   document.querySelector('input[name="last_maintenance_date"]').value =
+                       btn.dataset.next ? btn.dataset.next.split(' ')[0] : '';
+
+                   dropdown.classList.add('d-none');
+               }
+           });
+
+           // Close dropdown if click outside
+           document.addEventListener('click', e => {
+               if (!e.target.closest('.position-relative')) {
+                   dropdown.classList.add('d-none');
+               }
            });
 
        });
