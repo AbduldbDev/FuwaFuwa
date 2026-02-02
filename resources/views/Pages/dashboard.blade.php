@@ -140,7 +140,7 @@
                                                 {{ $item->compliance_status }}
                                             </td>
                                             <td>{{ $item->purchase_cost }}</td>
-                                            <td>{{ $item->location }}</td>
+                                            <td>{{ number_format($item->current_value, 2) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -217,6 +217,7 @@
     </script>
 
     <script src="{{ asset('/Js/tablesearch.js') }}"></script>
+    <script src="{{ asset('/Js/Assets/assetFilter.js') }}"></script>
 @endsection
 
 @push('css')

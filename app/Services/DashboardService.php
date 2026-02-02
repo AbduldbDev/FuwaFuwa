@@ -7,9 +7,27 @@ use App\Models\User;
 
 class DashboardService
 {
-    public function getLatestAssets($limit = 10)
+    public function getAllAssetsWithDepreciation($limit = 10)
     {
-        return Assets::where('operational_status',  '!=', 'archived')->latest()->take($limit)->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->latest()->take($limit)->get();
+
+        return $assets->map(function ($asset) {
+            $cost = $asset->purchase_cost ?? 0;
+            $salvage = $asset->salvage_value ?? 0;
+            $usefulLife = $asset->useful_life_years ?? 1;
+
+            $yearsUsed = $asset->created_at->diffInYears(now());
+            $depreciation = ($cost - $salvage) / $usefulLife;
+            $totalDepreciation = $depreciation * $yearsUsed;
+            $currentValue = max($cost - $totalDepreciation, $salvage);
+
+            $asset->depreciation_expense = $depreciation;
+            $asset->current_value = $currentValue;
+            $asset->years_used = $yearsUsed;
+            $asset->remaining_life = max($usefulLife - $yearsUsed, 0);
+            $asset->depreciation_rate = (($cost - $salvage) / $cost / $usefulLife) * 100;
+            return $asset;
+        });
     }
 
     public function getTotalAssets()
@@ -81,7 +99,7 @@ class DashboardService
     public function getDashboardData()
     {
         return [
-            'items' => $this->getLatestAssets(),
+            'items' => $this->getAllAssetsWithDepreciation(),
             'totalAssets' => $this->getTotalAssets(),
             'totalonhand' => $this->getTotalOnHand(),
             'totalCost' => $this->getTotalCost(),

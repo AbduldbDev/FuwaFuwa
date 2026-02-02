@@ -85,13 +85,7 @@
                     modalFields.innerHTML = `
                     <div class="mb-3">
                         <label class="form-label">Assigned To</label>
-                        <select class="form-select" name="assigned_to">
-                            ${users.map(u => `
-                                <option value="${u.name}" ${u.name === asset.assigned_to ? 'selected' : ''}>
-                                    ${u.name}
-                                </option>
-                            `).join('')}
-                        </select>
+                       <input type="text" class="form-control required-field" name="assigned_to" value="${asset.assigned_to ?? ''}"/>
                     </div>
 
                     <div class="mb-3">
@@ -99,9 +93,17 @@
                         <input type="text" name="department" class="form-control" value="${asset.department ?? ''}">
                     </div>
 
-                    <div class="mb-3">
+                   <div class="mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" name="location" class="form-control" value="${asset.location ?? ''}">
+                        <select class="form-select" name="location">
+                            <option value="">Select location</option>
+                            <option value="Main Office" ${asset.location === 'Main Office' ? 'selected' : ''}>
+                                Main Office
+                            </option>
+                            <option value="Warehouse" ${asset.location === 'Warehouse' ? 'selected' : ''}>
+                                Warehouse
+                            </option>
+                        </select>
                     </div>
                 `;
                     break;

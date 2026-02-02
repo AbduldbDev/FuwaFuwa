@@ -154,7 +154,7 @@
               <div class="modal-footer">
                   <button class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
 
-                  @if (Auth::user()->canAccess('Asset Request', 'write'))
+                  @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin')
                       @if ($item->status === 'Pending Approval')
                           <form action="{{ route('asset-request.rejectStatus', $item->id) }}" method="POST">
                               @csrf
