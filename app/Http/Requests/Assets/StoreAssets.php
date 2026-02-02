@@ -34,7 +34,8 @@ class StoreAssets extends FormRequest
             'specs.*'            => 'required|string',
             'contract'           => 'nullable|file|mimes:pdf|max:25600',
             'purchase_order'     => 'nullable|file|mimes:pdf|max:25600',
-            'assetQuantity'           => 'nullable|integer',
+            'assetQuantity'      => 'nullable|integer',
+            'AssetRequestId'      => 'nullable|integer',
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AssetLogs;
+use App\Models\AssetRequest;
 use App\Models\Assets;
 use App\Models\SystemSettings;
 use App\Models\TechnicalSpecification;
@@ -131,6 +132,11 @@ class AssetService
                     ]);
                 }
             }
+        }
+
+
+        if (!empty($data['AssetRequestId'])) {
+            AssetRequest::where('id', $data['AssetRequestId'])->update(['is_added' => 1]);
         }
 
         $this->notification->notifyUsersWithModuleAccess(

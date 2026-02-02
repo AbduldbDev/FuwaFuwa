@@ -154,7 +154,7 @@
               <div class="modal-footer">
                   <button class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
 
-                  @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin')
+                  @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin' && $item->is_added === 0)
                       @if ($item->status === 'Pending Approval')
                           <form action="{{ route('asset-request.rejectStatus', $item->id) }}" method="POST">
                               @csrf
@@ -176,7 +176,8 @@
                           <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
                               data-bs-target="#assetModal" data-asset-type="{{ $item->asset_type }}"
                               data-asset-category="{{ $item->asset_category }}" data-asset-name="{{ $item->model }}"
-                              data-quantity="{{ $item->quantity }}" data-cost="{{ $item->cost }}">
+                              data-quantity="{{ $item->quantity }}" data-cost="{{ $item->cost }}"
+                              data-request-id="{{ $item->id }}">
                               <i class="fa-solid fa-plus me-1"></i> Add Asset
                           </button>
                       @else

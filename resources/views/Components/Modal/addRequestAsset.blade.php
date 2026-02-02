@@ -23,6 +23,7 @@
                             <i class="fa-regular fa-user"></i>
                             <h6>Basic Information</h6>
                         </div>
+                        <input type="text" name="AssetRequestId" id="AssetRequestId">
 
                         <div class="mb-3">
                             <label class="form-label">Asset Name</label>
@@ -508,10 +509,7 @@
                             <select class="form-select" name="location">
                                 <option value="">Select location</option>
                                 <option>Main Office</option>
-                                <option>Branch Office</option>
                                 <option>Warehouse</option>
-                                <option>Data Center</option>
-                                <option>Remote</option>
                             </select>
                         </div>
                     </div>
@@ -1134,6 +1132,7 @@
                     const assetCategory = button.getAttribute('data-asset-category') || '';
                     const assetName = button.getAttribute('data-asset-name') || '';
                     const assetQuantity = button.getAttribute('data-quantity') || '';
+                    const requestID = button.getAttribute('data-request-id') || '';
 
                     selectedCategory = assetType;
                     selectedType = assetCategory;
@@ -1142,11 +1141,13 @@
                     const summaryType = document.getElementById('summaryType');
                     const assetNameInput = document.getElementById('assetName');
                     const assetQuantityInput = document.getElementById('assetQuantity');
+                    const requestIDInput = document.getElementById('AssetRequestId');
 
                     if (summaryCategory) summaryCategory.value = assetType;
                     if (summaryType) summaryType.value = assetCategory;
                     if (assetNameInput) assetNameInput.value = assetName;
                     if (assetQuantityInput) assetQuantityInput.value = assetQuantity;
+                    if (requestIDInput) requestIDInput.value = requestID;
 
                     populateOperationalStatus();
                     displayAssetTypesInfo();
