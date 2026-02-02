@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('vendor')->nullable()->constrained('vendors')->nullOnDelete();
             $table->string('asset_id')->unique();
             $table->string('asset_tag')->unique();
             $table->string('asset_name');
-            $table->string('asset_category'); // Physical / Digital
-            $table->string('asset_type');     // PC, Laptop, Router, Software, License
+            $table->string('asset_category');
+            $table->string('asset_type');
             $table->string('operational_status')->nullable();
             $table->string('assigned_to')->nullable();
             $table->string('department')->nullable();
             $table->string('location')->nullable();
-            $table->string('vendor')->nullable();
             $table->date('purchase_date')->nullable();
             $table->decimal('purchase_cost', 15, 2)->nullable();
             $table->integer('useful_life_years')->nullable();

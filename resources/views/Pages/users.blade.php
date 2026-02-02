@@ -142,8 +142,8 @@
     </div>
     @include('Components/Modal/adduser')
 
-    <script src="{{ asset('/js/userSearch.js') }}"></script>
-    <script src="{{ asset('/js/userFilter.js') }}"></script>
+    <script src="{{ asset('/js/User/userSearch.js') }}"></script>
+    <script src="{{ asset('/js/User/userFilter.js') }}"></script>
     <script src="{{ asset('/js/SweetAlert/UserDelete.js') }}"></script>
 @endsection
 

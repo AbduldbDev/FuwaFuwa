@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Assets;
 use App\Models\AssetRequest;
+use App\Models\User;
+use App\Models\Vendors;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -44,6 +46,16 @@ class AssetRequestService
         return Assets::where('assigned_to', null)->count();
     }
 
+    public function getActiveUsers()
+    {
+        return User::where('status', 'active')->get();
+    }
+
+    public function getActiveVendors()
+    {
+        return Vendors::where('status', 'Active')->get();
+    }
+
     public function getDashboardData()
     {
         return [
@@ -52,6 +64,8 @@ class AssetRequestService
             'TotalRequests' => $this->getTotalPendingRequests(),
             'TotalEmergency' => $this->getTotalEmergency(),
             'TotalOnHand' => $this->getTotalOnHand(),
+            'users' => $this->getActiveUsers(),
+            'vendors' => $this->getActiveVendors(),
         ];
     }
 

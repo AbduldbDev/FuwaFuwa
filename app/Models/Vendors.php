@@ -17,4 +17,14 @@ class Vendors extends Model
         'category',
         'status',
     ];
+
+    public function documents()
+    {
+        return $this->hasMany(VendorDocuments::class, 'vendor_id', 'id');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(VendorPurchase::class, 'vendor_id', 'id');
+    }
 }

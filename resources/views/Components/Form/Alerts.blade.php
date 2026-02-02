@@ -46,7 +46,7 @@
             <div class="icon-container me-3 text-${type}">
                 <i class="fa-solid ${icon} fa-lg fa-beat"></i>
             </div>
-            <div class="alert-message flex-grow-1" style="text-transform: capitalize;">${message}</div>
+            <div class="alert-message flex-grow-1">${message}</div>
             <button type="button" class="btn-close ms-3" aria-label="Close"></button>
         `;
 

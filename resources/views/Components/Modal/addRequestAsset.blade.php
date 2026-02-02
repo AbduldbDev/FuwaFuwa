@@ -1,4 +1,4 @@
-<div class="modal fade" id="assetModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="assetModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered ">
         <div class="modal-content">
             <!-- modal header -->
@@ -14,29 +14,7 @@
                 <div class="modal-body px-4">
                     <!-- ===== Asset Category and Type ===== -->
                     <div id="slide1">
-                        <p class="form-label">Select Asset Type</p>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="asset-option" onclick="selectCategory('Physical Asset', this)">
-                                    <i class="fa-solid fa-box"></i>
-                                    <h6>Physical Asset</h6>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="asset-option" onclick="selectCategory('Digital Asset', this)">
-                                    <i class="fa-solid fa-laptop-code"></i>
-                                    <h6>Digital Asset</h6>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="form-label">Asset Category</label>
-                            <select class="form-select shadow-none" id="assetType" disabled>
-                                <option value="">Select asset category first</option>
-                            </select>
-                        </div>
                     </div>
 
                     <!-- ===== Basic Information ===== -->
@@ -48,7 +26,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Asset Name</label>
-                            <input type="text" class="form-control" name="asset_name" required />
+                            <input type="text" id="assetName" class="form-control" name="asset_name" required />
+                            <input type="hidden" id="assetQuantity" name="assetQuantity">
                         </div>
 
                         <div class="mb-3">
@@ -670,30 +649,11 @@
     </div>
 </div>
 
-<style>
-    .required-field.error {
-        border: 1px solid #dc3545 !important;
-    }
-
-    .error-message {
-        color: #dc3545;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-        display: none;
-    }
-
-    .required-text {
-        color: #dc3545;
-        font-size: 0.75rem;
-        font-weight: normal;
-        margin-left: 0.25rem;
-    }
-</style>
-
 <script>
+    // Define variables and functions first
     let selectedCategory = "";
     let selectedType = "";
-    let currentSlide = 1;
+    let currentSlide = 2;
 
     const assetTypes = {
         "Physical Asset": [
@@ -714,49 +674,144 @@
         "Digital Asset": ["Active", "Inactive", "Expired"],
     };
 
-    /* ===============================
-       CATEGORY & TYPE SELECTION
-    =============================== */
-    function selectCategory(category, element) {
-        selectedCategory = category;
+    // ===============================
+    // ASSET TYPES INFO DISPLAY
+    // ===============================
+    function displayAssetTypesInfo() {
+        const container = document.getElementById('assetTypesInfo');
+        if (!container) return;
 
-        document.querySelectorAll(".asset-option").forEach((opt) =>
-            opt.classList.remove("active")
-        );
-        element.classList.add("active");
+        container.innerHTML = '';
 
-        const assetTypeSelect = document.getElementById("assetType");
-        assetTypeSelect.disabled = false;
-        assetTypeSelect.innerHTML = '<option value="">Select Category</option>';
+        // Create title
+        const title = document.createElement('h6');
+        title.className = 'mb-3';
+        title.style.fontSize = '14px';
+        title.style.fontWeight = '600';
+        title.style.color = '#495057';
+        title.textContent = 'Available Asset Types & Categories:';
+        container.appendChild(title);
 
-        assetTypes[category].forEach((type) => {
-            const option = document.createElement("option");
-            option.value = type;
-            option.textContent = type;
-            assetTypeSelect.appendChild(option);
-        });
+        // Add asset types list
+        for (const [type, categories] of Object.entries(assetTypes)) {
+            const typeDiv = document.createElement('div');
+            typeDiv.className = 'asset-type-item';
+
+            const typeName = document.createElement('strong');
+            typeName.textContent = type + ': ';
+            typeDiv.appendChild(typeName);
+
+            const categoriesList = document.createElement('span');
+            categoriesList.textContent = categories.join(', ');
+            typeDiv.appendChild(categoriesList);
+
+            container.appendChild(typeDiv);
+        }
+
+        // Add operational status info
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'status-options';
+
+        const statusTitle = document.createElement('h6');
+        statusTitle.textContent = 'Operational Status Options:';
+        statusDiv.appendChild(statusTitle);
+
+        for (const [type, statuses] of Object.entries(operationalStatusOptions)) {
+            const statusItem = document.createElement('div');
+            statusItem.className = 'ms-2 mt-2';
+
+            const typeSpan = document.createElement('span');
+            typeSpan.style.fontStyle = 'italic';
+            typeSpan.textContent = type + ': ';
+            statusItem.appendChild(typeSpan);
+
+            const statusSpan = document.createElement('span');
+            statusSpan.textContent = statuses.join(', ');
+            statusItem.appendChild(statusSpan);
+
+            statusDiv.appendChild(statusItem);
+        }
+
+        container.appendChild(statusDiv);
     }
 
+    // ===============================
+    // POPULATE OPERATIONAL STATUS
+    // ===============================
     function populateOperationalStatus() {
         const statusSelect = document.getElementById("operationalStatus");
-        statusSelect.innerHTML = '<option value="">Select Status</option>';
+        if (!statusSelect) return;
 
-        operationalStatusOptions[selectedCategory].forEach((status) => {
-            const option = document.createElement("option");
-            option.value = status;
-            option.textContent = status;
-            statusSelect.appendChild(option);
-        });
+        statusSelect.innerHTML = '<option value="">Select status</option>';
+
+        if (selectedCategory && operationalStatusOptions[selectedCategory]) {
+            operationalStatusOptions[selectedCategory].forEach((status) => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                statusSelect.appendChild(option);
+            });
+        } else {
+            const allStatuses = [...new Set(Object.values(operationalStatusOptions).flat())];
+            allStatuses.forEach((status) => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                statusSelect.appendChild(option);
+            });
+        }
     }
 
-    /* ===============================
-       VALIDATION FUNCTIONS
-    =============================== */
+    // ===============================
+    // TECHNICAL SPECIFICATIONS
+    // ===============================
+    function showTechnicalFields() {
+        // Hide all tech groups first
+        document.querySelectorAll(".tech-group").forEach((group) => {
+            group.style.display = "none";
+            // Disable all fields in hidden groups
+            group.querySelectorAll("input, select, textarea").forEach((input) => {
+                input.disabled = true;
+            });
+        });
+
+        // Determine which tech group to show
+        let targetType = selectedType;
+        if (selectedType === "PC" || selectedType === "Laptop") {
+            targetType = "PC Laptop";
+        }
+
+        const techGroup = document.querySelector(`.tech-group[data-type="${targetType}"]`);
+        if (techGroup) {
+            techGroup.style.display = "block";
+            // Enable all fields in visible group
+            techGroup.querySelectorAll("input, select, textarea").forEach((input) => {
+                input.disabled = false;
+            });
+        }
+    }
+
+    // ===============================
+    // VALIDATION FUNCTIONS
+    // ===============================
+    function showError(field, message) {
+        const existingError = field.nextElementSibling;
+        if (existingError && existingError.classList.contains('error-message')) {
+            existingError.remove();
+        }
+
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        errorMsg.textContent = message;
+        field.parentNode.insertBefore(errorMsg, field.nextSibling);
+    }
+
     function validateCurrentSlide() {
         const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+        if (!currentSlideElement) return false;
+
         let isValid = true;
 
-        // Remove previous error styles from ALL fields in current slide
         currentSlideElement.querySelectorAll('[data-required="true"], [required]').forEach(field => {
             field.classList.remove('error');
             const errorMsg = field.nextElementSibling;
@@ -765,13 +820,7 @@
             }
         });
 
-        // Special handling for each slide
-        if (currentSlide === 1) {
-            return validateSlide1();
-        }
-
         if (currentSlide === 2) {
-            // Basic Information slide
             const assetName = document.querySelector('#slide2 input[name="asset_name"]');
             const operationalStatus = document.querySelector('#slide2 select[name="operational_status"]');
 
@@ -793,26 +842,27 @@
         }
 
         if (currentSlide === 3) {
-            // Technical Specifications - only validate visible fields
-            const visibleTechGroup = document.querySelector(
-                '.tech-group[style*="display: block"], .tech-group[style*="display:block"]');
-            if (!visibleTechGroup) {
-                alert("Please select an asset type first.");
-                return false;
-            }
+            if (selectedType && selectedCategory) {
+                let targetType = selectedType;
+                if (selectedType === "PC" || selectedType === "Laptop") {
+                    targetType = "PC Laptop";
+                }
 
-            // Get only visible required fields
-            const visibleRequiredFields = visibleTechGroup.querySelectorAll('[data-required="true"]:not([disabled])');
+                const techGroup = document.querySelector(`.tech-group[data-type="${targetType}"]`);
+                if (techGroup) {
+                    const visibleRequiredFields = techGroup.querySelectorAll('[data-required="true"]:not([disabled])');
 
-            for (const field of visibleRequiredFields) {
-                let value = field.tagName === 'SELECT' ? field.value : field.value.trim();
+                    for (const field of visibleRequiredFields) {
+                        let value = field.tagName === 'SELECT' ? field.value : field.value.trim();
 
-                if (!value) {
-                    field.classList.add('error');
-                    showError(field, 'This field is required');
-                    isValid = false;
-                    if (!document.querySelector('.error')) {
-                        field.focus();
+                        if (!value) {
+                            field.classList.add('error');
+                            showError(field, 'This field is required');
+                            isValid = false;
+                            if (!document.querySelector('.error')) {
+                                field.focus();
+                            }
+                        }
                     }
                 }
             }
@@ -820,33 +870,9 @@
             return isValid;
         }
 
-        if (currentSlide === 4) {
-            // Assignment & Location - no required fields
-            return true;
-        }
+        if (currentSlide === 4) return true;
 
-        if (currentSlide === 5) {
-            // Purchase Information - validate all required fields
-            const requiredFields = currentSlideElement.querySelectorAll('[data-required="true"]:not([disabled])');
-
-            for (const field of requiredFields) {
-                let value = field.tagName === 'SELECT' ? field.value : field.value.trim();
-
-                if (!value) {
-                    field.classList.add('error');
-                    showError(field, 'This field is required');
-                    isValid = false;
-                    if (!document.querySelector('.error:focus')) {
-                        field.focus();
-                    }
-                }
-            }
-
-            return isValid;
-        }
-
-        if (currentSlide === 6) {
-            // Maintenance & Audit - validate all required fields
+        if ([5, 6].includes(currentSlide)) {
             const requiredFields = currentSlideElement.querySelectorAll('[data-required="true"]:not([disabled])');
 
             for (const field of requiredFields) {
@@ -868,54 +894,35 @@
         return true;
     }
 
-    function showError(field, message) {
-        // Remove existing error message
-        const existingError = field.nextElementSibling;
-        if (existingError && existingError.classList.contains('error-message')) {
-            existingError.remove();
-        }
+    // ===============================
+    // SLIDE NAVIGATION
+    // ===============================
+    function showSlide(slideNumber) {
+        document.querySelectorAll('[id^="slide"]').forEach((slide) => {
+            const slideId = parseInt(slide.id.replace('slide', ''));
+            slide.style.display = slideId === slideNumber ? "block" : "none";
+        });
 
-        // Add new error message
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = message;
-        field.parentNode.insertBefore(errorMsg, field.nextSibling);
+        if (slideNumber === 3) showTechnicalFields();
+
+        currentSlide = slideNumber;
+
+        const nextButton = document.querySelector('.next-btn');
+        if (nextButton) {
+            if (slideNumber === 7) {
+                nextButton.textContent = 'Submit';
+                nextButton.classList.add('submit-btn');
+                nextButton.classList.remove('next-btn');
+            } else {
+                nextButton.textContent = 'Next';
+                nextButton.classList.add('next-btn');
+                nextButton.classList.remove('submit-btn');
+            }
+        }
     }
 
-    function validateSlide1() {
-        const type = document.getElementById("assetType").value;
-
-        if (!selectedCategory) {
-            alert("Please select an Asset Type (Physical or Digital).");
-            return false;
-        }
-
-        if (!type) {
-            alert("Please select an Asset Category.");
-            return false;
-        }
-
-        return true;
-    }
-
-    /* ===============================
-       SLIDE NAVIGATION
-    =============================== */
     function nextSlide() {
-        // Validate current slide
         if (!validateCurrentSlide()) {
-            return;
-        }
-
-        // Navigation logic
-        if (currentSlide === 1) {
-            const type = document.getElementById("assetType").value;
-            selectedType = type;
-            document.getElementById("summaryCategory").value = selectedCategory;
-            document.getElementById("summaryType").value = selectedType;
-            populateOperationalStatus();
-
-            showSlide(2);
             return;
         }
 
@@ -945,9 +952,7 @@
             return;
         }
 
-
         if (currentSlide === 7) {
-            // Disable only hidden tech-group inputs
             document.querySelectorAll(".tech-group").forEach(group => {
                 if (group.style.display === "none" || group.style.display === "") {
                     group.querySelectorAll("input, select, textarea").forEach(el => {
@@ -956,142 +961,87 @@
                 }
             });
 
-            // Submit the form
             document.querySelector("#assetModal form").submit();
         }
     }
 
     function prevSlide() {
-        if (currentSlide > 1) {
-            // Remove error styles when going back
+        if (currentSlide > 2) {
             const currentSlideElement = document.getElementById(`slide${currentSlide}`);
-            currentSlideElement.querySelectorAll('.error').forEach(field => {
-                field.classList.remove('error');
-                const errorMsg = field.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains('error-message')) {
-                    errorMsg.remove();
-                }
-            });
+            if (currentSlideElement) {
+                currentSlideElement.querySelectorAll('.error').forEach(field => {
+                    field.classList.remove('error');
+                    const errorMsg = field.nextElementSibling;
+                    if (errorMsg && errorMsg.classList.contains('error-message')) {
+                        errorMsg.remove();
+                    }
+                });
+            }
 
             showSlide(currentSlide - 1);
             if (currentSlide - 1 === 3) showTechnicalFields();
         }
     }
 
-    /* ===============================
-       SHOW/HIDE SLIDES
-    =============================== */
-    function showSlide(slideNumber) {
-        document.querySelectorAll('[id^="slide"]').forEach((slide, index) => {
-            slide.style.display = index + 1 === slideNumber ? "block" : "none";
-        });
-
-        // Only show the correct technical spec inputs
-        if (slideNumber === 3) showTechnicalFields();
-
-        currentSlide = slideNumber;
-
-        // Update button text on last slide
-        const nextButton = document.querySelector('.next-btn');
-        if (slideNumber === 6) {
-            nextButton.textContent = 'Submit';
-            nextButton.classList.add('submit-btn');
-            nextButton.classList.remove('next-btn');
-        } else {
-            nextButton.textContent = 'Next';
-            nextButton.classList.add('next-btn');
-            nextButton.classList.remove('submit-btn');
-        }
-    }
-
-    /* ===============================
-       TECHNICAL SPECIFICATIONS
-    =============================== */
-    function showTechnicalFields() {
-        // Hide all tech groups first
-        document.querySelectorAll(".tech-group").forEach((group) => {
-            group.style.display = "none";
-            // Disable all fields in hidden groups
-            group.querySelectorAll("input, select, textarea").forEach((input) => {
-                input.disabled = true;
-            });
-        });
-
-        // Determine which tech group to show
-        let targetType = selectedType;
-        if (selectedType === "PC" || selectedType === "Laptop") {
-            targetType = "PC Laptop";
-        }
-
-        const techGroup = document.querySelector(`.tech-group[data-type="${targetType}"]`);
-        if (techGroup) {
-            techGroup.style.display = "block";
-            // Enable all fields in visible group
-            techGroup.querySelectorAll("input, select, textarea").forEach((input) => {
-                input.disabled = false;
-            });
-        }
-    }
-
-    /* ===============================
-       RESET MODAL
-    =============================== */
+    // ===============================
+    // RESET MODAL
+    // ===============================
     function resetAssetModal() {
         selectedCategory = "";
         selectedType = "";
-        currentSlide = 1;
+        currentSlide = 2;
 
-        // Hide all slides except slide 1
-        document.querySelectorAll('[id^="slide"]').forEach((slide, index) => {
-            slide.style.display = index === 0 ? "block" : "none";
+        document.querySelectorAll('[id^="slide"]').forEach((slide) => {
+            const slideId = parseInt(slide.id.replace('slide', ''));
+            slide.style.display = slideId === 2 ? "block" : "none";
         });
 
-        // Reset asset options
-        document.querySelectorAll(".asset-option").forEach((opt) =>
-            opt.classList.remove("active")
-        );
-
-        const assetTypeSelect = document.getElementById("assetType");
-        assetTypeSelect.disabled = true;
-        assetTypeSelect.innerHTML = '<option value="">Select Asset Type First</option>';
-
-        const operationalStatus = document.getElementById("operationalStatus");
-        if (operationalStatus) operationalStatus.innerHTML = '<option value="">Select Status</option>';
-
-        // Reset all inputs and remove error styles
         document.querySelectorAll("#assetModal input, #assetModal select, #assetModal textarea").forEach((el) => {
             el.classList.remove('error');
-            el.disabled = false; // Enable all fields first
+            el.disabled = false;
 
             if (el.type === "checkbox" || el.type === "radio") {
                 el.checked = false;
-            } else {
+            } else if (!el.readOnly) {
                 el.value = "";
             }
 
-            // Remove error messages
             const errorMsg = el.nextElementSibling;
             if (errorMsg && errorMsg.classList.contains('error-message')) {
                 errorMsg.remove();
             }
         });
 
-        // Hide all technical spec groups
+        document.getElementById('summaryCategory').value = '';
+        document.getElementById('summaryType').value = '';
+        document.getElementById('assetName').value = '';
+
+        const statusSelect = document.getElementById('operationalStatus');
+        if (statusSelect) {
+            statusSelect.innerHTML = '<option value="">Select status</option>';
+            const allStatuses = [...new Set(Object.values(operationalStatusOptions).flat())];
+            allStatuses.forEach((status) => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                statusSelect.appendChild(option);
+            });
+        }
+
+        displayAssetTypesInfo();
+
         document.querySelectorAll(".tech-group").forEach((group) => {
             group.style.display = "none";
         });
 
-        // Disable all fields except in slide 1
-        document.querySelectorAll('#slide2 input, #slide2 select, #slide2 textarea, ' +
-            '#slide3 input, #slide3 select, #slide3 textarea, ' +
+        document.querySelectorAll('#slide3 input, #slide3 select, #slide3 textarea, ' +
             '#slide4 input, #slide4 select, #slide4 textarea, ' +
             '#slide5 input, #slide5 select, #slide5 textarea, ' +
-            '#slide6 input, #slide5 select, #slide5 textarea, ' +
-            '#slide7 input, #slide6 select, #slide6 textarea').forEach(el => {
+            '#slide6 input, #slide6 select, #slide6 textarea, ' +
+            '#slide7 input, #slide7 select, #slide7 textarea').forEach(el => {
             el.disabled = true;
         });
 
-        // Reset button text
         const nextButton = document.querySelector('.next-btn, .submit-btn');
         if (nextButton) {
             nextButton.textContent = 'Next';
@@ -1099,41 +1049,75 @@
         }
     }
 
-    /* ===============================
-       BOOTSTRAP MODAL EVENT
-    =============================== */
-    const assetModal = document.getElementById("assetModal");
-    if (assetModal) {
-        assetModal.addEventListener("hidden.bs.modal", resetAssetModal);
-    }
+    // ===============================
+    // INITIALIZATION
+    // ===============================
+    document.addEventListener('DOMContentLoaded', function() {
+        const assetModal = document.getElementById('assetModal');
 
-    // Initialize first slide correctly
-    showSlide(1);
+        if (assetModal) {
+            // Initial display of asset types info
+            displayAssetTypesInfo();
 
-    // Add real-time validation to remove error styles when user starts typing
-    document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('error')) {
-            const value = e.target.tagName === 'SELECT' ? e.target.value : e.target.value.trim();
-            if (value) {
-                e.target.classList.remove('error');
-                const errorMsg = e.target.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains('error-message')) {
-                    errorMsg.remove();
+            // Event listener for modal show
+            assetModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+
+                if (button) {
+                    const assetType = button.getAttribute('data-asset-type') || '';
+                    const assetCategory = button.getAttribute('data-asset-category') || '';
+                    const assetName = button.getAttribute('data-asset-name') || '';
+                    const assetQuantity = button.getAttribute('data-quantity') || '';
+
+                    selectedCategory = assetType;
+                    selectedType = assetCategory;
+
+                    const summaryCategory = document.getElementById('summaryCategory');
+                    const summaryType = document.getElementById('summaryType');
+                    const assetNameInput = document.getElementById('assetName');
+                    const assetQuantityInput = document.getElementById('assetQuantity');
+
+                    if (summaryCategory) summaryCategory.value = assetType;
+                    if (summaryType) summaryType.value = assetCategory;
+                    if (assetNameInput) assetNameInput.value = assetName;
+                    if (assetQuantityInput) assetQuantityInput.value = assetQuantity;
+
+                    populateOperationalStatus();
+                    displayAssetTypesInfo();
+                }
+            });
+
+            // Event listener for modal hidden
+            assetModal.addEventListener("hidden.bs.modal", resetAssetModal);
+
+            // Initialize slide
+            showSlide(2);
+        }
+
+        // Real-time validation
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('error')) {
+                const value = e.target.tagName === 'SELECT' ? e.target.value : e.target.value.trim();
+                if (value) {
+                    e.target.classList.remove('error');
+                    const errorMsg = e.target.nextElementSibling;
+                    if (errorMsg && errorMsg.classList.contains('error-message')) {
+                        errorMsg.remove();
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // Also validate on change for select elements
-    document.addEventListener('change', function(e) {
-        if (e.target.tagName === 'SELECT' && e.target.classList.contains('error')) {
-            if (e.target.value) {
-                e.target.classList.remove('error');
-                const errorMsg = e.target.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains('error-message')) {
-                    errorMsg.remove();
+        document.addEventListener('change', function(e) {
+            if (e.target.tagName === 'SELECT' && e.target.classList.contains('error')) {
+                if (e.target.value) {
+                    e.target.classList.remove('error');
+                    const errorMsg = e.target.nextElementSibling;
+                    if (errorMsg && errorMsg.classList.contains('error-message')) {
+                        errorMsg.remove();
+                    }
                 }
             }
-        }
+        });
     });
 </script>

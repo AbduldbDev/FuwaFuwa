@@ -51,7 +51,11 @@ class AssetController extends Controller
         }
 
         try {
-            $this->assetService->store($request->validated());
+            $qty = (int) ($request->assetQuantity ?? 1);
+
+            for ($i = 0; $i < $qty; $i++) {
+                $this->assetService->store($request->validated());
+            }
 
             return redirect()->back()->with('success', 'Asset created successfully.');
         } catch (\Throwable $e) {

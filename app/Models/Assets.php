@@ -11,6 +11,7 @@ class Assets extends Model
 
     protected $fillable = [
         'created_by',
+        'vendor',
         'asset_id',
         'asset_tag',
         'asset_name',
@@ -20,7 +21,6 @@ class Assets extends Model
         'assigned_to',
         'department',
         'location',
-        'vendor',
         'purchase_date',
         'purchase_cost',
         'useful_life_years',
@@ -51,5 +51,10 @@ class Assets extends Model
     public function users()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendors::class, 'vendor');
     }
 }

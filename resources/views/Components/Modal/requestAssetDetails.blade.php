@@ -172,6 +172,13 @@
                                   <i class="fa-solid fa-check me-1"></i> Approve
                               </button>
                           </form>
+                      @elseif($item->status === 'Procured')
+                          <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#assetModal" data-asset-type="{{ $item->asset_type }}"
+                              data-asset-category="{{ $item->asset_category }}" data-asset-name="{{ $item->model }}"
+                              data-quantity="{{ $item->quantity }}" data-cost="{{ $item->cost }}">
+                              <i class="fa-solid fa-plus me-1"></i> Add Asset
+                          </button>
                       @else
                           <button type="submit" form="updateStatusForm-{{ $item->id }}"
                               class="btn btn-primary shadow-none">
@@ -184,7 +191,8 @@
           </div>
       </div>
   </div>
-  <script>
+
+  {{-- <script>
       document.addEventListener('DOMContentLoaded', function() {
           const statusSelect = document.getElementById('statusSelect');
           const nextStatus = document.getElementById('nextStatus');
@@ -213,4 +221,4 @@
               }
           });
       });
-  </script>
+  </script> --}}

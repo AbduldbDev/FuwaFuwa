@@ -42,7 +42,7 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
     </script>
 
-    <script src="{{ asset('/js/logout.js') }}"></script>
+    <script src="{{ asset('/js/SweetAlert/logout.js') }}"></script>
 </body>
 
 </html>

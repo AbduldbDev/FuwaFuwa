@@ -52,7 +52,7 @@ class VendorController extends Controller
         }
 
         try {
-            $this->vendorService->updateVendor($request->validated(), $vendor);
+            $this->vendorService->updateVendor($vendor, $request->validated());
 
             return redirect()->route('vendors.index')->with('success', 'Vendor updated successfully.');
         } catch (\Throwable $e) {
