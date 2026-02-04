@@ -33,8 +33,7 @@ return new class extends Migration
             $table->date('warranty_end')->nullable();
             $table->date('next_maintenance')->nullable();
             $table->string('status')->default('active');
-            $table->text('contract')->nullable();
-            $table->text('purchase_order')->nullable();
+            $table->text('documents')->nullable();
             $table->timestamps();
         });
     }

@@ -24,11 +24,6 @@
                 </a>
             @endif
 
-            <a href="{{ route('notifications.index') }}"
-                class="menu-link {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-bell"></i> Notifications
-            </a>
-
             @if (Auth::user()->canAccess('Assets', 'read'))
                 <a href="{{ route('assets.index') }}"
                     class="menu-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">

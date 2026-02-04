@@ -183,19 +183,47 @@
                     `;
                     break;
 
-                case 'documents':
-                    modalFields.innerHTML = `
-                    <div class="mb-3">
-                        <label class="form-label">Contract</label>
-                        <input type="file" name="contract" class="form-control">
-                    </div>
+                case 'documents': {
+                    // Clear modal
+                    modalFields.innerHTML = '';
 
-                    <div class="mb-3">
-                        <label class="form-label">Purchase Order</label>
-                        <input type="file" name="purchase_order" class="form-control">
-                    </div>
-                `;
+                    let existingDocs = [];
+                    try {
+                        existingDocs = asset.documents ? JSON.parse(asset.documents) : [];
+                        if (!Array.isArray(existingDocs)) existingDocs = [];
+                    } catch (e) {
+                        existingDocs = [];
+                    }
+
+                    existingDocs.forEach((doc, idx) => {
+                        const div = document.createElement('div');
+                        div.classList.add('mb-3');
+
+                        div.innerHTML = `
+                        <label class="form-label">Document Name</label>
+                        <input type="text" name="documents[name][]" class="form-control" value="${doc.name ?? ''}">
+                        <input type="hidden" name="documents[existing_file][]" value="${doc.file ?? ''}">
+                        <label class="form-label mt-1">Replace File (optional)</label>
+                        <input type="file" name="documents[file][]" class="form-control">
+                        <small>Current file: ${doc.file ? doc.file.split('/').pop() : 'No file'}</small>
+                    `;
+                        modalFields.appendChild(div);
+                    });
+
+                    // Template for new document
+                    const newDocDiv = document.createElement('div');
+                    newDocDiv.classList.add('mb-3');
+                    newDocDiv.innerHTML = `
+                        <label class="form-label">New Document Name</label>
+                        <input type="text" name="documents[name][]" class="form-control">
+                        <input type="file" name="documents[file][]" class="form-control mt-1">
+                    `;
+                    modalFields.appendChild(newDocDiv);
+
                     break;
+                }
+
+
             }
         });
     });

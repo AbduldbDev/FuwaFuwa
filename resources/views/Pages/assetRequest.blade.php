@@ -41,7 +41,7 @@
             <!-- controls -->
             <div class="request-control">
                 <h3 class="mb-3">Requests Overview</h3>
-                <i class="fa-solid fa-filter"></i>
+
             </div>
 
             <!-- filters -->

@@ -73,7 +73,9 @@
 
                 <!-- Delete Icon -->
 
-                @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
+                @if (Auth::user()->canAccess('Assets', 'write') &&
+                        $item->operational_status !== 'archived' &&
+                        Auth::user()->user_type == 'admin')
                     <button class="delete-btn" data-url="{{ route('assets.delete', $item->id) }}">
                         <i class="fa-regular fa-trash-can"></i>
                     </button>
@@ -391,7 +393,9 @@
                                 </div>
 
                                 <div class="col-8 value">
-                                    {{ \Carbon\Carbon::parse($item->warranty_start)->format('F d, Y') }}</div>
+
+                                    {{ $item->warranty_start ? \Carbon\Carbon::parse($item->warranty_start)->format('F d, Y') : 'N/A' }}
+                                </div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-4 label">
@@ -403,14 +407,17 @@
                                 </div>
 
                                 <div class="col-8 value">
-                                    {{ \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y') }}</div>
+                                    {{ $item->warranty_end ? \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y') : 'N/A' }}
+                                </div>
+
                             </div>
 
                             @if ($item->asset_type !== 'Digital Asset')
                                 <div class="row detail-row">
                                     <div class="col-4 label">Last Maintenance Schedule</div>
                                     <div class="col-8 value">
-                                        {{ \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') }}</div>
+                                        {{ $item->next_maintenance ? \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') : 'N/A' }}
+                                    </div>
                                 </div>
                             @endif
                             {{-- <div class="row detail-row">
@@ -427,13 +434,11 @@
                     <!-- documents -->
                     <div class="section-card mb-4">
                         <div class="section-toggle">
-                            <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
                                 <i class="fa-solid fa-chevron-down"></i>
                                 <h6 class="mb-0 fw-semibold">Documents</h6>
                             </div>
 
-                            <!-- edi asset btn -->
                             @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
@@ -447,32 +452,36 @@
                         </div>
 
                         <div class="section-body">
-                            <div class="row detail-row">
-                                <div class="col-4 label">Contract</div>
-                                <div class="col-8 value">
-                                    @if ($item->contract)
-                                        <a href="{{ $item->contract }}" target="_blank">
-                                            {{ str_replace('/storage/AssetDocuments/', '', $item->contract) }}
-                                        </a>
-                                    @else
-                                        N/A
-                                    @endif
+                            @php
+                                $documents = is_array($item->documents)
+                                    ? $item->documents
+                                    : json_decode($item->documents, true) ?? [];
+                            @endphp
+
+                            @forelse ($documents as $doc)
+                                <div class="row detail-row">
+                                    <div class="col-4 label">
+                                        {{ $doc['name'] ?? 'Document' }}
+                                    </div>
+
+                                    <div class="col-8 value">
+                                        @if (!empty($doc['file']))
+                                            <a href="{{ $doc['file'] }}" target="_blank">
+                                                {{ basename($doc['file']) }}
+                                            </a>
+                                        @else
+                                            <span class="text-muted">No file uploaded</span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row detail-row">
-                                <div class="col-4 label">Purchase Order</div>
-                                <div class="col-8 value">
-                                    @if ($item->purchase_order)
-                                        <a href="{{ $item->purchase_order }}" target="_blank">
-                                            {{ str_replace('/storage/AssetDocuments/', '', $item->purchase_order) }}
-                                        </a>
-                                    @else
-                                        N/A
-                                    @endif
+                            @empty
+                                <div class="row detail-row">
+                                    <div class="col-12 text-muted">No documents available</div>
                                 </div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
+
                 </div>
 
                 <!-- right side -->

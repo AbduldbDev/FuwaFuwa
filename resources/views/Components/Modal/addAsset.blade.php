@@ -47,24 +47,24 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Name</label>
+                            <label class="form-label">Asset Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="asset_name" required />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Type</label>
+                            <label class="form-label">Asset Type <span class="text-danger">*</span></label>
                             <input type="text" id="summaryCategory" class="form-control" name="asset_type"
                                 readonly />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Category</label>
+                            <label class="form-label">Asset Category <span class="text-danger">*</span></label>
                             <input type="text" id="summaryType" class="form-control" name="asset_category"
                                 readonly />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Operational Status</label>
+                            <label class="form-label">Operational Status <span class="text-danger">*</span></label>
                             <select id="operationalStatus" class="form-select" name="operational_status" required>
                                 <option value="">Select status</option>
                             </select>
@@ -82,45 +82,44 @@
                         <div class="tech-group" data-type="PC Laptop">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Asset_Model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Processor
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Processor]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">RAM
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[RAM]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Storage
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Storage]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Operating System
-                                    <span class="required-text">* Required</span>
                                 </label>
-                                <input type="text" class="form-control required-field" data-required="true"
+                                <input type="text" class="form-control required-field"
                                     name="specs[Operating_System]" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">MAC Address
-                                    <span class="required-text">* Required</span>
+                                <label class="form-label">Serial Number
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[MAC_Address]" />
+                                    name="specs[Serial_Number]" />
                             </div>
                         </div>
 
@@ -128,14 +127,14 @@
                         <div class="tech-group" data-type="Router">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Asset_Model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Network Role
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[Network_Role]">
@@ -148,28 +147,28 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Firmware Version
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Firmware_Version]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Routing Protocols
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Routing_Protocols]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">WAN / LAN Ports
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[WAN/LAN_Ports]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Throughput Capacity
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Throughout_Capacity]" />
@@ -180,14 +179,14 @@
                         <div class="tech-group" data-type="Firewall">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Asset_Model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Cabinet Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[Cabinet_Type]">
@@ -200,14 +199,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Rack Units
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Rack_Units]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Cooling Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[Cooling_Type]">
@@ -219,7 +218,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">IDS / IPS Support
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[IDS/IPS_Support]">
@@ -231,7 +230,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Throughput Capacity
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Throughput_Capacity]" />
@@ -242,28 +241,28 @@
                         <div class="tech-group" data-type="Switch">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Asset_Model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Number of Ports
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" class="form-control required-field" data-required="true"
                                     name="specs[Number_of_Ports]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">VLAN Configuration
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[VLAN_Configuration]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Switch Role
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[Switch_Role]">
@@ -275,14 +274,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Port Speed
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Port_Speed]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">PoE Support
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[PoE_Support]">
@@ -298,15 +297,15 @@
                         <!-- License -->
                         <div class="tech-group" data-type="License">
                             <div class="mb-3">
-                                <label class="form-label">License SKU
-                                    <span class="required-text">* Required</span>
+                                <label class="form-label">License Name
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[License_SKU]" />
+                                    name="specs[License_Name]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">License Edition
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[License_Edition]">
@@ -320,15 +319,8 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Cost per License
-                                    <span class="required-text">* Required</span>
-                                </label>
-                                <input type="number" class="form-control required-field" data-required="true"
-                                    name="specs[Cost_per_License]" />
-                            </div>
-                            <div class="mb-3">
                                 <label class="form-label">License Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[License_Type]">
@@ -338,15 +330,28 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label class="form-label">Subscription Type
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select required-field" data-required="true"
+                                    name="specs[Subscription_Type]">
+                                    <option value="">Select Subscription Type</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Annual">Annual</option>
+                                    <option value="Annual">Perpetual</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
                                 <label class="form-label">Number of Seats
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" class="form-control required-field" data-required="true"
                                     name="specs[Number_of_seats]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">License Key
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[License_Key]" />
@@ -357,21 +362,21 @@
                         <div class="tech-group" data-type="Modem">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[asset_model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">ISP Name
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[ISP_Name]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Connection Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[Connection_Type]">
@@ -385,17 +390,17 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Speed Rating
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Speed_Rating]" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">MAC Address
-                                    <span class="required-text">* Required</span>
+                                <label class="form-label">Serial Number
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[MAC_Address]" />
+                                    name="specs[Serial_Number]" />
                             </div>
                         </div>
 
@@ -403,14 +408,14 @@
                         <div class="tech-group" data-type="Communication Cabinet">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[asset_model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Cabinet Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[cabinet_type]">
@@ -423,14 +428,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Rack Units
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[rack_units]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Cooling Type
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[cooling_type]">
@@ -442,7 +447,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Power Capacity (Amps / Watts)
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Power_Capacity]" />
@@ -453,21 +458,21 @@
                         <div class="tech-group" data-type="Server Cabinet">
                             <div class="mb-3">
                                 <label class="form-label">Asset Model
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[asset_model]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Rack Units
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[rack_units]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Cooling System
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <select class="form-select required-field" data-required="true"
                                     name="specs[cooling_system]">
@@ -480,14 +485,14 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">PDU Details
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[PDU_Details]" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Weight Capacity
-                                    <span class="required-text">* Required</span>
+                                    <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" class="form-control required-field" data-required="true"
                                     name="specs[Weight_Capacity]" />
@@ -537,23 +542,24 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Vendor</label>
-                            <select class="form-select" name="vendor">
+                            <label class="form-label">Vendor <span class="text-danger">*</span></label>
+                            <select class="form-select" name="vendor" onchange="handleVendorChange(this)">
                                 <option value="">Select vendor</option>
                                 @foreach ($vendors as $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
+                                <option value="__add_vendor__"> Add New Vendor</option>
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Purchase Date</label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="purchase_date" />
+                            <label class="form-label">Purchase Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control required-field" name="purchase_date"
+                                data-required="true" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Purchase Cost</label>
+                            <label class="form-label">Purchase Cost <span class="text-danger">*</span></label>
                             <input type="number" class="form-control required-field" data-required="true"
                                 name="purchase_cost" />
                         </div>
@@ -579,7 +585,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Compliance Status</label>
+                            <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
                             <select class="form-select" name="compliance_status">
                                 <option value="">Select status</option>
                                 <option>Compliant</option>
@@ -588,20 +594,22 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" id="warranty_start_date">Warranty Start Date</label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="warranty_start" />
+                            <label class="form-label"><span id="warranty_start_date">Warranty Start Date</span> <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" class="form-control required-field" name="warranty_start"
+                                data-required="true" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" id="warranty_end_date">Warranty End Date</label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="warranty_end" />
+                            <label class="form-label"><span id="warranty_end_date">Warranty End Date</span> <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" class="form-control required-field" name="warranty_end"
+                                data-required="true" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
-                                Maintenance</label>
+                                Maintenance <span class="text-danger">*</span></label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="next_maintenance" />
                         </div>
@@ -614,16 +622,42 @@
                             <h6>Documents</h6>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Contract</label>
-                            <input type="file" class="form-control required-field" data-required="true"
-                                name="contract" />
+                        <div class="row align-items-end">
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">
+                                    Document Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="docName">
+                            </div>
+
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">
+                                    Attach File <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" class="form-control" id="docFile">
+                            </div>
+
+                            <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn  btn-sm save-btn "
+                                onclick="addDocument()">
+                                + Add Document
+                            </button>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Purchase Order</label>
-                            <input type="file" class="form-control required-field" data-required="true"
-                                name="purchase_order" />
+                        <div class="mb-5 table-responsive">
+                            <table class="table align-middle mb-0 doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document Name</th>
+                                        <th>Attached File</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="docTableBody">
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 

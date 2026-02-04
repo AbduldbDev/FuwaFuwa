@@ -2,6 +2,63 @@ let selectedCategory = "";
 let selectedType = "";
 let currentSlide = 1;
 
+// function handleVendorChange(select) {
+//     if (select.value === "__add_vendor__") {
+//         window.location.href = "/vendors";
+//     }
+// }
+function addDocument() {
+    const name = document.getElementById("docName").value;
+    const fileInput = document.getElementById("docFile");
+
+    if (!name || !fileInput.files.length) {
+        alert("Please complete all document fields.");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const table = document.getElementById("docTableBody");
+
+    // Generate a unique identifier for this document row
+    const docId =
+        "doc_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+
+    const row = document.createElement("tr");
+    row.setAttribute("data-doc-id", docId);
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>
+            <span class="file-name">${file.name}</span>
+            <input type="hidden" name="documents[name][]" value="${name}">
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+    `;
+
+    table.appendChild(row);
+
+    const fileClone = fileInput.cloneNode(true);
+    fileClone.name = "documents[file][]";
+    fileClone.id = "";
+    fileClone.style.display = "none";
+    fileClone.removeAttribute("onchange");
+
+    document.getElementById("assetForm").appendChild(fileClone);
+    fileInput.value = "";
+    document.getElementById("docName").value = "";
+}
+
+// Optional: Add remove document function
+function removeDocument(docId) {
+    const row = document.querySelector(`tr[data-doc-id="${docId}"]`);
+    if (row) {
+        row.remove();
+    }
+}
+
 const assetTypes = {
     "Physical Asset": [
         "PC",
@@ -234,48 +291,33 @@ function handleSlide5Extras() {
 function handleSlide6Extras() {
     if (currentSlide !== 6) return;
 
-    // Only proceed if slide 6 exists
     const slide6 = document.getElementById("slide6");
     if (!slide6) return;
 
-    const warrantyStartDiv = slide6
-        .querySelector("#warranty_start_date")
-        ?.closest(".mb-3");
-    const warrantyEndDiv = slide6
-        .querySelector("#warranty_end_date")
-        ?.closest(".mb-3");
+    const warrantyStartText = slide6.querySelector("#warranty_start_date");
+    const warrantyEndText = slide6.querySelector("#warranty_end_date");
     const lastMaintenanceDiv = slide6
         .querySelector("#last_schedule_maintenance")
         ?.closest(".mb-3");
 
     if (selectedType === "License") {
-        // Change labels
-        if (warrantyStartDiv) {
-            warrantyStartDiv.querySelector("label").textContent =
-                "Activation Date";
+        if (warrantyStartText) {
+            warrantyStartText.textContent = "Activation Date";
         }
 
-        if (warrantyEndDiv) {
-            warrantyEndDiv.querySelector("label").textContent =
-                "Expiration Date";
+        if (warrantyEndText) {
+            warrantyEndText.textContent = "Expiration Date";
         }
 
-        // Remove last scheduled maintenance
         if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
     } else {
-        // If not License, ensure defaults are restored
-        if (warrantyStartDiv) {
-            warrantyStartDiv.querySelector("label").textContent =
-                "Warranty Start Date";
+        if (warrantyStartText) {
+            warrantyStartText.textContent = "Warranty Start Date";
         }
 
-        if (warrantyEndDiv) {
-            warrantyEndDiv.querySelector("label").textContent =
-                "Warranty End Date";
+        if (warrantyEndText) {
+            warrantyEndText.textContent = "Warranty End Date";
         }
-
-        // Optionally, restore last maintenance if needed
-        // This requires the original HTML to be present or recreated dynamically
     }
 }
 

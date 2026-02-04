@@ -30,8 +30,8 @@ class UpdateAssetRequest extends FormRequest
             'next_maintenance' => 'sometimes|date',
             'useful_life_years' => 'sometimes|integer|min:0',
             'salvage_value' => 'sometimes|numeric|min:0',
-            'contract'           => 'nullable|file|mimes:pdf|max:25600',
-            'purchase_order'     => 'nullable|file|mimes:pdf|max:25600',
+            'documents.name.*'   => 'sometimes|string',
+            'documents.file.*'   => 'file|max:25600',
             'technical' => 'sometimes|array',
             'technical.*' => 'nullable|string|max:255',
         ];

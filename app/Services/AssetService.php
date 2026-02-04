@@ -106,20 +106,54 @@ class AssetService
 
     public function store(array $data): Assets
     {
-        foreach (['contract', 'purchase_order'] as $fileField) {
-            if (!empty($data[$fileField])) {
-                $file = $data[$fileField];
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $file->getClientOriginalExtension();
-                $filename = $originalName . '_' . time() . '.' . $extension;
-                $path = $file->storeAs('AssetDocuments', $filename, 'public');
-                $data[$fileField] = '/storage/' . $path;
+        // foreach (['contract', 'purchase_order'] as $fileField) {
+        //     if (!empty($data[$fileField])) {
+        //         $file = $data[$fileField];
+        //         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        //         $extension = $file->getClientOriginalExtension();
+        //         $filename = $originalName . '_' . time() . '.' . $extension;
+        //         $path = $file->storeAs('AssetDocuments', $filename, 'public');
+        //         $data[$fileField] = '/storage/' . $path;
+        //     }
+        // }
+
+        $documents = [];
+
+        if (
+            !empty($data['documents']['name']) &&
+            is_array($data['documents']['name'])
+        ) {
+            foreach ($data['documents']['name'] as $index => $name) {
+                $filePath = null;
+
+                if (
+                    isset($data['documents']['file'][$index]) &&
+                    $data['documents']['file'][$index] instanceof \Illuminate\Http\UploadedFile
+                ) {
+                    $file = $data['documents']['file'][$index];
+                    $extension = $file->getClientOriginalExtension();
+
+                    $filename = time() . '_' . $index . '.' . $extension;
+
+                    $filePath = $file->storeAs(
+                        'vendor_documents',
+                        $filename,
+                        'public'
+                    );
+                }
+
+                $documents[] = [
+                    'name'       => $name,
+                    'file'       => $filePath ? '/storage/' . $filePath : null,
+                ];
             }
         }
 
+
         $data['created_by'] = Auth::id();
-        $data['asset_tag'] = $this->generateAssetTag();
+        $data['asset_tag'] = $this->generateAssetTag($data['asset_type']);
         $data['asset_id'] = $this->generateAssetId();
+        $data['documents'] = json_encode($documents);
         $asset = Assets::create($data);
 
         if (!empty($data['specs'])) {
@@ -167,30 +201,6 @@ class AssetService
             unset($data['technical']);
         }
 
-        foreach (['contract', 'purchase_order'] as $fileField) {
-
-            if (!empty($data[$fileField]) && $data[$fileField] instanceof \Illuminate\Http\UploadedFile) {
-
-                $oldFile = $asset->{$fileField};
-
-                if ($oldFile) {
-                    Storage::delete(str_replace('/storage/', '', $oldFile));
-                }
-
-                $file = $data[$fileField];
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $file->getClientOriginalExtension();
-                $filename = $originalName . '_' . time() . '.' . $extension;
-
-                $path = $file->storeAs('AssetDocuments', $filename, 'public');
-                $data[$fileField] = '/storage/' . $path;
-
-                $oldFilename = $oldFile ? basename($oldFile) : null;
-                $newFilename = $filename;
-
-                $this->logAssetChange($asset, 'changed', $fileField, $oldFilename, $newFilename);
-            }
-        }
 
         foreach ($data as $field => $newValue) {
             if (
@@ -200,6 +210,39 @@ class AssetService
                 $this->logAssetChange($asset, 'changed ', $field, $original[$field], $newValue);
             }
         }
+
+        if (isset($data['documents'])) {
+            $documents = [];
+            $names = $data['documents']['name'] ?? [];
+            $files = $data['documents']['file'] ?? [];
+            $existingFiles = $data['documents']['existing_file'] ?? [];
+
+            foreach ($names as $idx => $name) {
+                // Skip if both name is empty and no file is provided
+                $hasFile = isset($files[$idx]) && $files[$idx] instanceof \Illuminate\Http\UploadedFile;
+                $hasExistingFile = !empty($existingFiles[$idx]);
+
+                if (empty(trim($name)) && !$hasFile && !$hasExistingFile) {
+                    continue; // Skip empty entries
+                }
+
+                $filePath = $existingFiles[$idx] ?? null;
+
+                if ($hasFile) {
+                    $file = $files[$idx];
+                    $filename = 'asset_' . $asset->id . '_' . time() . '_' . $idx . '.' . $file->getClientOriginalExtension();
+                    $filePath = '/storage/' . $file->storeAs('asset_documents', $filename, 'public');
+                }
+
+                $documents[] = [
+                    'name' => trim($name),
+                    'file' => $filePath,
+                ];
+            }
+
+            $data['documents'] = !empty($documents) ? json_encode($documents) : null;
+        }
+
 
         $this->notification->notifyUsersWithModuleAccess(
             'Assets',
@@ -213,12 +256,15 @@ class AssetService
         return $asset;
     }
 
-    private function generateAssetTag(): string
+    private function generateAssetTag($type): string
     {
         $setting = SystemSettings::first();
 
-        $Prefix = $setting->asset_tag_prefix ?? 'Asset';
-
+        if ($type === 'Digital Asset') {
+            $Prefix = $setting->digital_tag_prefix ?? 'DG';
+        } else {
+            $Prefix = $setting->physical_tag_prefix  ?? 'PH';
+        }
 
         do {
             $tag = $Prefix . strtoupper(Str::random(4));

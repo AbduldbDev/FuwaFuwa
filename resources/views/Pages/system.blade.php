@@ -71,14 +71,15 @@
                 <!-- asset tag and depreciation -->
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label>Asset Tag Prefix</label>
-                        <input type="text" value="{{ $settings->asset_tag_prefix ?? '' }}" class="form-control"
-                            name="asset_tag_prefix" />
+                        <label>Physical Tag Prefix</label>
+                        <input type="text" value="{{ $settings->physical_tag_prefix ?? '' }}" class="form-control"
+                            name="physical_tag_prefix" />
                     </div>
 
                     <div class="col-md-6 form-group">
-                        <label>Depreciation Method</label>
-                        <input type="text" value="Straight-Line Depreciation" class="form-control" disabled />
+                        <label>Digital Tag Prefix</label>
+                        <input type="text" value="{{ $settings->digital_tag_prefix ?? '' }}" class="form-control"
+                            name="digital_tag_prefix" />
                     </div>
                 </div>
 

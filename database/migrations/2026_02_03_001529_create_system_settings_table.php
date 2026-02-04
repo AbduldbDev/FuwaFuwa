@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('asset_tag_prefix');
+            $table->string('physical_tag_prefix');
+            $table->string('digital_tag_prefix');
             $table->string('maintenance_reminders');
             $table->string('warranty_expiry_alerts');
             $table->string('asset_assignment_alerts');
