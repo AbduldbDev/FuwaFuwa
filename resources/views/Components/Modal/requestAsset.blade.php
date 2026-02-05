@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="{{ route('asset-request.store') }}" method="POST">
+            <form action="{{ route('asset-request.store') }}" method="POST" id="assetRequestForm">
                 @csrf
                 <div class="modal-body px-4">
                     <!-- requester -->
@@ -37,7 +37,7 @@
                     <div class="row">
                         <!-- category -->
                         <div class="col-lg-6 mb-3">
-                            <label class="form-label">Asset Type</label>
+                            <label class="form-label">Asset Type <span class="text-danger">*</span></label>
                             <select class="form-select" name="asset_type" required>
                                 <option value="" selected disabled>Choose asset category</option>
                                 <option>Physical Asset</option>
@@ -47,7 +47,7 @@
 
                         <!-- type -->
                         <div class="col-lg-6 mb-3">
-                            <label class="form-label">Asset Category</label>
+                            <label class="form-label">Asset Category <span class="text-danger">*</span></label>
                             <select class="form-select" name="asset_category" required>
                                 <option value="PC">PC</option>
                                 <option value="Laptop">Laptop</option>
@@ -83,14 +83,24 @@
                     <h4 class="mb-3">Justification</h4>
 
                     <div class="mb-3">
-                        <label class="form-label">Reason for Request</label>
-                        <select class="form-select" name="request_reason" required>
+                        <label class="form-label">Reason for Request <span class="text-danger">*</span></label>
+                        <select class="form-select" name="request_reason" id="requestReason" required>
                             <option value="" selected disabled>Select reason</option>
-                            <option>New hire</option>
-                            <option>Asset Replacement</option>
-                            <option>Project Requirement</option>
-                            <option>Uprade</option>
+                            <option value="New hire">New hire</option>
+                            <option value="Asset Replacement">Asset Replacement</option>
+                            <option value="Project Requirement">Project Requirement</option>
+                            <option value="Upgrade">Upgrade</option>
+                            <option value="other">Other</option>
                         </select>
+                    </div>
+
+                    <!-- Other Reason Input (Hidden by default) -->
+                    <div class="mb-3" id="otherReasonContainer" style="display: none;">
+                        <label class="form-label">
+                            Specify Other Reason <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="other_reason_input"
+                            placeholder="Please specify the reason..." name="other_reason">
                     </div>
 
                     <div class="mb-3">
@@ -98,51 +108,6 @@
                             Detailed Purpose <span class="text-danger">*</span>
                         </label>
                         <textarea class="form-control" rows="4" placeholder="Enter detailed purpose..." name="detailed_reason" required></textarea>
-                    </div>
-
-                    <!-- budget -->
-                    <h4 class="mb-3">Budget</h4>
-
-                    <div class="mb-3">
-                        <label class="form-label">
-                            Estimated Cost <span class="text-danger">*</span>
-                        </label>
-                        <input type="number" class="form-control" name="cost" required />
-                    </div>
-
-                    <!-- account status -->
-                    <div class="mb-3">
-                        <label class="form-label d-block">Priority Level</label>
-                        <div class="d-flex gap-4">
-                            <div class="form-check">
-                                <input class="form-check-input shadow-none" type="radio" name="priority"
-                                    id="active" checked value="low" />
-                                <label class="form-check-label" for="active">
-                                    Low
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input shadow-none" type="radio" name="priority"
-                                    id="inactive" value="medium" />
-                                <label class="form-check-label" for="inactive">
-                                    Medium
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input shadow-none" type="radio" name="priority"
-                                    id="inactive" value="high" />
-                                <label class="form-check-label" for="inactive">
-                                    High
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input shadow-none" type="radio" name="priority"
-                                    id="inactive" value="emergency" />
-                                <label class="form-check-label" for="inactive">
-                                    Emergency
-                                </label>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -159,4 +124,76 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const requestReasonSelect = document.getElementById('requestReason');
+        const otherReasonContainer = document.getElementById('otherReasonContainer');
+        const otherReasonInput = document.getElementById('other_reason_input');
+        const assetRequestForm = document.getElementById('assetRequestForm');
+
+        // Add event listener for reason selection
+        requestReasonSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                // Show the other reason input
+                otherReasonContainer.style.display = 'block';
+                otherReasonInput.required = true;
+                requestReasonSelect.required = false; // Not required since we'll use other_reason
+            } else {
+                // Hide the other reason input
+                otherReasonContainer.style.display = 'none';
+                otherReasonInput.required = false;
+                otherReasonInput.value = ''; // Clear the input
+                requestReasonSelect.required = true; // Make select required again
+            }
+        });
+
+        // Form submission handler
+        assetRequestForm.addEventListener('submit', function(e) {
+            const selectedReason = requestReasonSelect.value;
+
+            if (selectedReason === 'other') {
+                const otherReasonValue = otherReasonInput.value.trim();
+
+                if (!otherReasonValue) {
+                    e.preventDefault(); // Prevent form submission
+                    alert('Please specify the other reason');
+                    otherReasonInput.focus();
+                    return;
+                }
+
+                // Update the select dropdown value to the custom reason
+                // This will make it submit with the name="request_reason"
+                const tempOption = document.createElement('option');
+                tempOption.value = otherReasonValue;
+                tempOption.textContent = otherReasonValue;
+                tempOption.selected = true;
+
+                // Remove the "other" option and add the custom value
+                requestReasonSelect.innerHTML = '';
+                requestReasonSelect.appendChild(tempOption);
+            }
+        });
+
+        // Reset the form when modal is closed
+        document.getElementById('requestAsset').addEventListener('hidden.bs.modal', function() {
+            // Reset to initial state
+            otherReasonContainer.style.display = 'none';
+            otherReasonInput.value = '';
+            otherReasonInput.required = false;
+
+            // Reset the select dropdown to initial options
+            requestReasonSelect.innerHTML = `
+            <option value="" selected disabled>Select reason</option>
+            <option value="New hire">New hire</option>
+            <option value="Asset Replacement">Asset Replacement</option>
+            <option value="Project Requirement">Project Requirement</option>
+            <option value="Upgrade">Upgrade</option>
+            <option value="other">Other</option>
+        `;
+            requestReasonSelect.required = true;
+        });
+    });
+</script>
+
 <script src="{{ asset('/Js/Assets/assetCategorySelect.js') }}"></script>

@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('request_reason');
             $table->text('detailed_reason')->nullable();
-            $table->decimal('cost', 10, 2)->nullable();
-            $table->enum('priority', ['low', 'medium', 'high',  'emergency'])->default('low');
+            // $table->decimal('cost', 10, 2)->nullable();
+            // $table->enum('priority', ['low', 'medium', 'high',  'emergency'])->default('low');
             $table->string('status')->default('For Review');
             $table->text('remarks')->nullable();
             $table->string('is_approved')->default('pending');

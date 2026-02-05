@@ -14,7 +14,7 @@ class UpdateAssetRequestStatus extends FormRequest
     public function rules(): array
     {
         return [
-            'status'  => 'required|string|in:For Review,Pending Approval,In Procurement,Procured',
+            'status'  => 'required|string',
             'remarks' => 'nullable|string|max:1000',
         ];
     }

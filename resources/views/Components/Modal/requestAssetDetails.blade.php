@@ -89,58 +89,18 @@
 
                   <hr />
 
-                  <!-- ===== budget ===== -->
-                  <section class="mb-4">
-                      <h6 class="fw-semibold mb-3">
-                          <i class="fa-solid fa-money-bill me-2 text-secondary"></i>
-                          Budget
-                      </h6>
-
-                      <div>
-                          <label class="form-label text-muted">Estimated Cost</label>
-                          <div class="fw-semibold">₱ {{ number_format($item->cost, 2) }}</div>
-
-                      </div>
-                  </section>
-
-                  <hr />
-                  <!-- ===== priority ===== -->
-                  <section class="mb-4">
-                      <h6 class="fw-semibold mb-3">
-                          <i class="fa-solid fa-flag me-2 text-secondary"></i>
-                          Priority Level
-                      </h6>
-
-                      <span class="badge {{ $priorityClass }} px-3 py-2">
-                          {{ ucfirst($item->priority) }} Priority
-                      </span>
-
-                  </section>
-
-                  <hr />
-
                   <!-- ===== activity feed ===== -->
                   <form id="updateStatusForm-{{ $item->id }}"
                       action="{{ route('asset-request.statusupdate', $item->id) }}" method="POST">
                       @csrf
                       @method('PUT')
 
-                      <select name="status" class="form-select mb-2">
-                          @php
-                              $statusMap = [
-                                  'For Review' => ['Pending Approval'],
-                                  'Pending Approval' => ['In Procurement'],
-                                  'In Procurement' => ['Procured'],
-                                  'Procured' => [],
-                              ];
-                              $current = $item->status;
-                              $nextOptions = $statusMap[$current] ?? [];
-                          @endphp
-
-                          <option value="{{ $current }}" selected>{{ $current }}</option>
-                          @foreach ($nextOptions as $status)
-                              <option value="{{ $status }}">{{ $status }}</option>
-                          @endforeach
+                      <select name="status" class="form-select mb-2" required>
+                          <option name="" id="">SELECT STATUS</option>
+                          <option value="For Review">For Review</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="For Procurement">For Procurement</option>
+                          <option value="For Release">For Release</option>
                       </select>
 
                       <textarea name="remarks" class="form-control mb-2" placeholder="Add remarks...">{{ $item->remarks }}</textarea>
@@ -155,7 +115,26 @@
                   <button class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
 
                   @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin' && $item->is_added === 0)
-                      @if ($item->status === 'Pending Approval')
+                      @if ($item->status === 'For Review')
+                          <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <input type="hidden" name="status" value="unavailable">
+                              <button class="btn btn-danger shadow-none">
+                                  <i class="fa-solid fa-check me-1"></i> Not Available
+                              </button>
+                          </form>
+
+                          <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+
+                              <input type="hidden" name="status" value="available">
+                              <button class="btn btn-success shadow-none">
+                                  <i class="fa-solid fa-xmark me-1"></i> Available
+                              </button>
+                          </form>
+                      @elseif ($item->status === 'In Progress')
                           <form action="{{ route('asset-request.rejectStatus', $item->id) }}" method="POST">
                               @csrf
                               @method('PUT')
@@ -172,7 +151,25 @@
                                   <i class="fa-solid fa-check me-1"></i> Approve
                               </button>
                           </form>
-                      @elseif($item->status === 'Procured')
+                      @elseif ($item->status === 'For Procurement')
+                          <form action="{{ route('asset-request.rejectStatus', $item->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <button class="btn btn-danger shadow-none">
+                                  <i class="fa-solid fa-xmark me-1"></i> Reject
+                              </button>
+                          </form>
+
+                          <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+
+                              <input type="hidden" name="status" value="available">
+                              <button class="btn btn-success shadow-none">
+                                  <i class="fa-solid fa-check me-1"></i> Procured
+                              </button>
+                          </form>
+                      @elseif($item->status === 'For Release')
                           <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
                               data-bs-target="#assetModal" data-asset-type="{{ $item->asset_type }}"
                               data-asset-category="{{ $item->asset_category }}" data-asset-name="{{ $item->model }}"

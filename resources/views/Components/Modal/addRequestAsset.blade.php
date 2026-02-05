@@ -32,19 +32,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Type</label>
+                            <label class="form-label">Asset Type <span class="text-danger">*</span></label>
                             <input type="text" id="summaryCategory" class="form-control" name="asset_type"
                                 readonly />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Category</label>
+                            <label class="form-label">Asset Category <span class="text-danger">*</span></label>
                             <input type="text" id="summaryType" class="form-control" name="asset_category"
                                 readonly />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Operational Status</label>
+                            <label class="form-label">Operational Status <span class="text-danger">*</span></label>
                             <select id="operationalStatus" class="form-select" name="operational_status" required>
                                 <option value="">Select status</option>
                             </select>
@@ -537,27 +537,25 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Purchase Date</label>
+                            <label class="form-label">Purchase Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="purchase_date" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Purchase Cost</label>
+                            <label class="form-label">Purchase Cost <span class="text-danger">*</span></label>
                             <input type="number" class="form-control required-field" data-required="true"
                                 name="purchase_cost" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Useful Life (Years)</label>
-                            <input type="number" class="form-control required-field" data-required="true"
-                                name="useful_life_years" />
+                            <input type="number" class="form-control required-field" name="useful_life_years" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Salvage Value</label>
-                            <input type="number" class="form-control required-field" data-required="true"
-                                name="salvage_value" />
+                            <input type="number" class="form-control required-field" name="salvage_value" />
                         </div>
                     </div>
 
@@ -569,7 +567,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Compliance Status</label>
+                            <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
                             <select class="form-select" name="compliance_status">
                                 <option value="">Select status</option>
                                 <option>Compliant</option>
@@ -578,20 +576,22 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" id="warranty_start_date">Warranty Start Date</label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="warranty_start" />
+                            <label class="form-label"><span id="warranty_start_date">Warranty Start Date</span> <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" class="form-control required-field" name="warranty_start"
+                                data-required="true" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" id="warranty_end_date">Warranty End Date</label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="warranty_end" />
+                            <label class="form-label"><span id="warranty_end_date">Warranty End Date</span> <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" class="form-control required-field" name="warranty_end"
+                                data-required="true" />
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
-                                Maintenance</label>
+                                Maintenance <span class="text-danger">*</span></label>
                             <input type="date" class="form-control required-field" data-required="true"
                                 name="next_maintenance" />
                         </div>
@@ -920,48 +920,33 @@
     function handleSlide6Extras() {
         if (currentSlide !== 6) return;
 
-        // Only proceed if slide 6 exists
         const slide6 = document.getElementById("slide6");
         if (!slide6) return;
 
-        const warrantyStartDiv = slide6
-            .querySelector("#warranty_start_date")
-            ?.closest(".mb-3");
-        const warrantyEndDiv = slide6
-            .querySelector("#warranty_end_date")
-            ?.closest(".mb-3");
+        const warrantyStartText = slide6.querySelector("#warranty_start_date");
+        const warrantyEndText = slide6.querySelector("#warranty_end_date");
         const lastMaintenanceDiv = slide6
             .querySelector("#last_schedule_maintenance")
             ?.closest(".mb-3");
 
         if (selectedType === "License") {
-            // Change labels
-            if (warrantyStartDiv) {
-                warrantyStartDiv.querySelector("label").textContent =
-                    "Activation Date";
+            if (warrantyStartText) {
+                warrantyStartText.textContent = "Activation Date";
             }
 
-            if (warrantyEndDiv) {
-                warrantyEndDiv.querySelector("label").textContent =
-                    "Expiration Date";
+            if (warrantyEndText) {
+                warrantyEndText.textContent = "Expiration Date";
             }
 
-            // Remove last scheduled maintenance
             if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
         } else {
-            // If not License, ensure defaults are restored
-            if (warrantyStartDiv) {
-                warrantyStartDiv.querySelector("label").textContent =
-                    "Warranty Start Date";
+            if (warrantyStartText) {
+                warrantyStartText.textContent = "Warranty Start Date";
             }
 
-            if (warrantyEndDiv) {
-                warrantyEndDiv.querySelector("label").textContent =
-                    "Warranty End Date";
+            if (warrantyEndText) {
+                warrantyEndText.textContent = "Warranty End Date";
             }
-
-            // Optionally, restore last maintenance if needed
-            // This requires the original HTML to be present or recreated dynamically
         }
     }
 

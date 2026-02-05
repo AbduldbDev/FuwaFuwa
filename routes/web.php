@@ -50,6 +50,11 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/store', 'store')->name('store');
+        Route::put('/for-review/{assetRequest}', 'forreview')->name('forreview');
+
+
+
+
         Route::put('/status/{assetRequest}', 'updateStatus')->name('statusupdate');
         Route::put('/approve/{assetRequest}', 'approveStatus')->name('approveStatus');
         Route::put('/reject/{assetRequest}', 'rejectStatus')->name('rejectStatus');

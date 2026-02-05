@@ -23,17 +23,17 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Request"
-                :value="$TotalRequests" />
+            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF"
+                title="Total For Release" :value="$TotalRequests" />
 
             <x-stat-card icon="fa-solid fa-cart-flatbed" icon-color="#166534" icon-bg="#DCFCE7" title="Total Procured"
                 :value="$TotalProcured" />
 
-            <x-stat-card icon="fa-solid fa-triangle-exclamation" icon-color="#92400E" icon-bg="#FFEDD5"
-                title="Emergency Priority" :value="$TotalEmergency" />
+            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE"
+                title="In Stocks (Digital Assets)" :value="$TotalOnHandDigital" />
 
-            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE" title="On-Hand Stocks"
-                :value="$TotalOnHand" />
+            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE"
+                title="In Stocks (Physical Assets)" :value="$TotalOnHandPhysical" />
         </div>
 
         <!-- overview -->
@@ -48,17 +48,18 @@
             <div class="d-flex gap-2 mb-4">
                 <span class="filter-pill all active">All</span>
                 <span class="filter-pill for-review">For Review</span>
-                <span class="filter-pill pending-approval">Pending Approval</span>
-                <span class="filter-pill in-procurement">In Procurement</span>
-                <span class="filter-pill procured">Procured</span>
-
+                <span class="filter-pill pending-approval">In Progress</span>
+                <span class="filter-pill in-procurement">For Procurement</span>
+                <span class="filter-pill procured">For Release</span>
+                <span class="filter-pill procured">Closed</span>
+{{-- 
                 <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
                     <option value="All Priority">All Priority</option>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                     <option value="emergency">Emergency</option>
-                </select>
+                </select> --}}
             </div>
 
             <!-- requests card -->
@@ -67,19 +68,14 @@
 
                 @foreach ($items as $item)
                     @php
-                        $priorityClass = match ($item->priority) {
-                            'low' => 'bg-primary text-white',
-                            'medium' => 'bg-success text-white',
-                            'high' => 'bg-warning text-dark',
-                            'emergency' => 'bg-danger text-white',
-                            default => 'bg-secondary text-white',
-                        };
 
                         $CardClass = match ($item->status) {
                             'For Review' => 'for-review',
-                            'Pending Approval' => 'pending-approval',
+                            'In Progress' => 'pending-approval',
                             'In Procurement' => 'in-procurement',
-                            'Procured' => 'procured',
+                            'For Procurement' => 'procured',
+                            'For Release' => 'procured',
+                            'Closed' => 'procured',
                             default => 'for-review',
                         };
                     @endphp
@@ -113,9 +109,6 @@
 
                                         <div class="mt-1">
                                             <span class="request-status for-review">{{ $item->status }}</span>
-                                            <span
-                                                class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
-                                                Priority</span>
                                         </div>
                                     </div>
                                 </div>

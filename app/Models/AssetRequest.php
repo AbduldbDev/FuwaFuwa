@@ -19,8 +19,6 @@ class AssetRequest extends Model
         'model',
         'request_reason',
         'detailed_reason',
-        'cost',
-        'priority',
         'status',
         'remarks',
         'is_approved'

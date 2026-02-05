@@ -23,7 +23,7 @@ class AssetRequestService
 
     public function getAllRequests()
     {
-        return AssetRequest::orderByRaw("FIELD(priority, 'emergency', 'high', 'medium', 'low')")->get();
+        return AssetRequest::get();
     }
 
     public function getTotalProcured()
@@ -36,14 +36,14 @@ class AssetRequestService
         return AssetRequest::whereNotIn('status', ['Procured', 'Rejected'])->count();
     }
 
-    public function getTotalEmergency()
+    public function TotalOnHandPhysical()
     {
-        return AssetRequest::where('priority', 'Emergency')->count();
+        return Assets::whereNull('assigned_to')->where('asset_type', 'Physical Asset')->count();
     }
 
-    public function getTotalOnHand()
+    public function TotalOnHandDigital()
     {
-        return Assets::where('assigned_to', null)->count();
+        return Assets::whereNull('assigned_to')->where('asset_type', 'Digital Asset')->count();
     }
 
     public function getActiveUsers()
@@ -62,8 +62,8 @@ class AssetRequestService
             'items' => $this->getAllRequests(),
             'TotalProcured' => $this->getTotalProcured(),
             'TotalRequests' => $this->getTotalPendingRequests(),
-            'TotalEmergency' => $this->getTotalEmergency(),
-            'TotalOnHand' => $this->getTotalOnHand(),
+            'TotalOnHandDigital' => $this->TotalOnHandDigital(),
+            'TotalOnHandPhysical' => $this->TotalOnHandPhysical(),
             'users' => $this->getActiveUsers(),
             'vendors' => $this->getActiveVendors(),
         ];
@@ -86,6 +86,21 @@ class AssetRequestService
         return $assetRequest;
     }
 
+
+    public function forreview(AssetRequest $request, array $data): AssetRequest
+    {
+        $status = (isset($data['status']) && $data['status'] === 'available')
+            ? 'For Release'
+            : 'In Progress';
+
+        $request->update([
+            'status' => $status,
+        ]);
+
+        return $request;
+    }
+
+
     public function updateStatus(AssetRequest $request, array $data): AssetRequest
     {
         $request->update([
@@ -106,7 +121,7 @@ class AssetRequestService
     public function updateApproval(AssetRequest $assetRequest, array $data): AssetRequest
     {
         $approvalStatus = $data['is_approved'];
-        $newStatus = $approvalStatus === 'approved' ? 'In Procurement' : 'Rejected';
+        $newStatus = $approvalStatus === 'approved' ? 'For Procurement' : 'Closed';
 
         $assetRequest->update([
             'is_approved' => $approvalStatus,

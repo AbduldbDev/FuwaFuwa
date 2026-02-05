@@ -55,6 +55,36 @@ class AssetRequestController extends Controller
         }
     }
 
+    public function forreview(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->assetRequestService->forreview($assetRequest, $request->only(['status', 'remarks']));
+
+            return redirect()->back()->with('success', 'Asset request status updated.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    // public function forprocurment(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
+    // {
+    //     $this->authorizeWrite();
+
+    //     try {
+    //         $this->assetRequestService->forprocurment($assetRequest, $request->only(['status', 'remarks']));
+
+    //         return redirect()->back()->with('success', 'Asset request status updated.');
+    //     } catch (\Throwable $e) {
+    //         return redirect()->back()->withInput()->withErrors([
+    //             'system' => $e->getMessage(),
+    //         ]);
+    //     }
+    // }
+
     public function updateStatus(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
     {
         $this->authorizeWrite();
@@ -70,23 +100,23 @@ class AssetRequestController extends Controller
         }
     }
 
-    public function approveStatus(Request $request, AssetRequest $assetRequest)
-    {
-        $this->authorizeWrite();
+    // public function approveStatus(Request $request, AssetRequest $assetRequest)
+    // {
+    //     $this->authorizeWrite();
 
-        try {
-            $this->assetRequestService->updateApproval($assetRequest, [
-                'is_approved' => 'approved',
-                'remarks'     => $request->remarks,
-            ]);
+    //     try {
+    //         $this->assetRequestService->updateApproval($assetRequest, [
+    //             'is_approved' => 'approved',
+    //             'remarks'     => $request->remarks,
+    //         ]);
 
-            return redirect()->back()->with('success', 'Asset request approved.');
-        } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->withErrors([
-                'system' => $e->getMessage(),
-            ]);
-        }
-    }
+    //         return redirect()->back()->with('success', 'Asset request approved.');
+    //     } catch (\Throwable $e) {
+    //         return redirect()->back()->withInput()->withErrors([
+    //             'system' => $e->getMessage(),
+    //         ]);
+    //     }
+    // }
 
     public function rejectStatus(Request $request, AssetRequest $assetRequest)
     {

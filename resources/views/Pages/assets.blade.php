@@ -70,7 +70,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
 
                         <table class="table table-borderless table-striped  align-middle" id="assetTable">
                             <thead class="border-bottom">
@@ -86,39 +86,42 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse  ($items  as $index =>  $item)
-                                    @php
-                                        $statusColors = [
-                                            'Active' => 'bg-success',
-                                            'Inactive' => 'bg-secondary',
-                                            'In Stock' => 'bg-primary',
-                                            'Under Maintenance' => 'bg-warning',
-                                            'Retired' => 'bg-dark',
-                                            'Expired' => 'bg-danger',
-                                            'archived' => 'bg-danger',
-                                        ];
+                                @forelse ($items  as $index =>  $item)
+                                  
+                                        @php
+                                            $statusColors = [
+                                                'Active' => 'bg-success',
+                                                'Inactive' => 'bg-secondary',
+                                                'In Stock' => 'bg-primary',
+                                                'Under Maintenance' => 'bg-warning',
+                                                'Retired' => 'bg-dark',
+                                                'Expired' => 'bg-danger',
+                                                'archived' => 'bg-danger',
+                                            ];
 
-                                        $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
-                                    @endphp
-                                    <tr>
-                                        <td class="text-center">{{ $index + 1 }}</td>
-                                        <td><a class="asset-link"
-                                                href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
-                                        </td>
-                                        <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
-                                        <td>{{ $item->asset_name }}</td>
-                                        <td>
-                                            {{ ucwords($item->operational_status) }}
-                                        </td>
-                                        <td
-                                            class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
-                                            {{ $item->compliance_status }}
-                                        </td>
-                                        <td>{{ $item->purchase_cost }}</td>
-                                        <td>
-                                            {{ number_format($item->current_value, 2) }}
-                                        </td>
-                                    </tr>
+                                            $badgeClass =
+                                                $statusColors[$item->operational_status] ?? 'bg-light text-dark';
+                                        @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $index + 1 }}</td>
+                                            <td><a class="asset-link"
+                                                    href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
+                                            </td>
+                                            <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
+                                            <td>{{ $item->asset_name }}</td>
+                                            <td>
+                                                {{ ucwords($item->operational_status) }}
+                                            </td>
+                                            <td
+                                                class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                                {{ $item->compliance_status }}
+                                            </td>
+                                            <td>{{ $item->purchase_cost }}</td>
+                                            <td>
+                                                {{ number_format($item->current_value, 2) }}
+                                            </td>
+                                        </tr>
+                                  
                                 @empty
                                     <tr>
                                         <td colspan="8" class="text-center py-5">
