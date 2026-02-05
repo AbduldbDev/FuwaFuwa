@@ -23,7 +23,7 @@ class UserService
 
     public function getUsers()
     {
-        return User::all();
+        return User::latest('updated_at')->get();
     }
 
     public function getTotalCount(): int

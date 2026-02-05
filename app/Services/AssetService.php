@@ -46,14 +46,14 @@ class AssetService
 
     public function getAssetByTag(string $assetTag): Assets
     {
-        return Assets::with(['technicalSpecifications', 'users'])
+        return Assets::with(['technicalSpecifications', 'users', 'vendor'])
             ->where('asset_tag', $assetTag)
             ->firstOrFail();
     }
 
     public function getAllAssetsWithDepreciation()
     {
-        $assets = Assets::where('operational_status', '!=', 'archived')->latest()->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->latest('updated_at')->get();
 
         return $assets->map(function ($asset) {
             if ($asset->asset_type === 'Digital Asset') {
@@ -106,55 +106,20 @@ class AssetService
 
     public function store(array $data): Assets
     {
-        // foreach (['contract', 'purchase_order'] as $fileField) {
-        //     if (!empty($data[$fileField])) {
-        //         $file = $data[$fileField];
-        //         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        //         $extension = $file->getClientOriginalExtension();
-        //         $filename = $originalName . '_' . time() . '.' . $extension;
-        //         $path = $file->storeAs('AssetDocuments', $filename, 'public');
-        //         $data[$fileField] = '/storage/' . $path;
-        //     }
-        // }
-
-        $documents = [];
-
-        if (
-            !empty($data['documents']['name']) &&
-            is_array($data['documents']['name'])
-        ) {
-            foreach ($data['documents']['name'] as $index => $name) {
-                $filePath = null;
-
-                if (
-                    isset($data['documents']['file'][$index]) &&
-                    $data['documents']['file'][$index] instanceof \Illuminate\Http\UploadedFile
-                ) {
-                    $file = $data['documents']['file'][$index];
-                    $extension = $file->getClientOriginalExtension();
-
-                    $filename = time() . '_' . $index . '.' . $extension;
-
-                    $filePath = $file->storeAs(
-                        'vendor_documents',
-                        $filename,
-                        'public'
-                    );
-                }
-
-                $documents[] = [
-                    'name'       => $name,
-                    'file'       => $filePath ? '/storage/' . $filePath : null,
-                ];
-            }
-        }
-
 
         $data['created_by'] = Auth::id();
         $data['asset_tag'] = $this->generateAssetTag($data['asset_type']);
         $data['asset_id'] = $this->generateAssetId();
-        $data['documents'] = json_encode($documents);
+
+        // if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
+        //     $data['location'] = 'Warehouse';
+        // }
+
+        if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
+            $data['location'] = $data['location'] ?? 'Warehouse';
+        }
         $asset = Assets::create($data);
+
 
         if (!empty($data['specs'])) {
             foreach ($data['specs'] as $key => $value) {
@@ -209,38 +174,6 @@ class AssetService
             ) {
                 $this->logAssetChange($asset, 'changed ', $field, $original[$field], $newValue);
             }
-        }
-
-        if (isset($data['documents'])) {
-            $documents = [];
-            $names = $data['documents']['name'] ?? [];
-            $files = $data['documents']['file'] ?? [];
-            $existingFiles = $data['documents']['existing_file'] ?? [];
-
-            foreach ($names as $idx => $name) {
-                // Skip if both name is empty and no file is provided
-                $hasFile = isset($files[$idx]) && $files[$idx] instanceof \Illuminate\Http\UploadedFile;
-                $hasExistingFile = !empty($existingFiles[$idx]);
-
-                if (empty(trim($name)) && !$hasFile && !$hasExistingFile) {
-                    continue; // Skip empty entries
-                }
-
-                $filePath = $existingFiles[$idx] ?? null;
-
-                if ($hasFile) {
-                    $file = $files[$idx];
-                    $filename = 'asset_' . $asset->id . '_' . time() . '_' . $idx . '.' . $file->getClientOriginalExtension();
-                    $filePath = '/storage/' . $file->storeAs('asset_documents', $filename, 'public');
-                }
-
-                $documents[] = [
-                    'name' => trim($name),
-                    'file' => $filePath,
-                ];
-            }
-
-            $data['documents'] = !empty($documents) ? json_encode($documents) : null;
         }
 
 

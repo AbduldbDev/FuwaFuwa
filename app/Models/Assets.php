@@ -11,7 +11,7 @@ class Assets extends Model
 
     protected $fillable = [
         'created_by',
-        'vendor',
+        'vendor_id',
         'asset_id',
         'asset_tag',
         'asset_name',
@@ -29,6 +29,7 @@ class Assets extends Model
         'warranty_start',
         'warranty_end',
         'next_maintenance',
+        'last_maintenance',
         'status',
         'delete_title',
         'delete_reason'
@@ -39,6 +40,7 @@ class Assets extends Model
         'warranty_start'    => 'date',
         'warranty_end'      => 'date',
         'next_maintenance'  => 'date',
+        'last_maintenance'  => 'date',
         'purchase_cost'     => 'decimal:2',
         'salvage_value'     => 'decimal:2',
     ];
@@ -55,6 +57,6 @@ class Assets extends Model
 
     public function vendor()
     {
-        return $this->belongsTo(Vendors::class, 'vendor');
+        return $this->belongsTo(Vendors::class, 'vendor_id');
     }
 }

@@ -543,10 +543,10 @@
 
                         <div class="mb-3">
                             <label class="form-label">Vendor <span class="text-danger">*</span></label>
-                            <select class="form-select" name="vendor" onchange="handleVendorChange(this)">
+                            <select class="form-select" name="vendor_id" onchange="handleVendorChange(this)">
                                 <option value="">Select vendor</option>
                                 @foreach ($vendors as $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                                 <option value="__add_vendor__"> Add New Vendor</option>
                             </select>
@@ -586,7 +586,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
-                            <select class="form-select" name="compliance_status">
+                            <select class="form-select" name="compliance_status" data-required="true">
                                 <option value="">Select status</option>
                                 <option>Compliant</option>
                                 <option>Non-Compliant</option>
@@ -611,7 +611,13 @@
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
                                 Maintenance <span class="text-danger">*</span></label>
                             <input type="date" class="form-control required-field" data-required="true"
-                                name="next_maintenance" />
+                                name="last_maintenance" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" id="next_schedule_maintenance">Next Schedule
+                                Maintenance </label>
+                            <input type="date" class="form-control required-field" name="next_maintenance" />
                         </div>
                     </div>
 

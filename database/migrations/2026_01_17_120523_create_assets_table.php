@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('vendor')->nullable()->constrained('vendors')->nullOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('vendor_id')->nullable()->constrained('vendors')->nullOnDelete();
             $table->string('asset_id')->unique();
             $table->string('asset_tag')->unique();
             $table->string('asset_name');
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->date('warranty_start')->nullable();
             $table->date('warranty_end')->nullable();
             $table->date('next_maintenance')->nullable();
+            $table->date('last_maintenance')->nullable();
             $table->string('status')->default('active');
             $table->string('delete_title')->nullable();
             $table->text('delete_reason')->nullable();

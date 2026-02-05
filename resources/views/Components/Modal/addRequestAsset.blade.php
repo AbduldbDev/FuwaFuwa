@@ -527,10 +527,10 @@
 
                         <div class="mb-3">
                             <label class="form-label">Vendor</label>
-                            <select class="form-select" name="vendor" onchange="handleVendorChange(this)">
+                            <select class="form-select" name="vendor_id" onchange="handleVendorChange(this)">
                                 <option value="">Select vendor</option>
                                 @foreach ($vendors as $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                                 <option value="__add_vendor__"> Add New Vendor</option>
                             </select>
@@ -593,7 +593,13 @@
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
                                 Maintenance <span class="text-danger">*</span></label>
                             <input type="date" class="form-control required-field" data-required="true"
-                                name="next_maintenance" />
+                                name="last_maintenance" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" id="next_schedule_maintenance">Next Schedule
+                                Maintenance </label>
+                            <input type="date" class="form-control required-field" name="next_maintenance" />
                         </div>
                     </div>
 
@@ -929,6 +935,9 @@
             .querySelector("#last_schedule_maintenance")
             ?.closest(".mb-3");
 
+        const nextMaintenanceDiv = slide6
+            .querySelector("#next_schedule_maintenance")
+            ?.closest(".mb-3");
         if (selectedType === "License") {
             if (warrantyStartText) {
                 warrantyStartText.textContent = "Activation Date";
@@ -939,6 +948,7 @@
             }
 
             if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
+            if (nextMaintenanceDiv) nextMaintenanceDiv.remove();
         } else {
             if (warrantyStartText) {
                 warrantyStartText.textContent = "Warranty Start Date";

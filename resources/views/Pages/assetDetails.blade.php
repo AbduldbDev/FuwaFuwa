@@ -280,7 +280,7 @@
                             <div class="row detail-row">
                                 <div class="col-4 label">Vendor</div>
                                 <div class="col-8 value">
-                                    {{ $item->vendor }}
+                                    {{ $item->vendor->name ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="row detail-row">
@@ -440,6 +440,13 @@
                             @if ($item->asset_type !== 'Digital Asset')
                                 <div class="row detail-row">
                                     <div class="col-4 label">Last Maintenance Schedule</div>
+                                    <div class="col-8 value">
+                                        {{ $item->last_maintenance ? \Carbon\Carbon::parse($item->last_maintenance)->format('F d, Y') : 'N/A' }}
+                                    </div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Next Maintenance Schedule</div>
                                     <div class="col-8 value">
                                         {{ $item->next_maintenance ? \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') : 'N/A' }}
                                     </div>

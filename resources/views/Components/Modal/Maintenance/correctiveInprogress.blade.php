@@ -175,7 +175,7 @@
 
                         <div class="row g-3">
                             <div class="col-md-12">
-                                <label class="form-label text-muted">Post Service Description</label>
+                                <label class="form-label text-muted">Action Taken</label>
                                 <textarea class="form-control" rows="3" placeholder="Add remarks or comments..." name="post_description"></textarea>
                             </div>
 

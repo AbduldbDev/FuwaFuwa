@@ -172,7 +172,7 @@
                      <div class="row">
                          <!-- post-service description -->
                          <div class="col-md-12 mb-3">
-                             <label class="form-label text-muted">Post Service Description</label>
+                             <label class="form-label text-muted">Action Taken</label>
                              <div class="description-text fw-semibold">{{ $item->post_description }}
                              </div>
                          </div>

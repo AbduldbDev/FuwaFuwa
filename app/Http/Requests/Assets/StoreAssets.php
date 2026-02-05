@@ -15,13 +15,13 @@ class StoreAssets extends FormRequest
     {
         return [
             'asset_name'         => 'required|string|max:255',
+            'vendor_id'          => ['required', 'exists:vendors,id'],
             'asset_category'     => 'required|string',
             'asset_type'         => 'required|string',
             'operational_status' => 'required|string',
             'assigned_to'        => 'nullable|string',
             'department'         => 'nullable|string',
             'location'           => 'nullable|string',
-            'vendor'             => 'required|string',
             'purchase_date'      => 'nullable|date',
             'purchase_cost'      => 'required|numeric',
             'useful_life_years'  => 'nullable|integer',
@@ -30,6 +30,7 @@ class StoreAssets extends FormRequest
             'warranty_start'     => 'required|date',
             'warranty_end'       => 'required|date',
             'next_maintenance'   => 'nullable|date',
+            'last_maintenance'   => 'nullable|date',
             'specs'              => 'nullable|array',
             'specs.*'            => 'nullable|string',
             'documents.name.*'   => 'required|string',
@@ -38,6 +39,8 @@ class StoreAssets extends FormRequest
             'AssetRequestId'      => 'nullable|integer',
         ];
     }
+
+
 
     public function messages(): array
     {
@@ -53,7 +56,7 @@ class StoreAssets extends FormRequest
             'asset_type.string'       => 'Asset type must be a valid string.',
 
             'operational_status.string' => 'Operational status must be a valid string.',
-            'vendor.string'             => 'Vendor must be a valid string.',
+            'vendor_id.exists'         => 'Selected vendor does not exist.',
 
             'purchase_date.date'      => 'Purchase date must be a valid date.',
             'purchase_cost.numeric'   => 'Purchase cost must be a valid number.',

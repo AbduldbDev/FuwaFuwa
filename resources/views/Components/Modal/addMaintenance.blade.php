@@ -14,27 +14,27 @@
                    <div class="step active" id="step1">
                        <h6 class="mb-3">Select Maintenance Type</h6>
                        <div class="row g-3">
-                           <div class="col-md-4">
+                           <div class="col-md-6 ">
                                <div class="option-card" data-type="Corrective">
                                    <i class="fa-solid fa-screwdriver-wrench fa-2x mb-2"></i>
                                    <h6>Corrective</h6>
                                    <small>Repair</small>
                                </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-6">
                                <div class="option-card" data-type="Preventive">
                                    <i class="fa-solid fa-calendar-check fa-2x mb-2"></i>
                                    <h6>Preventive</h6>
                                    <small>Scheduled</small>
                                </div>
                            </div>
-                           <div class="col-md-4">
+                           {{-- <div class="col-md-4">
                                <div class="option-card" data-type="Inspection">
                                    <i class="fa-solid fa-clipboard-check fa-2x mb-2"></i>
                                    <h6>Inspection</h6>
                                    <small>Scheduled</small>
                                </div>
-                           </div>
+                           </div> --}}
                        </div>
                    </div>
 

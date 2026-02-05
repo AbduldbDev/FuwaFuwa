@@ -23,7 +23,7 @@ class AssetRequestService
 
     public function getAllRequests()
     {
-        return AssetRequest::get();
+        return AssetRequest::latest('updated_at')->get();
     }
 
     public function getTotalProcured()

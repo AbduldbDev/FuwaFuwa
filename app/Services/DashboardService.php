@@ -190,7 +190,7 @@ class DashboardService
 
     public function getAllAssetsWithDepreciation($limit = 10)
     {
-        $assets = Assets::where('operational_status', '!=', 'archived')->latest()->take($limit)->get();
+        $assets = Assets::where('operational_status', '!=', 'archived')->latest('updated_at')->take($limit)->get();
 
         return $assets->map(function ($asset) {
 

@@ -300,6 +300,9 @@ function handleSlide6Extras() {
         .querySelector("#last_schedule_maintenance")
         ?.closest(".mb-3");
 
+    const nextMaintenanceDiv = slide6
+        .querySelector("#next_schedule_maintenance")
+        ?.closest(".mb-3");
     if (selectedType === "License") {
         if (warrantyStartText) {
             warrantyStartText.textContent = "Activation Date";
@@ -310,6 +313,7 @@ function handleSlide6Extras() {
         }
 
         if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
+        if (nextMaintenanceDiv) nextMaintenanceDiv.remove();
     } else {
         if (warrantyStartText) {
             warrantyStartText.textContent = "Warranty Start Date";

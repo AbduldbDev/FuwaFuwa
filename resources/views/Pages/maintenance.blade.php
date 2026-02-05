@@ -84,7 +84,7 @@
             <!-- repair card -->
             <section class="repair-wrapper overflow-auto">
                 <header class="repair-header">
-                    <h4>Findings from Inspection <span>({{ $ForInspection->count() }})</span></h4>
+                    <h4>Findings <span>({{ $ForInspection->count() }})</span></h4>
                 </header>
                 @foreach ($ForInspection as $item)
                     <article class="repair-row">

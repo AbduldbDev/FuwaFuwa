@@ -112,9 +112,9 @@
                     modalFields.innerHTML = `
                     <div class="mb-3">
                         <label class="form-label">Vendor</label>
-                        <select class="form-select" name="vendor">
+                        <select class="form-select" name="vendor_id">
                             ${vendors.map(v => `
-                                <option value="${v.name}" ${v.name === asset.vendor ? 'selected' : ''}>
+                                <option value="${v.id}" ${v.name === asset.vendor ? 'selected' : ''}>
                                     ${v.name}
                                 </option>
                             `).join('')}
@@ -155,6 +155,11 @@
                         'Expiration Date' :
                         'Warranty End Date';
 
+
+                    let warrantyStartLabel = asset.asset_type === 'Digital Asset' ?
+                        'Activation Date' :
+                        'Warranty Start Date';
+
                     modalFields.innerHTML = `
                         <div class="mb-3">
                             <label class="form-label">Compliance Status</label>
@@ -165,7 +170,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Warranty Start</label>
+                            <label class="form-label">${warrantyStartLabel}</label>
                             <input type="date" name="warranty_start" class="form-control" value="${asset.warranty_start ? new Date(asset.warranty_start).toISOString().split('T')[0] : ''}">
                         </div>
 
@@ -175,10 +180,17 @@
                         </div>
 
                       ${asset.asset_type !== 'Digital Asset' ? `
-                        <div class="mb-3">
+                       <div class="mb-3">
                             <label class="form-label">Last Maintenance</label>
+                            <input type="date" name="last_maintenance" class="form-control" value="${asset.last_maintenance ? new Date(asset.last_maintenance).toISOString().split('T')[0] : ''}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Next Maintenance</label>
                             <input type="date" name="next_maintenance" class="form-control" value="${asset.next_maintenance ? new Date(asset.next_maintenance).toISOString().split('T')[0] : ''}">
                         </div>
+
+                        
                         ` : ''}
                     `;
                     break;

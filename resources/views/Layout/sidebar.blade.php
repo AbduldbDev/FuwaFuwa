@@ -87,7 +87,7 @@
             @if (Auth::user()->canAccess('Reports', 'read'))
                 <a href="{{ route('reports-analytics.index') }}"
                     class="menu-link {{ request()->routeIs('reports-analytics.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-chart-column"></i> Reports & Analytics
+                    <i class="fa-solid fa-chart-column"></i> Reports
                 </a>
             @endif
         @endif

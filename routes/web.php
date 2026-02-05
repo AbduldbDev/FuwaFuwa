@@ -76,7 +76,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::put('/update-inspection-schedule/{maintenance}', 'updateInspectionSchedule')->name('updateInspectionSchedule');
     });
 
-    Route::prefix('/reports-analytics')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {
+    Route::prefix('/reports')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
 

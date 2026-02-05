@@ -36,7 +36,7 @@ class VendorService
 
     public function getVendors()
     {
-        return Vendors::with(['documents', 'purchases'])->get();
+        return Vendors::with(['documents', 'purchases'])->latest('updated_at')->get();
     }
 
     public function create(array $data)
