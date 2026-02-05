@@ -1,5 +1,5 @@
  <div class="modal fade" id="scheduleMaintenance{{ $item->id }}" tabindex="-1" aria-hidden="true">
-     <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
          <div class="modal-content rounded-3">
              <!-- modal header -->
              <div class="modal-header">

@@ -1,5 +1,5 @@
 <div class="modal fade" id="viewCorrectiveMaintenance{{ $item->id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content rounded-3">
             <!-- modal header -->
             <div class="modal-header">
@@ -64,58 +64,7 @@
 
                 <hr />
 
-                <!-- ===== issue/task description ===== -->
-                <section class="mb-4">
-                    <h6 class="fw-semibold mb-3">
-                        <i class="fa-solid fa-clipboard-list me-2"></i>
-                        Issue/Task Description
-                    </h6>
-
-                    <div class="mb-3">
-                        <label class="form-label text-muted">Detailed Description</label>
-                        <div class="description-text fw-semibold">{{ $item->description }}
-                        </div>
-                    </div>
-
-                    @if ($item->documents)
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Attached Files</label>
-                            <ul class="fw-semibold">
-                                @foreach (json_decode($item->documents) as $file)
-                                    <li> <a href="{{ $file }}" target="_blank" class="file-link">
-                                            {{ basename($file) }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                </section>
-
-                <hr />
-
                 <!-- ===== priority ===== -->
-                <section class="mb-4">
-                    <h6 class="fw-semibold mb-3">
-                        <i class="fa-solid fa-flag me-2"></i>
-                        Priority Level
-                    </h6>
-                    @php
-                        $priorityClass = match ($item->priority) {
-                            'Low' => 'low',
-                            'Medium' => 'medium',
-                            'High' => 'high',
-                            'Emergency' => 'emergency',
-                            default => 'low',
-                        };
-                    @endphp
-
-                    <span class="priority-badge low" style="font-size: 14px;">
-                        {{ $item->priority }}
-                    </span>
-                </section>
-
-                <hr />
 
                 <!-- ===== maintenance schedule ===== -->
                 <section class="mb-4">
@@ -143,6 +92,28 @@
 
                 <hr />
 
+                <section class="mb-4">
+                    <h6 class="fw-semibold mb-3">
+                        <i class="fa-solid fa-flag me-2"></i>
+                        Priority Level
+                    </h6>
+                    @php
+                        $priorityClass = match ($item->priority) {
+                            'Low' => 'low',
+                            'Medium' => 'medium',
+                            'High' => 'high',
+                            'Emergency' => 'emergency',
+                            default => 'low',
+                        };
+                    @endphp
+
+                    <span class="priority-badge low" style="font-size: 14px;">
+                        {{ $item->priority }}
+                    </span>
+                </section>
+
+                <hr />
+
                 <!-- post service details -->
                 <section class="mb-4">
                     <form id="updateInspection{{ $item->id }}"
@@ -152,27 +123,20 @@
                         @method('PUT')
                         <h6 class="fw-semibold mb-3" style="font-size: 20px;">
                             <i class="fa-solid fa-calendar-days me-2"></i>
-                            Post-Service Details
+                            Action Taken
                         </h6>
+                        <input type="hidden" name="technician" value="{{ $item->technician }}">
 
                         <div class="row">
                             <!-- condition post-service -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label text-muted">Condition Post Service</label>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label text-muted">Condition</label>
                                 <select class="form-select" name="condition">
                                     <option value="Excellent - No Issues Found">Excellent - No Issues Found</option>
                                     <option value="Good - Minor Issues Found">Good - Minor Issues Found</option>
                                     <option value="Fair - Requires Future Repairs">Fair - Requires Future Repairs
                                     </option>
                                 </select>
-                            </div>
-
-                            <!-- assigned technician -->
-                            <div class="col-md-6">
-                                <label for="assignedTechnician" class="form-label text-muted">
-                                    Assigned Technician
-                                </label>
-                                <input type="text" class="form-control" name="technician">
                             </div>
 
                             <!-- documentation -->

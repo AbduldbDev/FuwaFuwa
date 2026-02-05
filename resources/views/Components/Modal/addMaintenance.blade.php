@@ -53,7 +53,7 @@
                            <div class="row mb-5">
                                <div class="col-md-12">
                                    <label class="form-label">Maintenance Type <span class="text-danger">*</span></label>
-                                   <input type="text" id="maintenanceType" name="maintenance_type"
+                                   <input type="text" id="maintenanceType" name="maintenance_type" required
                                        class="form-control" readonly>
                                </div>
                            </div>
@@ -67,14 +67,14 @@
                                    </div>
                                    <div class="col-md-6">
                                        <label class="form-label">Department</label>
-                                       <input type="text" class="form-control"
-                                           value="{{ Auth::user()->department }}">
+                                       <input type="text" class="form-control" value="{{ Auth::user()->department }}"
+                                           required>
                                    </div>
                                </div>
 
                                <div class="mb-3">
                                    <label class="form-label">Detailed Description</label>
-                                   <textarea name="description" class="form-control" rows="3"></textarea>
+                                   <textarea name="description" class="form-control" rows="3" required></textarea>
                                </div>
 
                                <div class="mb-5">
@@ -90,14 +90,14 @@
                                    <div class="position-relative">
                                        <label class="form-label">Asset Tags</label>
                                        <input type="text" id="assetInput" class="form-control"
-                                           placeholder="Type to search asset">
+                                           placeholder="Type to search asset" required>
 
                                        <div id="assetDropdown" class="list-group position-absolute w-100 d-none"
                                            style="max-height:200px; overflow:auto; z-index:1055;">
                                            @foreach ($Assets as $item)
                                                <button type="button" class="list-group-item list-group-item-action"
                                                    data-tag="{{ $item->asset_tag }}" data-name="{{ $item->asset_name }}"
-                                                   data-next="{{ $item->next_maintenance }}">
+                                                   data-next="{{ $item->last_maintenance }}">
                                                    {{ $item->asset_tag }} - {{ $item->asset_name }}
                                                </button>
                                            @endforeach
@@ -109,7 +109,7 @@
                                </div>
                                <div class="col-md-4">
                                    <label class="form-label">Asset Name</label>
-                                   <input type="text" name="asset_name" class="form-control">
+                                   <input type="text" name="asset_name" class="form-control" Asset Tags>
                                </div>
                                <div class="col-md-4">
                                    <label class="form-label">Last Maintenance Date</label>
@@ -149,17 +149,17 @@
                                <div class="row mb-3">
                                    <div class="col-md-6">
                                        <label class="form-label">Start Date</label>
-                                       <input type="date" name="start_date" class="form-control">
+                                       <input type="date" name="start_date" class="form-control" required>
                                    </div>
                                    <div class="col-md-6">
                                        <label class="form-label">Maintenance Frequency</label>
-                                       <select name="frequency" id="frequency" class="form-select"></select>
+                                       <select name="frequency" id="frequency" class="form-select" required></select>
                                    </div>
                                </div>
 
                                <div class="mb-3">
                                    <label class="form-label">Assign Technician</label>
-                                   <input type="text" name="technician" class="form-control">
+                                   <input type="text" name="technician" class="form-control" required>
                                </div>
                            </div>
                        </form>
@@ -281,19 +281,43 @@
 
                        frequency.innerHTML = '';
                        const options = selectedType === 'Preventive' ? ['Semi-Annual', 'Quarterly',
-                           'Monthly'
+                           'Monthly', 'Weekly'
                        ] : ['Weekly', 'Monthly'];
 
                        options.forEach(o => {
-                           frequency.insertAdjacentHTML('beforeend', `<option>${o}</option>`);
+                           frequency.insertAdjacentHTML('beforeend',
+                               `<option value="${o}">${o}</option>`);
                        });
                    }
                }
                // If Step 2 → Submit
                else if (step2.classList.contains('active')) {
+
+                   // Only validate visible required fields
+                   const requiredFields = Array.from(form.querySelectorAll('[required]'))
+                       .filter(field => field.offsetParent !== null); // offsetParent null means hidden
+
+                   let allFilled = true;
+
+                   requiredFields.forEach(field => {
+                       if (!field.value) {
+                           field.classList.add('is-invalid'); // optional: highlight
+                           allFilled = false;
+                       } else {
+                           field.classList.remove('is-invalid');
+                       }
+                   });
+
+                   if (!allFilled) {
+                       alert('Please fill in all required fields before submitting.');
+                       return;
+                   }
+
                    form.submit(); // 🚀 Submit the form
                }
            });
+
+
 
            backBtn.addEventListener('click', (e) => {
                e.preventDefault();

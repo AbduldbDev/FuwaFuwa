@@ -6,6 +6,7 @@ use App\Models\Maintenance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Assets;
+use Illuminate\Support\Facades\DB;
 
 class MaintenanceService
 {
@@ -44,6 +45,11 @@ class MaintenanceService
             ->get();
     }
 
+    public function getInEvent()
+    {
+        return Maintenance::whereIn('status', ['Inspection', 'Corrective', 'Preventive'])->whereNotNull('start_date')->latest()->get();
+    }
+
     public function getPendingCorrective()
     {
         return Maintenance::where('maintenance_type', 'Corrective')->whereNull('start_date')
@@ -54,13 +60,19 @@ class MaintenanceService
     public function getForInspection()
     {
         return Maintenance::where('status', 'For Inspection')
-            ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")
+            ->orderByRaw("FIELD(priority, 'Emergency', 'High', 'Medium', 'Low')")->latest('updated_at')
             ->get();
     }
 
     public function getAllAssets()
     {
-        return Assets::where('operational_status', '!=', 'archived')->latest()->get();
+        return Assets::where('operational_status', '!=', 'archived')
+            ->where('asset_type', 'Physical Asset')
+            ->whereDoesntHave('maintenances', function ($q) {
+                $q->where('status', '!=', 'Completed'); // Exclude only ongoing
+            })
+            ->latest()
+            ->get();
     }
 
     public function getMaintenanceEvents($maintenances)
@@ -77,21 +89,28 @@ class MaintenanceService
         return $events;
     }
 
+    public function getRequestStatusCounts()
+    {
+        return Maintenance::select('status', DB::raw('COUNT(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+    }
+
     public function getDashboardData(): array
     {
-
-        $inProgress = $this->getInProgress();
 
         return [
             'PendingCorrective' => $this->getPendingCorrective(),
             'Assets'  => $this->getAllAssets(),
             'ForInspection' => $this->getForInspection(),
-            'InProgress' => $inProgress,
-            'maintenanceEvents' => $this->getMaintenanceEvents($inProgress),
+            'InProgress' => $this->getInProgress(),
+            'maintenanceEvents' => $this->getInEvent(),
             'TotalMaintenance' => $this->getTotalMaintenance(),
             'TotalInprogress' => $this->getTotalInProgress(),
             'TotalCompleted' => $this->getTotalCompleted(),
             'TotalHigh' => $this->getTotalHighPriority(),
+            'RequestStatusCounts' => $this->getRequestStatusCounts(),
         ];
     }
 
@@ -149,13 +168,12 @@ class MaintenanceService
     public function updateInspectionSchedule(Maintenance $maintenance, array $data): Maintenance
     {
         $maintenance->update([
-            'maintenance_id' => $this->generateMaintenanceId('Corrective'),
+            'maintenance_id'   => $this->generateMaintenanceId('Corrective'),
             'maintenance_type' => 'Corrective',
-            'start_date' => $data['start_date'],
-            'technician' => $data['technician'],
-            'status' => 'Corrective'
+            'start_date'       => $data['start_date'],
+            'technician'       => !empty($data['technician']) ? $data['technician'] : $maintenance->technician,
+            'status'           => 'Corrective',
         ]);
-
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -189,7 +207,7 @@ class MaintenanceService
             'technician_notes' => $data['technician_notes'],
             'post_attachments' => $data['post_attachments'] ?? '',
             'status' => 'Completed',
-
+            'completed_at' => Carbon::now()
         ]);
 
 
@@ -218,18 +236,47 @@ class MaintenanceService
             $data['document'] = json_encode($paths);
         }
 
+        $status = $data['condition'] === 'Excellent - No Issues Found'
+            ? 'Completed'
+            : 'For Inspection';
 
-        $status =  $data['condition'] === 'Excellent - No Issues Found' ? 'Completed' : 'For Inspection';
+        $updateData = [
+            'documents'        => $data['document'] ?? $maintenance->documents,
+            'technician'       => !empty($data['technician']) ? $data['technician'] : $maintenance->technician,
+            'description'      => $data['description'] ?? $maintenance->description,
+            'post_description' => $data['condition'] ?? $maintenance->post_description,
+            'status'           => $status,
+        ];
 
+        if ($status === 'Completed') {
+            $completedAt = Carbon::now();
+            $nextMaintenance = null;
 
-        $maintenance->update([
-            'documents' =>  $data['document'] ?? '',
-            'technician' =>  $data['technician'],
-            'description' => $data['description'],
-            'post_description' => $data['condition'],
-            'status' => $status,
-        ]);
+            switch ($maintenance->frequency) {
+                case 'Weekly':
+                    $nextMaintenance = $completedAt->copy()->addWeek();
+                    break;
 
+                case 'Monthly':
+                    $nextMaintenance = $completedAt->copy()->addMonth();
+                    break;
+
+                case 'Quarterly':
+                    $nextMaintenance = $completedAt->copy()->addMonths(3);
+                    break;
+
+                case 'Semi-Annual':
+                    $nextMaintenance = $completedAt->copy()->addMonths(6);
+                    break;
+            }
+
+            $updateData['completed_at']     = $completedAt;
+            Assets::where('asset_tag', $maintenance->asset_tag)->update([
+                'next_maintenance' => $nextMaintenance
+            ]);
+        }
+
+        $maintenance->update($updateData);
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',

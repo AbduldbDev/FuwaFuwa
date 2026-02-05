@@ -27,7 +27,7 @@
                     <div class="row">
                         <!-- department -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Select Department</label>
+                            <label class="form-label">Select Department <span class="text-danger">*</span></label>
                             <select class="form-select" name="department">
                                 <option disabled>Choose department</option>
                                 <option value="IT" {{ $item->department == 'IT' ? 'selected' : '' }}>IT</option>
@@ -39,7 +39,7 @@
 
                         <!-- role -->
                         <div class="col-md-6 mb-4">
-                            <label class="form-label">Select User Role</label>
+                            <label class="form-label">Select User Role <span class="text-danger">*</span></label>
                             <select name="user_type" class="form-select">
                                 <option disabled>Choose role</option>
                                 <option value="admin" {{ $item->user_type == 'admin' ? 'selected' : '' }}>Admin
@@ -74,7 +74,7 @@
 
                     <!-- account status -->
                     <div class="mb-3">
-                        <label class="form-label d-block">Account Status</label>
+                        <label class="form-label d-block">Account Status <span class="text-danger">*</span></label>
                         <div class="d-flex gap-4">
                             <div class="form-check">
                                 <input class="form-check-input shadow-none" type="radio" name="status"

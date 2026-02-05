@@ -1803,7 +1803,9 @@ select option {
     left: 0;
     height: 3px;
     background: var(--button);
-    transition: transform 0.3s ease, width 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
 }
 
 .tab-content {
@@ -1857,7 +1859,9 @@ select option {
 .section-body {
     overflow: hidden;
     max-height: 1000px;
-    transition: max-height 0.3s ease, padding 0.25s ease;
+    transition:
+        max-height 0.3s ease,
+        padding 0.25s ease;
     padding: 20px;
 }
 
@@ -2034,17 +2038,12 @@ select option {
 
 /* maintenance colors */
 .corrective {
-    background: #166534;
+    background: #1e40af;
     color: #fff;
 }
 
 .preventive {
-    background: #f0ab4b;
-    color: #fff;
-}
-
-.inspection {
-    background: #1e40af;
+    background: #6d28d9;
     color: #fff;
 }
 
@@ -2119,4 +2118,14 @@ select option {
     font-size: 0.75rem;
     font-weight: normal;
     margin-left: 0.25rem;
+}
+
+.day.corrective {
+    background: #1e40af;
+    color: #fff;
+}
+
+.day.preventive {
+    background: #6d28d9;
+    color: #fff;
 }

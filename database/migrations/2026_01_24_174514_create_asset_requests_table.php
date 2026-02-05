@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('status')->default('For Review');
             $table->text('remarks')->nullable();
             $table->string('is_approved')->default('pending');
+            $table->boolean('is_added')->default(false);
             $table->timestamps();
         });
     }

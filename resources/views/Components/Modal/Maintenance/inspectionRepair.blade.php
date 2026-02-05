@@ -1,5 +1,5 @@
  <div class="modal fade" id="scheduleMaintenance{{ $item->id }}" tabindex="-1" aria-hidden="true">
-     <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
          <div class="modal-content rounded-3">
              <!-- modal header -->
              <div class="modal-header">
@@ -129,7 +129,7 @@
                                  <label class="form-label text-muted">
                                      Start Date <span class="text-danger">*</span>
                                  </label>
-                                 <input type="date" class="form-control" name="start_date" />
+                                 <input type="date" class="form-control" name="start_date" required />
                              </div>
 
                              <!-- Assigned Technician -->
@@ -137,7 +137,7 @@
                                  <label for="assignedTechnician" class="form-label text-muted">
                                      Assigned Technician
                                  </label>
-                                 <input type="text" class="form-control" name="technician" />
+                                 <input type="text" class="form-control" name="technician" required />
                              </div>
                          </div>
                      </form>

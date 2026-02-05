@@ -24,7 +24,8 @@ class Maintenance extends Model
         'post_replacements',
         'technician_notes',
         'status',
-        'post_attachments'
+        'post_attachments',
+        'completed_at'
     ];
 
     public function reporter()

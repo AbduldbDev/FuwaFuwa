@@ -39,19 +39,18 @@
         <!-- calendar schedule -->
         <div class="maintenance-container mb-4">
             <!-- calendar -->
-            <div class="calendar-card">
+            <div class="calendar-card" style="position:relative;">
+                <!-- Header -->
                 <div class="calendar-header">
                     <h4>Maintenance Calendar</h4>
 
                     <div class="date-controls">
-                        <!-- month -->
+                        <!-- Month control -->
                         <div class="month-control">
                             <button id="prevMonth" aria-label="Previous month">
                                 <i class="fa-solid fa-angle-left"></i>
                             </button>
-
                             <span id="monthLabel"></span>
-
                             <button id="nextMonth" aria-label="Next month">
                                 <i class="fa-solid fa-angle-right"></i>
                             </button>
@@ -62,6 +61,7 @@
                     </div>
                 </div>
 
+                <!-- Weekdays row -->
                 <div class="weekdays">
                     <div>Sun</div>
                     <div>Mon</div>
@@ -72,12 +72,29 @@
                     <div>Sat</div>
                 </div>
 
-                <div class="calendar-grid" id="calendar"></div>
+                <!-- Calendar grid -->
+                <div class="calendar-grid" id="calendar"
+                    style="display:grid; grid-template-columns: repeat(7, 1fr); gap:5px;"></div>
 
-                <div class="legend">
-                    <div><span class="dot corrective"></span>Corrective</div>
-                    <div><span class="dot preventive"></span>Preventive</div>
-                    <div><span class="dot inspection"></span>Inspection</div>
+                <!-- Legend -->
+                <div class="legend" style="margin-top:10px;">
+                    <div><span class="dot corrective"></span> Corrective</div>
+                    <div><span class="dot preventive"></span> Preventive</div>
+                </div>
+
+                <!-- Popup -->
+                <div id="popup"
+                    style="
+            position:absolute; 
+            display:none; 
+            background:#fff; 
+            border:1px solid #ccc; 
+            padding:10px; 
+            border-radius:6px; 
+            box-shadow:0 4px 8px rgba(0,0,0,0.1); 
+            z-index:1000; 
+            max-width:100px;
+        ">
                 </div>
             </div>
 
@@ -86,7 +103,8 @@
                 <header class="repair-header">
                     <h4>Findings <span>({{ $ForInspection->count() }})</span></h4>
                 </header>
-                @foreach ($ForInspection as $item)
+
+                @forelse ($ForInspection as $item)
                     <article class="repair-row">
                         <div class="repair-info">
                             <div class="repair-top mb-1">
@@ -96,23 +114,26 @@
                             <div class="repair-meta">
                                 <span>Asset: {{ $item->asset_tag }}</span>
                                 <span>Issued by: {{ $item->reporter->name }}</span>
-
                             </div>
                         </div>
                         <button class="schedule-btn" data-bs-toggle="modal"
-                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
-                            Maintenance</button>
+                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule Maintenance</button>
                     </article>
                     @include('Components.Modal.Maintenance.inspectionRepair')
-                @endforeach
+                @empty
+                    <div class="text-center p-4 text-muted">
+                        <i class="fa-solid fa-inbox fa-2x mb-2"></i>
+                        <p>No findings available.</p>
+                    </div>
+                @endforelse
             </section>
 
-            <!-- repair card -->
             <section class="repair-wrapper overflow-auto">
                 <header class="repair-header">
                     <h4>For Repair <span>({{ $PendingCorrective->count() }})</span></h4>
                 </header>
-                @foreach ($PendingCorrective as $item)
+
+                @forelse ($PendingCorrective as $item)
                     <article class="repair-row">
                         <div class="repair-info">
                             <div class="repair-top mb-1">
@@ -122,15 +143,18 @@
                             <div class="repair-meta">
                                 <span>Asset: {{ $item->asset_name }}</span>
                                 <span>Issued by: {{ $item->reporter->name }}</span>
-
                             </div>
                         </div>
                         <button class="schedule-btn" data-bs-toggle="modal"
-                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
-                            Maintenance</button>
+                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule Maintenance</button>
                     </article>
                     @include('Components.Modal.Maintenance.correctiveRepair')
-                @endforeach
+                @empty
+                    <div class="text-center p-4 text-muted">
+                        <i class="fa-solid fa-tools fa-2x mb-2"></i>
+                        <p>No pending corrective repairs.</p>
+                    </div>
+                @endforelse
             </section>
 
         </div>
@@ -150,13 +174,30 @@
                 </select>
             </div>
 
-            <!-- filters -->
             <div class="d-flex gap-2 mb-4">
-                <span class="filter-pill all active">All</span>
-                <span class="filter-pill inspection">Inspection</span>
-                <span class="filter-pill preventive">Preventive</span>
-                <span class="filter-pill corrective">Corrective</span>
-                <span class="filter-pill completed">Completed</span>
+                @php
+                    $counts = $RequestStatusCounts ?? [];
+                    $total = array_sum($counts);
+                @endphp
+
+                <div class="d-flex gap-2 mb-4">
+
+                    <span class="filter-pill all active" data-status="all">
+                        All <strong>({{ $total }})</strong>
+                    </span>
+
+                    <span class="filter-pill preventive" data-status="Preventive">
+                        Preventive <strong>({{ $counts['Preventive'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill corrective" data-status="corrective">
+                        Corrective <strong>({{ $counts['Correctivet'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill completed" data-status="Completed">
+                        Completed <strong>({{ $counts['Completed'] ?? 0 }})</strong>
+                    </span>
+                </div>
             </div>
 
             <!-- requests card -->
@@ -406,12 +447,20 @@
         const calendarEl = document.getElementById("calendar");
         const monthLabel = document.getElementById("monthLabel");
         const yearSelect = document.getElementById("yearSelect");
-
         const prevMonth = document.getElementById("prevMonth");
         const nextMonth = document.getElementById("nextMonth");
+        const popup = document.getElementById("popup");
 
         let month = new Date().getMonth();
         let year = new Date().getFullYear();
+
+        // Transform array to object keyed by date
+        const eventsByDate = {};
+        maintenanceEvents.forEach(event => {
+            const dateKey = event.start_date;
+            if (!eventsByDate[dateKey]) eventsByDate[dateKey] = [];
+            eventsByDate[dateKey].push(event);
+        });
 
         // Populate year dropdown
         for (let y = 2020; y <= 2035; y++) {
@@ -432,19 +481,52 @@
                 month: "long"
             });
 
-            // Always 42 cells
             for (let i = 0; i < 42; i++) {
                 const cell = document.createElement("div");
                 cell.className = "day";
 
                 const dateNum = i - firstDay + 1;
                 if (dateNum > 0 && dateNum <= daysInMonth) {
-                    cell.textContent = dateNum;
+                    const dateLabel = document.createElement("div");
+                    dateLabel.className = "date-number";
+                    dateLabel.textContent = dateNum;
+                    cell.appendChild(dateLabel);
 
                     const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(dateNum).padStart(2, "0")}`;
 
-                    if (maintenanceEvents[key]) {
-                        cell.classList.add(maintenanceEvents[key]);
+                    if (eventsByDate[key]) {
+                        cell.classList.add("has-event");
+                        cell.style.cursor = "pointer";
+
+                        // Add colored dots for each event type
+                        eventsByDate[key].forEach(event => {
+                            cell.classList.add(event.maintenance_type.toLowerCase());
+                        });
+
+                        // Click to show popup
+                        cell.onclick = (e) => {
+                            let content =
+                                `<h5 style="margin:0 0 5px 0; font-size:14px;">Maintenance Events for ${key}</h5>
+                                <div style=" font-size:13px;">`;
+                            eventsByDate[key].forEach(ev => {
+                                content +=
+                                    `<p><strong>Asset Tag:</strong></p>
+                                    <p>${ev.asset_tag ?? 'N/A'}</p>
+                                    <p><strong>Asset Name:</strong></p>
+                                    <p> ${ev.asset_name?? 'N/A'}</p>`;
+                            });
+                            content += "</div>";
+
+                            popup.innerHTML = content;
+                            popup.style.display = "block";
+
+                            // Position the popup above the clicked cell
+                            const rect = cell.getBoundingClientRect();
+                            const calendarRect = calendarEl.getBoundingClientRect();
+
+                            popup.style.top = (rect.top - calendarRect.top - popup.offsetHeight - 10) + "px"; // 8px gap
+                            popup.style.left = (rect.left - calendarRect.left) + "px";
+                        };
                     }
                 } else {
                     cell.classList.add("empty");
@@ -453,6 +535,13 @@
                 calendarEl.appendChild(cell);
             }
         }
+
+        // Hide popup when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".day")) {
+                popup.style.display = "none";
+            }
+        });
 
         prevMonth.onclick = () => {
             month--;

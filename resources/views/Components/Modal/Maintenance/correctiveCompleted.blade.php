@@ -1,5 +1,5 @@
  <div class="modal fade" id="viewCorrectiveMaintenance{{ $item->id }}" tabindex="-1" aria-hidden="true">
-     <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
          <div class="modal-content rounded-3">
              <!-- modal header -->
              <div class="modal-header">
@@ -214,10 +214,16 @@
                          </div>
 
                          <!-- next maintenance schedule -->
-                         <div class="col-md-12 mb-3">
+                         <div class="col-md-6 mb-3">
                              <label class="form-label text-muted">Start Date</label>
                              <div class="description-text fw-semibold">
                                  {{ \Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</div>
+                         </div>
+
+                         <div class="col-md-6 mb-3">
+                             <label class="form-label text-muted">Completion Date</label>
+                             <div class="description-text fw-semibold">
+                                 {{ \Carbon\Carbon::parse($item->completed_at)->format('M d, Y h:i a') }}</div>
                          </div>
                      </div>
 

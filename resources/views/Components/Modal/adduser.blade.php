@@ -25,7 +25,7 @@
                      <div class="row">
                          <!-- department -->
                          <div class="col-md-6 mb-3">
-                             <label class="form-label">Select Department</label>
+                             <label class="form-label">Select Department <span class="text-danger">*</span></label>
                              <select class="form-select" name="department">
                                  <option selected disabled>Choose department</option>
                                  <option value="IT">IT</option>
@@ -36,7 +36,7 @@
 
                          <!-- role -->
                          <div class="col-md-6 mb-4">
-                             <label class="form-label">Select User Role</label>
+                             <label class="form-label">Select User Role <span class="text-danger">*</span></label>
                              <select name="user_type" class="form-select">
                                  <option selected disabled>Choose role</option>
                                  <option value="admin">Admin</option>

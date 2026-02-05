@@ -17,8 +17,8 @@ class StoreMaintenanceRequest extends FormRequest
             'maintenance_type' => 'required|in:Corrective,Preventive,Inspection',
             'description' => 'nullable|string',
             'document.*' => 'nullable|file|mimes:pdf,jpg,png,docx|max:25600',
-            'asset_tag' => 'nullable|string|max:100',
-            'asset_name' => 'nullable|string|max:255',
+            'asset_tag' => ['required', 'string', 'max:100', 'exists:assets,asset_tag'],
+            'asset_name' => 'required|string|max:255',
             'last_maintenance_date' => 'nullable|date',
             'priority' => 'required|in:Low,Medium,High,Emergency',
             'start_date' => 'nullable|date',
@@ -27,6 +27,14 @@ class StoreMaintenanceRequest extends FormRequest
             'post_description' => 'nullable|string|max:255',
             'post_replacements' => 'nullable|string|max:255',
             'technician_notes'  => 'nullable|string|max:255',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'asset_tag.exists' => 'The selected asset tag does not exist.',
+            'asset_tag.required' => 'The selected asset tag does not exist.',
         ];
     }
 }

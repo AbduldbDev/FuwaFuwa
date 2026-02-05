@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Carbon\Carbon;
 
 class Assets extends Model
 {
@@ -58,5 +59,33 @@ class Assets extends Model
     public function vendor()
     {
         return $this->belongsTo(Vendors::class, 'vendor_id');
+    }
+
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class, 'asset_tag', 'asset_tag');
+    }
+
+    public static function updateComplianceStatus()
+    {
+        $assets = self::all();
+
+        foreach ($assets as $asset) {
+            $isNonCompliant = false;
+            if ($asset->asset_type === 'Physical Asset' && $asset->warranty_end) {
+                if (Carbon::now()->gt(Carbon::parse($asset->warranty_end))) {
+                    $isNonCompliant = true;
+                }
+            }
+
+            if ($asset->asset_type === 'Digital Asset') {
+                if ($asset->warranty_end && Carbon::now()->gt(Carbon::parse($asset->warranty_end))) {
+                    $isNonCompliant = true;
+                }
+            }
+
+            $asset->compliance_status = $isNonCompliant ? 'Non-Compliant' : 'Compliant';
+            $asset->save();
+        }
     }
 }

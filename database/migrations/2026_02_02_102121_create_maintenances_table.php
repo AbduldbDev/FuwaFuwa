@@ -29,6 +29,8 @@ return new class extends Migration
             $table->string('post_replacements')->nullable();
             $table->string('technician_notes')->nullable();
             $table->string('status')->default("Pending");
+            $table->dateTime('completed_at')->nullable();
+            $table->text('post_attachments')->nullable();
             $table->timestamps();
         });
     }

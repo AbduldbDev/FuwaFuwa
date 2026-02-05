@@ -1,5 +1,5 @@
 <div class="modal fade" id="viewCorrectiveMaintenance{{ $item->id }}" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content rounded-3">
             <!-- modal header -->
             <div class="modal-header">
@@ -170,12 +170,12 @@
                         @method('PUT')
                         <h6 class="fw-semibold mb-3" style="font-size: 20px;">
                             <i class="fa-solid fa-file-circle-check me-2"></i>
-                            Post-Service Details
+                            Action Taken
                         </h6>
 
                         <div class="row g-3">
                             <div class="col-md-12">
-                                <label class="form-label text-muted">Action Taken</label>
+                                <label class="form-label text-muted">Action Description</label>
                                 <textarea class="form-control" rows="3" placeholder="Add remarks or comments..." name="post_description"></textarea>
                             </div>
 
