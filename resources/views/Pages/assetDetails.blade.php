@@ -76,9 +76,10 @@
                 @if (Auth::user()->canAccess('Assets', 'write') &&
                         $item->operational_status !== 'archived' &&
                         Auth::user()->user_type == 'admin')
-                    <button class="delete-btn" data-url="{{ route('assets.delete', $item->id) }}">
-                        <i class="fa-regular fa-trash-can"></i>
+                    <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#archiveAsset">
+                        <i class="fa-solid fa-box-archive"></i>
                     </button>
+                    @include('Components.Modal.AssetDetails.ArchiveAsset')
                 @endif
             </div>
 
@@ -104,6 +105,30 @@
             <div class="row g-4">
                 <!-- left side -->
                 <div class="col-lg-8">
+
+                    @if ($item->operational_status === 'archived')
+                        <div class="section-card mb-4">
+                            <div class="section-toggle">
+                                <!-- asset title header -->
+                                <div class="asset-title" onclick="toggleSection(this)">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                    <h6 class="mb-0 fw-semibold">Archive Details</h6>
+                                </div>
+                            </div>
+
+                            <div class="section-body">
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Delete Reason</div>
+                                    <div class="col-8 value">{{ $item->delete_title }}</div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Reason Description</div>
+                                    <div class="col-8 value">{{ $item->delete_reason }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                     <!-- asset details -->
                     <div class="section-card mb-4">
@@ -548,7 +573,7 @@
     </section>
     @include('Components/Modal/updateAsset')
     <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}?v={{ time() }}"></script>
-    <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}?v={{ time() }}"></script>
+    {{-- <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}?v={{ time() }}"></script> --}}
 @endsection
 
 @push('css')

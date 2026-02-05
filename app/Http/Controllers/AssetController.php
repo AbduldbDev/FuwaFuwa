@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Assets\StoreAssets;
 use App\Http\Requests\Assets\UpdateAssetRequest;
+use App\Http\Requests\Assets\ArchiveAsset;
+
 use App\Models\Assets;
 use App\Models\User;
 use App\Services\AssetService;
@@ -85,12 +87,12 @@ class AssetController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete(ArchiveAsset $request, $id)
     {
         $this->authorizeWrite();
 
         try {
-            $this->assetService->deleteAsset($id);
+            $this->assetService->deleteAsset($id, $request->validated());
 
             return redirect()->route('assets.index')->with('success', 'Asset deleted successfully.');
         } catch (\Throwable $e) {

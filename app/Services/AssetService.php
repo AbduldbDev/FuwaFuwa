@@ -267,7 +267,7 @@ class AssetService
         }
 
         do {
-            $tag = $Prefix . strtoupper(Str::random(4));
+            $tag = $Prefix . '-' . strtoupper(Str::random(4));
         } while (Assets::where('asset_tag', $tag)->exists());
 
         return $tag;
@@ -286,10 +286,12 @@ class AssetService
         return $assetId;
     }
 
-    public function deleteAsset(int $id)
+    public function deleteAsset(int $id, array $data)
     {
         $asset = Assets::findOrFail($id);
         $asset->operational_status = 'archived';
+        $asset->delete_title = $data['delete_title'];
+        $asset->delete_reason = $data['delete_reason'];
 
         $this->notification->notifyUsersWithModuleAccess(
             'Assets',

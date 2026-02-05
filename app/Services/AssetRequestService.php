@@ -56,6 +56,15 @@ class AssetRequestService
         return Vendors::where('status', 'Active')->get();
     }
 
+    public function getRequestStatusCounts()
+    {
+        return AssetRequest::select('status', DB::raw('COUNT(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+    }
+
+
     public function getDashboardData()
     {
         return [
@@ -66,6 +75,7 @@ class AssetRequestService
             'TotalOnHandPhysical' => $this->TotalOnHandPhysical(),
             'users' => $this->getActiveUsers(),
             'vendors' => $this->getActiveVendors(),
+            'RequestStatusCounts' => $this->getRequestStatusCounts(),
         ];
     }
 

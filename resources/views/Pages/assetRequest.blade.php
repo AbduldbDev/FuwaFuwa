@@ -46,13 +46,39 @@
 
             <!-- filters -->
             <div class="d-flex gap-2 mb-4">
-                <span class="filter-pill  all active" data-status="all">All <strong>(20)</strong></span>
-                <span class="filter-pill for-review" data-status="for review">For Review <strong>(20)</strong></span>
-                <span class="filter-pill in-progress" data-status="in progress">In Progress <strong>(20)</strong></span>
-                <span class="filter-pill for-procurement" data-status="for procurement"> For Procurement
-                    <strong>(20)</strong></span>
-                <span class="filter-pill for-release" data-status="for release">For Release <strong>(20)</strong></span>
-                <span class="filter-pill closed" data-status="closed">Closed <strong>(20)</strong></span>
+                @php
+                    $counts = $RequestStatusCounts ?? [];
+                    $total = array_sum($counts);
+                @endphp
+
+                <div class="d-flex gap-2 mb-4">
+
+                    <span class="filter-pill all active" data-status="all">
+                        All <strong>({{ $total }})</strong>
+                    </span>
+
+                    <span class="filter-pill for-review" data-status="for review">
+                        For Review <strong>({{ $counts['For Review'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill in-progress" data-status="in progress">
+                        In Progress <strong>({{ $counts['In Progress'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill for-procurement" data-status="for procurement">
+                        For Procurement <strong>({{ $counts['For Procurement'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill for-release" data-status="for release">
+                        For Release <strong>({{ $counts['For Release'] ?? 0 }})</strong>
+                    </span>
+
+                    <span class="filter-pill closed" data-status="closed">
+                        Closed <strong>({{ $counts['Closed'] ?? 0 }})</strong>
+                    </span>
+
+                </div>
+
             </div>
 
             <!-- requests card -->
@@ -101,7 +127,7 @@
                                         <small class="text-muted">{{ $item->request_id }}</small>
 
                                         <div class="mt-1">
-                                            <span class="request-status for-review">{{ $item->status }}</span>
+                                            <span class="priority-badge low">{{ $item->status }}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -30,7 +30,8 @@ class Assets extends Model
         'warranty_end',
         'next_maintenance',
         'status',
-        'documents',
+        'delete_title',
+        'delete_reason'
     ];
 
     protected $casts = [
