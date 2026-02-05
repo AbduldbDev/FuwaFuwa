@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $this->authorizeRead();
 
         $data = $this->dashboardService->getDashboardData();
-        
+
         return view('Pages/dashboard', $data);
     }
 }

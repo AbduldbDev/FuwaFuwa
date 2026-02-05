@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     const filterPills = document.querySelectorAll(".filter-pill");
-
     const requestWrappers = document.querySelectorAll(".request-card-wrapper");
 
     let activeStatus = "all";
@@ -22,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
     filterPills.forEach((pill) => {
         pill.addEventListener("click", function () {
             filterPills.forEach((p) => p.classList.remove("active"));
-            pill.classList.add("active");
+            this.classList.add("active");
 
-            activeStatus = pill.textContent.trim().toLowerCase();
+            activeStatus = this.dataset.status;
             applyFilters();
         });
     });

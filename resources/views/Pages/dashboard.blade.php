@@ -17,50 +17,253 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card icon="fa-solid fa-boxes-stacked" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Assets"
-                :value="$totalAssets" />
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <!-- upper -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <h2>{{ $TotalAssets }}</h2>
+                            <h6>Total Assets</h6>
+                        </div>
+                    </div>
 
-            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#166534" icon-bg="#DCFCE7" title="In Stocks"
-                :value="$totalonhand" />
+                    <hr>
 
-            <x-stat-card icon="fa-solid fa-peso-sign" icon-color="#92400E" icon-bg="#FFEDD5" title="Total Cost of Assets"
-                :value="'₱' . number_format($totalCost, 2)" />
+                    <!-- lower -->
+                    <div class="asset-breakdown">
+                        <!-- physical -->
+                        <div class="asset-item physical">
+                            <i class="fa-solid fa-box icon"></i>
+                            <div class="total-assets">
+                                <span>{{ $TotalPhysicalAsset }}</span>
+                                <small>Physical Assets</small>
+                            </div>
+                        </div>
 
-            <x-stat-card icon="fa-solid fa-chart-simple" icon-color="#6D28D9" icon-bg="#EDE9FE" title="Asset Value"
-                :value="'₱' . number_format($depreciationSum, 2)" />
+                        <!-- digital -->
+                        <div class="asset-item digital">
+                            <i class="fa-solid fa-laptop-code icon"></i>
+                            <div class="total-assets">
+                                <span>{{ $TotalDigitalAsset }}</span>
+                                <small>Digital Assets</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <!-- upper -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #166534; background: #DCFCE7;">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                        </div>
+                        <div>
+                            <h2>{{ $TotalInStock }}</h2>
+                            <h6>In Stocks</h6>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- lower -->
+                    <div class="asset-breakdown">
+                        <!-- physical -->
+                        <div class="asset-item physical">
+                            <i class="fa-solid fa-box icon"></i>
+                            <div class="total-assets">
+                                <span>{{ $TotalInStockPhysical }}</span>
+                                <small>Physical Assets</small>
+                            </div>
+                        </div>
+
+                        <!-- digital -->
+                        <div class="asset-item digital">
+                            <i class="fa-solid fa-laptop-code icon"></i>
+                            <div class="total-assets">
+                                <span>{{ $TotalInStockDigital }}</span>
+                                <small>Digital Assets</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <!-- upper -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #92400E; background: #FFEDD5;">
+                            <i class="fa-solid fa-peso-sign"></i>
+                        </div>
+                        <div>
+                            <h2>₱{{ number_format($TotalCost, 2) }}</h2>
+                            <h6>Total Cost of Assets</h6>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- lower -->
+                    <div class="asset-breakdown">
+                        <!-- physical -->
+                        <div class="asset-item physical">
+                            <i class="fa-solid fa-box icon"></i>
+                            <div class="total-assets">
+                                <span>₱{{ number_format($TotalCostPhysical, 2) }}</span>
+                                <small>Physical Assets</small>
+                            </div>
+                        </div>
+
+                        <!-- digital -->
+                        <div class="asset-item digital">
+                            <i class="fa-solid fa-laptop-code icon"></i>
+                            <div class="total-assets">
+                                <span>₱{{ number_format($TotalCostDigital, 2) }}</span>
+                                <small>Digital Assets</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <!-- upper -->
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
+                        <div>
+                            <h2> ₱{{ number_format($TotalPhysicalDepreciationSum + $TotalDigitalDepreciationSum, 2) }}</h2>
+                            <h6>Asset Value</h6>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- lower -->
+                    <div class="asset-breakdown">
+                        <!-- physical -->
+                        <div class="asset-item physical">
+                            <i class="fa-solid fa-box icon"></i>
+                            <div class="total-assets">
+                                <span>₱{{ number_format($TotalPhysicalDepreciationSum, 2) }}</span>
+                                <small>Physical Assets</small>
+                            </div>
+                        </div>
+
+                        <!-- digital -->
+                        <div class="asset-item digital">
+                            <i class="fa-solid fa-laptop-code icon"></i>
+                            <div class="total-assets">
+                                <span>₱{{ number_format($TotalDigitalDepreciationSum, 2) }}</span>
+                                <small>Digital Assets</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Pie Charts -->
             <div class="container mt-4">
                 <div class="row g-4 justify-content-center">
-                    <!-- assets -->
+
+                    <!-- Asset Category -->
                     <div class="col-lg-4 col-md-6">
                         <div class="chart-card">
-                            <div class="chart-wrapper">
+                            <div class="chart-header">
+                                <h6>Asset Category</h6>
+                                <div class="chart-sub">
+                                    <h2>{{ array_sum($AssetCategories) }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="chart-body">
                                 <canvas id="assetChart"></canvas>
-                                <div class="chart-label">Asset Category</div>
+                            </div>
+
+                            <div class="asset-breakdown">
+                                <!-- physical -->
+                                <div class="asset-item physical">
+                                    <i class="fa-solid fa-box icon"></i>
+                                    <div class="total-assets">
+                                        <span>{{ $TotalPhysicalAsset }}</span>
+                                        <small>Physical Assets</small>
+                                    </div>
+                                </div>
+
+                                <!-- digital -->
+                                <div class="asset-item digital">
+                                    <i class="fa-solid fa-laptop-code icon"></i>
+                                    <div class="total-assets">
+                                        <span>{{ $TotalDigitalAsset }}</span>
+                                        <small>Digital Assets</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- compliance -->
+                    <!-- Compliance -->
                     <div class="col-lg-4 col-md-6">
                         <div class="chart-card">
-                            <div class="chart-wrapper">
+                            <div class="chart-header mb-2">
+                                <h6>Compliance Status</h6>
+                                <div class="chart-sub">
+                                    <h2>{{ array_sum($ComplianceStatuses) }}</h2>
+                                </div>
+                            </div>
+                            <div class="chart-body">
                                 <canvas id="complianceChart"></canvas>
-                                <div class="chart-label">Compliance Status</div>
+                                <div class="chart-center-label">
+                                    <div class="asset-breakdown">
+                                        <!-- compliant -->
+                                        <div class="asset-item compliant">
+                                            <i class="fa-solid fa-file-circle-check icon"></i>
+                                            <div class="total-assets">
+                                                <span>{{ number_format($ComplianceStatuses['Compliant'] ?? 0) }}</span>
+                                                <small>Compliant</small>
+                                            </div>
+                                        </div>
+
+                                        <!-- non-compliant -->
+                                        <div class="asset-item non-compliant">
+                                            <i class="fa-solid fa-file-circle-xmark icon"></i>
+                                            <div class="total-assets">
+                                                <span>{{ number_format($ComplianceStatuses['Non-Compliant'] ?? 0) }}</span>
+                                                <small>Non-Compliant</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- users -->
+                    <!-- Users -->
                     <div class="col-lg-4 col-md-6">
                         <div class="chart-card">
-                            <div class="chart-wrapper">
+                            <div class="chart-header">
+                                <h6>User Roles</h6>
+                                <div class="chart-sub">
+                                    <h2>{{ array_sum($usersByType) }}</h2>
+                                </div>
+                            </div>
+                            <div class="chart-body">
                                 <canvas id="usersChart"></canvas>
-                                <div class="chart-label">Users</div>
+                            </div>
+
+                            <div class="chart-footer mt-4">
+                                <h5>Access Levels</h5>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="row">
@@ -131,7 +334,8 @@
                                             <td><a class="asset-link"
                                                     href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                             </td>
-                                            <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
+                                            <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}
+                                            </td>
                                             <td>{{ $item->asset_name }}</td>
                                             <td>{{ $item->operational_status }}</td>
                                             <td
@@ -153,64 +357,178 @@
     </section>
 
     <script>
-        const assetData = @json(array_values($assetCategories));
-        const assetLabels = @json(array_keys($assetCategories));
+        const assetCategories = @json($AssetCategories);
+        const complianceStatuses = @json($ComplianceStatuses);
+        const usersByType = @json($usersByType);
 
-        const complianceData = @json(array_values($complianceStatuses));
-        const complianceLabels = @json(array_keys($complianceStatuses));
-
-        const usersData = @json(array_values($usersByType));
-        const usersLabels = @json(array_keys($usersByType));
-
-        const options = {
-            type: "doughnut",
+        // ASSET CATEGORY — Horizontal Bar
+        new Chart(document.getElementById("assetChart"), {
+            type: "bar",
+            data: {
+                labels: Object.keys(assetCategories),
+                datasets: [{
+                    data: Object.values(assetCategories),
+                    backgroundColor: "#7C4DFF",
+                    borderRadius: 10,
+                    barThickness: 18
+                }]
+            },
             options: {
-                cutout: "70%",
+                indexAxis: "y",
+                maintainAspectRatio: false,
+                responsive: true,
+
+                layout: {
+                    padding: {
+                        right: 40
+                    }
+                },
+
                 plugins: {
                     legend: {
                         display: false
+                    },
+
+                    datalabels: {
+                        anchor: "end",
+                        align: "right",
+                        clamp: true,
+                        clip: false,
+                        color: "#555",
+                        font: {
+                            weight: "600",
+                            size: 11
+                        },
+                        formatter: value => value
                     }
                 },
-            },
-        };
 
-        new Chart(document.getElementById("assetChart"), {
-            ...options,
-            data: {
-                labels: assetLabels,
-                datasets: [{
-                    data: assetData,
-                    backgroundColor: [
-                        "#5B8DEF", "#7C4DFF", "#F062F2", "#FF5252", "#FF9800", "#FDD835"
-                    ]
-                }]
+                scales: {
+                    x: {
+                        display: false,
+                        suggestedMax: Math.max(...[28, 22, 15, 12, 10, 5, 8, 6]) + 5
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                const label = this.getLabelForValue(value);
+                                return label.length > 8 ?
+                                    label.substring(0, 8) + "…" :
+                                    label;
+                            }
+                        }
+                    }
+                }
             }
-
         });
 
+
+        // COMPLIANCE STATUS — Doughnut
         new Chart(document.getElementById("complianceChart"), {
-            ...options,
+            type: "doughnut",
             data: {
-                labels: complianceLabels,
+                labels: Object.keys(complianceStatuses),
                 datasets: [{
-                    data: complianceData,
+                    data: Object.values(complianceStatuses),
                     backgroundColor: [
-                        "#F062F2", "#FF5252", "#FF7043", "#FDD835", "#42A5F5"
-                    ]
+                        "#4CAF50",
+                        "#FF5252",
+                        "#FF7043",
+                        "#FDD835",
+                        "#BDBDBD"
+                    ],
+                    borderWidth: 0
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "72%",
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    // ✅ Hover shows ONLY label name
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => ctx.label
+                        }
+                    },
+
+                    // ✅ Numbers inside slices
+                    datalabels: {
+                        display: true,
+                        color: "#fff",
+                        font: {
+                            weight: "600",
+                            size: 12
+                        },
+                        anchor: "center",
+                        align: "center",
+                        clamp: true,
+                        formatter: value => value
+                    }
+                }
             }
         });
 
+
+        // USERS — Vertical Bar
         new Chart(document.getElementById("usersChart"), {
-            ...options,
+            type: "bar",
             data: {
-                labels: usersLabels,
+                labels: Object.keys(usersByType),
                 datasets: [{
-                    data: usersData,
-                    backgroundColor: [
-                        "#FF5252", "#FF7043", "#FDD835", "#4DD0E1", "#5B8DEF"
-                    ]
+                    data: Object.values(usersByType),
+                    backgroundColor: ["#FF5252", "#FF7043", "#FDD835"],
+                    borderRadius: 12,
+                    barThickness: 32
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                layout: {
+                    padding: {
+                        top: 30
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    datalabels: {
+                        anchor: "end",
+                        align: "top",
+                        clamp: true,
+                        clip: false,
+                        font: {
+                            weight: "600",
+                            size: 11
+                        },
+                        formatter: value => value
+                    }
+                },
+
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        display: false,
+                        suggestedMax: Math.max(...[35, 25, 20, 10]) + 10 // ✅ auto headroom
+                    }
+                }
             }
         });
     </script>

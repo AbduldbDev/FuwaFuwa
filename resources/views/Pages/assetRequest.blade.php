@@ -46,20 +46,13 @@
 
             <!-- filters -->
             <div class="d-flex gap-2 mb-4">
-                <span class="filter-pill all active">All</span>
-                <span class="filter-pill for-review">For Review</span>
-                <span class="filter-pill pending-approval">In Progress</span>
-                <span class="filter-pill in-procurement">For Procurement</span>
-                <span class="filter-pill procured">For Release</span>
-                <span class="filter-pill procured">Closed</span>
-{{-- 
-                <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
-                    <option value="All Priority">All Priority</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="emergency">Emergency</option>
-                </select> --}}
+                <span class="filter-pill  all active" data-status="all">All <strong>(20)</strong></span>
+                <span class="filter-pill for-review" data-status="for review">For Review <strong>(20)</strong></span>
+                <span class="filter-pill in-progress" data-status="in progress">In Progress <strong>(20)</strong></span>
+                <span class="filter-pill for-procurement" data-status="for procurement"> For Procurement
+                    <strong>(20)</strong></span>
+                <span class="filter-pill for-release" data-status="for release">For Release <strong>(20)</strong></span>
+                <span class="filter-pill closed" data-status="closed">Closed <strong>(20)</strong></span>
             </div>
 
             <!-- requests card -->
