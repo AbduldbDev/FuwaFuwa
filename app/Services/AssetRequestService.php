@@ -66,7 +66,7 @@ class AssetRequestService
 
     public function getAvailableAsset()
     {
-        return Assets::whereNull('assigned_to')->get();
+        return Assets::with(['technicalSpecifications'])->whereNull('assigned_to')->get();
     }
 
 
@@ -95,7 +95,7 @@ class AssetRequestService
             'Asset Request',
             'read',
             'New Asset Request',
-            "New " . $assetRequest->priority . " priority asset request #" . $assetRequest->request_id . " has been submitted by " . Auth::user()->name . ".",
+            "New asset request #" . $assetRequest->request_id . " has been submitted by " . Auth::user()->name . ".",
             'info'
         );
 
@@ -103,15 +103,19 @@ class AssetRequestService
     }
 
 
-    public function forreview(AssetRequest $request, array $data): AssetRequest
+    public function forreview(AssetRequest $request, array $data)
     {
-        $status = (isset($data['status']) && $data['status'] === 'available')
-            ? 'For Release'
-            : 'In Progress';
+        $isAvailable = isset($data['status']) && $data['status'] === 'available';
 
-        $request->update([
-            'status' => $status,
-        ]);
+        $updateData = [
+            'status' => $isAvailable ? 'For Release' : 'In Progress',
+        ];
+
+        if ($request->status === 'For Review') {
+            $updateData['is_added'] = $isAvailable ? 1 : 0;
+        }
+
+        $request->update($updateData);
 
         return $request;
     }

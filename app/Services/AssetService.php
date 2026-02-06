@@ -137,7 +137,7 @@ class AssetService
         if (!empty($data['AssetRequestId'])) {
             AssetRequest::where('id', $data['AssetRequestId'])->update([
                 'is_added' => 1,
-                'staus' =>  'Closed',
+                'status' =>  'Closed',
             ]);
         }
 
@@ -197,6 +197,45 @@ class AssetService
         $asset->update($data);
         return $asset;
     }
+
+
+    public function assignAsset(array $data)
+    {
+        $asset = Assets::findOrFail($data['asset_id']);
+        $request = AssetRequest::findOrFail($data['request_id']);
+
+        if ($asset->assigned_to) {
+            return redirect()->back()->withErrors([
+                'asset_id' => 'This asset is already assigned to someone.',
+            ])->withInput();
+        }
+
+        // Update assignment fields
+        $asset->update([
+            'assigned_to' => $data['assigned_to'],
+            'department'  => $data['department'],
+            'location'    => $data['location'],
+        ]);
+
+        $request->update([
+            'status' => 'Closed'
+        ]);
+
+
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Assets',
+            'read',
+            'Asset Assigned',
+            "Asset #" . $asset->asset_tag . " has been assigned by: " . Auth::user()->name . ".",
+            'info'
+        );
+
+        return $asset;
+    }
+
+
+
 
     private function generateAssetTag($type): string
     {

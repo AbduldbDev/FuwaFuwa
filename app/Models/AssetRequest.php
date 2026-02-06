@@ -21,7 +21,8 @@ class AssetRequest extends Model
         'detailed_reason',
         'status',
         'remarks',
-        'is_approved'
+        'is_approved',
+        'is_added',
     ];
 
     public function user()

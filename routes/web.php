@@ -40,6 +40,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::post('/store', 'store')->name('store');
         Route::put('/update/{id}', 'update')->name('update');
         Route::post('/delete/{id}', 'delete')->name('delete');
+        Route::put('/assign', 'assignAsset')->name('assignAsset');
     });
 
     Route::prefix('/asset-archive')->name('assets-archive.')->controller(AssetArchiveController::class)->group(function () {
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/show/{id}', 'show')->name('show');
         Route::post('/store', 'store')->name('store');
         Route::put('/for-review/{assetRequest}', 'forreview')->name('forreview');
+
 
 
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Assets\StoreAssets;
 use App\Http\Requests\Assets\UpdateAssetRequest;
 use App\Http\Requests\Assets\ArchiveAsset;
-
+use App\Http\Requests\Assets\AssignAsset;
 use App\Models\Assets;
 use App\Models\User;
 use App\Services\AssetService;
@@ -78,6 +78,21 @@ class AssetController extends Controller
         try {
             $asset = Assets::findOrFail($id);
             $this->assetService->updateAsset($asset, $request->validated());
+
+            return redirect()->back()->with('success', 'Asset updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function assignAsset(AssignAsset $request)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->assetService->assignAsset($request->validated());
 
             return redirect()->back()->with('success', 'Asset updated successfully.');
         } catch (\Throwable $e) {
