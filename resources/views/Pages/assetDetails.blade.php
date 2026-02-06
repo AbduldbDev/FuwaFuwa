@@ -321,19 +321,34 @@
                             <div class="section-body">
 
                                 @php
-                                    $purchaseCost = $item->purchase_cost;
-                                    $usefulLife = $item->useful_life_years;
-                                    $salvageValue = $item->salvage_value;
+                                    $purchaseCost = (float) ($item->purchase_cost ?? 0);
+                                    $usefulLife = (int) ($item->useful_life_years ?? 0);
+                                    $salvageValue = (float) ($item->salvage_value ?? 0);
 
-                                    $purchaseYear = $item->purchase_date->year;
-                                    $yearsUsed = $item->purchase_date->diffInYears(now());
-                                    $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
-                                    $depreciationRate =
-                                        (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
+                                    $purchaseDate = $item->purchase_date;
 
-                                    $totalDepreciation = $depreciationPerYear * $yearsUsed;
-                                    $assetValue = max($purchaseCost - $totalDepreciation, $salvageValue);
-                                    $remainingLife = max($usefulLife - $yearsUsed, 0);
+                                    $yearsUsed = $purchaseDate ? $purchaseDate->diffInYears(now()) : 0;
+
+                                    // Defaults
+                                    $depreciationPerYear = 0;
+                                    $depreciationRate = 0;
+                                    $totalDepreciation = 0;
+                                    $assetValue = $purchaseCost;
+                                    $remainingLife = $usefulLife;
+
+                                    // Only calculate if values are valid
+                                    if ($purchaseCost > 0 && $usefulLife > 0) {
+                                        $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
+
+                                        $depreciationRate =
+                                            (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
+
+                                        $totalDepreciation = $depreciationPerYear * $yearsUsed;
+
+                                        $assetValue = max($purchaseCost - $totalDepreciation, $salvageValue);
+
+                                        $remainingLife = max($usefulLife - $yearsUsed, 0);
+                                    }
                                 @endphp
 
                                 <div class="row detail-row">
