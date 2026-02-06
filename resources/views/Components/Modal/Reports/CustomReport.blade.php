@@ -1,484 +1,191 @@
-  <!-- create custom reports -->
-  <div class="modal fade" id="customReport" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content add-user-modal">
-              <div class="modal-header">
-                  <h5 class="modal-title fw-semibold">
-                      <i class="fa-solid fa-file-circle-plus me-2"></i>
-                      Create Custom Report
-                  </h5>
-                  <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
-              </div>
+<!-- Create Custom Report Modal -->
+<div class="modal fade" id="customReport" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <form action="{{ route('reports-analytics.generateCustomReport') }}" method="POST" id="customReportForm">
+            @csrf
+            <div class="modal-content add-user-modal">
 
-              <div class="modal-body px-4">
-                  <!-- report information -->
-                  <section>
-                      <div class="mb-3 d-flex align-items-center gap-2">
-                          <i class="fa-regular fa-file-lines"></i>
-                          <h6>Report Information</h6>
-                      </div>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="fa-solid fa-file-circle-plus me-2"></i>
+                        Create Custom Report
+                    </h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+                </div>
 
-                      <div class="row">
-                          <div class="col-lg-12 mb-3">
-                              <label class="form-label">
-                                  Report Name <span class="text-danger">*</span>
-                              </label>
-                              <input type="text" class="form-control" />
-                          </div>
+                <!-- Modal Body -->
+                <div class="modal-body px-4">
 
-                          <div class="col-lg-12 mb-3">
-                              <label class="form-label">
-                                  Detailed Purpose <span class="text-danger">*</span>
-                              </label>
-                              <textarea class="form-control" rows="4" placeholder="Enter detailed purpose..." required></textarea>
-                          </div>
+                    <!-- Report Information -->
+                    <section>
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-regular fa-file-lines"></i>
+                            <h6>Report Information</h6>
+                        </div>
 
-                          <div class="col-lg-6 mb-3">
-                              <label class="form-label text-muted">
-                                  Start Date <span class="text-danger">*</span>
-                              </label>
-                              <input type="date" class="form-control" required />
-                          </div>
+                        <!-- Hidden inputs for JS -->
+                        <input type="text" name="report_type" id="selectedReportType">
+                        <input type="text" name="columns" id="selectedColumns">
 
-                          <div class="col-lg-6 mb-3">
-                              <label class="form-label text-muted">
-                                  End Date <span class="text-danger">*</span>
-                              </label>
-                              <input type="date" class="form-control" required />
-                          </div>
+                        <div class="row">
+                            <!-- Report Name -->
+                            <div class="col-lg-12 mb-3">
+                                <label class="form-label">Report Name <span class="text-danger">*</span></label>
+                                <input type="text" name="report_name" class="form-control" required>
+                            </div>
 
-                          <div class="mb-3">
-                              <label class="form-label">Report Type</label>
-                              <select class="form-select" id="reportType">
-                                  <option value="" disabled selected>Select report type</option>
-                                  <option value="assets-checklist">Assets</option>
-                                  <option value="request-checklist">Asset Requests</option>
-                                  <option value="archive-checklist">Asset Archive</option>
-                                  <option value="maintenance-checklist">Asset Maintenance</option>
-                                  <option value="user-checklist">User Management</option>
-                                  <option value="vendor-checklist">Vendor Management</option>
-                              </select>
-                          </div>
+                            <!-- Detailed Purpose -->
+                            <div class="col-lg-12 mb-3">
+                                <label class="form-label">Detailed Purpose <span class="text-danger">*</span></label>
+                                <textarea name="purpose" class="form-control" rows="4" placeholder="Enter detailed purpose..." required></textarea>
+                            </div>
 
-                          <!-- ASSET CHECKLISTS -->
-                          <div class="checklist-wrapper" id="assets-checklist">
-                              <div class="row">
+                            <!-- Start & End Date -->
+                            <div class="col-lg-6 mb-3">
+                                <label class="form-label text-muted">Start Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" name="start_date" class="form-control" required>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <label class="form-label text-muted">End Date <span class="text-danger">*</span></label>
+                                <input type="date" name="end_date" class="form-control" required>
+                            </div>
 
-                                  <!-- Asset Detail -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Asset Details</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+                            <!-- Report Type -->
+                            <div class="mb-3">
+                                <label class="form-label">Report Type <span class="text-danger">*</span></label>
+                                <select class="form-select" id="reportType" required>
+                                    <option value="" disabled selected>Select report type</option>
+                                    @foreach ($reportTables as $table => $columns)
+                                        <option value="{{ $table }}">{{ ucfirst(str_replace('_', ' ', $table)) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Asset Type</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Category</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Tag</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Name</label>
-                                          <label><input type="checkbox" class="child-check"> Technical
-                                              Specifications</label>
-                                      </div>
-                                  </div>
+                            <!-- Dynamic Checklists -->
+                            @foreach ($reportTables as $table => $categories)
+                                <div class="checklist-wrapper" id="{{ $table }}" style="display:none;">
+                                    <div class="row">
+                                        @foreach ($categories as $categoryName => $columns)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="checklist-header">
+                                                    <label class="header-check">
+                                                        <input type="checkbox" class="check-all">
+                                                        <span>{{ $categoryName }}</span>
+                                                    </label>
+                                                    <i class="fa-solid fa-chevron-down"></i>
+                                                </div>
+                                                <div class="checklist-items">
+                                                    @foreach ($columns as $column)
+                                                        <label>
+                                                            <input type="checkbox" class="child-check"
+                                                                value="{{ $column }}">
+                                                            {{ ucwords(str_replace('_', ' ', $column)) }}
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
 
-                                  <!-- Operational Status -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Operational Status</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+                        </div>
+                    </section>
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Active</label>
-                                          <label><input type="checkbox" class="child-check"> In Stock</label>
-                                          <label><input type="checkbox" class="child-check"> Under
-                                              Maintenance</label>
-                                          <label><input type="checkbox" class="child-check"> Retired</label>
-                                      </div>
-                                  </div>
+                </div>
 
-                                  <!-- Compliance Status -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Compliance Status</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer d-flex justify-content-between">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success px-4">Submit</button>
+                    </div>
+                </div>
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Compliant</label>
-                                          <label><input type="checkbox" class="child-check"> Non-compliant</label>
-                                      </div>
-                                  </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-                                  <!-- Assignment and Location -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Assignment and Location</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+<script>
+    // Show/hide checklists based on selected report type
+    const reportSelect = document.getElementById("reportType");
+    const checklists = document.querySelectorAll(".checklist-wrapper");
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Assigned User</label>
-                                          <label><input type="checkbox" class="child-check"> Department</label>
-                                          <label><input type="checkbox" class="child-check"> Location</label>
-                                      </div>
-                                  </div>
+    reportSelect.addEventListener("change", function() {
+        checklists.forEach(list => list.style.display = "none");
+        const selected = document.getElementById(this.value);
+        if (selected) selected.style.display = "block";
+    });
 
-                                  <!-- Purchase Information -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Purchase Information</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+    // Accordion toggle
+    document.querySelectorAll(".checklist-header i").forEach(icon => {
+        icon.addEventListener("click", e => {
+            e.stopPropagation();
+            const header = icon.parentElement;
+            header.classList.toggle("active");
+            const items = header.nextElementSibling;
+            items.style.display = items.style.display === "block" ? "none" : "block";
+        });
+    });
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Purchase Request
-                                              ID</label>
-                                          <label><input type="checkbox" class="child-check"> Vendor</label>
-                                          <label><input type="checkbox" class="child-check"> Purchase Date</label>
-                                          <label><input type="checkbox" class="child-check"> Purchase Cost</label>
-                                      </div>
-                                  </div>
+    // Check All / Child logic
+    document.querySelectorAll(".checklist-wrapper").forEach(wrapper => {
+        wrapper.querySelectorAll(".col-md-6").forEach(category => {
+            const checkAll = category.querySelector(".check-all");
+            const children = category.querySelectorAll(".child-check");
 
-                                  <!-- Depreciation Insights -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Depreciation Insights</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+            if (!checkAll) return;
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Purchase Year</label>
-                                          <label><input type="checkbox" class="child-check"> Useful Life
-                                              (remaining)</label>
-                                          <label><input type="checkbox" class="child-check"> Years Used</label>
-                                          <label><input type="checkbox" class="child-check"> Salvage Value</label>
-                                          <label><input type="checkbox" class="child-check"> Depreciation
-                                              Rate</label>
-                                          <label><input type="checkbox" class="child-check"> Accumulated
-                                              Depreciation</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Value</label>
-                                      </div>
-                                  </div>
+            // Check all toggle
+            checkAll.addEventListener("change", () => {
+                children.forEach(child => child.checked = checkAll.checked);
+                checkAll.indeterminate = false;
+            });
 
-                                  <!-- Maintenance and Audit -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Maintenance and Audit</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+            // Child checkboxes affect parent
+            children.forEach(child => {
+                child.addEventListener("change", () => {
+                    const checkedCount = [...children].filter(c => c.checked).length;
+                    if (checkedCount === 0) {
+                        checkAll.checked = false;
+                        checkAll.indeterminate = false;
+                    } else if (checkedCount === children.length) {
+                        checkAll.checked = true;
+                        checkAll.indeterminate = false;
+                    } else {
+                        checkAll.indeterminate = true;
+                    }
+                });
+            });
+        });
+    });
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Maintenance
-                                              Type</label>
-                                          <label><input type="checkbox" class="child-check"> Warranty Start
-                                              Date</label>
-                                          <label><input type="checkbox" class="child-check"> Warranty End
-                                              Date</label>
-                                          <label><input type="checkbox" class="child-check"> Last Maintenance
-                                              Date</label>
-                                          <label><input type="checkbox" class="child-check"> License Activation
-                                              Date</label>
-                                          <label><input type="checkbox" class="child-check"> License Expiration
-                                              Date</label>
-                                          <label><input type="checkbox" class="child-check"> Assigned
-                                              Technician</label>
-                                          <label><input type="checkbox" class="child-check"> Maintenance
-                                              Frequency</label>
-                                      </div>
-                                  </div>
 
-                              </div>
-                          </div>
+    // Before submitting, gather selected report type and columns
+    const form = document.getElementById('customReportForm');
+    form.addEventListener('submit', function(e) {
+        const selectedType = reportSelect.value;
+        if (!selectedType) {
+            e.preventDefault();
+            alert('Please select a report type!');
+            return;
+        }
 
-                          <!-- ASSET REQUEST CHECKLISTS -->
-                          <div class="checklist-wrapper" id="request-checklist">
-                              <div class="row">
+        const checkboxes = document.querySelectorAll(`#${selectedType} .child-check`);
+        const selectedCols = [...checkboxes].filter(c => c.checked).map(c => c.value);
 
-                                  <!-- Requester Information -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Requester Information</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
+        // UNCOMMENT THIS VALIDATION
+        if (selectedCols.length === 0) {
+            e.preventDefault();
+            alert('Please select at least one column!');
+            return;
+        }
 
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Requested by</label>
-                                          <label><input type="checkbox" class="child-check"> Department</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Asset Specification -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Asset Specification</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Asset Type</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Category</label>
-                                          <label><input type="checkbox" class="child-check"> Quantity</label>
-                                          <label><input type="checkbox" class="child-check"> Model</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Justification -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Justification</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Reason for
-                                              Request</label>
-                                          <label><input type="checkbox" class="child-check"> Detailed
-                                              Purpose</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Asset Request Status -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Asset Request Status</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> For Review</label>
-                                          <label><input type="checkbox" class="child-check"> In Progress</label>
-                                          <label><input type="checkbox" class="child-check"> For Procurement</label>
-                                          <label><input type="checkbox" class="child-check"> For Release</label>
-                                          <label><input type="checkbox" class="child-check"> Closed</label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <!-- ASSET ARCHIVE CHECKLISTS -->
-                          <div class="checklist-wrapper" id="archive-checklist">
-                              <div class="row">
-
-                                  <!-- Archived Details -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Archived Details</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Asset Tag</label>
-                                          <label><input type="checkbox" class="child-check"> Status</label>
-                                          <label><input type="checkbox" class="child-check"> Reason for
-                                              Archival</label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <!-- ASSET MAINTENANCE CHECKLISTS -->
-                          <div class="checklist-wrapper" id="maintenance-checklist">
-                              <div class="row">
-
-                                  <!-- Maintenance Information -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Maintenance Information</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Maintenance
-                                              Type</label>
-                                          <label><input type="checkbox" class="child-check"> Reported By</label>
-                                          <label><input type="checkbox" class="child-check"> Department</label>
-                                          <label><input type="checkbox" class="child-check"> Detailed
-                                              Description</label>
-                                          <label><input type="checkbox" class="child-check"> Attach Document</label>
-                                          <label><input type="checkbox" class="child-check"> Asset/s</label>
-                                          <label><input type="checkbox" class="child-check"> Issue/Task
-                                              Description</label>
-                                          <label><input type="checkbox" class="child-check"> Assigned
-                                              Technician</label>
-                                          <label><input type="checkbox" class="child-check"> Scheduled Date</label>
-                                          <label><input type="checkbox" class="child-check"> Maintenance
-                                              Frequency</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Activity Feed -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Maintenance Information</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Action Taken</label>
-                                          <label><input type="checkbox" class="child-check"> Part/s Replaced</label>
-                                          <label><input type="checkbox" class="child-check"> Technician
-                                              Notes</label>
-                                          <label><input type="checkbox" class="child-check"> Start Date</label>
-                                          <label><input type="checkbox" class="child-check"> Completion Date</label>
-                                      </div>
-                                  </div>
-
-                              </div>
-                          </div>
-
-                          <!-- USER MANAGEMENT CHECKLISTS -->
-                          <div class="checklist-wrapper" id="user-checklist">
-                              <div class="row">
-
-                                  <!-- User Details -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>User Details</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Employee ID</label>
-                                          <label><input type="checkbox" class="child-check"> Department</label>
-                                          <label><input type="checkbox" class="child-check"> User Role</label>
-                                          <label><input type="checkbox" class="child-check"> Full Name</label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <!-- VENDOR MANAGEMENT CHECKLISTS -->
-                          <div class="checklist-wrapper" id="vendor-checklist">
-                              <div class="row">
-
-                                  <!-- Vendor Details -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Vendor Details</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Vendor Name</label>
-                                          <label><input type="checkbox" class="child-check"> Contact Person</label>
-                                          <label><input type="checkbox" class="child-check"> Contact Email</label>
-                                          <label><input type="checkbox" class="child-check"> Contact Number</label>
-                                          <label><input type="checkbox" class="child-check"> Category</label>
-                                          <label><input type="checkbox" class="child-check"> Status</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Compliance Document/s -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Compliance Document/s</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Document Name</label>
-                                          <label><input type="checkbox" class="child-check"> Attached File</label>
-                                          <label><input type="checkbox" class="child-check"> Expiration Date</label>
-                                      </div>
-                                  </div>
-
-                                  <!-- Purchase History Log -->
-                                  <div class="col-md-6 mb-3">
-                                      <div class="checklist-header">
-                                          <label class="header-check">
-                                              <input type="checkbox" class="check-all">
-                                              <span>Purchase History Log</span>
-                                          </label>
-                                          <i class="fa-solid fa-chevron-down"></i>
-                                      </div>
-
-                                      <div class="checklist-items">
-                                          <label><input type="checkbox" class="child-check"> Asset Tag</label>
-                                          <label><input type="checkbox" class="child-check"> Asset Name</label>
-                                          <label><input type="checkbox" class="child-check"> Quantity</label>
-                                          <label><input type="checkbox" class="child-check"> Cost</label>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                      </div>
-                  </section>
-
-              </div>
-
-              <!-- modal footer -->
-              <div class="modal-footer d-flex justify-content-between">
-                  <div class="d-flex align-items-center gap-2">
-                      <label style="font-size: 12px;">File</label>
-                      <select class="form-select" style="font-size: 12px;">
-                          <option value="pdf">Portable Document Format (PDF)</option>
-                          <option value="xlsx">Microsoft Excel Workbook (XLSX)</option>
-                          <option value="csv">Comma-Separated Values (CSV)</option>
-                      </select>
-                  </div>
-
-                  <div class="d-flex gap-2">
-                      <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">
-                          Cancel
-                      </button>
-                      <button type="button" class="btn btn-success px-4">
-                          Submit
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+        document.getElementById('selectedReportType').value = selectedType;
+        document.getElementById('selectedColumns').value = selectedCols.join(',');
+    });
+</script>

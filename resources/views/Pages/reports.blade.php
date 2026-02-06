@@ -12,6 +12,7 @@
                 </button>
                 <i class="fa-regular fa-bell notif-bell"></i>
             </div>
+            @include('Components.Modal.Reports.CustomReport')
         </div>
 
         <!-- numbers -->
