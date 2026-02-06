@@ -38,7 +38,7 @@
                             <i class="fas fa-clock-rotate-left"></i>
                         </div>
                         <div>
-                            <h2>{{ $LastGeneratedReport->created_at->format('M d, Y') }}</h2>
+                            <h2>{{ $LastGeneratedReport?->created_at?->format('M d, Y') ?? 'No generated yet' }}</h2>
                             <h6>Last Generated Report</h6>
                         </div>
                     </div>
