@@ -108,20 +108,6 @@
 
                 </div>
 
-                <div class="setting-row">
-                    <div class="setting-text">
-                        <h4>Asset Assignment Alerts</h4>
-                        <p>Get notified when assets are assigned or unassigned</p>
-                    </div>
-                    <label class="switch">
-                        <input type="hidden" name="asset_assignment_alerts" value="0">
-                        <input type="checkbox" name="asset_assignment_alerts" value="1"
-                            {{ old('asset_assignment_alerts', $settings->asset_assignment_alerts ?? 0) ? 'checked' : '' }}
-                            onclick="this.blur()">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
                 <!-- report generation alerts -->
                 <div class="setting-row">
                     <div class="setting-text">
