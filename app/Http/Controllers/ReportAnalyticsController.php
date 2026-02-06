@@ -81,6 +81,11 @@ class ReportAnalyticsController extends Controller
                 'model' => \App\Models\Assets::class,
                 'relations' => ['vendor', 'users', 'technicalSpecifications'],
             ],
+            'asset_archive' => [
+                'model' => \App\Models\Assets::class,
+                'relations' => ['vendor', 'users', 'technicalSpecifications'],
+                'archived' => true, // custom flag to indicate archived filter
+            ],
             'asset_requests' => [
                 'model' => \App\Models\AssetRequest::class,
                 'relations' => ['user'],
@@ -107,9 +112,14 @@ class ReportAnalyticsController extends Controller
         $relations = $reportModels[$reportType]['relations'];
 
         try {
-            // Fetch data with relationships using Eloquent
+            // Base query
             $dataQuery = $modelClass::with($relations)
                 ->whereBetween('created_at', [$startDate, $endDate]);
+
+            // Special case for archived assets
+            if (!empty($reportModels[$reportType]['archived']) && $reportModels[$reportType]['archived'] === true) {
+                $dataQuery->where('operational_status', 'archived');
+            }
 
             $data = $dataQuery->get();
 

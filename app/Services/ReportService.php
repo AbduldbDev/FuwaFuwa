@@ -64,6 +64,47 @@ class ReportService
                 ],
             ],
 
+            'asset_archive' => [
+                'Asset Details' => [
+                    'asset_type',
+                    'asset_category',
+                    'asset_tag',
+                    'asset_name',
+                    'technical_specifications'
+                ],
+                'Operational Status' => [
+                    'operational_status'
+                ],
+                'Compliance Status' => [
+                    'compliance_status'
+                ],
+                'Assignment and Location' => [
+                    'assigned_to',
+                    'department',
+                    'location'
+                ],
+                'Purchase Information' => [
+                    'vendor_id',
+                    'purchase_date',
+                    'purchase_cost'
+                ],
+                'Depreciation Insights' => [
+                    'useful_life_years',
+                    'salvage_value'
+                ],
+                'Maintenance and Audit' => [
+                    'warranty_start',
+                    'warranty_end',
+                    'last_maintenance',
+                    'next_maintenance'
+                ],
+                'Archival Details' => [
+                    'delete_title',
+                    'delete_reason',
+                ],
+            ],
+
+
             'asset_requests' => [
                 'Requester Information' => ['requested_by', 'department'],
                 'Asset Specification' => ['asset_type', 'asset_category', 'quantity', 'model'],
