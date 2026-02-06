@@ -64,6 +64,11 @@ class AssetRequestService
             ->toArray();
     }
 
+    public function getAvailableAsset()
+    {
+        return Assets::whereNull('assigned_to')->get();
+    }
+
 
     public function getDashboardData()
     {
@@ -75,6 +80,7 @@ class AssetRequestService
             'TotalOnHandPhysical' => $this->TotalOnHandPhysical(),
             'users' => $this->getActiveUsers(),
             'vendors' => $this->getActiveVendors(),
+            'AvailableAsset' => $this->getAvailableAsset(),
             'RequestStatusCounts' => $this->getRequestStatusCounts(),
         ];
     }

@@ -155,6 +155,7 @@
 
     @include('Components.Modal.requestAsset')
     @include('Components.Modal.addRequestAsset')
+    @include('Components.Modal.assignAsset')
     <script src="{{ asset('/Js/Assets/assetRequestFilter.js') }}?v={{ time() }}"></script>
 @endsection
 

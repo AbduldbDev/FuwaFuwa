@@ -37,6 +37,7 @@ class AssetRequestController extends Controller
 
         $data = $this->assetRequestService->getDashboardData();
 
+        // return response()->json($data);
         return view('Pages/assetRequest', $data);
     }
 

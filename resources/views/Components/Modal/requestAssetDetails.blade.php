@@ -187,6 +187,12 @@
                               data-request-id="{{ $item->id }}">
                               <i class="fa-solid fa-plus me-1"></i> Add Asset
                           </button>
+
+                          
+                          <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#assignModal">
+                              <i class="fa-solid fa-plus me-1"></i> Assign Asset
+                          </button>
                       @else
                           <button type="submit" form="updateStatusForm-{{ $item->id }}"
                               class="btn btn-primary shadow-none">
@@ -199,34 +205,3 @@
           </div>
       </div>
   </div>
-
-  {{-- <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const statusSelect = document.getElementById('statusSelect');
-          const nextStatus = document.getElementById('nextStatus');
-
-          const statusMap = {
-              'For Review': ['Pending Approval'],
-              'Pending Approval': ['In Procurement'],
-              'In Procurement': ['Procured'],
-              'Procured': []
-          };
-
-          statusSelect.addEventListener('change', function() {
-              const selected = this.value;
-
-              // Clear existing options
-              nextStatus.innerHTML = '<option selected disabled>Select next status</option>';
-
-              // Add new options based on mapping
-              if (statusMap[selected]) {
-                  statusMap[selected].forEach(status => {
-                      const option = document.createElement('option');
-                      option.value = status;
-                      option.textContent = status;
-                      nextStatus.appendChild(option);
-                  });
-              }
-          });
-      });
-  </script> --}}

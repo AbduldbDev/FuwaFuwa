@@ -119,7 +119,7 @@
                                             class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
                                             {{ $item->compliance_status }}
                                         </td>
-                                        <td>₱{{ $item->purchase_cost }}</td>
+                                        <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>
                                             ₱{{ number_format($item->current_value, 2) }}
                                         </td>
