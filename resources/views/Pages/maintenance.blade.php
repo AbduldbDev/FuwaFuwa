@@ -197,8 +197,8 @@
                         Preventive <strong>({{ $counts['Preventive'] ?? 0 }})</strong>
                     </span>
 
-                    <span class="filter-pill corrective" data-status="corrective">
-                        Corrective <strong>({{ $counts['Correctivet'] ?? 0 }})</strong>
+                    <span class="filter-pill corrective" data-status="Corrective">
+                        Corrective <strong>({{ $counts['Corrective'] ?? 0 }})</strong>
                     </span>
 
                     <span class="filter-pill completed" data-status="Completed">
