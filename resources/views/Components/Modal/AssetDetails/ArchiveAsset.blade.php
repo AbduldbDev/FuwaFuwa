@@ -26,7 +26,6 @@
                                    <option value="Lost">Lost</option>
                                    <option value="Damaged">Damaged</option>
                                    <option value="Decommissioned / Disposed">Decommissioned / Disposed</option>
-                                   <option value="Retired">Retired</option>
                                    <option value="Others">Others</option>
                                </select>
                            </div>

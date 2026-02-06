@@ -78,6 +78,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
 
     Route::prefix('/reports')->name('reports-analytics.')->controller(ReportAnalyticsController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/download/{id}', 'download')->name('download');
     });
 
     Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {

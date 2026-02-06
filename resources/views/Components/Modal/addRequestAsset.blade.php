@@ -661,7 +661,7 @@
     };
 
     const operationalStatusOptions = {
-        "Physical Asset": ["Active", "In Stock", "Under Maintenance", "Retired"],
+        "Physical Asset": ["Active", "In Stock", "Under Maintenance"],
         "Digital Asset": ["Active", "Inactive", "Expired"],
     };
 

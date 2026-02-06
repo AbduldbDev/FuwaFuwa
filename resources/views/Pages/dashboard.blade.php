@@ -158,13 +158,7 @@
                         </div>
 
                         <!-- digital -->
-                        <div class="asset-item digital">
-                            <i class="fa-solid fa-laptop-code icon"></i>
-                            <div class="total-assets">
-                                <span>₱{{ number_format($TotalDigitalDepreciationSum, 2) }}</span>
-                                <small>Digital Assets</small>
-                            </div>
-                        </div>
+                      
                     </div>
                 </div>
             </div>
@@ -299,7 +293,6 @@
                                     <option value="Active">Active</option>
                                     <option value="In Stock">In Stock</option>
                                     <option value="Under Maintenance">Under Maintenance</option>
-                                    <option value="Retired">Retired</option>
                                 </select>
 
                                 <!-- Compliance Type -->

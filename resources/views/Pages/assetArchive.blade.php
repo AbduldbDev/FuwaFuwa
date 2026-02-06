@@ -51,7 +51,6 @@
                                 <option value="Active">Active</option>
                                 <option value="In Stock">In Stock</option>
                                 <option value="Under Maintenance">Under Maintenance</option>
-                                <option value="Retired">Retired</option>
                             </select>
 
                             <!-- Compliance Type -->
