@@ -59,9 +59,15 @@ class ReportAnalyticsController extends Controller
     {
         $reportType = $request->input('report_type');
         $columns = $request->input('columns', '');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
         if (!$reportType || empty($columns)) {
             return back()->withErrors('Please select a report type and at least one column.');
+        }
+
+        if (!$startDate || !$endDate) {
+            return back()->withErrors('Please select a start and end date.');
         }
 
         $columnsArray = array_filter(array_map('trim', explode(',', $columns)));
@@ -70,7 +76,6 @@ class ReportAnalyticsController extends Controller
             return back()->withErrors('Please select at least one column.');
         }
 
-        // Define model mapping with relationships
         $reportModels = [
             'assets' => [
                 'model' => \App\Models\Assets::class,
@@ -103,7 +108,10 @@ class ReportAnalyticsController extends Controller
 
         try {
             // Fetch data with relationships using Eloquent
-            $data = $modelClass::with($relations)->get();
+            $dataQuery = $modelClass::with($relations)
+                ->whereBetween('created_at', [$startDate, $endDate]);
+
+            $data = $dataQuery->get();
 
             // Generate report name
             $timestamp = now()->format('Y_m_d_His');
@@ -119,7 +127,7 @@ class ReportAnalyticsController extends Controller
                 'type' => 'Custom Reports',
                 'name' => $reportName,
                 'file_path' => $filePath,
-                'data' => json_encode($columnsArray),
+                'description' => $request->input('purpose'),
             ]);
 
             return back()->with('success', "Report generated successfully: {$fileName}");

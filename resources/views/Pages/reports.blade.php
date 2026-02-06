@@ -111,6 +111,7 @@
                         <div>
                             <h5>{{ $item->name }}</h5>
                             <p>Generated {{ $item->created_at->format('M d, Y • h:i a') }}</p>
+                            <p>Purpose: {{ $item->description }}</p>
                         </div>
                     </div>
 

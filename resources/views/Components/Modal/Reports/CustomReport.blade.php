@@ -25,8 +25,8 @@
                         </div>
 
                         <!-- Hidden inputs for JS -->
-                        <input type="text" name="report_type" id="selectedReportType">
-                        <input type="text" name="columns" id="selectedColumns">
+                        <input type="hidden" name="report_type" id="selectedReportType">
+                        <input type="hidden" name="columns" id="selectedColumns">
 
                         <div class="row">
                             <!-- Report Name -->

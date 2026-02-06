@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-    protected $fillable = ['type', 'name', 'file_path', 'data'];
-
-    protected $casts = [
-        'data' => 'array',
+    protected $fillable = [
+        'type',
+        'name',
+        'file_path',
+        'description'
     ];
 }

@@ -13,7 +13,7 @@ class CreateReportsTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('file_path')->nullable();
-            $table->json('data');
+            $table->string('description');
             $table->timestamps();
         });
     }

@@ -25,7 +25,7 @@ class GenerateMonthlyAssetReport extends Command
             'type' => 'Scheduled Reports',
             'name' => 'Monthly Asset Report - ' . now()->format('F Y'),
             'file_path' => $filePath,
-            'data' => [],
+            'description' => 'This is a monthly automated report generated automatically.',
         ]);
 
         $this->info("Report generated: {$filePath}");
