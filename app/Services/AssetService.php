@@ -135,7 +135,10 @@ class AssetService
 
 
         if (!empty($data['AssetRequestId'])) {
-            AssetRequest::where('id', $data['AssetRequestId'])->update(['is_added' => 1]);
+            AssetRequest::where('id', $data['AssetRequestId'])->update([
+                'is_added' => 1,
+                'staus' =>  'Closed',
+            ]);
         }
 
         $this->notification->notifyUsersWithModuleAccess(
@@ -175,8 +178,8 @@ class AssetService
                 $this->logAssetChange($asset, 'changed ', $field, $original[$field], $newValue);
             }
         }
-    
-        
+
+
         if (isset($data['operational_status']) && $data['operational_status'] === 'In Stock') {
             $data['assigned_to'] = null;
             $data['department'] = null;

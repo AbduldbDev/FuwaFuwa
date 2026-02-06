@@ -90,22 +90,32 @@
                   <hr />
 
                   <!-- ===== activity feed ===== -->
+                  @php
+                      $canEditStatus = in_array(Auth::user()->user_type, ['admin', 'encoder']);
+                  @endphp
+
                   <form id="updateStatusForm-{{ $item->id }}"
                       action="{{ route('asset-request.statusupdate', $item->id) }}" method="POST">
                       @csrf
                       @method('PUT')
 
-                      <select name="status" class="form-select mb-2" required>
-                          <option name="" id="">SELECT STATUS</option>
-                          <option value="For Review">For Review</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="For Procurement">For Procurement</option>
-                          <option value="For Release">For Release</option>
+                      <select name="status" class="form-select mb-2" {{ $canEditStatus ? '' : 'disabled' }} required>
+                          <option value="">SELECT STATUS</option>
+
+                          @foreach (['For Review', 'In Progress', 'For Procurement', 'For Release'] as $status)
+                              <option value="{{ $status }}" {{ $item->status === $status ? 'selected' : '' }}>
+                                  {{ $status }}
+                              </option>
+                          @endforeach
                       </select>
 
-                      <textarea name="remarks" class="form-control mb-2" placeholder="Add remarks...">{{ $item->remarks }}</textarea>
-
-                      {{-- <button type="submit" class="btn btn-primary">Update Status</button> --}}
+                      @if ($canEditStatus)
+                          <div class="text-right">
+                              <button type="submit" class="btn save-btn w-100">
+                                  Update Status
+                              </button>
+                          </div>
+                      @endif
                   </form>
 
               </div>

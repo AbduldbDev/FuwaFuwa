@@ -488,12 +488,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to">
-                                <option value="">Select Employee</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control required-field" name="assigned_to" />
                         </div>
 
                         <div class="mb-3">
