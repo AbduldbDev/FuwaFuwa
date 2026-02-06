@@ -18,11 +18,6 @@ class Vendors extends Model
         'status',
     ];
 
-    public function documents()
-    {
-        return $this->hasMany(VendorDocuments::class, 'vendor_id', 'id');
-    }
-
     public function purchases()
     {
         return $this->hasMany(Assets::class, 'vendor_id', 'id');

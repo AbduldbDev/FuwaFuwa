@@ -17,7 +17,6 @@ class StoreRequest extends FormRequest
             'employee_id' => 'required|string|max:50|unique:users,employee_id',
             'department'  => 'required|string|max:100',
             'name'        => 'required|string|max:255',
-            'username'    => 'required|string|max:100|unique:users,username',
             'email'       => 'required|email|unique:users,email',
             'user_type'   => 'required|string',
             'status'      => 'required|in:active,deactivate',

@@ -66,13 +66,6 @@
                          <input type="email" name="email" class="form-control" />
                      </div>
 
-                     <div class="mb-3">
-                         <label class="form-label">
-                             Username <span class="text-danger">*</span>
-                         </label>
-                         <input type="text" name="username" class="form-control" />
-                     </div>
-
                      <!-- account status -->
                      <div class="mb-3">
                          <label class="form-label d-block">Account Status</label>

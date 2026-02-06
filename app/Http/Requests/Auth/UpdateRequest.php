@@ -20,11 +20,11 @@ class UpdateRequest extends FormRequest
             'employee_id' => 'sometimes|string|max:50',
             'department'  => 'sometimes|string|max:100',
             'name'        => 'sometimes|string|max:255',
-            'username'    => [
+            'email'    => [
                 'sometimes',
                 'string',
                 'max:100',
-                Rule::unique('users', 'username')->ignore($userId),
+                Rule::unique('users', 'email')->ignore($userId),
             ],
             'user_type'   => 'sometimes|string',
             'status'      => 'sometimes|in:active,deactivate',

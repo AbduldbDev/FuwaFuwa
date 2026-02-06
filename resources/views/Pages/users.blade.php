@@ -23,11 +23,11 @@
             <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-users" icon-color="#1E40AF"
                 icon-bg="#E0E7FF" title="Total Users" :value="$total" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-user-check" icon-color="#166534" icon-bg="#DCFCE7"
-                title="Active Users" :value="$active" />
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-user-check" icon-color="#166534"
+                icon-bg="#DCFCE7" title="Active Users" :value="$active" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-user-xmark" icon-color="#92400E" icon-bg="#FFEDD5"
-                title="Inactive Users" :value="$inactive" />
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-user-xmark" icon-color="#92400E"
+                icon-bg="#FFEDD5" title="Inactive Users" :value="$inactive" />
 
         </div>
         <div class="entity-container">
@@ -81,7 +81,6 @@
                                         <!-- name -->
                                         <div class="profile-name">
                                             <strong>{{ $item->name }}</strong><br />
-                                            <small>@<span>{{ $item->username }}</span></small> <br />
                                             <span
                                                 class="user-status {{ $item->status === 'active' ? 'active-user' : 'inactive-user' }}">{{ ucfirst($item->status) }}</span>
                                         </div>

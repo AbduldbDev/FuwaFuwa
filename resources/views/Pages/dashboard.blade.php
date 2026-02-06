@@ -211,7 +211,8 @@
                             <div class="chart-body">
                                 <canvas id="complianceChart"></canvas>
                                 <div class="chart-center-label">
-                                    <div class="asset-breakdown">
+                                    <div class="asset-breakdown"
+                                        style="display: flex; flex-direction: column; align-items: start;">
                                         <!-- compliant -->
                                         <div class="asset-item compliant">
                                             <i class="fa-solid fa-file-circle-check icon"></i>

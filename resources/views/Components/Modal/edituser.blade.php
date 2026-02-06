@@ -65,13 +65,6 @@
                         <input type="text" name="name" class="form-control" value="{{ $item->name }}" />
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">
-                            Username <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" name="username" class="form-control" value="{{ $item->username }}" />
-                    </div>
-
                     <!-- account status -->
                     <div class="mb-3">
                         <label class="form-label d-block">Account Status <span class="text-danger">*</span></label>
