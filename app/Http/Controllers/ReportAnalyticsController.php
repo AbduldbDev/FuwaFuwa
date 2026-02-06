@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ReportService;
 
 class ReportAnalyticsController extends Controller
 {
+
+    protected ReportService $reportService;
+
+    public function __construct(ReportService $reportService)
+    {
+        $this->reportService = $reportService;
+    }
 
     private function authorizeRead(): void
     {
@@ -25,10 +33,12 @@ class ReportAnalyticsController extends Controller
 
     public function index()
     {
-        $reports = Report::latest()->get();
         $this->authorizeRead();
+       
 
-        return view('Pages/reports', compact('reports'));
+        $data = $this->reportService->getDashboardData();
+
+        return view('Pages/reports', $data);
     }
 
     public function download($id)

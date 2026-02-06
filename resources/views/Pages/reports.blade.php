@@ -23,7 +23,7 @@
                             <i class="fas fa-file-circle-check"></i>
                         </div>
                         <div>
-                            <h2>20</h2>
+                            <h2>{{ $TotalGeneratedReport }}</h2>
                             <h6>Reports Generate This Month</h6>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                             <i class="fas fa-clock-rotate-left"></i>
                         </div>
                         <div>
-                            <h2>Jan. 31, 2026</h2>
+                            <h2>{{ $LastGeneratedReport->created_at->format('M d, Y') }}</h2>
                             <h6>Last Generated Report</h6>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <div>
-                            <h2>6</h2>
+                            <h2>{{ $TotalScheduledMonthlyReports }}</h2>
                             <h6>Scheduled Monthly Reports</h6>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                             <i class="fas fa-sliders"></i>
                         </div>
                         <div>
-                            <h2>12,091,209</h2>
+                            <h2>{{ $TotalCustomReportsCreated }}</h2>
                             <h6>Custom Reports Created</h6>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                 <div class="filters">
                     <!-- time range filter -->
                     <select class="form-select form-select-sm w-auto shadow-none" id="timeRangeFilter">
-                        <option value="today">All Reports</option>
+                        <option value="All Reports">All Reports</option>
                         <option value="Custom Reports">Custom Reports</option>
                         <option value="Scheduled Reports">Scheduled Reports</option>
                     </select>
@@ -140,18 +140,17 @@
             const reportCards = document.querySelectorAll('.report-card');
 
             function filterReports() {
-                const selectedType = timeRangeFilter.value;
-                const selectedMonth = monthFilter.value;
+                const selectedType = timeRangeFilter
+                    .value; // e.g., "All Reports", "Custom Reports", "Scheduled Reports"
+                const selectedMonth = monthFilter.value; // e.g., "2026-02"
 
                 reportCards.forEach(card => {
-                    const reportType = card.dataset.type; // ✅ from data-type
-                    const reportMonth = card.dataset.date; // ✅ from data-date (Y-m)
+                    const reportType = card.dataset.type; // "Custom Reports" or "Scheduled Reports"
+                    const reportMonth = card.dataset.date; // "YYYY-MM"
 
                     let typeMatch = true;
-                    if (selectedType === 'Custom Reports') {
-                        typeMatch = reportType === 'custom';
-                    } else if (selectedType === 'Scheduled Reports') {
-                        typeMatch = reportType === 'scheduled';
+                    if (selectedType !== 'All Reports') {
+                        typeMatch = reportType === selectedType;
                     }
 
                     let monthMatch = true;
