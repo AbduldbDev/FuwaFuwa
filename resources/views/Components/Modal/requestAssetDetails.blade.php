@@ -166,7 +166,7 @@
                               @csrf
                               @method('PUT')
                               <button class="btn btn-danger shadow-none">
-                                  <i class="fa-solid fa-xmark me-1"></i> Reject
+                                  <i class="fa-solid fa-xmark me-1"></i> Cancel
                               </button>
                           </form>
 
