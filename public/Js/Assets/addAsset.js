@@ -2,11 +2,12 @@ let selectedCategory = "";
 let selectedType = "";
 let currentSlide = 1;
 
-// function handleVendorChange(select) {
-//     if (select.value === "__add_vendor__") {
-//         window.location.href = "/vendors";
-//     }
-// }
+function handleVendorChange(select) {
+    if (select.value === "__add_vendor__") {
+        window.location.href = "/vendors";
+    }
+}
+
 function addDocument() {
     const name = document.getElementById("docName").value;
     const fileInput = document.getElementById("docFile");

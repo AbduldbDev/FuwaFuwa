@@ -62,18 +62,19 @@
                            <div id="correctiveFields">
                                <div class="row mb-5">
                                    <div class="col-md-6">
-                                       <label class="form-label">Reported By</label>
+                                       <label class="form-label">Reported By <span class="text-danger">*</span></label>
                                        <input type="text" class="form-control" value="{{ Auth::user()->name }}">
                                    </div>
                                    <div class="col-md-6">
-                                       <label class="form-label">Department</label>
+                                       <label class="form-label">Department <span class="text-danger">*</span></label>
                                        <input type="text" class="form-control" value="{{ Auth::user()->department }}"
                                            required>
                                    </div>
                                </div>
 
                                <div class="mb-3">
-                                   <label class="form-label">Detailed Description</label>
+                                   <label class="form-label">Detailed Description <span
+                                           class="text-danger">*</span></label>
                                    <textarea name="description" class="form-control" rows="3" required></textarea>
                                </div>
 
@@ -88,7 +89,7 @@
                            <div class="row mb-3">
                                <div class="col-md-4">
                                    <div class="position-relative">
-                                       <label class="form-label">Asset Tags</label>
+                                       <label class="form-label">Asset Tags <span class="text-danger">*</span></label>
                                        <input type="text" id="assetInput" class="form-control"
                                            placeholder="Type to search asset" required>
 
@@ -108,11 +109,11 @@
 
                                </div>
                                <div class="col-md-4">
-                                   <label class="form-label">Asset Name</label>
+                                   <label class="form-label">Asset Name <span class="text-danger">*</span></label>
                                    <input type="text" name="asset_name" class="form-control" Asset Tags>
                                </div>
                                <div class="col-md-4">
-                                   <label class="form-label">Last Maintenance Date</label>
+                                   <label class="form-label">Last Maintenance Date </label>
                                    <input type="date" name="last_maintenance_date" class="form-control">
                                </div>
                            </div>

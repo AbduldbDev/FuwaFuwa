@@ -6,10 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyFilters() {
         requestWrappers.forEach((wrapper) => {
-            const status = wrapper
-                .querySelector(".request-status")
-                .textContent.trim()
-                .toLowerCase();
+            const status = wrapper.dataset.status;
 
             const statusMatch =
                 activeStatus === "all" || status === activeStatus;

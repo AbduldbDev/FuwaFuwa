@@ -88,10 +88,17 @@
                        <input type="text" class="form-control required-field" name="assigned_to" value="${asset.assigned_to ?? ''}"/>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Department</label>
-                        <input type="text" name="department" class="form-control" value="${asset.department ?? ''}">
-                    </div>
+                  <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select class="form-select" name="department">
+                        <option value="IT Department" {{ ($asset->department ?? '') === 'IT Department' ? 'selected' : '' }}>IT Department</option>
+                        <option value="HR Department" {{ ($asset->department ?? '') === 'HR Department' ? 'selected' : '' }}>HR Department</option>
+                        <option value="Finance Department" {{ ($asset->department ?? '') === 'Finance Department' ? 'selected' : '' }}>Finance Department</option>
+                        <option value="Operations" {{ ($asset->department ?? '') === 'Operations' ? 'selected' : '' }}>Operations</option>
+                        <option value="Admin" {{ ($asset->department ?? '') === 'Admin' ? 'selected' : '' }}>Admin</option>
+                    </select>
+                </div>
+
 
                    <div class="mb-3">
                         <label class="form-label">Location</label>

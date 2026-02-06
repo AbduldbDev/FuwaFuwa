@@ -16,7 +16,7 @@ class StoreMaintenanceRequest extends FormRequest
         return [
             'maintenance_type' => 'required|in:Corrective,Preventive,Inspection',
             'description' => 'nullable|string',
-            'document.*' => 'nullable|file|mimes:pdf,jpg,png,docx|max:25600',
+            'document.*' => 'nullable|file|max:25600',
             'asset_tag' => ['required', 'string', 'max:100', 'exists:assets,asset_tag'],
             'asset_name' => 'required|string|max:255',
             'last_maintenance_date' => 'nullable|date',
@@ -35,6 +35,8 @@ class StoreMaintenanceRequest extends FormRequest
         return [
             'asset_tag.exists' => 'The selected asset tag does not exist.',
             'asset_tag.required' => 'The selected asset tag does not exist.',
+            'document.*.file' => 'Each uploaded document must be a valid file.',
+            'document.*.max'  => 'Each document must not exceed 25MB in size.',
         ];
     }
 }

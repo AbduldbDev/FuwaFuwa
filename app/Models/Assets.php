@@ -51,6 +51,11 @@ class Assets extends Model
         return $this->hasMany(TechnicalSpecification::class, 'asset_id');
     }
 
+    public function logs()
+    {
+        return $this->hasMany(AssetLogs::class, 'asset_id');
+    }
+
     public function users()
     {
         return $this->belongsTo(User::class, 'created_by');

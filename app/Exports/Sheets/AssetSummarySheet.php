@@ -21,7 +21,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
 
         return [
             ['All Assets', 'Physical Assets', 'Digital Assets'], // Titles
-            [$totalAssets, $totalPhysical, $totalDigital],       // Data
+            [$totalAssets, $totalPhysical,   $totalDigital],       // Data
         ];
     }
 

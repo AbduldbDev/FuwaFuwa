@@ -217,42 +217,44 @@
                     </div>
 
                     <!-- assignment and location -->
-                    <div class="section-card mb-4">
-                        <div class="section-toggle">
-                            <!-- asset title header -->
-                            <div class="asset-title" onclick="toggleSection(this)">
-                                <i class="fa-solid fa-chevron-down"></i>
-                                <h6 class="mb-0 fw-semibold">Assignment & Location</h6>
-                            </div>
-                            <!-- edi asset btn -->
-
-                            @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
-                                <div class="edit-asset-btn">
-                                    <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
-                                        data-bs-target="#updateAssetModal" data-section="assignment-location"
-                                        data-url="{{ route('assets.update', $item->id) }}"
-                                        data-asset='@json($item)'
-                                        data-users='@json($users)'
-                                        data-vendors='@json($vendors)'></i>
+                    @if ($item->asset_type === 'Physical Asset')
+                        <div class="section-card mb-4">
+                            <div class="section-toggle">
+                                <!-- asset title header -->
+                                <div class="asset-title" onclick="toggleSection(this)">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                    <h6 class="mb-0 fw-semibold">Assignment & Location</h6>
                                 </div>
-                            @endif
-                        </div>
+                                <!-- edi asset btn -->
 
-                        <div class="section-body">
-                            <div class="row detail-row">
-                                <div class="col-4 label">Assigned To</div>
-                                <div class="col-8 value">{{ $item->assigned_to ?? 'N/A' }}</div>
+                                @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
+                                    <div class="edit-asset-btn">
+                                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                            data-bs-target="#updateAssetModal" data-section="assignment-location"
+                                            data-url="{{ route('assets.update', $item->id) }}"
+                                            data-asset='@json($item)'
+                                            data-users='@json($users)'
+                                            data-vendors='@json($vendors)'></i>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="row detail-row">
-                                <div class="col-4 label">Department</div>
-                                <div class="col-8 value">{{ $item->department ?? 'N/A' }}</div>
-                            </div>
-                            <div class="row detail-row">
-                                <div class="col-4 label">Location</div>
-                                <div class="col-8 value">{{ $item->location ?? 'N/A' }}</div>
+
+                            <div class="section-body">
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Assigned To</div>
+                                    <div class="col-8 value">{{ $item->assigned_to ?? 'N/A' }}</div>
+                                </div>
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Department</div>
+                                    <div class="col-8 value">{{ $item->department ?? 'N/A' }}</div>
+                                </div>
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Location</div>
+                                    <div class="col-8 value">{{ $item->location ?? 'N/A' }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- purchase information -->
                     <div class="section-card mb-4">
@@ -368,12 +370,12 @@
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Total Depreciation</div>
+                                    <div class="col-4 label">Accumulated Depreciation</div>
                                     <div class="col-8 value">Php {{ number_format($totalDepreciation, 2) }}</div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Asset Value</div>
+                                    <div class="col-4 label">Current Book Value</div>
                                     <div class="col-8 value">Php {{ number_format($assetValue, 2) }}</div>
                                 </div>
 
@@ -413,7 +415,7 @@
                                     @if ($item->asset_type === 'Digital Asset')
                                         Activation Date
                                     @else
-                                        Warranty End Date
+                                        Warranty Start Date
                                     @endif
                                 </div>
 

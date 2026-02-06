@@ -22,7 +22,8 @@ class GenerateMonthlyAssetReport extends Command
 
         // Save to DB
         $report = Report::create([
-            'name' => 'Monthly Asset Report - ' . now()->format('F Y - h:i a'),
+            'type' => 'Scheduled Reports',
+            'name' => 'Monthly Asset Report - ' . now()->format('F Y'),
             'file_path' => $filePath,
             'data' => [],
         ]);

@@ -591,9 +591,8 @@
 
                         <div class="mb-3">
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
-                                Maintenance <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="last_maintenance" />
+                                Maintenance </label>
+                            <input type="date" class="form-control required-field" name="last_maintenance" />
                         </div>
 
                         <div class="mb-3">

@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyFilters() {
         requestWrappers.forEach((wrapper) => {
-            const status = wrapper.dataset.status.toLowerCase(); // use dataset
+            const status = wrapper.dataset.status.toLowerCase();
             const priority = wrapper.dataset.priority.toLowerCase();
 
             const statusMatch =
@@ -16,12 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const priorityMatch =
                 activePriority === "all" || priority === activePriority;
 
-            wrapper.style.display =
-                statusMatch && priorityMatch ? "block" : "none";
+            // IMPORTANT: hide the column, not just the card
+            const column = wrapper.closest(".col-lg-4");
+
+            if (statusMatch && priorityMatch) {
+                column.style.display = ""; // show
+            } else {
+                column.style.display = "none"; // remove from layout
+            }
         });
     }
 
-    // Filter pills (status)
+    // Status pills
     filterPills.forEach((pill) => {
         pill.addEventListener("click", function () {
             filterPills.forEach((p) => p.classList.remove("active"));
@@ -32,13 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Category filter (priority)
+    // Priority dropdown
     categoryFilter.addEventListener("change", function () {
         const val = this.value.toLowerCase();
         activePriority = val === "all priority" ? "all" : val;
         applyFilters();
     });
 
-    // Initial filter
     applyFilters();
 });

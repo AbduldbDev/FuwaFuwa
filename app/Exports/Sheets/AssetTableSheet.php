@@ -11,25 +11,36 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-
 class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithStyles, ShouldAutoSize
 {
     public function collection()
     {
-        return Assets::with('technicalSpecifications')
+        $now = \Carbon\Carbon::now();
+        return Assets::with(['technicalSpecifications', 'logs.user'])
+            ->whereYear('created_at', $now->year)
+            ->whereMonth('created_at', $now->month)
             ->get()
             ->map(function ($asset) {
+                // Format technical specifications
+                $techSpecs = $asset->technicalSpecifications
+                    ->map(fn($spec) => ucwords(str_replace('_', ' ', $spec->spec_key)) . ': ' . $spec->spec_value)
+                    ->implode("\n");
+
+                // Format asset logs
+                $logs = $asset->logs
+                    ->map(fn($log) => "{$log->user->name} | {$log->action} | {$log->field_name}: '{$log->old_value}' → '{$log->new_value}'")
+                    ->implode("\n");
+
                 return [
                     $asset->asset_tag,
                     $asset->asset_name,
                     $asset->asset_category,
                     $asset->asset_type,
-                    $asset->technicalSpecifications
-                        ->map(fn($spec) => ucwords(str_replace('_', ' ', $spec->spec_key)) . ': ' . $spec->spec_value)
-                        ->implode("\n"),
+                    $techSpecs,
                     $asset->purchase_cost,
                     $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date)->format('M d, Y') : null,
                     $asset->compliance_status,
+                    $logs ?: 'No logs',
                 ];
             });
     }
@@ -45,6 +56,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
             'Purchase Cost',
             'Purchase Date',
             'Compliance Status',
+            'Asset Logs',
         ];
     }
 
@@ -58,7 +70,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
         $highestRow = $sheet->getHighestRow();
         $highestColumn = $sheet->getHighestColumn();
 
-        // Header style (bold, fill, borders, centered)
+        // Header style
         $sheet->getStyle("A1:{$highestColumn}1")->applyFromArray([
             'font' => ['bold' => true],
             'alignment' => [
@@ -82,7 +94,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrapText' => true, // optional, wraps text if too long
+                'wrapText' => true,
             ],
             'borders' => [
                 'allBorders' => [
@@ -95,13 +107,13 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
         // Auto-size columns but limit max width
         foreach (range('A', $highestColumn) as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);
-            $maxWidth = 40;
+            $maxWidth = 50; // allow wider columns for logs/specs
             if ($sheet->getColumnDimension($col)->getWidth() > $maxWidth) {
                 $sheet->getColumnDimension($col)->setWidth($maxWidth);
             }
         }
 
-        // Date formatting (Purchase Date column, adjust column letter)
+        // Format Purchase Date column (G)
         $sheet->getStyle('G2:G' . $highestRow)
             ->getNumberFormat()
             ->setFormatCode('mmm dd, yyyy');

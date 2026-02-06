@@ -11,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class MaintenanceSheet implements FromArray, WithTitle, WithStyles
 {
@@ -20,7 +21,9 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         $endOfMonth = Carbon::now()->endOfMonth();
 
         // Get all maintenance for the month
-        $maintenanceItems = Maintenance::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
+        $maintenanceItems = Maintenance::with('reporter')
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->get();
 
         // Dashboard counts
         $totalScheduled = $maintenanceItems->count();
@@ -28,8 +31,10 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
 
         $rows = [];
 
-        // Dashboard row (spanning multiple columns)
+        // Dashboard title (row 1)
         $rows[] = ['Maintenance Dashboard'];
+
+        // Dashboard counts (row 2)
         $rows[] = [
             'Total Scheduled Maintenance',
             $totalScheduled,
@@ -37,8 +42,9 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             $totalCompleted
         ];
 
-        // Header for maintenance details (immediately after dashboard)
+        // Header for maintenance details (row 3)
         $rows[] = [
+            'Reported By',
             'Maintenance Type',
             'Asset Tag',
             'Asset Name',
@@ -48,16 +54,17 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             'Completion Date'
         ];
 
-        // Maintenance details
+        // Maintenance details start from row 4
         foreach ($maintenanceItems as $m) {
             $rows[] = [
-                $m->maintenance_type,
+                $m->reporter->name ?? 'N/A',
+                $m->maintenance_type ?? 'N/A',
                 $m->asset_tag ?? 'N/A',
                 $m->asset_name ?? 'N/A',
-                $m->description,
-                $m->post_description,
-                $m->start_date ? Carbon::parse($m->start_date)->format('M d, Y') : null,
-                $m->completed_at ? Carbon::parse($m->completed_at)->format('M d, Y') : null,
+                $m->description ?? '0',
+                $m->post_description ?? '0',
+                $m->start_date ? Carbon::parse($m->start_date)->format('M d, Y') : '0',
+                $m->completed_at ? Carbon::parse($m->completed_at)->format('M d, Y') : '0',
             ];
         }
 
@@ -84,7 +91,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FFCCE5FF'],
+                'startColor' => ['argb' => 'fdb38e'],
             ],
         ]);
 
@@ -104,7 +111,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         ]);
 
         // Header for maintenance details (row 3)
-        $sheet->getStyle('A3:G3')->applyFromArray([
+        $sheet->getStyle('A3:H3')->applyFromArray([
             'font' => ['bold' => true],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -112,7 +119,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FFCCE5FF'],
+                'startColor' => ['argb' => 'fdb38e'],
             ],
             'borders' => [
                 'allBorders' => [
@@ -123,7 +130,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         ]);
 
         // Data rows (row 4 to last)
-        $sheet->getStyle("A4:G{$highestRow}")->applyFromArray([
+        $sheet->getStyle("A4:H{$highestRow}")->applyFromArray([
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,

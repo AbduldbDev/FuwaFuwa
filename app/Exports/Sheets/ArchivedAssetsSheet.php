@@ -16,7 +16,10 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
 {
     public function collection()
     {
+        $now = \Carbon\Carbon::now();
         return Assets::where('operational_status', 'archived')
+            ->whereYear('created_at', $now->year)
+            ->whereMonth('created_at', $now->month)
             ->get()
             ->map(function ($asset) {
                 return [

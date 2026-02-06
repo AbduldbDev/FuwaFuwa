@@ -516,11 +516,11 @@
                             <label class="form-label">Department</label>
                             <select class="form-select" name="department">
                                 <option value="">Select department</option>
-                                <option>IT Department</option>
-                                <option>HR Department</option>
-                                <option>Finance Department</option>
-                                <option>Operations</option>
-                                <option>Admin</option>
+                                <option value="IT Department">IT Department</option>
+                                <option value="HR Department">HR Department</option>
+                                <option value="Finance Department">Finance Department</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
 
@@ -609,9 +609,8 @@
 
                         <div class="mb-3">
                             <label class="form-label" id="last_schedule_maintenance">Last Scheduled
-                                Maintenance <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control required-field" data-required="true"
-                                name="last_maintenance" />
+                                Maintenance </label>
+                            <input type="date" class="form-control required-field" name="last_maintenance" />
                         </div>
 
                         <div class="mb-3">

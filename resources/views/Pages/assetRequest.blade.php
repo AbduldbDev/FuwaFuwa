@@ -99,7 +99,7 @@
                         };
                     @endphp
 
-                    <div class="col-lg-4 col-md-6 mb-4 request-card-wrapper">
+                    <div class="col-lg-4 col-md-6 mb-4 request-card-wrapper" data-status="{{ strtolower($item->status) }}">
                         <div class="request-card {{ $CardClass }}">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
