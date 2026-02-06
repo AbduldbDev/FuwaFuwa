@@ -6,10 +6,6 @@
         <div class="navbar">
             <h2>Dashboard</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
 
                 <x-notification-dropdown />
             </div>
@@ -158,7 +154,7 @@
                         </div>
 
                         <!-- digital -->
-                      
+
                     </div>
                 </div>
             </div>

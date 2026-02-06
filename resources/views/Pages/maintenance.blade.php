@@ -6,10 +6,7 @@
         <div class="navbar">
             <h2>Maintenance & Repair</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
+
                 @if (Auth::user()->canAccess('Maintenance', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetIssueModal">
                         <i class="fa-solid fa-plus"></i>

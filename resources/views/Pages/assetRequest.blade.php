@@ -6,10 +6,7 @@
         <div class="navbar">
             <h2>Asset Request</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
+
                 @if (Auth::user()->canAccess('Asset Request', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#requestAsset">
                         <i class="fa-solid fa-plus"></i>
@@ -23,8 +20,8 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF"
-                title="Total For Release" :value="$TotalRequests" />
+            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total For Release"
+                :value="$TotalRequests" />
 
             <x-stat-card icon="fa-solid fa-cart-flatbed" icon-color="#166534" icon-bg="#DCFCE7" title="Total Procured"
                 :value="$TotalProcured" />

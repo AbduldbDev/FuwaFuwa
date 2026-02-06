@@ -6,10 +6,7 @@
         <div class="navbar">
             <h2>Asset Management</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
+
                 @if (Auth::user()->canAccess('Assets', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
                         <i class="fa-solid fa-plus"></i>
@@ -86,41 +83,39 @@
                             </thead>
                             <tbody>
                                 @forelse ($items  as $index =>  $item)
-                                  
-                                        @php
-                                            $statusColors = [
-                                                'Active' => 'bg-success',
-                                                'Inactive' => 'bg-secondary',
-                                                'In Stock' => 'bg-primary',
-                                                'Under Maintenance' => 'bg-warning',
-                                                'Retired' => 'bg-dark',
-                                                'Expired' => 'bg-danger',
-                                                'archived' => 'bg-danger',
-                                            ];
+                                    @php
+                                        $statusColors = [
+                                            'Active' => 'bg-success',
+                                            'Inactive' => 'bg-secondary',
+                                            'In Stock' => 'bg-primary',
+                                            'Under Maintenance' => 'bg-warning',
+                                            'Retired' => 'bg-dark',
+                                            'Expired' => 'bg-danger',
+                                            'archived' => 'bg-danger',
+                                        ];
 
-                                            $badgeClass =
-                                                $statusColors[$item->operational_status] ?? 'bg-light text-dark';
-                                        @endphp
-                                        <tr>
-                                            <td class="text-center">{{ $index + 1 }}</td>
-                                            <td><a class="asset-link"
-                                                    href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
-                                            </td>
-                                            <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
-                                            <td>{{ $item->asset_name }}</td>
-                                            <td>
-                                                {{ ucwords($item->operational_status) }}
-                                            </td>
-                                            <td
-                                                class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->compliance_status }}
-                                            </td>
-                                            <td>{{ $item->purchase_cost }}</td>
-                                            <td>
-                                                {{ number_format($item->current_value, 2) }}
-                                            </td>
-                                        </tr>
-                                  
+                                        $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
+                                    @endphp
+                                    <tr>
+                                        <td class="text-center">{{ $index + 1 }}</td>
+                                        <td><a class="asset-link"
+                                                href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
+                                        </td>
+                                        <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
+                                        <td>{{ $item->asset_name }}</td>
+                                        <td>
+                                            {{ ucwords($item->operational_status) }}
+                                        </td>
+                                        <td
+                                            class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->compliance_status }}
+                                        </td>
+                                        <td>{{ $item->purchase_cost }}</td>
+                                        <td>
+                                            {{ number_format($item->current_value, 2) }}
+                                        </td>
+                                    </tr>
+
                                 @empty
                                     <tr>
                                         <td colspan="8" class="text-center py-5">

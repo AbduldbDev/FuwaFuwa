@@ -6,10 +6,6 @@
         <div class="navbar">
             <h2>Vendor Management</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
 
                 @if (Auth::user()->canAccess('Vendor', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addVendorModal">

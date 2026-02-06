@@ -141,20 +141,17 @@
 
             function filterReports() {
                 const selectedType = timeRangeFilter.value;
-                const selectedMonth = monthFilter.value; // format: YYYY-MM
+                const selectedMonth = monthFilter.value;
 
                 reportCards.forEach(card => {
-                    const reportName = card.querySelector('h5').textContent.toLowerCase();
-                    const reportDate = card.querySelector('p')
-                        .textContent; // "Generated Jan 20, 2026 • 08:30 am"
-                    const reportMonth = new Date(reportDate.replace('Generated ', '').split(' • ')[0])
-                        .toISOString().slice(0, 7); // YYYY-MM
+                    const reportType = card.dataset.type; // ✅ from data-type
+                    const reportMonth = card.dataset.date; // ✅ from data-date (Y-m)
 
                     let typeMatch = true;
                     if (selectedType === 'Custom Reports') {
-                        typeMatch = reportName.includes('custom');
+                        typeMatch = reportType === 'custom';
                     } else if (selectedType === 'Scheduled Reports') {
-                        typeMatch = reportName.includes('scheduled');
+                        typeMatch = reportType === 'scheduled';
                     }
 
                     let monthMatch = true;
@@ -162,15 +159,10 @@
                         monthMatch = reportMonth === selectedMonth;
                     }
 
-                    if (typeMatch && monthMatch) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                    card.style.display = (typeMatch && monthMatch) ? '' : 'none';
                 });
             }
 
-            // Event listeners
             timeRangeFilter.addEventListener('change', filterReports);
             monthFilter.addEventListener('change', filterReports);
         });

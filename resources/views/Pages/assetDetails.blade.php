@@ -6,10 +6,7 @@
         <div class="navbar">
             <h2>Asset Management</h2>
             <div class="group-box">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search..." />
-                </div>
+
                 <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
                     <i class="fa-solid fa-plus"></i>
                     Add New Asset
