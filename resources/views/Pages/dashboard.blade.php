@@ -248,9 +248,9 @@
                                 <canvas id="usersChart"></canvas>
                             </div>
 
-                            <div class="chart-footer mt-4">
+                            {{-- <div class="chart-footer mt-4">
                                 <h5>Access Levels</h5>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -339,8 +339,8 @@
                                                 class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
                                                 {{ $item->compliance_status }}
                                             </td>
-                                            <td>{{ $item->purchase_cost }}</td>
-                                            <td>{{ number_format($item->current_value, 2) }}</td>
+                                            <td>₱ {{ $item->purchase_cost }}</td>
+                                            <td>₱ {{ number_format($item->current_value, 2) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
