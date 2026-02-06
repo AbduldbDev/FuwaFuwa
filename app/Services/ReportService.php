@@ -34,35 +34,41 @@ class ReportService
                     'asset_category',
                     'asset_tag',
                     'asset_name',
-                    'technical_specifications'
+                    'technical_specifications', // mapped from technicalSpecifications relation
                 ],
                 'Operational Status' => [
-                    'operational_status'
+                    'operational_status',
                 ],
                 'Compliance Status' => [
-                    'compliance_status'
+                    'compliance_status',
                 ],
                 'Assignment and Location' => [
                     'assigned_to',
                     'department',
-                    'location'
+                    'location',
                 ],
                 'Purchase Information' => [
-                    'vendor_id',
+                    'vendor_id', // will map to vendor->name in export
                     'purchase_date',
-                    'purchase_cost'
+                    'purchase_cost',
                 ],
                 'Depreciation Insights' => [
                     'useful_life_years',
-                    'salvage_value'
+                    'salvage_value',
+                    'depreciation_expense', // computed
+                    'current_value',        // computed
+                    'years_used',           // computed
+                    'remaining_life',       // computed
+                    'depreciation_rate',    // computed
                 ],
                 'Maintenance and Audit' => [
                     'warranty_start',
                     'warranty_end',
                     'last_maintenance',
-                    'next_maintenance'
+                    'next_maintenance',
                 ],
             ],
+
 
             'asset_archive' => [
                 'Asset Details' => [

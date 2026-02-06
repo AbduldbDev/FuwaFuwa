@@ -35,7 +35,8 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
             $row = [];
 
             foreach ($this->columns as $column) {
-                // Handle relationships
+
+                // Handle relationships ending with _id
                 if (Str::endsWith($column, '_id')) {
                     $relation = Str::replaceLast('_id', '', $column);
                     $row[$column] = $item->$relation->name ?? '';
@@ -46,6 +47,16 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
                         ->map(fn($s) => ucwords(str_replace('_', ' ', $s->spec_key)) . ': ' . $s->spec_value)
                         ->implode("\n");
                 }
+                // Handle money/currency fields
+                elseif (in_array($column, ['purchase_cost', 'salvage_value', 'current_value'])) {
+                    $value = $item->$column ?? 0;
+                    $row[$column] = '₱' . number_format($value, 2);
+                }
+                // Handle percent fields
+                elseif (in_array($column, ['depreciation_rate'])) {
+                    $value = $item->$column ?? 0;
+                    $row[$column] = number_format($value, 2) . '%';
+                }
                 // Default columns
                 else {
                     $row[$column] = $item->$column ?? '';
@@ -55,6 +66,7 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
             return $row;
         });
     }
+
 
 
     public function headings(): array
