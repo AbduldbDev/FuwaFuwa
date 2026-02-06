@@ -229,7 +229,7 @@
                         };
                     @endphp
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-4">
                         <div class="request-card request-card-wrapper {{ $CardClass }}"
                             data-status="{{ strtolower($item->status) }}"
                             data-priority="{{ strtolower($item->priority) }}">

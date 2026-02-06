@@ -90,7 +90,9 @@ class MaintenanceService
 
     public function getRequestStatusCounts()
     {
-        return Maintenance::select('status', DB::raw('COUNT(*) as total'))
+        return Maintenance::whereNotNull('start_date')
+            ->whereNotNull('status')
+            ->select('status', DB::raw('COUNT(*) as total'))
             ->groupBy('status')
             ->pluck('total', 'status')
             ->toArray();
