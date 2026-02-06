@@ -35,7 +35,7 @@
 
         <!-- calendar schedule -->
         <div class="maintenance-container mb-4">
-            <div class="row g-4 align-items-stretch">
+            <div class="row g-4">
                 <div class="col-lg-4 col-md-12"> <!-- calendar -->
                     <div class="calendar-card" style="position:relative;">
                         <!-- Header -->
