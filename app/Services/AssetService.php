@@ -175,7 +175,13 @@ class AssetService
                 $this->logAssetChange($asset, 'changed ', $field, $original[$field], $newValue);
             }
         }
-
+    
+        
+        if (isset($data['operational_status']) && $data['operational_status'] === 'In Stock') {
+            $data['assigned_to'] = null;
+            $data['department'] = null;
+            $data['location'] = 'Main Office';
+        }
 
         $this->notification->notifyUsersWithModuleAccess(
             'Assets',
