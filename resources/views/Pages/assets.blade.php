@@ -102,7 +102,16 @@
                                                 href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                         </td>
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
-                                        <td>{{ $item->asset_name }}</td>
+                                        <td>
+                                            @if ($item->asset_type === 'Physical Asset')
+                                                {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'Asset_Model'))->spec_value ?? 'N/A' }}
+                                            @elseif ($item->asset_type === 'Digital Asset')
+                                                {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'License_Name'))->spec_value ?? 'N/A' }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
+
                                         <td>
                                             {{ ucwords($item->operational_status) }}
                                         </td>

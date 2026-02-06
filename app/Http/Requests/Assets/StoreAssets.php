@@ -57,6 +57,8 @@ class StoreAssets extends FormRequest
 
             'operational_status.string' => 'Operational status must be a valid string.',
             'vendor_id.exists'         => 'Selected vendor does not exist.',
+            'vendor_id.required'         => 'Vendor field is required.',
+
 
             'purchase_date.date'      => 'Purchase date must be a valid date.',
             'purchase_cost.numeric'   => 'Purchase cost must be a valid number.',
