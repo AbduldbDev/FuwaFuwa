@@ -20,13 +20,13 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total For Release"
+            <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Request"
                 :value="$TotalRequests" />
 
-            <x-stat-card icon="fa-solid fa-cart-flatbed" icon-color="#166534" icon-bg="#DCFCE7" title="Total Procured"
+            <x-stat-card icon="fa-solid fa-paper-plane" icon-color="#166534" icon-bg="#DCFCE7" title="Total For Release"
                 :value="$TotalProcured" />
 
-            <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE"
+            <x-stat-card icon="fa-solid fa-laptop-code" icon-color="#6D28D9" icon-bg="#EDE9FE"
                 title="In Stocks (Digital Assets)" :value="$TotalOnHandDigital" />
 
             <x-stat-card icon="fa-solid fa-boxes-packing" icon-color="#6D28D9" icon-bg="#EDE9FE"
@@ -91,7 +91,7 @@
                             'In Procurement' => 'in-procurement',
                             'For Procurement' => 'procured',
                             'For Release' => 'procured',
-                            'Closed' => 'procured',
+                            'Closed' => 'closed',
                             default => 'for-review',
                         };
                     @endphp

@@ -71,7 +71,7 @@
                                     <th>Status</th>
                                     <th>Compliance Type</th>
                                     <th>Purchase Cost</th>
-                                    <th>Asset Value</th>
+                                    <th>Current Book Value</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -980,6 +980,10 @@ table td {
     border-color: #166534;
 }
 
+.request-card.closed {
+    border-color: #dc2626;
+}
+
 .priority-badge {
     color: var(--text-black);
     font-size: 10px;

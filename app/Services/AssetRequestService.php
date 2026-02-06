@@ -28,7 +28,7 @@ class AssetRequestService
 
     public function getTotalProcured()
     {
-        return AssetRequest::where('status', 'Procured')->count();
+        return AssetRequest::where('status', 'For Release')->count();
     }
 
     public function getTotalPendingRequests()
