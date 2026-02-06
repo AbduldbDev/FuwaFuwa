@@ -3,7 +3,7 @@
 @section('content')
     <section id="dashboard" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Dashboard</h2>
             <div class="group-box">
 
@@ -12,8 +12,8 @@
         </div>
 
         <!-- numbers -->
-        <div class="row my-4">
-            <div class="col-lg-3 col-md-6">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -160,11 +160,11 @@
             </div>
 
             <!-- Pie Charts -->
-            <div class="container mt-4">
+            <div class="container mb-4">
                 <div class="row g-4 justify-content-center">
 
                     <!-- Asset Category -->
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-12">
                         <div class="chart-card">
                             <div class="chart-header">
                                 <h6>Asset Category</h6>
@@ -200,7 +200,7 @@
                     </div>
 
                     <!-- Compliance -->
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-12">
                         <div class="chart-card">
                             <div class="chart-header mb-2">
                                 <h6>Compliance Status</h6>
@@ -236,7 +236,7 @@
                     </div>
 
                     <!-- Users -->
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-12">
                         <div class="chart-card">
                             <div class="chart-header">
                                 <h6>User Roles</h6>
@@ -257,7 +257,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="container mt-4">
+                <div class="container mb-4">
                     <div class="table-container">
                         <!-- seach, filter & pagination -->
                         <div class="controls">

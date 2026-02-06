@@ -35,124 +35,134 @@
 
         <!-- calendar schedule -->
         <div class="maintenance-container mb-4">
-            <!-- calendar -->
-            <div class="calendar-card" style="position:relative;">
-                <!-- Header -->
-                <div class="calendar-header">
-                    <h4>Maintenance Calendar</h4>
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-4 col-md-12"> <!-- calendar -->
+                    <div class="calendar-card" style="position:relative;">
+                        <!-- Header -->
+                        <div class="calendar-header">
+                            <h4>Maintenance Calendar</h4>
 
-                    <div class="date-controls">
-                        <!-- Month control -->
-                        <div class="month-control">
-                            <button id="prevMonth" aria-label="Previous month">
-                                <i class="fa-solid fa-angle-left"></i>
-                            </button>
-                            <span id="monthLabel"></span>
-                            <button id="nextMonth" aria-label="Next month">
-                                <i class="fa-solid fa-angle-right"></i>
-                            </button>
+                            <div class="date-controls">
+                                <!-- Month control -->
+                                <div class="month-control">
+                                    <button id="prevMonth" aria-label="Previous month">
+                                        <i class="fa-solid fa-angle-left"></i>
+                                    </button>
+                                    <span id="monthLabel"></span>
+                                    <button id="nextMonth" aria-label="Next month">
+                                        <i class="fa-solid fa-angle-right"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Year control -->
+                                <select id="yearSelect"></select>
+                            </div>
                         </div>
 
-                        <!-- Year control -->
-                        <select id="yearSelect"></select>
+                        <!-- Weekdays row -->
+                        <div class="weekdays">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+
+                        <!-- Calendar grid -->
+                        <div class="calendar-grid" id="calendar"
+                            style="display:grid; grid-template-columns: repeat(7, 1fr); gap:5px;"></div>
+
+                        <!-- Legend -->
+                        <div class="legend" style="margin-top:10px;">
+                            <div><span class="dot corrective"></span> Corrective</div>
+                            <div><span class="dot preventive"></span> Preventive</div>
+                        </div>
+
+                        <!-- Popup -->
+                        <div id="popup"
+                            style="
+                                    position:absolute; 
+                                    display:none; 
+                                    background:#fff; 
+                                    border:1px solid #ccc; 
+                                    padding:10px; 
+                                    border-radius:6px; 
+                                    box-shadow:0 4px 8px rgba(0,0,0,0.1); 
+                                    z-index:1000; 
+                                    max-width:100px;
+                                ">
+                        </div>
+
                     </div>
+
                 </div>
+                <div class="col-lg-4 col-md-12">
+                    <section class="repair-wrapper overflow-auto h-100">
+                        <header class="repair-header">
+                            <h4>Findings <span>({{ $ForInspection->count() }})</span></h4>
+                        </header>
 
-                <!-- Weekdays row -->
-                <div class="weekdays">
-                    <div>Sun</div>
-                    <div>Mon</div>
-                    <div>Tue</div>
-                    <div>Wed</div>
-                    <div>Thu</div>
-                    <div>Fri</div>
-                    <div>Sat</div>
+                        @forelse ($ForInspection as $item)
+                            <article class="repair-row">
+                                <div class="repair-info">
+                                    <div class="repair-top mb-1">
+                                        <span class="repair-id">{{ $item->maintenance_id }}</span>
+                                    </div>
+                                    <span class="issue-reason">{{ $item->description }}</span>
+                                    <div class="repair-meta">
+                                        <span>Asset: {{ $item->asset_tag }}</span>
+                                        <span>Issued by: {{ $item->reporter->name }}</span>
+                                    </div>
+                                </div>
+                                <button class="schedule-btn" data-bs-toggle="modal"
+                                    data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
+                                    Maintenance</button>
+                            </article>
+                            @include('Components.Modal.Maintenance.inspectionRepair')
+                        @empty
+                            <div class="text-center p-4 text-muted">
+                                <i class="fa-solid fa-inbox fa-2x mb-2"></i>
+                                <p>No findings available.</p>
+                            </div>
+                        @endforelse
+                    </section>
                 </div>
+                <div class="col-lg-4 col-md-12">
+                    <section class="repair-wrapper overflow-auto h-100">
+                        <header class="repair-header">
+                            <h4>For Repair <span>({{ $PendingCorrective->count() }})</span></h4>
+                        </header>
 
-                <!-- Calendar grid -->
-                <div class="calendar-grid" id="calendar"
-                    style="display:grid; grid-template-columns: repeat(7, 1fr); gap:5px;"></div>
-
-                <!-- Legend -->
-                <div class="legend" style="margin-top:10px;">
-                    <div><span class="dot corrective"></span> Corrective</div>
-                    <div><span class="dot preventive"></span> Preventive</div>
-                </div>
-
-                <!-- Popup -->
-                <div id="popup"
-                    style="
-            position:absolute; 
-            display:none; 
-            background:#fff; 
-            border:1px solid #ccc; 
-            padding:10px; 
-            border-radius:6px; 
-            box-shadow:0 4px 8px rgba(0,0,0,0.1); 
-            z-index:1000; 
-            max-width:100px;
-        ">
+                        @forelse ($PendingCorrective as $item)
+                            <article class="repair-row">
+                                <div class="repair-info">
+                                    <div class="repair-top mb-1">
+                                        <span class="repair-id">{{ $item->maintenance_id }}</span>
+                                    </div>
+                                    <span class="issue-reason">{{ $item->description }}</span>
+                                    <div class="repair-meta">
+                                        <span>Asset: {{ $item->asset_name }}</span>
+                                        <span>Issued by: {{ $item->reporter->name }}</span>
+                                    </div>
+                                </div>
+                                <button class="schedule-btn" data-bs-toggle="modal"
+                                    data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
+                                    Maintenance</button>
+                            </article>
+                            @include('Components.Modal.Maintenance.correctiveRepair')
+                        @empty
+                            <div class="text-center p-4 text-muted">
+                                <i class="fa-solid fa-tools fa-2x mb-2"></i>
+                                <p>No pending corrective repairs.</p>
+                            </div>
+                        @endforelse
+                    </section>
                 </div>
             </div>
 
             <!-- repair card -->
-            <section class="repair-wrapper overflow-auto">
-                <header class="repair-header">
-                    <h4>Findings <span>({{ $ForInspection->count() }})</span></h4>
-                </header>
-
-                @forelse ($ForInspection as $item)
-                    <article class="repair-row">
-                        <div class="repair-info">
-                            <div class="repair-top mb-1">
-                                <span class="repair-id">{{ $item->maintenance_id }}</span>
-                            </div>
-                            <span class="issue-reason">{{ $item->description }}</span>
-                            <div class="repair-meta">
-                                <span>Asset: {{ $item->asset_tag }}</span>
-                                <span>Issued by: {{ $item->reporter->name }}</span>
-                            </div>
-                        </div>
-                        <button class="schedule-btn" data-bs-toggle="modal"
-                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule Maintenance</button>
-                    </article>
-                    @include('Components.Modal.Maintenance.inspectionRepair')
-                @empty
-                    <div class="text-center p-4 text-muted">
-                        <i class="fa-solid fa-inbox fa-2x mb-2"></i>
-                        <p>No findings available.</p>
-                    </div>
-                @endforelse
-            </section>
-
-            <section class="repair-wrapper overflow-auto">
-                <header class="repair-header">
-                    <h4>For Repair <span>({{ $PendingCorrective->count() }})</span></h4>
-                </header>
-
-                @forelse ($PendingCorrective as $item)
-                    <article class="repair-row">
-                        <div class="repair-info">
-                            <div class="repair-top mb-1">
-                                <span class="repair-id">{{ $item->maintenance_id }}</span>
-                            </div>
-                            <span class="issue-reason">{{ $item->description }}</span>
-                            <div class="repair-meta">
-                                <span>Asset: {{ $item->asset_name }}</span>
-                                <span>Issued by: {{ $item->reporter->name }}</span>
-                            </div>
-                        </div>
-                        <button class="schedule-btn" data-bs-toggle="modal"
-                            data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule Maintenance</button>
-                    </article>
-                    @include('Components.Modal.Maintenance.correctiveRepair')
-                @empty
-                    <div class="text-center p-4 text-muted">
-                        <i class="fa-solid fa-tools fa-2x mb-2"></i>
-                        <p>No pending corrective repairs.</p>
-                    </div>
-                @endforelse
-            </section>
 
         </div>
 

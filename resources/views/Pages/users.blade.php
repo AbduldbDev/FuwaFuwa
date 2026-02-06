@@ -3,7 +3,7 @@
 @section('content')
     <div id="users" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>User Management</h2>
             <div class="group-box">
 
@@ -20,13 +20,13 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-users" icon-color="#1E40AF" icon-bg="#E0E7FF"
-                title="Total Users" :value="$total" />
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-users" icon-color="#1E40AF"
+                icon-bg="#E0E7FF" title="Total Users" :value="$total" />
 
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-user-check" icon-color="#166534" icon-bg="#DCFCE7"
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-user-check" icon-color="#166534" icon-bg="#DCFCE7"
                 title="Active Users" :value="$active" />
 
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-user-xmark" icon-color="#92400E" icon-bg="#FFEDD5"
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-user-xmark" icon-color="#92400E" icon-bg="#FFEDD5"
                 title="Inactive Users" :value="$inactive" />
 
         </div>

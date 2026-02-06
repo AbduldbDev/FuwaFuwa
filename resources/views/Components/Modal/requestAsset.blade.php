@@ -14,7 +14,7 @@
                     <!-- requester -->
                     <h4 class="mb-3">Requester Information</h4>
                     <div class="row">
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-md-6 mb-5">
                             <label class="form-label">
                                 Requested By <span class="text-danger">*</span>
                             </label>
@@ -22,7 +22,7 @@
                                 value="{{ Auth::user()->name }}" readonly />
                         </div>
 
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-md-6 mb-5">
                             <label class="form-label">
                                 Department <span class="text-danger">*</span>
                             </label>

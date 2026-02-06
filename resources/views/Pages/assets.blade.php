@@ -3,7 +3,7 @@
 @section('content')
     <section id="assets" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Asset Management</h2>
             <div class="group-box">
 
@@ -20,7 +20,7 @@
         @include('Components/Modal/addAsset')
         <!-- Data Table -->
         <div class="row">
-            <div class="container mt-4">
+            <div class="container ">
                 <div class="table-container">
                     <!-- seach, filter & pagination -->
                     <div class="controls">

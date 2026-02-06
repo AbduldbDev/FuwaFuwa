@@ -3,7 +3,7 @@
 @section('content')
     <div id="vendors" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Vendor Management</h2>
             <div class="group-box">
 
@@ -21,13 +21,13 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-building" icon-color="#1E40AF" icon-bg="#E0E7FF"
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-building" icon-color="#1E40AF" icon-bg="#E0E7FF"
                 title="Total Vendors" :value="$totalVendors" />
 
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-shop" icon-color="#166534" icon-bg="#DCFCE7"
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-shop" icon-color="#166534" icon-bg="#DCFCE7"
                 title="Active Vendors" :value="$totalActive" />
 
-            <x-stat-card col="col-lg-4 col-md-6" icon="fa-solid fa-shop-slash" icon-color="#92400E" icon-bg="#FFEDD5"
+            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-shop-slash" icon-color="#92400E" icon-bg="#FFEDD5"
                 title="Inactive Vendors" :value="$totalInactive" />
 
         </div>
