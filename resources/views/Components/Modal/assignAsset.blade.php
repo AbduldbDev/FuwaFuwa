@@ -24,7 +24,7 @@
                             <input type="text" id="assetSearch" class="form-control" placeholder="Search asset..."
                                 autocomplete="off">
                             <div id="assetSuggestions" class="list-group mt-1"
-                                style="max-height:150px; overflow-y:auto; display:none;"></div>
+                                style="max-height:300px; overflow-y:auto; display:none;"></div>
 
                             <!-- Hidden input to store selected asset ID -->
                             <input type="hidden" name="asset_id" id="selectedAssetId">
