@@ -12,10 +12,6 @@
 
                 <!-- modal body -->
                 <div class="modal-body px-4">
-                    <!-- ===== Asset Category and Type ===== -->
-                    <div id="slide1">
-
-                    </div>
 
                     <!-- ===== Basic Information ===== -->
                     <div id="slide2" style="display: none">
@@ -750,6 +746,7 @@
     // ===============================
     // TECHNICAL SPECIFICATIONS
     // ===============================
+    // Update the showTechnicalFields() function to populate asset name into appropriate fields
     function showTechnicalFields() {
         // Hide all tech groups first
         document.querySelectorAll(".tech-group").forEach((group) => {
@@ -773,6 +770,30 @@
             techGroup.querySelectorAll("input, select, textarea").forEach((input) => {
                 input.disabled = false;
             });
+        }
+    }
+
+
+    function populateAssetNameToField(assetName) {
+        if (!assetName) return;
+
+        // For Physical Assets: populate into Asset_Model field
+        if (selectedCategory === 'Physical Asset') {
+            const assetModelFields = document.querySelectorAll(
+                'input[name="specs[Asset_Model]"], input[name="specs[asset_model]"]');
+            assetModelFields.forEach(field => {
+                if (field && !field.value && field.closest('.tech-group').style.display !== 'none') {
+                    field.value = assetName;
+                }
+            });
+        }
+        // For Digital Assets (License): populate into License_Name field
+        else if (selectedCategory === 'Digital Asset') {
+            const licenseNameField = document.querySelector('input[name="specs[License_Name]"]');
+            if (licenseNameField && !licenseNameField.value && licenseNameField.closest('.tech-group').style.display !==
+                'none') {
+                licenseNameField.value = assetName;
+            }
         }
     }
 
@@ -827,6 +848,7 @@
         }
 
         if (currentSlide === 3) {
+            // Validate technical fields (including Asset_Model or License_Name)
             if (selectedType && selectedCategory) {
                 let targetType = selectedType;
                 if (selectedType === "PC" || selectedType === "Laptop") {
@@ -978,6 +1000,13 @@
             case 2:
                 showSlide(3);
                 showTechnicalFields();
+
+                // Get asset name from data attribute and populate appropriate field
+                const button = document.querySelector('[data-bs-toggle="modal"][data-bs-target="#assetModal"]');
+                if (button) {
+                    const assetName = button.getAttribute('data-asset-name') || '';
+                    populateAssetNameToField(assetName);
+                }
                 break;
 
             case 3:
@@ -1029,7 +1058,7 @@
             prev = 3;
         }
 
-        if (prev < 1) return; // prevent going before first slide
+        if (prev < 2) return; // prevent going before first slide
 
         // Remove error styles
         const currentSlideElement = document.getElementById(`slide${currentSlide}`);
@@ -1077,7 +1106,6 @@
 
         document.getElementById('summaryCategory').value = '';
         document.getElementById('summaryType').value = '';
-        document.getElementById('assetName').value = '';
 
         const statusSelect = document.getElementById('operationalStatus');
         if (statusSelect) {
@@ -1112,6 +1140,7 @@
         }
     }
 
+
     // ===============================
     // INITIALIZATION
     // ===============================
@@ -1129,7 +1158,6 @@
                 if (button) {
                     const assetType = button.getAttribute('data-asset-type') || '';
                     const assetCategory = button.getAttribute('data-asset-category') || '';
-                    const assetName = button.getAttribute('data-asset-name') || '';
                     const assetQuantity = button.getAttribute('data-quantity') || '';
                     const requestID = button.getAttribute('data-request-id') || '';
 
@@ -1138,13 +1166,11 @@
 
                     const summaryCategory = document.getElementById('summaryCategory');
                     const summaryType = document.getElementById('summaryType');
-                    const assetNameInput = document.getElementById('assetName');
                     const assetQuantityInput = document.getElementById('assetQuantity');
                     const requestIDInput = document.getElementById('AssetRequestId');
 
                     if (summaryCategory) summaryCategory.value = assetType;
                     if (summaryType) summaryType.value = assetCategory;
-                    if (assetNameInput) assetNameInput.value = assetName;
                     if (assetQuantityInput) assetQuantityInput.value = assetQuantity;
                     if (requestIDInput) requestIDInput.value = requestID;
 
@@ -1159,6 +1185,7 @@
             // Initialize slide
             showSlide(2);
         }
+
 
         // Real-time validation
         document.addEventListener('input', function(e) {
