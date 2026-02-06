@@ -43,53 +43,7 @@ class VendorService
     {
 
         $data['vendor_id'] = $this->generateVendorId();
-
         $vendor = Vendors::create($data);
-
-        // Handle documents if they exist
-        if (!empty($data['documents']['name']) && is_array($data['documents']['name'])) {
-            foreach ($data['documents']['name'] as $index => $name) {
-                $filePath = null;
-
-                // Check if file exists at this index
-                if (
-                    isset($data['documents']['file'][$index]) &&
-                    $data['documents']['file'][$index] instanceof \Illuminate\Http\UploadedFile
-                ) {
-
-                    $file = $data['documents']['file'][$index];
-                    $originalName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-
-                    // Generate unique filename
-                    $filename = 'vendor_' . $vendor->id . '_' . time() . '_' . $index . '.' . $extension;
-
-                    // Store the file
-                    $filePath = $file->storeAs('vendor_documents', $filename, 'public');
-                }
-
-                VendorDocuments::create([
-                    'vendor_id' => $vendor->id,
-                    'name' => $name,
-                    'file' => $filePath,
-                    'expiration' => $data['documents']['expiry'][$index] ?? null,
-                ]);
-            }
-        }
-
-        // Handle purchases
-        if (!empty($data['purchases']['po_id']) && is_array($data['purchases']['po_id'])) {
-            foreach ($data['purchases']['po_id'] as $index => $poId) {
-                VendorPurchase::create([
-                    'vendor_id' => $vendor->id,
-                    'order_id' => $poId,
-                    'item_name' => $data['purchases']['item'][$index] ?? null,
-                    'quantity' => $data['purchases']['quantity'][$index] ?? 0,
-                    'cost' => $data['purchases']['cost'][$index] ?? 0,
-                    'expiration' => $data['purchases']['expiration'][$index] ?? null,
-                ]);
-            }
-        }
 
         $this->notification->notifyUsersWithModuleAccess(
             'Vendor',
@@ -153,61 +107,7 @@ class VendorService
             'status' => $data['status'],
         ]);
 
-        if (!empty($data['delete_documents'])) {
-            VendorDocuments::whereIn('id', $data['delete_documents'])->delete();
-        }
 
-        if (!empty($data['existing_documents'])) {
-            foreach ($data['existing_documents'] as $doc) {
-                VendorDocuments::where('id', $doc['id'])
-                    ->update([
-                        'name' => $doc['name'],
-                        'expiration' => $doc['expiration'],
-                    ]);
-            }
-        }
-
-        if (!empty($data['new_documents']['name'])) {
-            foreach ($data['new_documents']['name'] as $i => $name) {
-                VendorDocuments::create([
-                    'vendor_id' => $vendor->id,
-                    'name' => $name,
-                    'file' => $data['new_documents']['file_name'][$i],
-
-                    'expiration' => $data['new_documents']['expiry'][$i],
-                ]);
-            }
-        }
-
-        if (!empty($data['delete_purchases'])) {
-            VendorPurchase::whereIn('id', $data['delete_purchases'])->delete();
-        }
-
-        if (!empty($data['existing_purchases'])) {
-            foreach ($data['existing_purchases'] as $purchase) {
-                VendorPurchase::where('id', $purchase['id'])
-                    ->update([
-                        'order_id' => $purchase['po_id'],
-                        'item_name' => $purchase['item_name'],
-                        'quantity' => $purchase['quantity'],
-                        'cost' => $purchase['cost'],
-                        'expiration' => $purchase['expiration'],
-                    ]);
-            }
-        }
-
-        if (!empty($data['new_purchases']['order_id'])) {
-            foreach ($data['new_purchases']['order_id'] as $i => $orderId) {
-                VendorPurchase::create([
-                    'vendor_id' => $vendor->id,
-                    'order_id' => $orderId,
-                    'item_name' => $data['new_purchases']['item_name'][$i],
-                    'quantity' => $data['new_purchases']['quantity'][$i],
-                    'cost' => $data['new_purchases']['cost'][$i],
-                    'expiration' => $data['new_purchases']['expiration'][$i],
-                ]);
-            }
-        }
 
         $this->notification->notifyUsersWithModuleAccess(
             'Vendor',

@@ -25,6 +25,6 @@ class Vendors extends Model
 
     public function purchases()
     {
-        return $this->hasMany(VendorPurchase::class, 'vendor_id', 'id');
+        return $this->hasMany(Assets::class, 'vendor_id', 'id');
     }
 }
