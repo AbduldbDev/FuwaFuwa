@@ -215,6 +215,7 @@ class AssetService
             'assigned_to' => $data['assigned_to'],
             'department'  => $data['department'],
             'location'    => $data['location'],
+            'operational_status' => 'Active'
         ]);
 
         $request->update([
