@@ -353,42 +353,58 @@
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Purchase Year</div>
-                                    <div class="col-8 value">{{ $purchaseYear }}</div>
+                                    <div class="col-8 value">
+                                        {{ $purchaseDate ? $purchaseDate->year : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Useful Life (Remaining)</div>
-                                    <div class="col-8 value">{{ round($remainingLife) }} yrs </div>
+                                    <div class="col-8 value">
+                                        {{ $usefulLife > 0 ? round($remainingLife) . ' yrs' : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Years Used</div>
-                                    <div class="col-8 value">{{ round($yearsUsed) }} yrs</div>
+                                    <div class="col-8 value">
+                                        {{ $purchaseDate ? round($yearsUsed) . ' yrs' : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Purchase Cost</div>
-                                    <div class="col-8 value">Php {{ number_format($purchaseCost, 2) }}</div>
+                                    <div class="col-8 value">
+                                        {{ $purchaseCost > 0 ? 'Php ' . number_format($purchaseCost, 2) : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Salvage Value</div>
-                                    <div class="col-8 value">Php {{ number_format($salvageValue, 2) }}</div>
+                                    <div class="col-8 value">
+                                        {{ $salvageValue > 0 ? 'Php ' . number_format($salvageValue, 2) : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Depreciation Rate</div>
-                                    <div class="col-8 value">{{ number_format($depreciationRate, 2) }}% per year</div>
+                                    <div class="col-8 value">
+                                        {{ $purchaseCost > 0 && $usefulLife > 0 ? number_format($depreciationRate, 2) . '% per year' : 'N/A' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Accumulated Depreciation</div>
-                                    <div class="col-8 value">Php {{ number_format($totalDepreciation, 2) }}</div>
+                                    <div class="col-8 value">
+                                        {{ $totalDepreciation > 0 ? 'Php ' . number_format($totalDepreciation, 2) : 'Php 0.00' }}
+                                    </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Current Book Value</div>
-                                    <div class="col-8 value">Php {{ number_format($assetValue, 2) }}</div>
+                                    <div class="col-8 value">
+                                        {{ $purchaseCost > 0 ? 'Php ' . number_format($assetValue, 2) : 'N/A' }}
+                                    </div>
                                 </div>
 
                             </div>
