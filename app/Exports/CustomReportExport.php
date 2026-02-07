@@ -36,8 +36,9 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
 
             foreach ($this->columns as $column) {
 
-                // Handle relationships ending with _id
-                if (Str::endsWith($column, '_id')) {
+                if ($column === 'reported_by') {
+                    $row[$column] = $item->reporter->name ?? '';
+                } elseif (Str::endsWith($column, '_id')) {
                     $relation = Str::replaceLast('_id', '', $column);
                     $row[$column] = $item->$relation->name ?? '';
                 }
