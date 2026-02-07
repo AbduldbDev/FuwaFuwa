@@ -153,13 +153,6 @@ function validateCurrentSlide() {
             assetName.focus();
         }
 
-        if (!operationalStatus.value) {
-            operationalStatus.classList.add("error");
-            showError(operationalStatus, "Operational Status is required");
-            isValid = false;
-            if (isValid) operationalStatus.focus();
-        }
-
         return isValid;
     }
 

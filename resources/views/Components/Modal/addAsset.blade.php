@@ -63,7 +63,7 @@
                                 readonly />
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" style="display: none">
                             <label class="form-label">Operational Status <span class="text-danger">*</span></label>
                             <select id="operationalStatus" class="form-select" name="operational_status" required>
                                 <option value="">Select status</option>

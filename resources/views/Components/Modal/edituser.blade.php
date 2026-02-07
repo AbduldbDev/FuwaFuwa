@@ -40,15 +40,25 @@
                         <!-- role -->
                         <div class="col-md-6 mb-4">
                             <label class="form-label">Select User Role <span class="text-danger">*</span></label>
-                            <select name="user_type" class="form-select">
+
+                            <select name="user_type" class="form-select"
+                                {{ Auth::user()->user_type !== 'admin' || $item->id === Auth::id() ? 'disabled' : '' }}>
+
                                 <option disabled>Choose role</option>
-                                <option value="admin" {{ $item->user_type == 'admin' ? 'selected' : '' }}>Admin
+
+                                <option value="admin" {{ $item->user_type === 'admin' ? 'selected' : '' }}>
+                                    Admin
                                 </option>
-                                <option value="encoder" {{ $item->user_type == 'encoder' ? 'selected' : '' }}>Encoder
+
+                                <option value="encoder" {{ $item->user_type === 'encoder' ? 'selected' : '' }}>
+                                    Encoder
                                 </option>
-                                <option value="viewer" {{ $item->user_type == 'viewer' ? 'selected' : '' }}>Viewer
+
+                                <option value="viewer" {{ $item->user_type === 'viewer' ? 'selected' : '' }}>
+                                    Viewer
                                 </option>
                             </select>
+
                         </div>
                     </div>
 

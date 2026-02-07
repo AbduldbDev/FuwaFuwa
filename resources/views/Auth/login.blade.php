@@ -69,7 +69,6 @@
                             {{ old('remember') ? 'checked' : '' }} />
                         <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
-                    <a href="#" class="forgot-link">Forgot password?</a>
                 </div>
 
                 {{-- System Error (login failed) --}}

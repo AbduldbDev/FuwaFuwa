@@ -114,13 +114,18 @@ class AssetService
         $data['asset_tag'] = $this->generateAssetTag($data['asset_type']);
         $data['asset_id'] = $this->generateAssetId();
 
-        // if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
-        //     $data['location'] = 'Warehouse';
-        // }
 
         if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
             $data['location'] = $data['location'] ?? 'Warehouse';
         }
+
+        if (empty($data['assigned_to'])) {
+            $data['operational_status'] = 'In Stock';
+        } else {
+            $data['operational_status'] = 'Active';
+        }
+
+
         $asset = Assets::create($data);
 
 
