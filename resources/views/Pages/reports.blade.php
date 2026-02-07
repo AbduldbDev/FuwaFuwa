@@ -80,27 +80,31 @@
             <div class="report-control">
                 <h3>Available Reports</h3>
 
-                <!-- filters -->
-                <div class="filters">
-                    <!-- time range filter -->
-                    <select class="form-select form-select-sm w-auto shadow-none" id="timeRangeFilter">
-                        <option value="All Reports">All Reports</option>
-                        <option value="Custom Reports">Custom Reports</option>
-                        <option value="Scheduled Reports">Scheduled Reports</option>
-                    </select>
-
-                    <div class="date-range-filter">
-                        <label>Date Range</label>
-                        <input type="month">
-                    </div>
-                </div>
+                <input type="text" id="searchFilter" class="form-control form-control-sm w-25 shadow-none"
+                    placeholder="Search report name or purpose">
 
             </div>
 
+            <!-- filters -->
+            <div class="filters d-flex justify-content-end">
+                <!-- time range filter -->
+                <select class="form-select form-select-sm w-auto shadow-none" id="timeRangeFilter">
+                    <option value="All Reports">All Reports</option>
+                    <option value="Custom Reports">Custom Reports</option>
+                    <option value="Scheduled Reports">Scheduled Reports</option>
+                </select>
+
+                <div class="date-range-filter">
+                    <label>Date Range</label>
+                    <input type="month">
+                </div>
+            </div>
+            <hr>
+
             @foreach ($reports as $item)
                 <div class="report-card mb-1" data-type="{{ $item->type }}"
-                    data-date="{{ $item->created_at->format('Y-m') }}">
-
+                    data-date="{{ $item->created_at->format('Y-m') }}"
+                    data-search="{{ strtolower($item->name . ' ' . $item->description) }}">
                     <div class="report-info">
                         <!-- icon -->
                         <div class="report-icon">
@@ -139,33 +143,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             const timeRangeFilter = document.getElementById('timeRangeFilter');
             const monthFilter = document.querySelector('.date-range-filter input[type="month"]');
+            const searchInput = document.getElementById('searchFilter');
             const reportCards = document.querySelectorAll('.report-card');
 
+            let activeType = 'All Reports';
+            let activeMonth = '';
+            let searchText = '';
+
             function filterReports() {
-                const selectedType = timeRangeFilter
-                    .value; // e.g., "All Reports", "Custom Reports", "Scheduled Reports"
-                const selectedMonth = monthFilter.value; // e.g., "2026-02"
-
                 reportCards.forEach(card => {
-                    const reportType = card.dataset.type; // "Custom Reports" or "Scheduled Reports"
-                    const reportMonth = card.dataset.date; // "YYYY-MM"
+                    const reportType = card.dataset.type;
+                    const reportMonth = card.dataset.date;
+                    const searchData = card.dataset.search;
 
-                    let typeMatch = true;
-                    if (selectedType !== 'All Reports') {
-                        typeMatch = reportType === selectedType;
-                    }
+                    // Type filter
+                    const typeMatch =
+                        activeType === 'All Reports' || reportType === activeType;
 
-                    let monthMatch = true;
-                    if (selectedMonth) {
-                        monthMatch = reportMonth === selectedMonth;
-                    }
+                    // Month filter
+                    const monthMatch = !activeMonth || reportMonth === activeMonth;
 
-                    card.style.display = (typeMatch && monthMatch) ? '' : 'none';
+                    // Search filter
+                    const searchMatch = !searchText || searchData.includes(searchText);
+
+                    card.style.display =
+                        typeMatch && monthMatch && searchMatch ? '' : 'none';
                 });
             }
 
-            timeRangeFilter.addEventListener('change', filterReports);
-            monthFilter.addEventListener('change', filterReports);
+            // Type dropdown
+            timeRangeFilter.addEventListener('change', function() {
+                activeType = this.value;
+                filterReports();
+            });
+
+            // Month picker
+            monthFilter.addEventListener('change', function() {
+                activeMonth = this.value;
+                filterReports();
+            });
+
+            // Search input
+            searchInput.addEventListener('input', function() {
+                searchText = this.value.toLowerCase().trim();
+                filterReports();
+            });
+
+            filterReports();
         });
     </script>
 @endsection

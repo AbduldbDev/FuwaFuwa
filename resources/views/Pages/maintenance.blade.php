@@ -171,17 +171,12 @@
             <!-- controls -->
             <div class="request-control">
                 <h3 class="mb-3">Maintenance Overview</h3>
+                <input type="text" id="searchFilter" class="form-control form-control-sm w-25"
+                    placeholder="Search maintenance id, asset tag, or name">
 
-                <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
-                    <option value="All Priority">All Priority</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                    <option value="Emergency">Emergency</option>
-                </select>
             </div>
 
-            <div class="d-flex gap-2 mb-4">
+            <div class="d-flex gap-2 mb-4 justify-content-between">
                 @php
                     $counts = $RequestStatusCounts ?? [];
                     $total = array_sum($counts);
@@ -204,6 +199,16 @@
                     <span class="filter-pill completed" data-status="Completed">
                         Completed <strong>({{ $counts['Completed'] ?? 0 }})</strong>
                     </span>
+                </div>
+
+                <div>
+                    <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
+                        <option value="All Priority">All Priority</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Emergency">Emergency</option>
+                    </select>
                 </div>
             </div>
 
@@ -231,8 +236,10 @@
 
                     <div class="col-lg-4 mb-4">
                         <div class="request-card request-card-wrapper {{ $CardClass }}"
+                            data-type="{{ strtolower($item->maintenance_type) }}"
                             data-status="{{ strtolower($item->status) }}"
-                            data-priority="{{ strtolower($item->priority) }}">
+                            data-priority="{{ strtolower($item->priority) }}"
+                            data-search="{{ strtolower($item->maintenance_id . ' ' . ($item->asset_tag ?? '') . ' ' . ($item->asset_name ?? '')) }}">
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->

@@ -2,28 +2,39 @@ document.addEventListener("DOMContentLoaded", function () {
     const filterPills = document.querySelectorAll(".filter-pill");
     const requestWrappers = document.querySelectorAll(".request-card-wrapper");
     const categoryFilter = document.getElementById("categoryFilter");
+    const searchInput = document.getElementById("searchFilter");
 
-    let activeStatus = "all";
+    let activeType = "all";
     let activePriority = "all";
+    let searchText = "";
 
     function applyFilters() {
         requestWrappers.forEach((wrapper) => {
-            const status = wrapper.dataset.status.toLowerCase();
-            const priority = wrapper.dataset.priority.toLowerCase();
+            const type = wrapper.dataset.type;
+            const status = wrapper.dataset.status;
+            const priority = wrapper.dataset.priority;
+            const search = wrapper.dataset.search;
 
-            const statusMatch =
-                activeStatus === "all" || status === activeStatus;
+            // Type filter
+            let typeMatch = true;
+            if (activeType === "completed") {
+                typeMatch = status === "completed";
+            } else if (activeType !== "all") {
+                typeMatch = type === activeType && status !== "completed";
+            }
+
+            // Priority filter
             const priorityMatch =
                 activePriority === "all" || priority === activePriority;
 
-            // IMPORTANT: hide the column, not just the card
+            // Search filter
+            const searchMatch =
+                searchText === "" || search.includes(searchText);
+
             const column = wrapper.closest(".col-lg-4");
 
-            if (statusMatch && priorityMatch) {
-                column.style.display = ""; // show
-            } else {
-                column.style.display = "none"; // remove from layout
-            }
+            column.style.display =
+                typeMatch && priorityMatch && searchMatch ? "" : "none";
         });
     }
 
@@ -33,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             filterPills.forEach((p) => p.classList.remove("active"));
             this.classList.add("active");
 
-            activeStatus = this.dataset.status.toLowerCase();
+            activeType = this.dataset.type;
             applyFilters();
         });
     });
@@ -42,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
     categoryFilter.addEventListener("change", function () {
         const val = this.value.toLowerCase();
         activePriority = val === "all priority" ? "all" : val;
+        applyFilters();
+    });
+
+    // Search input
+    searchInput.addEventListener("input", function () {
+        searchText = this.value.toLowerCase().trim();
         applyFilters();
     });
 

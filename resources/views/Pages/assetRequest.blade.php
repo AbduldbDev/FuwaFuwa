@@ -34,11 +34,12 @@
         </div>
 
         <!-- overview -->
-        <div class="request-container">
-            <!-- controls -->
-            <div class="request-control">
-                <h3 class="mb-3">Requests Overview</h3>
+        <div class="request-container ">
 
+            <div class="request-control d-flex mb-3">
+                <h3 class="mb-0">Requests Overview</h3>
+
+                <input type="text" id="requestSearch" class="form-control w-25" placeholder="Search request...">
             </div>
 
             <!-- filters -->
@@ -97,7 +98,8 @@
                     @endphp
 
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4 request-card-wrapper"
-                        data-status="{{ strtolower($item->status) }}">
+                        data-status="{{ strtolower($item->status) }}"
+                        data-search="{{ strtolower($item->asset_type . ' ' . $item->model . ' ' . $item->request_id . ' ' . $item->status) }}">
                         <div class="request-card {{ $CardClass }}">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
