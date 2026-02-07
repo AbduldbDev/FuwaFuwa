@@ -202,34 +202,34 @@
                     <!-- Compliance -->
                     <div class="col-lg-4 col-md-12">
                         <div class="chart-card">
-                            <div class="chart-header mb-2">
-                                <h6>Compliance Status</h6>
-                                <div class="chart-sub">
-                                    <h2>{{ array_sum($ComplianceStatuses) }}</h2>
-                                </div>
+                            <div class="chart-header my-2">
                             </div>
-                            <div class="chart-body">
+                            <div class="chart-body mb-2">
                                 <canvas id="complianceChart"></canvas>
                                 <div class="chart-center-label">
-                                    <div class="asset-breakdown"
-                                        style="display: flex; flex-direction: column; align-items: start;">
-                                        <!-- compliant -->
-                                        <div class="asset-item compliant">
-                                            <i class="fa-solid fa-file-circle-check icon"></i>
-                                            <div class="total-assets">
-                                                <span>{{ number_format($ComplianceStatuses['Compliant'] ?? 0) }}</span>
-                                                <small>Compliant</small>
-                                            </div>
-                                        </div>
+                                    <h6>Compliance Status</h6>
+                                    <div class="chart-sub">
+                                        <h2>{{ array_sum($ComplianceStatuses) }}</h2>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <!-- non-compliant -->
-                                        <div class="asset-item non-compliant">
-                                            <i class="fa-solid fa-file-circle-xmark icon"></i>
-                                            <div class="total-assets">
-                                                <span>{{ number_format($ComplianceStatuses['Non-Compliant'] ?? 0) }}</span>
-                                                <small>Non-Compliant</small>
-                                            </div>
-                                        </div>
+                            <div class="asset-breakdown">
+                                <!-- compliant -->
+                                <div class="asset-item compliant">
+                                    <i class="fa-solid fa-file-circle-check icon"></i>
+                                    <div class="total-assets">
+                                        <span>{{ number_format($ComplianceStatuses['Compliant'] ?? 0) }}</span>
+                                        <small>Compliant</small>
+                                    </div>
+                                </div>
+
+                                <!-- non-compliant -->
+                                <div class="asset-item non-compliant">
+                                    <i class="fa-solid fa-file-circle-xmark icon"></i>
+                                    <div class="total-assets">
+                                        <span>{{ number_format($ComplianceStatuses['Non-Compliant'] ?? 0) }}</span>
+                                        <small>Non-Compliant</small>
                                     </div>
                                 </div>
                             </div>
