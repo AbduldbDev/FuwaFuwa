@@ -484,7 +484,12 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <input type="text" class="form-control required-field" name="assigned_to" />
+                            <select class="form-control" name="assigned_to">
+                                <option value="">Select Employee</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-3">
@@ -556,7 +561,7 @@
                             <i class="fa-solid fa-tools"></i>
                             <h6>Maintenance & Audit</h6>
                         </div>
- 
+
                         <div class="mb-3" style="display: none">
                             <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
                             <select class="form-select" name="compliance_status">
