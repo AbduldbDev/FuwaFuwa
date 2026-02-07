@@ -13,21 +13,19 @@
                 <div class="modal-body px-4">
                     <!-- requester -->
                     <h4 class="mb-3">Requester Information</h4>
-                    <div class="row">
-                        <div class="col-md-6 mb-5">
-                            <label class="form-label">
-                                Requested By <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control" name="requested_by"
-                                value="{{ Auth::user()->name }}" readonly />
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Requested By <span class="text-danger">*</span></label>
+                            <div class="fw-semibold">{{ Auth::user()->name }}</div>
+                            <input type="hidden" class="form-control" value="{{ Auth::user()->name }}" readonly
+                                name="requested_by">
                         </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Department <span class="text-danger">*</span></label>
+                            <div class="fw-semibold">{{ Auth::user()->department }}</div>
+                            <input type="hidden" class="form-control" value="{{ Auth::user()->department }}" readonly
+                                name="department" required>
 
-                        <div class="col-md-6 mb-5">
-                            <label class="form-label">
-                                Department <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control" name="department"
-                                value="{{ Auth::user()->department }}" readonly />
                         </div>
                     </div>
 

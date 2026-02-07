@@ -39,7 +39,7 @@
                                 readonly />
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" style="display: none">
                             <label class="form-label">Operational Status <span class="text-danger">*</span></label>
                             <select id="operationalStatus" class="form-select" name="operational_status" required>
                                 <option value="">Select status</option>
@@ -556,8 +556,8 @@
                             <i class="fa-solid fa-tools"></i>
                             <h6>Maintenance & Audit</h6>
                         </div>
-
-                        <div class="mb-3">
+ 
+                        <div class="mb-3" style="display: none">
                             <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
                             <select class="form-select" name="compliance_status">
                                 <option value="">Select status</option>
@@ -913,13 +913,6 @@
                 showError(assetName, 'Asset Name is required');
                 isValid = false;
                 assetName.focus();
-            }
-
-            if (!operationalStatus.value) {
-                operationalStatus.classList.add('error');
-                showError(operationalStatus, 'Operational Status is required');
-                isValid = false;
-                if (isValid) operationalStatus.focus();
             }
 
             return isValid;

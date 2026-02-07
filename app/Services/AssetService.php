@@ -109,25 +109,25 @@ class AssetService
 
     public function store(array $data): Assets
     {
-
         $data['created_by'] = Auth::id();
-        $data['asset_tag'] = $this->generateAssetTag($data['asset_type']);
-        $data['asset_id'] = $this->generateAssetId();
-
+        $data['asset_tag']  = $this->generateAssetTag($data['asset_type']);
+        $data['asset_id']   = $this->generateAssetId();
 
         if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
             $data['location'] = $data['location'] ?? 'Warehouse';
         }
 
-        if (empty($data['assigned_to'])) {
-            $data['operational_status'] = 'In Stock';
+        $data['operational_status'] = empty($data['assigned_to'])
+            ? 'In Stock'
+            : 'Active';
+
+        if (!empty($data['warranty_end']) && now()->gt(\Carbon\Carbon::parse($data['warranty_end']))) {
+            $data['compliance_status'] = 'Non-Compliant';
         } else {
-            $data['operational_status'] = 'Active';
+            $data['compliance_status'] = 'Compliant';
         }
 
-
         $asset = Assets::create($data);
-
 
         if (!empty($data['specs'])) {
             foreach ($data['specs'] as $key => $value) {
@@ -141,6 +141,7 @@ class AssetService
             }
         }
 
+
         if (!empty($data['documents']) && !empty($data['documents']['name'])) {
             $this->storeDocuments($asset->id, $data['documents']);
         }
@@ -148,7 +149,7 @@ class AssetService
         if (!empty($data['AssetRequestId'])) {
             AssetRequest::where('id', $data['AssetRequestId'])->update([
                 'is_added' => 1,
-                'status' =>  'Closed',
+                'status'   => 'Closed',
             ]);
         }
 
@@ -156,11 +157,18 @@ class AssetService
             'Assets',
             'read',
             'Asset Created',
-            "Asset #" . $asset->asset_tag . " has been created by: " . Auth::user()->name . ".",
+            "Asset #{$asset->asset_tag} has been created by: " . Auth::user()->name . ".",
             'info'
         );
 
-        $this->logAssetChange($asset, 'Created: ', $asset->asset_tag, null,  $asset->asset_name);
+        $this->logAssetChange(
+            $asset,
+            'Created',
+            'asset',
+            null,
+            $asset->asset_name
+        );
+
         return $asset;
     }
 

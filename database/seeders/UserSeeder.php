@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
             'employee_id'   => 'EMP-0001',
             'department'    => 'IT',
             'name'          => 'Admin Account',
-            'username'      => 'adminaccount',
             'email'         => 'admin@gmail.com',
             'password'      =>  Hash::make('Password'),
             'user_type'     => 'admin',

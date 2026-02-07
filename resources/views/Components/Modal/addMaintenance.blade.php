@@ -50,30 +50,33 @@
                            enctype="multipart/form-data" method="POST">
                            @csrf
 
-                           <div class="row mb-5">
+                           <div class="row mb-3">
                                <div class="col-md-12">
                                    <label class="form-label">Maintenance Type <span class="text-danger">*</span></label>
                                    <input type="text" id="maintenanceType" name="maintenance_type" required
                                        class="form-control" readonly>
                                </div>
                            </div>
+                           <div class="row mb-3">
+                               <div class="col-md-6">
+                                   <label class="form-label">Reported By <span class="text-danger">*</span></label>
+                                   <div class="fw-semibold">{{ Auth::user()->name }}</div>
+                                   <input type="hidden" class="form-control" value="{{ Auth::user()->name }}" readonly>
+                               </div>
+                               <div class="col-md-6">
+                                   <label class="form-label">Department <span class="text-danger">*</span></label>
+                                   <div class="fw-semibold">{{ Auth::user()->department }}</div>
+                                   <input type="hidden" class="form-control" value="{{ Auth::user()->department }}"
+                                       readonly required>
+
+                               </div>
+                           </div>
 
                            <!-- Corrective Fields -->
                            <div id="correctiveFields">
-                               <div class="row mb-5">
-                                   <div class="col-md-6">
-                                       <label class="form-label">Reported By <span class="text-danger">*</span></label>
-                                       <input type="text" class="form-control" value="{{ Auth::user()->name }}">
-                                   </div>
-                                   <div class="col-md-6">
-                                       <label class="form-label">Department <span class="text-danger">*</span></label>
-                                       <input type="text" class="form-control" value="{{ Auth::user()->department }}"
-                                           required>
-                                   </div>
-                               </div>
 
                                <div class="mb-3">
-                                   <label class="form-label">Detailed Description <span
+                                   <label class="form-label"> Issue/Task Description <span
                                            class="text-danger">*</span></label>
                                    <textarea name="description" class="form-control" rows="3" required></textarea>
                                </div>

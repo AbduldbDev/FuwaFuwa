@@ -66,7 +66,7 @@
                   </section>
 
                   <hr />
- 
+
                   <!-- ===== justification ===== -->
                   <section class="mb-4">
                       <h6 class="fw-semibold mb-3">
@@ -124,8 +124,11 @@
               <div class="modal-footer">
                   <button class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
 
+                  {{-- ADMIN ACTIONS --}}
                   @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin')
+
                       @if ($item->status === 'For Review')
+                          {{-- Not Available --}}
                           <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
                               @csrf
                               @method('PUT')
@@ -135,10 +138,10 @@
                               </button>
                           </form>
 
+                          {{-- Available --}}
                           <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-
                               <input type="hidden" name="status" value="available">
                               <button class="btn btn-success shadow-none">
                                   <i class="fa-solid fa-xmark me-1"></i> Available
@@ -156,7 +159,6 @@
                           <form action="{{ route('asset-request.approveStatus', $item->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-
                               <button class="btn btn-success shadow-none">
                                   <i class="fa-solid fa-check me-1"></i> Approve
                               </button>
@@ -173,29 +175,32 @@
                           <form action="{{ route('asset-request.forreview', $item->id) }}" method="POST">
                               @csrf
                               @method('PUT')
-
                               <input type="hidden" name="status" value="available">
                               <button class="btn btn-success shadow-none">
                                   <i class="fa-solid fa-check me-1"></i> Procured
                               </button>
                           </form>
-                      @elseif($item->status === 'For Release')
-                          @if ($item->is_added === 0)
-                              <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
-                                  data-bs-target="#assetModal" data-asset-type="{{ $item->asset_type }}"
-                                  data-asset-category="{{ $item->asset_category }}"
-                                  data-asset-name="{{ $item->model }}" data-quantity="{{ $item->quantity }}"
-                                  data-cost="{{ $item->cost }}" data-request-id="{{ $item->id }}">
-                                  <i class="fa-solid fa-plus me-1"></i> Add Asset
-                              </button>
-                          @endif
-
-                          <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
-                              data-bs-target="#assignModal" data-request-id="{{ $item->id }}">
-                              <i class="fa-solid fa-plus me-1"></i> Assign Asset
-                          </button>
                       @endif
                   @endif
+                  @if (Auth::user()->canAccess('Asset Request', 'write') &&
+                          in_array(Auth::user()->user_type, ['admin', 'encoder']) &&
+                          $item->status === 'For Release')
+                      @if ($item->is_added === 0)
+                          <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#assetModal" data-asset-type="{{ $item->asset_type }}"
+                              data-asset-category="{{ $item->asset_category }}" data-asset-name="{{ $item->model }}"
+                              data-quantity="{{ $item->quantity }}" data-cost="{{ $item->cost }}"
+                              data-request-id="{{ $item->id }}">
+                              <i class="fa-solid fa-plus me-1"></i> Add Asset
+                          </button>
+                      @endif
+
+                      <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
+                          data-bs-target="#assignModal" data-request-id="{{ $item->id }}">
+                          <i class="fa-solid fa-plus me-1"></i> Assign Asset
+                      </button>
+                  @endif
+
               </div>
 
           </div>
