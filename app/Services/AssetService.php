@@ -321,6 +321,20 @@ class AssetService
             throw new ModelNotFoundException('Document not found.');
         }
 
+        $asset = Assets::find($document->asset_id);
+
+        // ✅ Log BEFORE delete
+        if ($asset) {
+            $this->logAssetChange(
+                $asset,
+                'Deleted Document',
+                null,
+                $document->name,
+                null
+            );
+        }
+
+
         if ($document->file && Storage::disk('public')->exists($document->file)) {
             Storage::disk('public')->delete($document->file);
         }
@@ -335,15 +349,30 @@ class AssetService
 
     public function addDocument(int $assetId, string $name, UploadedFile $file): DocumentsAsset
     {
+        $asset = Assets::findOrFail($assetId);
+
         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $extension = $file->getClientOriginalExtension();
-        $fileName = $originalName . '_' . time() . '.' . $extension;
+        $extension    = $file->getClientOriginalExtension();
+        $fileName     = $originalName . '_' . time() . '.' . $extension;
+
         $filePath = $file->storeAs('documents', $fileName, 'public');
-        return DocumentsAsset::create([
+
+        $document = DocumentsAsset::create([
             'asset_id' => $assetId,
             'name'     => $name,
             'file'     => $filePath,
         ]);
+
+
+        $this->logAssetChange(
+            $asset,
+            'Added Document',
+            null,
+            null,
+            $document->name
+        );
+
+        return $document;
     }
 
     protected function logAssetChange(Assets $asset, string $action, ?string $field, $old, $new)
