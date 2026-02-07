@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('digital_tag_prefix');
             $table->string('maintenance_reminders');
             $table->string('warranty_expiry_alerts');
-            $table->string('asset_assignment_alerts');
             $table->string('report_generation');
             $table->timestamps();
         });

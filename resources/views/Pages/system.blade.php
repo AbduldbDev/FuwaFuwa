@@ -69,20 +69,20 @@
                     <div class="col-md-6 form-group">
                         <label>Physical Tag Prefix</label>
                         <input type="text" value="{{ $settings->physical_tag_prefix ?? '' }}" class="form-control"
-                            name="physical_tag_prefix" />
+                            required name="physical_tag_prefix" />
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label>Digital Tag Prefix</label>
                         <input type="text" value="{{ $settings->digital_tag_prefix ?? '' }}" class="form-control"
-                            name="digital_tag_prefix" />
+                            required name="digital_tag_prefix" />
                     </div>
                 </div>
 
                 <div class="setting-row">
                     <div class="setting-text">
                         <h4>Warranty Expiry Alerts</h4>
-                        <p>Send notifications for assets with expiring warranties</p>
+                        <p>Send notifications for assets with licenses nearing expiration</p>
                     </div>
                     <label class="switch">
                         <input type="hidden" name="warranty_expiry_alerts" value="0">
@@ -96,7 +96,7 @@
                 <div class="setting-row">
                     <div class="setting-text">
                         <h4>Maintenance Reminders</h4>
-                        <p>Enable automatic maintenance scheduling reminders</p>
+                        <p>Send reminders when an asset’s scheduled maintenance is approaching</p>
                     </div>
                     <label class="switch">
                         <input type="hidden" name="maintenance_reminders" value="0">
@@ -111,8 +111,8 @@
                 <!-- report generation alerts -->
                 <div class="setting-row">
                     <div class="setting-text">
-                        <h4>Report Generation Alerts</h4>
-                        <p>Notify when scheduled reports are ready</p>
+                        <h4>Report Generation</h4>
+                        <p>Enable to ensure monthly asset reports are generated without manual action</p>
                     </div>
                     <label class="switch">
                         <input type="hidden" name="report_generation" value="0">

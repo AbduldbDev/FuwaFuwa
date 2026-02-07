@@ -8,6 +8,7 @@ use App\Models\TechnicalSpecification;
 use App\Models\Notification;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Models\SystemSettings;
 
 class SendLicenseExpiryNotifications extends Command
 {
@@ -15,7 +16,18 @@ class SendLicenseExpiryNotifications extends Command
     protected $description = 'Send notifications for assets with licenses about to expire';
 
     public function handle()
-    {
+    { // ✅ Check system settings
+        $settings = SystemSettings::first();
+
+        if (
+            !$settings ||
+            !isset($settings->warranty_expiry_alerts) ||
+            explode(',', $settings->warranty_expiry_alerts)[0] != 1
+        ) {
+            $this->info('Warranty / license expiry alerts are disabled. Skipping notifications.');
+            return 0;
+        }
+
         $this->info('Checking for license expirations...');
 
         $subscriptionAlerts = [

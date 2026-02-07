@@ -13,7 +13,6 @@ class SystemSettings extends Model
         'digital_tag_prefix',
         'maintenance_reminders',
         'warranty_expiry_alerts',
-        'asset_assignment_alerts',
         'report_generation',
     ];
 }
