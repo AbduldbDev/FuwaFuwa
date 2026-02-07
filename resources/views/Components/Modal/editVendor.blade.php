@@ -86,8 +86,8 @@
                                         <td>{{ $purchase->asset_category }}</td>
                                         <td>{{ $purchase->asset_type }}</td>
                                         <td>{{ $purchase->operational_status }}</td>
-                                        <td>{{ $purchase->purchase_date?->format('M d, Y') ?? 'N/A' }}</td>
                                         <td>₱{{ number_format($purchase->purchase_cost, 2) }}</td>
+                                        <td>{{ $purchase->purchase_date?->format('M d, Y') ?? 'N/A' }}</td>
                                     </tr>
                                 @endforeach
 
