@@ -1,12 +1,14 @@
-<div class="modal fade" id="updateAssetModal" data-bs-backdrop="static" tabindex="-1"
-    aria-labelledby="updateAssetModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg ">
-        <form id="updateAssetForm" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div class="modal-content">
+<div class="modal" id="updateAssetModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="updateAssetModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+            <form id="updateAssetForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateAssetModalLabel">Update Asset</h5>
+                    <h5 class="modal-title" id="updateAssetModalLabel"> <i
+                            class="fa-solid fa-file-circle-plus me-2"></i>Update Asset</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -20,8 +22,9 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class=" submit-btn">Save Changes</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+
     </div>
 </div>
 <script>

@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\DocumentsAsset;
 use App\Models\Vendors;
 use App\Services\NotificationService;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AssetService
 {
@@ -46,7 +49,7 @@ class AssetService
 
     public function getAssetByTag(string $assetTag): Assets
     {
-        return Assets::with(['technicalSpecifications', 'users', 'vendor'])
+        return Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents'])
             ->where('asset_tag', $assetTag)
             ->firstOrFail();
     }
@@ -133,6 +136,9 @@ class AssetService
             }
         }
 
+        if (!empty($data['documents']) && !empty($data['documents']['name'])) {
+            $this->storeDocuments($asset->id, $data['documents']);
+        }
 
         if (!empty($data['AssetRequestId'])) {
             AssetRequest::where('id', $data['AssetRequestId'])->update([
@@ -151,6 +157,30 @@ class AssetService
 
         $this->logAssetChange($asset, 'Created: ', $asset->asset_tag, null,  $asset->asset_name);
         return $asset;
+    }
+
+    protected function storeDocuments(int $assetId, array $documents): void
+    {
+        foreach ($documents['name'] as $index => $name) {
+            if (isset($documents['file'][$index]) && $documents['file'][$index] instanceof \Illuminate\Http\UploadedFile) {
+                $file = $documents['file'][$index];
+
+                // Sanitize original file name
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $safeName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $originalName);
+
+                $filename = time() . '_' . $assetId . '_' . $safeName . '.' . $extension;
+                $path = $file->storeAs('assets/documents', $filename, 'public');
+
+                // Save to database
+                DocumentsAsset::create([
+                    'asset_id' => $assetId,
+                    'name'     => $name,
+                    'file'     => $path,
+                ]);
+            }
+        }
     }
 
     public function updateAsset(Assets $asset, array $data): Assets
@@ -222,8 +252,6 @@ class AssetService
             'status' => 'Closed'
         ]);
 
-
-
         $this->notification->notifyUsersWithModuleAccess(
             'Assets',
             'read',
@@ -234,8 +262,6 @@ class AssetService
 
         return $asset;
     }
-
-
 
 
     private function generateAssetTag($type): string
@@ -286,6 +312,38 @@ class AssetService
         $asset->save();
 
         return $asset;
+    }
+    public function deleteDocument(int $documentId): array
+    {
+        $document = DocumentsAsset::find($documentId);
+
+        if (!$document) {
+            throw new ModelNotFoundException('Document not found.');
+        }
+
+        if ($document->file && Storage::disk('public')->exists($document->file)) {
+            Storage::disk('public')->delete($document->file);
+        }
+
+        $document->delete();
+
+        return [
+            'success' => true,
+            'message' => 'Document deleted successfully',
+        ];
+    }
+
+    public function addDocument(int $assetId, string $name, UploadedFile $file): DocumentsAsset
+    {
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $fileName = $originalName . '_' . time() . '.' . $extension;
+        $filePath = $file->storeAs('documents', $fileName, 'public');
+        return DocumentsAsset::create([
+            'asset_id' => $assetId,
+            'name'     => $name,
+            'file'     => $filePath,
+        ]);
     }
 
     protected function logAssetChange(Assets $asset, string $action, ?string $field, $old, $new)

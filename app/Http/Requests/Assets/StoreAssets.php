@@ -33,8 +33,9 @@ class StoreAssets extends FormRequest
             'last_maintenance'   => 'nullable|date',
             'specs'              => 'nullable|array',
             'specs.*'            => 'nullable|string',
-            'documents.name.*'   => 'required|string',
-            'documents.file.*'   => 'file|max:25600',
+            'documents' => 'nullable|array',
+            'documents.name.*' => 'required_with:documents|string|max:255',
+            'documents.file.*' => 'required_with:documents|file|max:25600',
             'assetQuantity'      => 'nullable|integer',
             'AssetRequestId'      => 'nullable|integer',
         ];

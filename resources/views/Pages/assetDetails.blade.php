@@ -504,36 +504,36 @@
                             @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
                                 <div class="edit-asset-btn">
                                     <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
-                                        data-bs-target="#updateAssetModal" data-section="documents"
-                                        data-url="{{ route('assets.update', $item->id) }}"
-                                        data-asset='@json($item)'
-                                        data-users='@json($users)'
-                                        data-vendors='@json($vendors)'></i>
+                                        data-bs-target="#addDocumentModal"></i>
                                 </div>
                             @endif
                         </div>
 
                         <div class="section-body">
-                            @php
-                                $documents = is_array($item->documents)
-                                    ? $item->documents
-                                    : json_decode($item->documents, true) ?? [];
-                            @endphp
-
-                            @forelse ($documents as $doc)
-                                <div class="row detail-row">
+                            @forelse ($item->documents as $doc)
+                                <div class="row detail-row" id="doc-row-{{ $doc->id }}">
                                     <div class="col-4 label">
-                                        {{ $doc['name'] ?? 'Document' }}
+                                        {{ $doc->name ?? 'Document' }}
                                     </div>
 
-                                    <div class="col-8 value">
-                                        @if (!empty($doc['file']))
-                                            <a href="{{ $doc['file'] }}" target="_blank">
-                                                {{ basename($doc['file']) }}
+                                    <div class="col-8 value d-flex align-items-center justify-content-between">
+                                        @if (!empty($doc->file))
+                                            <a href="{{ asset('storage/' . $doc->file) }}" target="_blank">
+                                                {{ basename($doc->file) }}
                                             </a>
                                         @else
                                             <span class="text-muted">No file uploaded</span>
                                         @endif
+
+                                        <!-- Delete form -->
+                                        <form action="{{ route('assets.deletedocument', $doc->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this document?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             @empty
@@ -542,6 +542,7 @@
                                 </div>
                             @endforelse
                         </div>
+                        @include('Components.Modal.AssetDetails.AddDocument')
                     </div>
 
                 </div>
@@ -610,7 +611,42 @@
     </section>
     @include('Components/Modal/updateAsset')
     <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}?v={{ time() }}"></script>
-    {{-- <script src="{{ asset('/Js/SweetAlert/ArchiveAlert.js') }}?v={{ time() }}"></script> --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.delete-document').click(function(e) {
+                e.preventDefault();
+
+                let docId = $(this).data('id');
+                let row = $('#doc-row-' + docId);
+
+                if (!confirm('Are you sure you want to delete this document?')) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '{{ route('assets.deletedocument', ['document' => ':id']) }}'.replace(
+                        ':id', docId),
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            row.remove();
+                            alert(response.message);
+                        } else {
+                            alert(response.message || 'Failed to delete document.');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Something went wrong!');
+                    }
+                });
+            });
+        });
+    </script> --}}
+
 @endsection
 
 @push('css')

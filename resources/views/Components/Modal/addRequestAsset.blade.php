@@ -599,16 +599,42 @@
                             <h6>Documents</h6>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Contract</label>
-                            <input type="file" class="form-control required-field" data-required="true"
-                                name="contract" />
+                        <div class="row align-items-end">
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">
+                                    Document Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="docName">
+                            </div>
+
+                            <div class="col-lg-4 mb-3">
+                                <label class="form-label">
+                                    Attach File <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" class="form-control" id="docFile">
+                            </div>
+
+                            <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn  btn-sm save-btn "
+                                onclick="addDocument()">
+                                + Add Document
+                            </button>
+
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Purchase Order</label>
-                            <input type="file" class="form-control required-field" data-required="true"
-                                name="purchase_order" />
+                        <div class="mb-5 table-responsive">
+                            <table class="table align-middle mb-0 doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document Name</th>
+                                        <th>Attached File</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="docTableBody">
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -635,6 +661,58 @@
     let selectedCategory = "";
     let selectedType = "";
     let currentSlide = 2;
+
+    function addDocument() {
+        const name = document.getElementById("docName").value;
+        const fileInput = document.getElementById("docFile");
+
+        if (!name || !fileInput.files.length) {
+            alert("Please complete all document fields.");
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const table = document.getElementById("docTableBody");
+
+        // Generate a unique identifier for this document row
+        const docId =
+            "doc_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+
+        const row = document.createElement("tr");
+        row.setAttribute("data-doc-id", docId);
+        row.innerHTML = `
+        <td>${name}</td>
+        <td>
+            <span class="file-name">${file.name}</span>
+            <input type="hidden" name="documents[name][]" value="${name}">
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+    `;
+
+        table.appendChild(row);
+
+        const fileClone = fileInput.cloneNode(true);
+        fileClone.name = "documents[file][]";
+        fileClone.id = "";
+        fileClone.style.display = "none";
+        fileClone.removeAttribute("onchange");
+
+        document.getElementById("assetForm").appendChild(fileClone);
+        fileInput.value = "";
+        document.getElementById("docName").value = "";
+    }
+
+    // Optional: Add remove document function
+    function removeDocument(docId) {
+        const row = document.querySelector(`tr[data-doc-id="${docId}"]`);
+        if (row) {
+            row.remove();
+        }
+    }
 
     const assetTypes = {
         "Physical Asset": [

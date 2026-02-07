@@ -41,6 +41,8 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::put('/update/{id}', 'update')->name('update');
         Route::post('/delete/{id}', 'delete')->name('delete');
         Route::put('/assign', 'assignAsset')->name('assignAsset');
+        Route::delete('/delete-document/{document}', 'deletedocument')->name('deletedocument');
+        Route::post('/add-document/{asset}',  'addDocument')->name('addDocument');
     });
 
     Route::prefix('/asset-archive')->name('assets-archive.')->controller(AssetArchiveController::class)->group(function () {

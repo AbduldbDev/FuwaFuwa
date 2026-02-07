@@ -71,6 +71,11 @@ class Assets extends Model
         return $this->hasMany(Maintenance::class, 'asset_tag', 'asset_tag');
     }
 
+    public function documents()
+    {
+        return $this->hasMany(DocumentsAsset::class, 'asset_id', 'id');
+    }
+
     public static function updateComplianceStatus()
     {
         $assets = self::all();

@@ -7,6 +7,7 @@ use App\Http\Requests\Assets\StoreAssets;
 use App\Http\Requests\Assets\UpdateAssetRequest;
 use App\Http\Requests\Assets\ArchiveAsset;
 use App\Http\Requests\Assets\AssignAsset;
+use App\Http\Requests\Assets\AddDocumentRequest;
 use App\Models\Assets;
 use App\Models\User;
 use App\Services\AssetService;
@@ -110,6 +111,43 @@ class AssetController extends Controller
             $this->assetService->deleteAsset($id, $request->validated());
 
             return redirect()->route('assets.index')->with('success', 'Asset deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
+    public function deletedocument($id)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->assetService->deleteDocument($id);
+
+            return redirect()->back()->with('success', 'Document deleted successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function addDocument(AddDocumentRequest $request, $assetId)
+    {
+        $this->authorizeWrite(); // your existing method
+
+        try {
+            $asset = Assets::findOrFail($assetId);
+
+            $this->assetService->addDocument(
+                $asset->id,
+                $request->validated()['name'],
+                $request->file('file')
+            );
+
+            return redirect()->back()->with('success', 'Document added successfully.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->withErrors([
                 'system' => $e->getMessage(),
