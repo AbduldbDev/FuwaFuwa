@@ -7,7 +7,7 @@ use App\Models\AssetRequest;
 use App\Models\Assets;
 use App\Models\SystemSettings;
 use App\Models\TechnicalSpecification;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -50,10 +50,62 @@ class AssetService
 
     public function getAssetByTag(string $assetTag): Assets
     {
-        return Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents', 'maintenances.logs'])
+        $asset = Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents', 'maintenances.logs'])
             ->where('asset_tag', $assetTag)
             ->firstOrFail();
+
+        $purchaseCost = (float) ($asset->purchase_cost ?? 0);
+        $usefulLife = (int) ($asset->useful_life_years ?? 0);
+        $salvageValue = (float) ($asset->salvage_value ?? 0);
+        $purchaseDate = $asset->purchase_date;
+
+        $yearsUsed = $purchaseDate ? $purchaseDate->diffInYears(now()) : 0;
+
+        // Defaults
+        $depreciationPerYear = 0;
+        $depreciationRate = 0;
+        $totalDepreciation = 0;
+        $currentValue = $purchaseCost;
+        $remainingLife = $usefulLife;
+        $totalMaintenanceCost = 0;
+        $annualDepreciation = 0;
+
+        // Calculate depreciation if valid
+        if ($purchaseCost > 0 && $usefulLife > 0) {
+            $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
+            $depreciationRate = (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
+            $totalDepreciation = $depreciationPerYear * $yearsUsed;
+            $currentValue = max($purchaseCost - $totalDepreciation, $salvageValue);
+            $remainingLife = max($usefulLife - $yearsUsed, 0);
+        }
+
+        // Sum all maintenance costs
+        if ($asset->maintenances && $asset->maintenances->count() > 0) {
+            foreach ($asset->maintenances as $maintenance) {
+                if ($maintenance->logs && $maintenance->logs->count() > 0) {
+                    $totalMaintenanceCost += $maintenance->logs->sum(fn($log) => $log->cost ?? 0);
+                }
+            }
+        }
+
+        // Annual depreciation including upgrades/maintenance (your formula)
+        $annualDepreciation = $remainingLife > 0
+            ? ($currentValue + $totalMaintenanceCost) / $remainingLife
+            : 0;
+
+        // Attach calculated fields to the model
+        $asset->years_used = $yearsUsed;
+        $asset->depreciation_per_year = $depreciationPerYear;
+        $asset->depreciation_rate = $depreciationRate;
+        $asset->total_depreciation = $totalDepreciation;
+        $asset->current_value = $currentValue;
+        $asset->remaining_life = $remainingLife;
+        $asset->total_maintenance_cost = $totalMaintenanceCost;
+        $asset->annual_depreciation = $annualDepreciation;
+
+        return $asset;
     }
+
 
 
     public function getMaintenanceByTag(string $assetTag)
@@ -63,35 +115,50 @@ class AssetService
 
     public function getAllAssetsWithDepreciation()
     {
-        $assets = Assets::where('operational_status', '!=', 'archived')->latest('updated_at')->get();
+        $assets = Assets::with('maintenances.logs')
+            ->where('operational_status', '!=', 'archived')
+            ->latest('updated_at')
+            ->get();
 
         return $assets->map(function ($asset) {
-            if ($asset->asset_type === 'Digital Asset') {
-                $asset->depreciation_expense = 0;
-                $asset->current_value =  0;
-                $asset->years_used = 0;
-                $asset->remaining_life = $asset->useful_life_years ?? 0;
-                $asset->depreciation_rate = 0;
-                return $asset;
-            }
 
             $cost = $asset->purchase_cost ?? 0;
             $salvage = $asset->salvage_value ?? 0;
             $usefulLife = $asset->useful_life_years ?? 1;
+            $yearsUsed = $asset->purchase_date ? $asset->purchase_date->diffInYears(now()) : 0;
 
-            $yearsUsed = $asset->purchase_date->diffInYears(now());
-            $depreciation = ($cost - $salvage) / $usefulLife;
-            $totalDepreciation = $depreciation * $yearsUsed;
-            $currentValue = max($cost - $totalDepreciation, $salvage);
+            $totalMaintenanceCost = 0;
+            if ($asset->maintenances && $asset->maintenances->count() > 0) {
+                foreach ($asset->maintenances as $maintenance) {
+                    if ($maintenance->logs && $maintenance->logs->count() > 0) {
+                        $totalMaintenanceCost += $maintenance->logs->sum(fn($log) => $log->cost ?? 0);
+                    }
+                }
+            }
 
-            $asset->depreciation_expense = $depreciation;
-            $asset->current_value = $currentValue;
+            $accumulatedDepreciation = ($cost - $salvage) / $usefulLife * $yearsUsed;
+            $currentBookValue = max($cost - $accumulatedDepreciation, $salvage);
+            $remainingLife = max($usefulLife - $yearsUsed, 0);
+            $annualDepreciation = $remainingLife > 0
+                ? ($currentBookValue + $totalMaintenanceCost) / $remainingLife
+                : 0;
+
+            $asset->depreciation_expense = $annualDepreciation;
+            $asset->current_value = $currentBookValue;
             $asset->years_used = $yearsUsed;
-            $asset->remaining_life = max($usefulLife - $yearsUsed, 0);
-            $asset->depreciation_rate = (($cost - $salvage) / $cost / $usefulLife) * 100;
+            $asset->remaining_life = $remainingLife;
+            $asset->depreciation_rate = $usefulLife > 0
+                ? (($cost - $salvage) / $cost / $usefulLife) * 100
+                : 0;
+            $asset->total_maintenance_cost = $totalMaintenanceCost;
+
+
+
             return $asset;
         });
     }
+
+
 
     public function getIndexData(): array
     {

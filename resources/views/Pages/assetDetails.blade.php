@@ -322,90 +322,66 @@
 
                             <div class="section-body">
 
-                                @php
-                                    $purchaseCost = (float) ($item->purchase_cost ?? 0);
-                                    $usefulLife = (int) ($item->useful_life_years ?? 0);
-                                    $salvageValue = (float) ($item->salvage_value ?? 0);
-
-                                    $purchaseDate = $item->purchase_date;
-
-                                    $yearsUsed = $purchaseDate ? $purchaseDate->diffInYears(now()) : 0;
-
-                                    // Defaults
-                                    $depreciationPerYear = 0;
-                                    $depreciationRate = 0;
-                                    $totalDepreciation = 0;
-                                    $assetValue = $purchaseCost;
-                                    $remainingLife = $usefulLife;
-
-                                    // Only calculate if values are valid
-                                    if ($purchaseCost > 0 && $usefulLife > 0) {
-                                        $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
-
-                                        $depreciationRate =
-                                            (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
-
-                                        $totalDepreciation = $depreciationPerYear * $yearsUsed;
-
-                                        $assetValue = max($purchaseCost - $totalDepreciation, $salvageValue);
-
-                                        $remainingLife = max($usefulLife - $yearsUsed, 0);
-                                    }
-                                @endphp
-
                                 <div class="row detail-row">
                                     <div class="col-4 label">Purchase Year</div>
                                     <div class="col-8 value">
-                                        {{ $purchaseDate ? $purchaseDate->year : 'N/A' }}
+                                        {{ $item->purchase_date ? $item->purchase_date->year : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Useful Life (Remaining)</div>
                                     <div class="col-8 value">
-                                        {{ $usefulLife > 0 ? round($remainingLife) . ' yrs' : 'N/A' }}
+                                        {{ $item->remaining_life > 0 ? round($item->remaining_life, 2) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Years Used</div>
                                     <div class="col-8 value">
-                                        {{ $purchaseDate ? round($yearsUsed) . ' yrs' : 'N/A' }}
+                                        {{ $item->years_used > 0 ? round($item->years_used, 2) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Purchase Cost</div>
                                     <div class="col-8 value">
-                                        {{ $purchaseCost > 0 ? 'Php ' . number_format($purchaseCost, 2) : 'N/A' }}
+                                        {{ $item->purchase_cost > 0 ? 'Php ' . number_format($item->purchase_cost, 2) : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Salvage Value</div>
                                     <div class="col-8 value">
-                                        {{ $salvageValue > 0 ? 'Php ' . number_format($salvageValue, 2) : 'N/A' }}
+                                        {{ $item->salvage_value > 0 ? 'Php ' . number_format($item->salvage_value, 2) : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Depreciation Rate</div>
                                     <div class="col-8 value">
-                                        {{ $purchaseCost > 0 && $usefulLife > 0 ? number_format($depreciationRate, 2) . '% per year' : 'N/A' }}
+                                        {{ $item->depreciation_rate > 0 ? number_format($item->depreciation_rate, 2) . '% per year' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Accumulated Depreciation</div>
+                                    <div class="col-4 label">Annual Depreciation</div>
                                     <div class="col-8 value">
-                                        {{ $totalDepreciation > 0 ? 'Php ' . number_format($totalDepreciation, 2) : 'Php 0.00' }}
+                                        {{ $item->annual_depreciation > 0 ? 'Php ' . number_format($item->annual_depreciation, 2) : 'Php 0.00' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-4 label">Current Book Value</div>
                                     <div class="col-8 value">
-                                        {{ $purchaseCost > 0 ? 'Php ' . number_format($assetValue, 2) : 'N/A' }}
+                                        {{ $item->current_value > 0 ? 'Php ' . number_format($item->current_value, 2) : 'N/A' }}
+                                    </div>
+                                </div>
+
+                                <div class="row detail-row">
+                                    <div class="col-4 label">Total Maintenance Cost</div>
+                                    <div class="col-8 value">
+                                        {{ $item->total_maintenance_cost > 0 ? 'Php ' . number_format($item->total_maintenance_cost, 2) : 'Php 0.00' }}
                                     </div>
                                 </div>
 
@@ -674,14 +650,6 @@
                                         <span class="text-muted small">Completed:</span>
                                         {{ $item->completed_at ? \Carbon\Carbon::parse($item->completed_at)->format('M d, Y ') : 'N/A' }}
                                     </p>
-                                    @if ($item->post_replacements)
-                                        <p><span class="text-muted small">Parts Replaced:</span>
-                                            {{ $item->post_replacements }}</p>
-                                    @endif
-                                    @if ($item->technician_notes)
-                                        <p><span class="text-muted small">Technician Notes:</span>
-                                            {{ $item->technician_notes }}</p>
-                                    @endif
 
                                     @if ($item->logs && count($item->logs) > 0)
                                         <div class="logs-section mt-3">

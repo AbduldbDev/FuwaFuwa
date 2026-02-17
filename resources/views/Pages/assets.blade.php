@@ -122,6 +122,7 @@
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>
                                             ₱{{ number_format($item->current_value, 2) }}
+
                                         </td>
                                     </tr>
 
