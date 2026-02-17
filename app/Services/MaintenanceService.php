@@ -140,8 +140,8 @@ class MaintenanceService
 
         $maintenance = Maintenance::create($data);
 
-        // Create initial log
-        $this->maintenanceLogService->createOrUpdateLog(
+        // Create new log
+        $this->maintenanceLogService->createLog(
             $maintenance->maintenance_id,
             [
                 'type' => $data['maintenance_type'],
@@ -171,8 +171,8 @@ class MaintenanceService
             'status' => 'Corrective'
         ]);
 
-        // Update the existing log
-        $this->maintenanceLogService->createOrUpdateLog(
+        // Create new log for scheduling
+        $this->maintenanceLogService->createLog(
             $maintenance->maintenance_id,
             [
                 'type' => $maintenance->maintenance_type,
@@ -207,12 +207,17 @@ class MaintenanceService
             'status'           => 'Corrective',
         ]);
 
-        // Update the log with new maintenance ID
-        $this->maintenanceLogService->updateMaintenanceId($oldMaintenanceId, $newMaintenanceId, [
-            'type' => 'Corrective',
-            'action_taken' => 'Maintenance scheduled and technician assigned',
-            'start_date' => $data['start_date'],
-        ]);
+        // Create new log for the new maintenance ID
+        $this->maintenanceLogService->createLog(
+            $newMaintenanceId,
+            [
+                'type' => 'Corrective',
+                'action_taken' => 'Maintenance scheduled and technician assigned',
+                'asset_tag' => $maintenance->asset_tag,
+                'issue_description' => $maintenance->description,
+                'start_date' => $data['start_date'],
+            ]
+        );
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -248,8 +253,8 @@ class MaintenanceService
             'completed_at' => Carbon::now()
         ]);
 
-        // Update the existing log with completion data
-        $this->maintenanceLogService->createOrUpdateLog(
+        // Create new log for completion
+        $this->maintenanceLogService->createLog(
             $maintenance->maintenance_id,
             [
                 'type' => $maintenance->maintenance_type,
@@ -300,16 +305,6 @@ class MaintenanceService
             'status'           => $status,
         ];
 
-        $logData = [
-            'type' => $maintenance->maintenance_type,
-            'action_taken' => $data['description'] ?? null,
-            'asset_tag' => $maintenance->asset_tag,
-            'issue_description' => $data['condition'],
-            'parts_replaced' => $data['post_replacements'] ?? null,
-            'cost' => $data['repair_cost'] ?? null,
-            'technician_notes' => $data['technician_notes'] ?? null,
-        ];
-
         if ($status === 'Completed') {
             $completedAt = Carbon::now();
             $nextMaintenance = null;
@@ -330,20 +325,28 @@ class MaintenanceService
             }
 
             $updateData['completed_at'] = $completedAt;
-            $logData['completion_date'] = $completedAt;
 
             Assets::where('asset_tag', $maintenance->asset_tag)->update([
                 'next_maintenance' => $nextMaintenance
             ]);
         }
 
-        // Update the existing log
-        $this->maintenanceLogService->createOrUpdateLog(
-            $maintenance->maintenance_id,
-            $logData
-        );
-
         $maintenance->update($updateData);
+
+        // Create new log for inspection
+        $this->maintenanceLogService->createLog(
+            $maintenance->maintenance_id,
+            [
+                'type' => $maintenance->maintenance_type,
+                'action_taken' => $data['description'] ?? null,
+                'asset_tag' => $maintenance->asset_tag,
+                'issue_description' => $data['condition'],
+                'parts_replaced' => $data['post_replacements'] ?? null,
+                'cost' => $data['repair_cost'] ?? null,
+                'completion_date' => $status === 'Completed' ? Carbon::now() : null,
+                'technician_notes' => $data['technician_notes'] ?? null,
+            ]
+        );
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',

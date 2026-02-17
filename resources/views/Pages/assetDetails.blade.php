@@ -92,7 +92,7 @@
         <div class="tabs-wrapper mb-4">
             <div class="tabs">
                 <button class="tab active" data-tab="overview">Overview</button>
-                <button class="tab" data-tab="history">History</button>
+                <button class="tab" data-tab="history">Update Logs</button>
                 <button class="tab" data-tab="maintenancelogs">Maintenance Logs</button>
 
                 <span class="tab-indicator"></span>
@@ -648,27 +648,39 @@
                 <div class="section-bod">
                     <div class="history-list">
                         @forelse ($maintenance as $item)
-                            <div class="maintenance-item  p-3">
-                                <div class="maintenance-header d-flex justify-content-between align-items-center mb-2">
-                                    <p class="mb-0">
-                                        <strong>{{ $item->maintenance_id ?? 'N/A' }}</strong> -
-                                        {{ $item->maintenance_type }}
-                                    </p>
+                            <div class="maintenance-item mb-3">
+                                <div class="maintenance-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $item->maintenance_id ?? 'N/A' }}</strong>
+                                        <span class="text-muted small ms-2">
+                                            {{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('M d, Y h:iA') : 'N/A' }}
+                                        </span>
+                                    </div>
                                     <span class="badge bg-{{ $item->status === 'Completed' ? 'success' : 'warning' }}">
                                         {{ $item->status }}
                                     </span>
                                 </div>
 
-                                <div class="maintenance-details ms-2">
-                                    <p class="mb-1"><span class="text-muted small">Description:</span>
-                                        {{ $item->description }}</p>
-                                    <p class="mb-1"><span class="text-muted small">Technician:</span>
-                                        {{ $item->technician }}</p>
-                                    <p class="mb-1"><span class="text-muted small">Start Date:</span>
-                                        {{ \Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</p>
-                                    @if ($item->completed_at)
-                                        <p class="mb-1"><span class="text-muted small">Completed:</span>
-                                            {{ \Carbon\Carbon::parse($item->completed_at)->format('M d, Y H:i') }}</p>
+                                <div class="maintenance-details ms-3 mt-2">
+                                    <p><span class="text-muted small">Description:</span>
+                                        {{ $item->description ?? 'N/A' }}</p>
+                                    <p><span class="text-muted small">Technician:</span> {{ $item->technician ?? 'N/A' }}
+                                    </p>
+                                    <p>
+                                        <span class="text-muted small">Start Date:</span>
+                                        {{ $item->start_date ? \Carbon\Carbon::parse($item->start_date)->format('M d, Y') : 'N/A' }}
+                                    </p>
+                                    <p>
+                                        <span class="text-muted small">Completed:</span>
+                                        {{ $item->completed_at ? \Carbon\Carbon::parse($item->completed_at)->format('M d, Y ') : 'N/A' }}
+                                    </p>
+                                    @if ($item->post_replacements)
+                                        <p><span class="text-muted small">Parts Replaced:</span>
+                                            {{ $item->post_replacements }}</p>
+                                    @endif
+                                    @if ($item->technician_notes)
+                                        <p><span class="text-muted small">Technician Notes:</span>
+                                            {{ $item->technician_notes }}</p>
                                     @endif
 
                                     @if ($item->logs && count($item->logs) > 0)
@@ -676,22 +688,69 @@
                                             <h6 class="text-secondary mb-2">Logs:</h6>
                                             @foreach ($item->logs as $log)
                                                 <div class="log-item ps-3 mb-3 border-start border-3 border-warning">
+
+                                                    {{-- Issue Description --}}
+                                                    @if ($log->issue_description)
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Issue Description:</span>
+                                                            {{ $log->issue_description }}
+                                                        </p>
+                                                    @endif
+
+                                                    {{-- Action Taken --}}
                                                     @if ($log->action_taken)
-                                                        <p class="mb-1"><span class="text-muted small">Action
-                                                                Taken:</span> {{ $log->action_taken }}</p>
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Action Taken:</span>
+                                                            {{ $log->action_taken }}
+                                                        </p>
                                                     @endif
+
+                                                    {{-- Parts Replaced --}}
                                                     @if ($log->parts_replaced)
-                                                        <p class="mb-1"><span class="text-muted small">Parts
-                                                                Replaced:</span> {{ $log->parts_replaced }}</p>
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Parts Replaced:</span>
+                                                            {{ $log->parts_replaced }}
+                                                        </p>
                                                     @endif
+
+                                                    {{-- Cost --}}
                                                     @if ($log->cost)
-                                                        <p class="mb-1"><span class="text-muted small">Cost:</span>
-                                                            ${{ number_format($log->cost, 2) }}</p>
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Cost:</span>
+                                                            ${{ number_format($log->cost, 2) }}
+                                                        </p>
                                                     @endif
+
+                                                    {{-- Start Date --}}
+                                                    @if ($log->start_date)
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Start Date:</span>
+                                                            {{ \Carbon\Carbon::parse($log->start_date)->format('M d, Y') }}
+                                                        </p>
+                                                    @endif
+
+                                                    {{-- Completion Date --}}
+                                                    @if ($log->completion_date)
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Completion Date:</span>
+                                                            {{ \Carbon\Carbon::parse($log->completion_date)->format('M d, Y') }}
+                                                        </p>
+                                                    @endif
+
+                                                    {{-- Technician Notes --}}
                                                     @if ($log->technician_notes)
-                                                        <p class="mb-1"><span class="text-muted small">Technician
-                                                                Notes:</span>
-                                                            {{ $log->technician_notes }}</p>
+                                                        <p class="mb-1">
+                                                            <span class="text-muted small">Technician Notes:</span>
+                                                            {{ $log->technician_notes }}
+                                                        </p>
+                                                    @endif
+
+                                                    {{-- Logged At --}}
+                                                    @if ($log->created_at)
+                                                        <p class="mb-0 text-muted small">
+                                                            Logged At:
+                                                            {{ \Carbon\Carbon::parse($log->created_at)->format('M d, Y h:iA') }}
+                                                        </p>
                                                     @endif
 
                                                 </div>
@@ -699,8 +758,10 @@
                                             @endforeach
                                         </div>
                                     @endif
+
                                 </div>
                             </div>
+
                         @empty
                             <p class="text-muted">No maintenance records found for this asset.</p>
                         @endforelse
@@ -713,42 +774,6 @@
     </section>
     @include('Components/Modal/updateAsset')
     <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}?v={{ time() }}"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.delete-document').click(function(e) {
-                e.preventDefault();
-
-                let docId = $(this).data('id');
-                let row = $('#doc-row-' + docId);
-
-                if (!confirm('Are you sure you want to delete this document?')) {
-                    return;
-                }
-
-                $.ajax({
-                    url: '{{ route('assets.deletedocument', ['document' => ':id']) }}'.replace(
-                        ':id', docId),
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            row.remove();
-                            alert(response.message);
-                        } else {
-                            alert(response.message || 'Failed to delete document.');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Something went wrong!');
-                    }
-                });
-            });
-        });
-    </script> --}}
-
 @endsection
 
 @push('css')
