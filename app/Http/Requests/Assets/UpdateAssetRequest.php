@@ -35,6 +35,7 @@ class UpdateAssetRequest extends FormRequest
             'documents.file.*'   => 'file|max:25600',
             'technical' => 'sometimes|array',
             'technical.*' => 'nullable|string|max:255',
+            'note' => 'sometimes|string|max:255',
         ];
     }
 }

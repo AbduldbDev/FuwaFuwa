@@ -249,7 +249,10 @@
                                     </div>
                                     <div>
                                         <h6 class="mb-1 fw-semibold">{{ $item->maintenance_id }}</h6>
-                                        <small class="text-muted">{{ $item->asset_tag ?? 'N/A' }}</small>
+                                        <a style="text-decoration: none"
+                                            href="{{ url('/asset/show/' . $item->asset_tag) }}"><small
+                                                class="text-muted">{{ $item->asset_tag ?? 'N/A' }}</small>
+                                        </a>
                                         <br>
                                         <small class="text-muted">{{ $item->asset_name ?? 'N/A' }}</small>
                                         <div class="mt-1">

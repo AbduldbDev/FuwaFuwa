@@ -33,7 +33,8 @@ class Assets extends Model
         'last_maintenance',
         'status',
         'delete_title',
-        'delete_reason'
+        'delete_reason',
+        'note'
     ];
 
     protected $casts = [

@@ -545,6 +545,36 @@
                         @include('Components.Modal.AssetDetails.AddDocument')
                     </div>
 
+                    @if (Auth::user()->user_type === 'admin' || Auth::user()->user_type === 'encoder')
+                        <div class="section-card mb-4">
+                            <div class="section-toggle">
+                                <div class="asset-title" onclick="toggleSection(this)">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                    <h6 class="mb-0 fw-semibold">Remarks</h6>
+                                </div>
+
+                                @if (Auth::user()->canAccess('Assets', 'write') && $item->operational_status !== 'archived')
+                                    <div class="edit-asset-btn">
+                                        <i class="fa-regular fa-pen-to-square" data-bs-toggle="modal"
+                                            data-bs-target="#updateAssetModal" data-section="remarks"
+                                            data-url="{{ route('assets.update', $item->id) }}"
+                                            data-asset='@json($item)'
+                                            data-users='@json($users)'
+                                            data-vendors='@json($vendors)'></i>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="section-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Remarks</label>
+                                    <textarea name="note" class="form-control" id="" cols="30" rows="5" readonly>{{ $item->note }}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endif
+
                 </div>
 
                 <!-- right side -->

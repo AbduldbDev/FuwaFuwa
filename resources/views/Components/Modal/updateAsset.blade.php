@@ -251,6 +251,14 @@
                     break;
                 }
 
+                case 'remarks':
+                    modalFields.innerHTML = `
+                    <div class="mb-3">
+                    <label class="form-label">Remarks</label>
+                     <textarea name="note" class="form-control" id="" cols="30" rows="5">${asset.note ?? ''}</textarea>
+                    </div>
+                `;
+
 
             }
         });
