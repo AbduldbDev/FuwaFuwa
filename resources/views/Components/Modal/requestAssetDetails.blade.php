@@ -313,8 +313,7 @@
                                   ?.querySelector('.fw-semibold');
                               if (valueElement) {
                                   requestCategory = valueElement.textContent.trim();
-                                  console.log('Request Category:',
-                                      requestCategory); // For debugging
+
                               }
                           }
                       });

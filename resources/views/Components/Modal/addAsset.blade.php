@@ -643,14 +643,27 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to">
+                            <select class="form-control" name="assigned_to" id="assignedTo"
+                                onchange="handleAssignedToChange(this)">
                                 <option value="">Select Employee</option>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->name }}" data-department="{{ $user->department }}">
+                                        {{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select class="form-select" name="department" id="departmentdropdown">
+                                <option selected disabled>Choose department</option>
+                                <option value="IT">IT</option>
+                                <option value="HR">HR</option>
+                                <option value="Finance">Finance</option>
+                            </select>
+                        </div>
+
+                        {{-- 
                         <div class="mb-3">
                             <label class="form-label">Department</label>
                             <select class="form-select" name="department">
@@ -661,7 +674,7 @@
                                 <option value="Operations">Operations</option>
                                 <option value="Admin">Admin</option>
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="mb-3">
                             <label class="form-label">Location</label>

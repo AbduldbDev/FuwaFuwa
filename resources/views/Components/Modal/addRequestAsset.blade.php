@@ -617,23 +617,23 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to">
+                            <select class="form-control" name="assigned_to" id="assignedTo"
+                                onchange="handleAssignedToChange(this)">
                                 <option value="">Select Employee</option>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->name }}" data-department="{{ $user->department }}">
+                                        {{ $user->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Department</label>
-                            <select class="form-select" name="department">
-                                <option value="">Select department</option>
-                                <option value="IT Department">IT Department</option>
-                                <option value="HR Department">HR Department</option>
-                                <option value="Finance Department">Finance Department</option>
-                                <option value="Operations">Operations</option>
-                                <option value="Admin">Admin</option>
+                            <select class="form-select" name="department" id="departmentdropdown">
+                                <option selected disabled>Choose department</option>
+                                <option value="IT">IT</option>
+                                <option value="HR">HR</option>
+                                <option value="Finance">Finance</option>
                             </select>
                         </div>
 
@@ -1042,7 +1042,7 @@
 
 
             case 5: // Maintenance & Audit
-                showSlide(6); 
+                showSlide(6);
                 break;
 
             case 6: // Documents
@@ -1189,6 +1189,33 @@
                 .forEach((input) => {
                     input.disabled = false;
                 });
+        }
+    }
+
+    function handleAssignedToChange(select) {
+        const departmentSelect = document.getElementById("departmentdropdown");
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (select.value && selectedOption.dataset.department) {
+            // Get the department from the selected employee's data attribute
+            const employeeDepartment = selectedOption.dataset.department;
+
+            // Auto-fill department from selected employee
+            departmentSelect.value = employeeDepartment;
+
+            // Check if the value was set successfully
+            if (departmentSelect.value === employeeDepartment) {
+                // Make it readonly and style it
+                departmentSelect.disabled = true;
+                departmentSelect.style.backgroundColor = "#e9ecef";
+                departmentSelect.style.cursor = "not-allowed";
+            } else {}
+        } else {
+            // Clear department if no employee selected
+            departmentSelect.value = "";
+            departmentSelect.disabled = false;
+            departmentSelect.style.backgroundColor = "";
+            departmentSelect.style.cursor = "";
         }
     }
 

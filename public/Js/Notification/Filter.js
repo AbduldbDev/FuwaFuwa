@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.add("active");
 
             currentFilter = this.textContent.trim().toLowerCase();
-            console.log("Filter changed to:", currentFilter);
+
             filterNotifications();
         });
     });
@@ -26,23 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (currentType === "notification type") {
             currentType = "all";
         }
-        console.log("Type changed to:", currentType);
+
         filterNotifications();
     });
 
     timeSelect.addEventListener("change", function () {
         currentTime = this.value;
-        console.log("Time changed to:", currentTime);
+
         filterNotifications();
     });
 
     function filterNotifications() {
-        console.log("Filtering with:", {
-            filter: currentFilter,
-            type: currentType,
-            time: currentTime,
-        });
-
         const now = new Date();
         let visibleCount = 0;
 
@@ -89,8 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (shouldShow) visibleCount++;
         });
-
-        console.log("Visible notifications:", visibleCount);
     }
 
     filterNotifications();

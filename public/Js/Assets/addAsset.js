@@ -540,6 +540,33 @@ function showTechnicalFields() {
     }
 }
 
+function handleAssignedToChange(select) {
+    const departmentSelect = document.getElementById("departmentdropdown");
+    const selectedOption = select.options[select.selectedIndex];
+
+    if (select.value && selectedOption.dataset.department) {
+        // Get the department from the selected employee's data attribute
+        const employeeDepartment = selectedOption.dataset.department;
+
+        // Auto-fill department from selected employee
+        departmentSelect.value = employeeDepartment;
+
+        // Check if the value was set successfully
+        if (departmentSelect.value === employeeDepartment) {
+            // Make it readonly and style it
+            departmentSelect.disabled = true;
+            departmentSelect.style.backgroundColor = "#e9ecef";
+            departmentSelect.style.cursor = "not-allowed";
+        } else {
+        }
+    } else {
+        // Clear department if no employee selected
+        departmentSelect.value = "";
+        departmentSelect.disabled = false;
+        departmentSelect.style.backgroundColor = "";
+        departmentSelect.style.cursor = "";
+    }
+}
 /* ===============================
        RESET MODAL
     =============================== */
@@ -589,6 +616,21 @@ function resetAssetModal() {
             }
         });
 
+    // Reset department field state
+    const departmentSelect = document.getElementById("departmentdropdown");
+    if (departmentSelect) {
+        departmentSelect.value = "";
+        departmentSelect.disabled = false;
+        departmentSelect.style.backgroundColor = "";
+        departmentSelect.style.cursor = "";
+    }
+
+    // Reset assigned to select
+    const assignedToSelect = document.getElementById("assignedTo");
+    if (assignedToSelect) {
+        assignedToSelect.value = "";
+    }
+
     // Hide all technical spec groups
     document.querySelectorAll(".tech-group").forEach((group) => {
         group.style.display = "none";
@@ -615,7 +657,6 @@ function resetAssetModal() {
         nextButton.className = "next-btn";
     }
 }
-
 /* ===============================
        BOOTSTRAP MODAL EVENT
     =============================== */
