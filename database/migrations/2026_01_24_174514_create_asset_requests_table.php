@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('request_id')->unique();
             $table->string('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('asset_tag')->nullable();
             $table->string('requested_by');
             $table->string('department');
             $table->string('asset_category');
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->string('request_reason');
             $table->text('detailed_reason')->nullable();
             // $table->decimal('cost', 10, 2)->nullable();
-            // $table->enum('priority', ['low', 'medium', 'high',  'emergency'])->default('low');
+            $table->enum('priority', ['low', 'medium', 'high',  'emergency'])->default('low');
             $table->string('status')->default('For Review');
             $table->text('remarks')->nullable();
             $table->string('is_approved')->default('pending');

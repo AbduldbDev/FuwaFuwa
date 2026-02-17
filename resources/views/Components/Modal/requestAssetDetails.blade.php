@@ -1,5 +1,5 @@
   <div class="modal fade" id="requestDetailsModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content rounded-3">
               <!-- modal header -->
               <div class="modal-header">
@@ -86,7 +86,19 @@
                           </p>
                       </div>
                   </section>
+                  <hr />
+                  <!-- ===== priority ===== -->
+                  <section class="mb-4">
+                      <h6 class="fw-semibold mb-3">
+                          <i class="fa-solid fa-flag me-2 text-secondary"></i>
+                          Priority Level
+                      </h6>
 
+                      <span class="badge {{ $priorityClass }} px-3 py-2">
+                          {{ ucfirst($item->priority) }} Priority
+                      </span>
+
+                  </section>
                   <hr />
 
                   <!-- ===== activity feed ===== -->

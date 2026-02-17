@@ -76,6 +76,39 @@
                             <input type="text" class="form-control" name="model" required />
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label d-block">Priority Level</label>
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input shadow-none" type="radio" name="priority"
+                                    id="active" checked value="low" />
+                                <label class="form-check-label" for="active">
+                                    Low
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input shadow-none" type="radio" name="priority"
+                                    id="inactive" value="medium" />
+                                <label class="form-check-label" for="inactive">
+                                    Medium
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input shadow-none" type="radio" name="priority"
+                                    id="inactive" value="high" />
+                                <label class="form-check-label" for="inactive">
+                                    High
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input shadow-none" type="radio" name="priority"
+                                    id="inactive" value="emergency" />
+                                <label class="form-check-label" for="inactive">
+                                    Emergency
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- justification -->
                     <h4 class="mb-3">Justification</h4>
@@ -105,7 +138,8 @@
                         <label class="form-label">
                             Detailed Purpose <span class="text-danger">*</span>
                         </label>
-                        <textarea class="form-control" rows="4" placeholder="Enter detailed purpose..." name="detailed_reason" required></textarea>
+                        <textarea class="form-control" rows="4" placeholder="Enter detailed purpose..." name="detailed_reason"
+                            required></textarea>
                     </div>
                 </div>
 

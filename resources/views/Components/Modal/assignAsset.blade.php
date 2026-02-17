@@ -6,7 +6,7 @@
                 @method('PUT')
                 <div class="modal-header">
                     <i class="fa-solid fa-square-plus me-2"></i>
-                    <h5 class="modal-title fw-semibold">ADD NEW ASSET</h5>
+                    <h5 class="modal-title fw-semibold">ASIGN ASSET</h5>
                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -40,7 +40,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <input type="text" class="form-control" name="assigned_to" />
+                            <select class="form-control" name="assigned_to">
+                                <option value="">Select Employee</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Department</label>

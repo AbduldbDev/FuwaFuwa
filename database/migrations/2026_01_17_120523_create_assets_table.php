@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->string('delete_title')->nullable();
             $table->text('delete_reason')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

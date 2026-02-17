@@ -60,6 +60,31 @@ function removeDocument(docId) {
     }
 }
 
+function validateDocuments() {
+    const docTableBody = document.getElementById("docTableBody");
+    const docName = document.getElementById("docName");
+    const docFile = document.getElementById("docFile");
+
+    // Clear previous errors
+    [docName, docFile].forEach((field) => {
+        field.classList.remove("error");
+        const errorMsg = field.nextElementSibling;
+        if (errorMsg && errorMsg.classList.contains("error-message")) {
+            errorMsg.remove();
+        }
+    });
+
+    // Check if at least one document is added
+    if (!docTableBody || docTableBody.children.length === 0) {
+        showError(docName, "Please add at least one document");
+        docName.classList.add("error");
+        docName.focus();
+        return false;
+    }
+
+    return true;
+}
+
 const assetTypes = {
     "Physical Asset": [
         "PC",
@@ -189,11 +214,6 @@ function validateCurrentSlide() {
     }
 
     if (currentSlide === 4) {
-        // Assignment & Location - no required fields
-        return true;
-    }
-
-    if (currentSlide === 5) {
         // Purchase Information - validate all required fields
         const requiredFields = currentSlideElement.querySelectorAll(
             '[data-required="true"]:not([disabled])',
@@ -216,7 +236,7 @@ function validateCurrentSlide() {
         return isValid;
     }
 
-    if (currentSlide === 6) {
+    if (currentSlide === 5) {
         // Maintenance & Audit - validate all required fields
         const requiredFields = currentSlideElement.querySelectorAll(
             '[data-required="true"]:not([disabled])',
@@ -239,27 +259,13 @@ function validateCurrentSlide() {
         return isValid;
     }
 
+    if (currentSlide === 6) {
+        // Documents validation
+        return validateDocuments();
+    }
+
     if (currentSlide === 7) {
-        const docTableBody = document.getElementById("docTableBody");
-
-        const docName = document.getElementById("docName");
-        const docFile = document.getElementById("docFile");
-
-        [docName, docFile].forEach((field) => {
-            field.classList.remove("error");
-            const errorMsg = field.nextElementSibling;
-            if (errorMsg && errorMsg.classList.contains("error-message")) {
-                errorMsg.remove();
-            }
-        });
-
-        if (!docTableBody || docTableBody.children.length === 0) {
-            showError(docName, "Please add at least one document");
-            docName.classList.add("error");
-            docName.focus();
-            return false;
-        }
-
+        // Assignment & Location - no required fields (optional)
         return true;
     }
 
@@ -295,6 +301,7 @@ function validateSlide1() {
 
     return true;
 }
+
 function handleSlide5Extras() {
     const depreciationTab = document.getElementById("depreciation-tab");
     if (!depreciationTab) return;
@@ -307,21 +314,21 @@ function handleSlide5Extras() {
 }
 
 function handleSlide6Extras() {
-    if (currentSlide !== 6) return;
+    // Don't check currentSlide here - let it run whenever called
+    const slide5 = document.getElementById("slide5"); // Note: this is for Maintenance & Audit (slide 5)
+    if (!slide5) return;
 
-    const slide6 = document.getElementById("slide6");
-    if (!slide6) return;
-
-    const warrantyStartText = slide6.querySelector("#warranty_start_date");
-    const warrantyEndText = slide6.querySelector("#warranty_end_date");
-    const lastMaintenanceDiv = slide6
-        .querySelector("#last_schedule_maintenance")
+    const warrantyStartText = document.getElementById("warranty_start_date");
+    const warrantyEndText = document.getElementById("warranty_end_date");
+    const lastMaintenanceDiv = document
+        .getElementById("last_schedule_maintenance")
+        ?.closest(".mb-3");
+    const nextMaintenanceDiv = document
+        .getElementById("next_schedule_maintenance")
         ?.closest(".mb-3");
 
-    const nextMaintenanceDiv = slide6
-        .querySelector("#next_schedule_maintenance")
-        ?.closest(".mb-3");
     if (selectedType === "License") {
+        // Change labels for License
         if (warrantyStartText) {
             warrantyStartText.textContent = "Activation Date";
         }
@@ -330,9 +337,11 @@ function handleSlide6Extras() {
             warrantyEndText.textContent = "Expiration Date";
         }
 
-        if (lastMaintenanceDiv) lastMaintenanceDiv.remove();
-        if (nextMaintenanceDiv) nextMaintenanceDiv.remove();
+        // Hide maintenance fields for License
+        if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "none";
+        if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "none";
     } else {
+        // Reset to default labels for non-License
         if (warrantyStartText) {
             warrantyStartText.textContent = "Warranty Start Date";
         }
@@ -340,9 +349,12 @@ function handleSlide6Extras() {
         if (warrantyEndText) {
             warrantyEndText.textContent = "Warranty End Date";
         }
+
+        // Show maintenance fields for non-License
+        if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "";
+        if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "";
     }
 }
-
 /* ===============================
        SLIDE NAVIGATION
     =============================== */
@@ -351,48 +363,42 @@ function nextSlide() {
     if (!validateCurrentSlide()) return;
 
     switch (currentSlide) {
-        case 1:
+        case 1: // Asset Category and Type
             selectedType = document.getElementById("assetType").value;
             document.getElementById("summaryCategory").value = selectedCategory;
             document.getElementById("summaryType").value = selectedType;
-
-            console.log("Type", selectedType);
-            console.log("selectedCategory", selectedCategory);
 
             populateOperationalStatus();
             showSlide(2);
             break;
 
-        case 2:
+        case 2: // Basic Information
             showSlide(3);
             showTechnicalFields();
             break;
 
-        case 3:
-            if (selectedType !== "License") {
-                showSlide(4);
-            } else {
-                showSlide(5);
-                handleSlide5Extras();
-            }
-            break;
-
-        case 4:
-            showSlide(5);
+        case 3: // Technical Specifications
+            showSlide(4); // Purchase Information
             handleSlide5Extras();
             break;
 
-        case 5:
-            showSlide(6);
+        case 4: // Purchase Information
+            showSlide(5); // Maintenance & Audit
             handleSlide6Extras();
             break;
 
-        case 6:
-            showSlide(7);
+        case 5: // Maintenance & Audit
+            showSlide(6); // Documents
+
             break;
 
-        case 7:
-            // Disable hidden tech-group inputs
+        case 6: // Documents
+            if (!validateDocuments()) return;
+            showSlide(7); // Assignment & Location
+            break;
+
+        case 7: // Assignment & Location (final slide)
+            // Disable hidden tech-group inputs before submission
             document.querySelectorAll(".tech-group").forEach((group) => {
                 if (
                     group.style.display === "none" ||
@@ -412,9 +418,29 @@ function nextSlide() {
 function prevSlide() {
     let prev = currentSlide - 1;
 
-    // Skip slide 4 if type is not License
-    if (prev === 4 && selectedType == "License") {
+    // Handle going back from Assignment & Location (slide 7) to Documents (slide 6)
+    if (currentSlide === 7) {
+        prev = 6;
+    }
+    // Handle going back from Documents (slide 6) to Maintenance & Audit (slide 5)
+    else if (currentSlide === 6) {
+        prev = 5;
+    }
+    // Handle going back from Maintenance & Audit (slide 5) to Purchase Information (slide 4)
+    else if (currentSlide === 5) {
+        prev = 4;
+    }
+    // Handle going back from Purchase Information (slide 4) to Technical Specifications (slide 3)
+    else if (currentSlide === 4) {
         prev = 3;
+    }
+    // Handle going back from Technical Specifications (slide 3) to Basic Information (slide 2)
+    else if (currentSlide === 3) {
+        prev = 2;
+    }
+    // Handle going back from Basic Information (slide 2) to Category/Type (slide 1)
+    else if (currentSlide === 2) {
+        prev = 1;
     }
 
     if (prev < 1) return; // prevent going before first slide
@@ -431,35 +457,56 @@ function prevSlide() {
 
     showSlide(prev);
 
+    // Show technical fields when going back to slide 3
     if (prev === 3) showTechnicalFields();
+
+    // Handle special cases when going back to certain slides
+    if (prev === 5) handleSlide5Extras();
+    if (prev === 6) handleSlide6Extras();
 }
 
 /* ===============================
        SHOW/HIDE SLIDES
     =============================== */
 function showSlide(slideNumber) {
-    document.querySelectorAll('[id^="slide"]').forEach((slide, index) => {
-        slide.style.display = index + 1 === slideNumber ? "block" : "none";
+    // Hide all slides
+    document.querySelectorAll('[id^="slide"]').forEach((slide) => {
+        slide.style.display = "none";
     });
 
-    // Only show the correct technical spec inputs
-    if (slideNumber === 3) showTechnicalFields();
+    // Show the requested slide
+    const slideToShow = document.getElementById(`slide${slideNumber}`);
+    if (slideToShow) {
+        slideToShow.style.display = "block";
+    }
+
+    // Show technical fields if on slide 3
+    if (slideNumber === 3) {
+        showTechnicalFields();
+    }
+
+    if (slideNumber === 4) {
+        handleSlide5Extras();
+    }
+
+    if (slideNumber === 5) {
+        handleSlide6Extras();
+    }
 
     currentSlide = slideNumber;
 
-    // Update button text on last slide
-    const nextButton = document.querySelector(".next-btn");
-    if (slideNumber === 7) {
-        nextButton.textContent = "Submit";
-        nextButton.classList.add("submit-btn");
-        nextButton.classList.remove("next-btn");
-    } else {
-        nextButton.textContent = "Next";
-        nextButton.classList.add("next-btn");
-        nextButton.classList.remove("submit-btn");
+    const nextButton = document.querySelector(".next-btn, .submit-btn");
+    if (nextButton) {
+        if (slideNumber === 7) {
+            // Assignment & Location is the last slide
+            nextButton.textContent = "Submit";
+            nextButton.className = "submit-btn";
+        } else {
+            nextButton.textContent = "Next";
+            nextButton.className = "next-btn";
+        }
     }
 }
-
 /* ===============================
        TECHNICAL SPECIFICATIONS
     =============================== */

@@ -117,6 +117,14 @@
                                             'License' => 'fa-key',
                                         ];
 
+                                        $priorityClass = match ($item->priority) {
+                                            'low' => 'bg-primary text-white',
+                                            'medium' => 'bg-success text-white',
+                                            'high' => 'bg-warning text-dark',
+                                            'emergency' => 'bg-danger text-white',
+                                            default => 'bg-secondary text-white',
+                                        };
+
                                         $icon = $icons[$item->asset_category] ?? 'fa-box';
                                     @endphp
                                     <div class="asset-icon">
@@ -128,6 +136,9 @@
 
                                         <div class="mt-1">
                                             <span class="priority-badge low">{{ $item->status }}</span>
+                                            <span
+                                                class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
+                                                Priority</span>
                                         </div>
                                     </div>
                                 </div>

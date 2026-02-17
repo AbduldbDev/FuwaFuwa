@@ -500,47 +500,8 @@
                         </div>
                     </div>
 
-                    <!-- ===== Assignment & Location ===== -->
-                    <div id="slide4" style="display: none">
-                        <div class="mb-3 d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-map-marker-alt"></i>
-                            <h6>Assignment & Location</h6>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to">
-                                <option value="">Select Employee</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Department</label>
-                            <select class="form-select" name="department">
-                                <option value="">Select department</option>
-                                <option value="IT Department">IT Department</option>
-                                <option value="HR Department">HR Department</option>
-                                <option value="Finance Department">Finance Department</option>
-                                <option value="Operations">Operations</option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Location</label>
-                            <select class="form-select" name="location">
-                                <option value="">Select location</option>
-                                <option>Main Office</option>
-                                <option>Warehouse</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <!-- ===== Purchase Information ===== -->
-                    <div id="slide5" style="display: none">
+                    <div id="slide4" style="display: none">
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
                             <h6>Purchase Information</h6>
@@ -583,7 +544,7 @@
                     </div>
 
                     <!-- ===== Maintenance & Audit ===== -->
-                    <div id="slide6" style="display: none">
+                    <div id="slide5" style="display: none">
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <i class="fa-solid fa-tools"></i>
                             <h6>Maintenance & Audit</h6>
@@ -626,7 +587,7 @@
                     </div>
 
                     <!-- ===== Documents ===== -->
-                    <div id="slide7" style="display: none">
+                    <div id="slide6" style="display: none">
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <i class="fa-solid fa-file"></i>
                             <h6>Documents</h6>
@@ -670,6 +631,45 @@
 
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- ===== Assignment & Location ===== -->
+                    <div id="slide7" style="display: none">
+                        <div class="mb-3 d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                            <h6>Assignment & Location</h6>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Assigned To</label>
+                            <select class="form-control" name="assigned_to">
+                                <option value="">Select Employee</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select class="form-select" name="department">
+                                <option value="">Select department</option>
+                                <option value="IT Department">IT Department</option>
+                                <option value="HR Department">HR Department</option>
+                                <option value="Finance Department">Finance Department</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <select class="form-select" name="location">
+                                <option value="">Select location</option>
+                                <option>Main Office</option>
+                                <option>Warehouse</option>
+                            </select>
                         </div>
                     </div>
 

@@ -21,6 +21,7 @@ class StoreAssetRequest extends FormRequest
             'model'           => 'required|string|max:255',
             'quantity'        => 'required|integer|min:1',
             'request_reason'  => 'required|string|max:255',
+            'priority'        => 'required|string|max:255',
             'detailed_reason' => 'required|string',
 
         ];
