@@ -18,6 +18,8 @@ class UpdateInspectionMaintenance extends FormRequest
             'technician' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
             'document.*' => 'nullable',
+            'cost' => 'nullable|numeric|min:0',
+
         ];
     }
 }

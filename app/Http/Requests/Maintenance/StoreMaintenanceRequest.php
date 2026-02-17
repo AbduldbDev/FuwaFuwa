@@ -27,6 +27,7 @@ class StoreMaintenanceRequest extends FormRequest
             'post_description' => 'nullable|string|max:255',
             'post_replacements' => 'nullable|string|max:255',
             'technician_notes'  => 'nullable|string|max:255',
+            'cost' => 'nullable|string|max:255',
         ];
     }
 

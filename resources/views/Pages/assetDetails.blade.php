@@ -93,6 +93,8 @@
             <div class="tabs">
                 <button class="tab active" data-tab="overview">Overview</button>
                 <button class="tab" data-tab="history">History</button>
+                <button class="tab" data-tab="maintenancelogs">Maintenance Logs</button>
+
                 <span class="tab-indicator"></span>
             </div>
         </div>
@@ -633,6 +635,76 @@
 
                             </div>
                         @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="maintenancelogs" class="tab-content">
+            <div class="section-card pb-3">
+                <div class="history-header d-flex justify-content-between">
+                    <h6 class="fw-semibold">Maintenance Logs</h6>
+                </div>
+                <div class="section-bod">
+                    <div class="history-list">
+                        @forelse ($maintenance as $item)
+                            <div class="maintenance-item  p-3">
+                                <div class="maintenance-header d-flex justify-content-between align-items-center mb-2">
+                                    <p class="mb-0">
+                                        <strong>{{ $item->maintenance_id ?? 'N/A' }}</strong> -
+                                        {{ $item->maintenance_type }}
+                                    </p>
+                                    <span class="badge bg-{{ $item->status === 'Completed' ? 'success' : 'warning' }}">
+                                        {{ $item->status }}
+                                    </span>
+                                </div>
+
+                                <div class="maintenance-details ms-2">
+                                    <p class="mb-1"><span class="text-muted small">Description:</span>
+                                        {{ $item->description }}</p>
+                                    <p class="mb-1"><span class="text-muted small">Technician:</span>
+                                        {{ $item->technician }}</p>
+                                    <p class="mb-1"><span class="text-muted small">Start Date:</span>
+                                        {{ \Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</p>
+                                    @if ($item->completed_at)
+                                        <p class="mb-1"><span class="text-muted small">Completed:</span>
+                                            {{ \Carbon\Carbon::parse($item->completed_at)->format('M d, Y H:i') }}</p>
+                                    @endif
+
+                                    @if ($item->logs && count($item->logs) > 0)
+                                        <div class="logs-section mt-3">
+                                            <h6 class="text-secondary mb-2">Logs:</h6>
+                                            @foreach ($item->logs as $log)
+                                                <div class="log-item ps-3 mb-3 border-start border-3 border-warning">
+                                                    @if ($log->action_taken)
+                                                        <p class="mb-1"><span class="text-muted small">Action
+                                                                Taken:</span> {{ $log->action_taken }}</p>
+                                                    @endif
+                                                    @if ($log->parts_replaced)
+                                                        <p class="mb-1"><span class="text-muted small">Parts
+                                                                Replaced:</span> {{ $log->parts_replaced }}</p>
+                                                    @endif
+                                                    @if ($log->cost)
+                                                        <p class="mb-1"><span class="text-muted small">Cost:</span>
+                                                            ${{ number_format($log->cost, 2) }}</p>
+                                                    @endif
+                                                    @if ($log->technician_notes)
+                                                        <p class="mb-1"><span class="text-muted small">Technician
+                                                                Notes:</span>
+                                                            {{ $log->technician_notes }}</p>
+                                                    @endif
+
+                                                </div>
+                                                <hr class="my-2 mt-3">
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-muted">No maintenance records found for this asset.</p>
+                        @endforelse
+
                     </div>
                 </div>
             </div>

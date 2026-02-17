@@ -47,6 +47,8 @@ class Assets extends Model
         'salvage_value'     => 'decimal:2',
     ];
 
+
+
     public function technicalSpecifications()
     {
         return $this->hasMany(TechnicalSpecification::class, 'asset_id');

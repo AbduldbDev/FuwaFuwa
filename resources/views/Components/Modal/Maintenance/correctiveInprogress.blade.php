@@ -184,6 +184,12 @@
                                 <textarea class="form-control" rows="3" placeholder="Add remarks or comments..." name="post_replacements"></textarea>
                             </div>
 
+                            <div class="col-md-12">
+                                <label class="form-label text-muted">Repair/Upgrade Cost</label>
+                                <input class="form-control" type="number" placeholder="Total Cost"
+                                    name="cost"></input>
+                            </div>
+
                             <div class="col-md-12 mb-3">
                                 <label class="form-label text-muted">Attach Document</label>
                                 <input type="file" name="post_attachments[]" class="form-control" multiple>

@@ -16,6 +16,7 @@ class UpdateMaintenanceRequest extends FormRequest
         return [
             'start_date' => 'required|date',
             'technician' => 'required|string|max:255',
+            'cost' => 'nullable|string|max:255',
         ];
     }
 }

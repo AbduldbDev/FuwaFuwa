@@ -32,4 +32,14 @@ class Maintenance extends Model
     {
         return $this->belongsTo(User::class, 'reported_by');
     }
+
+    public function asset()
+    {
+        return $this->belongsTo(Assets::class, 'asset_tag', 'asset_tag');
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(MaintenanceLog::class, 'maintenance_id', 'maintenance_id');
+    }
 }

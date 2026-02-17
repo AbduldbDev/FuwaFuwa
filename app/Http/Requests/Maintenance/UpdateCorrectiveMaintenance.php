@@ -18,6 +18,7 @@ class UpdateCorrectiveMaintenance extends FormRequest
             'post_replacements' => 'nullable|string|max:255',
             'technician_notes'  => 'nullable|string|max:255',
             'post_attachments.*' => 'nullable',
+            'cost' => 'nullable|string|max:255',
         ];
     }
 }

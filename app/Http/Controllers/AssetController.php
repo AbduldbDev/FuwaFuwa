@@ -51,6 +51,8 @@ class AssetController extends Controller
         $data = $this->assetService->getShowData($id);
 
         return view('Pages/assetDetails', $data);
+
+        // return response()->json($data);
     }
 
     public function store(StoreAssets $request)

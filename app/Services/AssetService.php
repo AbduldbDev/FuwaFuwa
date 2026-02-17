@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\DocumentsAsset;
+use App\Models\Maintenance;
 use App\Models\Vendors;
 use App\Services\NotificationService;
 use Illuminate\Http\UploadedFile;
@@ -49,9 +50,15 @@ class AssetService
 
     public function getAssetByTag(string $assetTag): Assets
     {
-        return Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents'])
+        return Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents', 'maintenances.logs'])
             ->where('asset_tag', $assetTag)
             ->firstOrFail();
+    }
+
+
+    public function getMaintenanceByTag(string $assetTag)
+    {
+        return Maintenance::with(['logs'])->where('asset_tag', $assetTag)->latest()->get();
     }
 
     public function getAllAssetsWithDepreciation()
@@ -104,6 +111,7 @@ class AssetService
             'users'     => $this->getActiveUsers(),
             'vendors'   => $this->getActiveVendors(),
             'AssetLogs' => $this->getAssetLogs($asset->id),
+            'maintenance' => $this->getMaintenanceByTag($asset->asset_tag),
         ];
     }
 

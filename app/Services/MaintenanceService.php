@@ -6,15 +6,20 @@ use App\Models\Maintenance;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Assets;
+use App\Models\MaintenanceLog;
 use Illuminate\Support\Facades\DB;
 
 class MaintenanceService
 {
     protected $notification;
+    protected $maintenanceLogService;
 
-    public function __construct(NotificationService $notification)
-    {
+    public function __construct(
+        NotificationService $notification,
+        MaintenanceLogService $maintenanceLogService
+    ) {
         $this->notification = $notification;
+        $this->maintenanceLogService = $maintenanceLogService;
     }
 
     public function getTotalMaintenance(): int
@@ -68,7 +73,7 @@ class MaintenanceService
         return Assets::where('operational_status', '!=', 'archived')
             ->where('asset_type', 'Physical Asset')
             ->whereDoesntHave('maintenances', function ($q) {
-                $q->where('status', '!=', 'Completed'); // Exclude only ongoing
+                $q->where('status', '!=', 'Completed');
             })
             ->latest()
             ->get();
@@ -100,7 +105,6 @@ class MaintenanceService
 
     public function getDashboardData(): array
     {
-
         return [
             'PendingCorrective' => $this->getPendingCorrective(),
             'Assets'  => $this->getAllAssets(),
@@ -117,7 +121,6 @@ class MaintenanceService
 
     public function store(array $data)
     {
-
         if (!empty($data['document']) && is_array($data['document'])) {
             $paths = [];
             foreach ($data['document'] as $file) {
@@ -135,15 +138,29 @@ class MaintenanceService
         $data['department'] = Auth::user()->department;
         $data['status'] = $data['maintenance_type'];
 
+        $maintenance = Maintenance::create($data);
+
+        // Create initial log
+        $this->maintenanceLogService->createOrUpdateLog(
+            $maintenance->maintenance_id,
+            [
+                'type' => $data['maintenance_type'],
+                'action_taken' => 'Maintenance reported',
+                'asset_tag' => $maintenance->asset_tag,
+                'issue_description' => $maintenance->description,
+                'start_date' => $data['start_date'] ?? null,
+            ]
+        );
+
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
             'read',
             'New Maintenance Report',
-            "New Maintenance " . $data['maintenance_id'] . " has been reported by: " . Auth::user()->name,
+            "New Maintenance {$maintenance->maintenance_id} reported by: " . Auth::user()->name,
             'info'
         );
 
-        return Maintenance::create($data);
+        return $maintenance;
     }
 
     public function updateSchedule(Maintenance $maintenance, array $data): Maintenance
@@ -154,6 +171,17 @@ class MaintenanceService
             'status' => 'Corrective'
         ]);
 
+        // Update the existing log
+        $this->maintenanceLogService->createOrUpdateLog(
+            $maintenance->maintenance_id,
+            [
+                'type' => $maintenance->maintenance_type,
+                'action_taken' => 'Maintenance scheduled and technician assigned',
+                'asset_tag' => $maintenance->asset_tag,
+                'issue_description' => $maintenance->description,
+                'start_date' => $data['start_date'],
+            ]
+        );
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -168,12 +196,22 @@ class MaintenanceService
 
     public function updateInspectionSchedule(Maintenance $maintenance, array $data): Maintenance
     {
+        $oldMaintenanceId = $maintenance->maintenance_id;
+        $newMaintenanceId = $this->generateMaintenanceId('Corrective');
+
         $maintenance->update([
-            'maintenance_id'   => $this->generateMaintenanceId('Corrective'),
+            'maintenance_id'   => $newMaintenanceId,
             'maintenance_type' => 'Corrective',
             'start_date'       => $data['start_date'],
             'technician'       => !empty($data['technician']) ? $data['technician'] : $maintenance->technician,
             'status'           => 'Corrective',
+        ]);
+
+        // Update the log with new maintenance ID
+        $this->maintenanceLogService->updateMaintenanceId($oldMaintenanceId, $newMaintenanceId, [
+            'type' => 'Corrective',
+            'action_taken' => 'Maintenance scheduled and technician assigned',
+            'start_date' => $data['start_date'],
         ]);
 
         $this->notification->notifyUsersWithModuleAccess(
@@ -186,7 +224,6 @@ class MaintenanceService
 
         return $maintenance;
     }
-
 
     public function updateCorrective(Maintenance $maintenance, array $data): Maintenance
     {
@@ -211,6 +248,20 @@ class MaintenanceService
             'completed_at' => Carbon::now()
         ]);
 
+        // Update the existing log with completion data
+        $this->maintenanceLogService->createOrUpdateLog(
+            $maintenance->maintenance_id,
+            [
+                'type' => $maintenance->maintenance_type,
+                'action_taken' => $data['post_description'],
+                'asset_tag' => $maintenance->asset_tag,
+                'issue_description' => $maintenance->description,
+                'parts_replaced' => $data['post_replacements'],
+                'cost' => $data['cost'] ?? null,
+                'completion_date' => Carbon::now(),
+                'technician_notes' => $data['technician_notes'],
+            ]
+        );
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -244,9 +295,19 @@ class MaintenanceService
         $updateData = [
             'documents'        => $data['document'] ?? $maintenance->documents,
             'technician'       => !empty($data['technician']) ? $data['technician'] : $maintenance->technician,
-            'description'      => $data['description'] ?? $maintenance->description,
-            'post_description' => $data['condition'] ?? $maintenance->post_description,
+            'description'      => $data['description'],
+            'post_description' => $data['condition']  ?? null,
             'status'           => $status,
+        ];
+
+        $logData = [
+            'type' => $maintenance->maintenance_type,
+            'action_taken' => $data['description'] ?? null,
+            'asset_tag' => $maintenance->asset_tag,
+            'issue_description' => $data['condition'],
+            'parts_replaced' => $data['post_replacements'] ?? null,
+            'cost' => $data['repair_cost'] ?? null,
+            'technician_notes' => $data['technician_notes'] ?? null,
         ];
 
         if ($status === 'Completed') {
@@ -257,25 +318,30 @@ class MaintenanceService
                 case 'Weekly':
                     $nextMaintenance = $completedAt->copy()->addWeek();
                     break;
-
                 case 'Monthly':
                     $nextMaintenance = $completedAt->copy()->addMonth();
                     break;
-
                 case 'Quarterly':
                     $nextMaintenance = $completedAt->copy()->addMonths(3);
                     break;
-
                 case 'Semi-Annual':
                     $nextMaintenance = $completedAt->copy()->addMonths(6);
                     break;
             }
 
-            $updateData['completed_at']     = $completedAt;
+            $updateData['completed_at'] = $completedAt;
+            $logData['completion_date'] = $completedAt;
+
             Assets::where('asset_tag', $maintenance->asset_tag)->update([
                 'next_maintenance' => $nextMaintenance
             ]);
         }
+
+        // Update the existing log
+        $this->maintenanceLogService->createOrUpdateLog(
+            $maintenance->maintenance_id,
+            $logData
+        );
 
         $maintenance->update($updateData);
 
@@ -289,7 +355,6 @@ class MaintenanceService
 
         return $maintenance;
     }
-
 
     public function generateMaintenanceId(?string $type = null): string
     {
