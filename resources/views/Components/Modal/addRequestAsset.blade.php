@@ -609,14 +609,16 @@
                                 <label class="form-label">
                                     Document Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" id="docName">
+                                <input type="text" class="form-control" id="docName" required
+                                    data-required="true">
                             </div>
 
                             <div class="col-lg-4 mb-3">
                                 <label class="form-label">
                                     Attach File <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" class="form-control" id="docFile">
+                                <input type="file" class="form-control" id="docFile" required
+                                    data-required="true">
                             </div>
 
                             <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn  btn-sm save-btn "
@@ -972,6 +974,30 @@
             }
 
             return isValid;
+        }
+
+        if (currentSlide === 7) {
+            const docTableBody = document.getElementById("docTableBody");
+
+            const docName = document.getElementById("docName");
+            const docFile = document.getElementById("docFile");
+
+            [docName, docFile].forEach((field) => {
+                field.classList.remove("error");
+                const errorMsg = field.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
+            });
+
+            if (!docTableBody || docTableBody.children.length === 0) {
+                showError(docName, "Please add at least one document");
+                docName.classList.add("error");
+                docName.focus();
+                return false;
+            }
+
+            return true;
         }
 
         return true;

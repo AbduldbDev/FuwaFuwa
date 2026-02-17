@@ -94,7 +94,7 @@ class Assets extends Model
                 }
             }
 
-            $asset->compliance_status = $isNonCompliant ? 'Non-Compliant' : 'Compliant';
+            $asset->compliance_status = $isNonCompliant ? 'No' : 'Yes';
             $asset->save();
         }
     }

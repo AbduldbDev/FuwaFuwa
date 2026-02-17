@@ -637,14 +637,16 @@
                                 <label class="form-label">
                                     Document Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" id="docName">
+                                <input type="text" class="form-control" id="docName" required
+                                    data-required="true">
                             </div>
 
                             <div class="col-lg-4 mb-3">
                                 <label class="form-label">
                                     Attach File <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" class="form-control" id="docFile">
+                                <input type="file" class="form-control" id="docFile" required
+                                    data-required="true">
                             </div>
 
                             <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn  btn-sm save-btn "

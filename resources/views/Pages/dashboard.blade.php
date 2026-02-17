@@ -219,7 +219,7 @@
                                 <div class="asset-item compliant">
                                     <i class="fa-solid fa-file-circle-check icon"></i>
                                     <div class="total-assets">
-                                        <span>{{ number_format($ComplianceStatuses['Compliant'] ?? 0) }}</span>
+                                        <span>{{ number_format($ComplianceStatuses['Yes'] ?? 0) }}</span>
                                         <small>Compliant</small>
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@
                                 <div class="asset-item non-compliant">
                                     <i class="fa-solid fa-file-circle-xmark icon"></i>
                                     <div class="total-assets">
-                                        <span>{{ number_format($ComplianceStatuses['Non-Compliant'] ?? 0) }}</span>
+                                        <span>{{ number_format($ComplianceStatuses['No'] ?? 0) }}</span>
                                         <small>Non-Compliant</small>
                                     </div>
                                 </div>
@@ -296,8 +296,8 @@
                                 <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
                                     style="border-radius: 10px">
                                     <option value="all">All Compliance</option>
-                                    <option value="Compliant">Compliant</option>
-                                    <option value="Non-Compliant">Non-Compliant</option>
+                                    <option value="Yes">Compliant</option>
+                                    <option value="No">Non-Compliant</option>
                                 </select>
                             </div>
                         </div>
@@ -337,7 +337,7 @@
                                             </td>
                                             <td>{{ $item->operational_status }}</td>
                                             <td
-                                                class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                                class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
                                                 {{ $item->compliance_status }}
                                             </td>
                                             <td>₱{{ number_format($item->purchase_cost, 2) }}</td>

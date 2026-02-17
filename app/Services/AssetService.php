@@ -122,9 +122,9 @@ class AssetService
             : 'Active';
 
         if (!empty($data['warranty_end']) && now()->gt(\Carbon\Carbon::parse($data['warranty_end']))) {
-            $data['compliance_status'] = 'Non-Compliant';
+            $data['compliance_status'] = 'No';
         } else {
-            $data['compliance_status'] = 'Compliant';
+            $data['compliance_status'] = 'Yes';
         }
 
         $asset = Assets::create($data);

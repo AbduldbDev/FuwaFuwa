@@ -52,8 +52,8 @@
                             <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
                                 style="border-radius: 10px">
                                 <option value="all">All Compliance</option>
-                                <option value="Compliant">Compliant</option>
-                                <option value="Non-Compliant">Non-Compliant</option>
+                                <option value="Yes">Compliant</option>
+                                <option value="No">Non-Compliant</option>
                             </select>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                     <th>Category</th>
                                     <th>Model Name</th>
                                     <th>Status</th>
-                                    <th>Compliance Type</th>
+                                    <th>Under Warranty </th>
                                     <th>Purchase Cost</th>
                                     <th>Current Book Value</th>
                                 </tr>
@@ -84,7 +84,7 @@
                                         <td>{{ $item->asset_name }}</td>
                                         <td>{{ $item->delete_title }}</td>
                                         <td
-                                            class="{{ $item->compliance_status === 'Compliant' ? 'text-success' : 'text-danger' }}">
+                                            class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
                                             {{ $item->compliance_status }}
                                         </td>
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>

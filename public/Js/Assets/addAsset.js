@@ -239,6 +239,30 @@ function validateCurrentSlide() {
         return isValid;
     }
 
+    if (currentSlide === 7) {
+        const docTableBody = document.getElementById("docTableBody");
+
+        const docName = document.getElementById("docName");
+        const docFile = document.getElementById("docFile");
+
+        [docName, docFile].forEach((field) => {
+            field.classList.remove("error");
+            const errorMsg = field.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains("error-message")) {
+                errorMsg.remove();
+            }
+        });
+
+        if (!docTableBody || docTableBody.children.length === 0) {
+            showError(docName, "Please add at least one document");
+            docName.classList.add("error");
+            docName.focus();
+            return false;
+        }
+
+        return true;
+    }
+
     return true;
 }
 
@@ -425,7 +449,7 @@ function showSlide(slideNumber) {
 
     // Update button text on last slide
     const nextButton = document.querySelector(".next-btn");
-    if (slideNumber === 6) {
+    if (slideNumber === 7) {
         nextButton.textContent = "Submit";
         nextButton.classList.add("submit-btn");
         nextButton.classList.remove("next-btn");

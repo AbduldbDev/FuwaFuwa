@@ -4,20 +4,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const statusFilter = document.getElementById("statusFilter");
     const complianceFilter = document.getElementById("complianceFilter");
 
-    const rows = document.querySelectorAll("#assetTable tbody tr");
+    function normalize(text) {
+        return text.replace(/\s+/g, " ").trim().toLowerCase();
+    }
 
     function filterTable() {
-        const searchValue = searchInput.value.toLowerCase();
-        const categoryValue = categoryFilter.value.toLowerCase();
-        const statusValue = statusFilter.value.toLowerCase();
-        const complianceValue = complianceFilter.value.toLowerCase();
+        const searchValue = normalize(searchInput.value);
+        const categoryValue = normalize(categoryFilter.value);
+        const statusValue = normalize(statusFilter.value);
+        const complianceValue = normalize(complianceFilter.value);
+
+        const rows = document.querySelectorAll("#assetTable tbody tr");
 
         rows.forEach((row) => {
-            const rowText = row.innerText.toLowerCase();
+            const rowText = normalize(row.innerText);
 
-            const rowCategory = row.children[2].innerText.toLowerCase();
-            const rowStatus = row.children[4].innerText.toLowerCase();
-            const rowCompliance = row.children[5].innerText.toLowerCase();
+            const rowCategory = normalize(row.children[2]?.innerText || "");
+            const rowStatus = normalize(row.children[4]?.innerText || "");
+            const rowCompliance = normalize(row.children[5]?.innerText || "");
 
             const matchesSearch = rowText.includes(searchValue);
             const matchesCategory =
@@ -37,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    searchInput.addEventListener("keyup", filterTable);
+    searchInput.addEventListener("input", filterTable);
     categoryFilter.addEventListener("change", filterTable);
     statusFilter.addEventListener("change", filterTable);
     complianceFilter.addEventListener("change", filterTable);
