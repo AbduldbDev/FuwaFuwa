@@ -6,58 +6,49 @@
                 @method('PUT')
                 <div class="modal-header">
                     <i class="fa-solid fa-square-plus me-2"></i>
-                    <h5 class="modal-title fw-semibold">ASIGN ASSET</h5>
+                    <h5 class="modal-title fw-semibold">ASSIGN ASSET</h5>
                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body px-4">
-                    <!-- ===== Slide 1 ===== -->
-                    <div id="slide1">
-                        <div class="mb-3 d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-box"></i>
-                            <h6>Asset Information</h6>
-                        </div>
-
-                        <!-- Searchable Asset Input -->
-                        <div class="mb-3">
-                            <label class="form-label">Select Asset <span class="text-danger">*</span></label>
-                            <input type="text" id="assetSearch" class="form-control" placeholder="Search asset..."
-                                autocomplete="off">
-                            <div id="assetSuggestions" class="list-group mt-1"
-                                style="max-height:300px; overflow-y:auto; display:none;"></div>
-
-                            <!-- Hidden input to store selected asset ID -->
-                            <input type="hidden" name="asset_id" id="selectedAssetId">
-                            <input type="hidden" name="request_id" id="requestIdInput">
-                        </div>
-                    </div>
-
-                    <!-- ===== Slide 2 ===== -->
-                    <div id="slide2" style="display:none">
+                    <!-- Only Slide 1 - Assignment & Location -->
+                    <div>
                         <div class="mb-3 d-flex align-items-center gap-2">
                             <i class="fa-solid fa-map-marker-alt"></i>
                             <h6>Assignment & Location</h6>
                         </div>
+
+                        <!-- Asset Search Section -->
+                        <div class="mb-3">
+                            <label class="form-label">Select Asset <span class="text-danger">*</span></label>
+                            <input type="text" id="assignAssetSearch" class="form-control"
+                                placeholder="Click to search asset..." autocomplete="off" readonly>
+                            <div id="assignAssetSuggestions" class="list-group mt-1"
+                                style="max-height:300px; overflow-y:auto; display:none;"></div>
+
+                            <!-- Hidden input to store selected asset ID -->
+                            <input type="hidden" name="asset_id" id="assignSelectedAssetId">
+                            <input type="hidden" name="request_id" id="assignRequestIdInput">
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to">
+                            <select class="form-control" name="assigned_to" id="assignAssignedTo">
                                 <option value="">Select Employee</option>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->name }}">{{ $user->name }}</option>
+                                    <option value="{{ $user->name }}" data-department="{{ $user->department }}">
+                                        {{ $user->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Department</label>
-                            <select class="form-select" name="department">
-                                <option value="">Select department</option>
-                                <option>IT Department</option>
-                                <option>HR Department</option>
-                                <option>Finance Department</option>
-                                <option>Operations</option>
-                                <option>Admin</option>
-                            </select>
+                            <input type="text" class="form-control" name="department" id="assignDepartment" readonly
+                                placeholder="Select Employee First">
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Location</label>
                             <select class="form-select" name="location">
@@ -70,8 +61,8 @@
                 </div>
 
                 <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn btn-secondary" onclick="prevAssignSlide()">Back</button>
-                    <button type="button" class="next-btn" onclick="nextAssignSlide()">Next</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="next-btn" onclick="submitAssignForm()">Submit</button>
                 </div>
             </form>
         </div>
@@ -85,113 +76,168 @@
                 ? optional($asset->technicalSpecifications->firstWhere('spec_key', 'Asset_Model'))->spec_value
                 : optional($asset->technicalSpecifications->firstWhere('spec_key', 'License_Name'))->spec_value;
 
+        // Get asset_tag
+        $assetTag = $asset->asset_tag ?? '';
+
         return [
             'id' => $asset->id,
             'asset_name' => $displayName,
             'asset_category' => $asset->asset_category,
             'asset_type' => $asset->asset_type,
+            'asset_tag' => $assetTag,
         ];
     });
 @endphp
 
 <script>
-    let assignModalSlide = 1;
-    let selectedAsset = null;
+    let assignSelectedAsset = null;
 
-    function showAssignSlide(slide) {
-        document.querySelectorAll('#assignModal [id^="slide"]').forEach(el => el.style.display = 'none');
-        const slideEl = document.querySelector('#assignModal #slide' + slide);
-        if (slideEl) slideEl.style.display = 'block';
-
-        const backBtn = document.querySelector('#assignModal .btn-secondary');
-        const nextBtn = document.querySelector('#assignModal .next-btn');
-
-        backBtn.style.display = slide === 1 ? 'none' : 'inline-block';
-        nextBtn.textContent = slide === 2 ? 'Submit' : 'Next';
-
-        assignModalSlide = slide;
+    // Function to submit the form
+    function submitAssignForm() {
+        if (!assignSelectedAsset) {
+            alert("Please select an asset!");
+            return;
+        }
+        document.querySelector('#assignModal #assetForm').submit();
     }
 
-    function nextAssignSlide() {
-        if (assignModalSlide === 1) {
-            if (!selectedAsset) {
-                alert("Please select an asset!");
-                return;
+    // Function to format asset display text
+    function formatAssetDisplay(asset) {
+        let displayText =
+            `${asset.asset_name || 'N/A'} (${asset.asset_category || 'N/A'}) (${asset.asset_type || 'N/A'})`;
+        if (asset.asset_tag) {
+            displayText += ` [${asset.asset_tag}]`;
+        }
+        return displayText;
+    }
+
+    // Function to pre-select asset by tag
+    function selectAssetByTag(assetTag, availableAssets, searchInput, selectedAssetIdInput, suggestions) {
+        if (!assetTag) return;
+
+        // Find asset with matching tag
+        const matchedAsset = availableAssets.find(a => a.asset_tag === assetTag);
+
+        if (matchedAsset) {
+            // Set the search input value to the formatted display text
+            searchInput.value = formatAssetDisplay(matchedAsset);
+
+            // Set the selected asset
+            assignSelectedAsset = matchedAsset;
+
+            // Set the hidden input value
+            if (selectedAssetIdInput) {
+                selectedAssetIdInput.value = matchedAsset.id;
             }
-            showAssignSlide(2);
-        } else {
-            document.querySelector('#assignModal #assetForm').submit();
+
+            // Clear any suggestions
+            if (suggestions) {
+                suggestions.innerHTML = '';
+                suggestions.style.display = 'none';
+            }
         }
     }
 
-    function prevAssignSlide() {
-        if (assignModalSlide === 2) showAssignSlide(1);
+    // Function to update department based on selected user
+    function updateDepartmentFromUser(selectElement, departmentInput) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const department = selectedOption.getAttribute('data-department') || '';
+        departmentInput.value = department;
     }
 
+    // Initialize Assign Modal
     document.addEventListener('DOMContentLoaded', () => {
         const assignModal = document.getElementById('assignModal');
-        const searchInput = document.getElementById('assetSearch');
-        const suggestions = document.getElementById('assetSuggestions');
-        const selectedAssetIdInput = document.getElementById('selectedAssetId');
+        const searchInput = document.getElementById('assignAssetSearch');
+        const suggestions = document.getElementById('assignAssetSuggestions');
+        const selectedAssetIdInput = document.getElementById('assignSelectedAssetId');
+        const requestIdInput = document.getElementById('assignRequestIdInput');
+        const assignedToSelect = document.getElementById('assignAssignedTo');
+        const departmentInput = document.getElementById('assignDepartment');
 
         const availableAssets = @json($jsAssets);
 
-        assignModal.addEventListener('show.bs.modal', (event) => {
-            assignModal.querySelector('#assetForm').reset();
-            selectedAsset = null;
-            selectedAssetIdInput.value = '';
-            document.getElementById('requestIdInput').value = ''; // reset request id
-
-            // Get the button that triggered the modal
-            const button = event.relatedTarget;
-            if (button) {
-                const requestId = button.getAttribute('data-request-id');
-                if (requestId) {
-                    document.getElementById('requestIdInput').value = requestId;
-                }
-            }
-
-            showAssignSlide(1);
-            suggestions.style.display = 'none';
-        });
-
-
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase().trim();
-            suggestions.innerHTML = '';
-            if (!query) {
-                suggestions.style.display = 'none';
-                selectedAssetIdInput.value = '';
-                selectedAsset = null;
-                return;
-            }
-
-            const filtered = availableAssets.filter(a =>
-                a.asset_name?.toLowerCase().includes(query) ||
-                a.asset_category?.toLowerCase().includes(query) ||
-                a.asset_type?.toLowerCase().includes(query)
-            );
-
-            filtered.forEach(a => {
-                const item = document.createElement('a');
-                item.className = 'list-group-item list-group-item-action';
-                item.href = '#';
-                item.textContent = `${a.asset_name} (${a.asset_category}, ${a.asset_type})`;
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    searchInput.value = a.asset_name;
-                    selectedAsset = a;
-                    selectedAssetIdInput.value = a.id; // store selected asset id
+        if (assignModal) {
+            assignModal.addEventListener('show.bs.modal', (event) => {
+                // Reset form
+                if (searchInput) searchInput.value = '';
+                if (suggestions) {
+                    suggestions.innerHTML = '';
                     suggestions.style.display = 'none';
-                });
-                suggestions.appendChild(item);
+                }
+                if (selectedAssetIdInput) selectedAssetIdInput.value = '';
+                if (requestIdInput) requestIdInput.value = '';
+                if (assignedToSelect) assignedToSelect.value = '';
+                if (departmentInput) departmentInput.value = '';
+                assignSelectedAsset = null;
+
+                // Get the button that triggered the modal
+                const button = event.relatedTarget;
+                if (button) {
+                    const requestId = button.getAttribute('data-request-id');
+                    if (requestId && requestIdInput) {
+                        requestIdInput.value = requestId;
+                    }
+
+                    // Get the asset tag from the button
+                    const assetTag = button.getAttribute('data-asset-tag');
+                    if (assetTag && searchInput && selectedAssetIdInput) {
+                        // Pre-select the asset with this tag
+                        selectAssetByTag(assetTag, availableAssets, searchInput, selectedAssetIdInput,
+                            suggestions);
+                    }
+                }
             });
 
-            suggestions.style.display = filtered.length ? 'block' : 'none';
-        });
+            // Update department when user is selected
+            if (assignedToSelect && departmentInput) {
+                assignedToSelect.addEventListener('change', function() {
+                    updateDepartmentFromUser(this, departmentInput);
+                });
+            }
 
-        document.addEventListener('click', (e) => {
-            if (!assignModal.contains(e.target)) suggestions.style.display = 'none';
-        });
+            // Show all assets when the search input is clicked
+            if (searchInput) {
+                searchInput.addEventListener('click', () => {
+                    // Show all available assets
+                    suggestions.innerHTML = '';
+
+                    if (availableAssets.length === 0) {
+                        const noItem = document.createElement('a');
+                        noItem.className = 'list-group-item list-group-item-action disabled';
+                        noItem.href = '#';
+                        noItem.textContent = 'No assets available';
+                        noItem.style.cursor = 'default';
+                        suggestions.appendChild(noItem);
+                        suggestions.style.display = 'block';
+                        return;
+                    }
+
+                    availableAssets.forEach(asset => {
+                        const item = document.createElement('a');
+                        item.className = 'list-group-item list-group-item-action';
+                        item.href = '#';
+
+                        // Format the display text using the same format function
+                        item.textContent = formatAssetDisplay(asset);
+
+                        item.addEventListener('click', (e) => {
+                            e.preventDefault();
+
+                            // Set the search input value to the formatted display text
+                            searchInput.value = formatAssetDisplay(asset);
+
+                            assignSelectedAsset = asset;
+                            if (selectedAssetIdInput) selectedAssetIdInput.value = asset
+                                .id;
+                            if (suggestions) suggestions.style.display = 'none';
+                        });
+                        suggestions.appendChild(item);
+                    });
+
+                    suggestions.style.display = 'block';
+                });
+            }
+        }
     });
 </script>

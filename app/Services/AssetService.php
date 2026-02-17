@@ -265,6 +265,7 @@ class AssetService
             'status' => 'Closed'
         ]);
 
+        $this->logAssetChange($asset, 'Changed ', 'assigned_to', null, $data['assigned_to']);
         $this->notification->notifyUsersWithModuleAccess(
             'Assets',
             'read',

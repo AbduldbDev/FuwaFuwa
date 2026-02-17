@@ -69,7 +69,6 @@ class AssetRequestService
         return Assets::with(['technicalSpecifications'])->whereNull('assigned_to')->get();
     }
 
-
     public function getDashboardData()
     {
         return [
@@ -109,6 +108,7 @@ class AssetRequestService
 
         $updateData = [
             'status' => $isAvailable ? 'For Release' : 'In Progress',
+            'asset_tag' => $data['asset_tag'] ?? null,
         ];
 
         if ($request->status === 'For Review') {

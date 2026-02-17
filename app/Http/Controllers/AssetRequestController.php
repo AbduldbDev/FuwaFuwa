@@ -61,7 +61,7 @@ class AssetRequestController extends Controller
         $this->authorizeWrite();
 
         try {
-            $this->assetRequestService->forreview($assetRequest, $request->only(['status', 'remarks']));
+            $this->assetRequestService->forreview($assetRequest, $request->only(['status', 'remarks', 'asset_tag']));
 
             return redirect()->back()->with('success', 'Asset request status updated.');
         } catch (\Throwable $e) {
