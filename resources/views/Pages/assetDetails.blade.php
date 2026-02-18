@@ -685,7 +685,7 @@
                                                     @if ($log->cost)
                                                         <p class="mb-1">
                                                             <span class="text-muted small">Cost:</span>
-                                                            ${{ number_format($log->cost, 2) }}
+                                                            ₱{{ number_format($log->cost, 2) }}
                                                         </p>
                                                     @endif
 
