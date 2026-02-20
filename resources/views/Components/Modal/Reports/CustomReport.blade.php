@@ -100,8 +100,8 @@
                 <!-- Modal Footer -->
                 <div class="modal-footer d-flex justify-content-between">
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success px-4">Submit</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
                     </div>
                 </div>
 

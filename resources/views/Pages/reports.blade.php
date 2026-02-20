@@ -3,21 +3,23 @@
 @section('content')
     <div id="reports" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Reports & Analytics</h2>
             <div class="group-box">
-                <button class="add-btn" data-bs-toggle="modal" data-bs-target="#customReport">
-                    <i class="fa-solid fa-plus"></i>
-                    Custom Report
-                </button>
-                <i class="fa-regular fa-bell notif-bell"></i>
+                @if (Auth::user()->canAccess('Reports', 'write'))
+                    <button class="add-btn" data-bs-toggle="modal" data-bs-target="#customReport">
+                        <i class="fa-solid fa-plus"></i>
+                        <div class="btn-text">Custom Report</div>
+                    </button>
+                @endif
+                <x-notification-dropdown />
             </div>
             @include('Components.Modal.Reports.CustomReport')
         </div>
 
         <!-- numbers -->
-        <div class="row my-4">
-            <div class="col-lg-3 col-md-6">
+        <div class="row mb-4">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <div class="d-flex align-items-center gap-3">
                         <div class="number-icon" style="color: #1E40AF; background: #E0E7FF;">
@@ -31,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <div class="d-flex align-items-center gap-3">
                         <div class="number-icon" style="color: #6D28D9; background: #EDE9FE;">
@@ -45,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <div class="d-flex align-items-center gap-3">
                         <div class="number-icon" style="color: #166534; background: #DCFCE7;">

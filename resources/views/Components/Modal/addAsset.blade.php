@@ -16,14 +16,14 @@
                     <div id="slide1">
                         <p class="form-label">Select Asset Type</p>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col-12 col-md-6 mb-2">
                                 <div class="asset-option" onclick="selectCategory('Physical Asset', this)">
                                     <i class="fa-solid fa-box"></i>
                                     <h6>Physical Asset</h6>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6 mb-2">
                                 <div class="asset-option" onclick="selectCategory('Digital Asset', this)">
                                     <i class="fa-solid fa-laptop-code"></i>
                                     <h6>Digital Asset</h6>
@@ -689,7 +689,7 @@
                 </div>
 
                 <div class="modal-footer modal-footer-custom">
-                    <button type="button" class="btn btn-secondary" onclick="prevSlide()">
+                    <button type="button" class="back-btn" onclick="prevSlide()">
                         Back
                     </button>
                     <button type="button" class="next-btn" onclick="nextSlide()">Next</button>

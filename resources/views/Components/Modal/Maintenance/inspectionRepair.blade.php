@@ -89,11 +89,12 @@
                  <hr />
 
                  <!-- ===== priority ===== -->
-                 <section class="mb-4">
+                 <section id="maintenance-priority" class="mb-4">
                      <h6 class="fw-semibold mb-3">
                          <i class="fa-solid fa-flag me-2"></i>
                          Priority Level
                      </h6>
+
                      @php
                          $priorityClass = match ($item->priority) {
                              'Low' => 'low',
@@ -104,7 +105,7 @@
                          };
                      @endphp
 
-                     <span class="priority-badge low" style="font-size: 14px;">
+                     <span class="priority-badge {{ $priorityClass }}" style="font-size: 14px;">
                          {{ $item->priority }}
                      </span>
                  </section>
@@ -118,7 +119,7 @@
                          enctype="multipart/form-data">
                          @csrf
                          @method('PUT')
-                         <h6 class="fw-semibold mb-3" style="font-size: 20px;">
+                         <h6 class="form label fw-semibold mb-3">
                              <i class="fa-solid fa-calendar-days me-2"></i>
                              Maintenance Schedule
                          </h6>

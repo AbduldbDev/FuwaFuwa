@@ -19,7 +19,7 @@
             <form id="companyForm" action="{{ route('system-configuration.updateOrCreate') }}" method="POST">
                 @csrf
                 <!-- company name -->
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-6">
                         <label>Company Name</label>
                         <input type="text" class="form-control" id="companyName"
@@ -27,7 +27,7 @@
                     </div>
 
                     <!-- brand name -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-2">
                         <label>Brand Name</label>
                         <input type="text" class="form-control" id="brandName"
                             value="{{ $CompanyProfile->brand_name ?? '' }}" required name="brand_name" />
@@ -35,15 +35,15 @@
                 </div>
 
                 <!-- contact email -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6 mb-2">
                         <label>Contact Email</label>
                         <input type="email" class="form-control" id="email"
                             value="{{ $CompanyProfile->contact_email ?? '' }}" required name="contact_email" />
                     </div>
 
                     <!-- contact phone -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-4">
                         <label>Contact Phone</label>
                         <input type="tel" class="form-control" id="phone"
                             value="{{ $CompanyProfile->contact_phone ?? '' }}" required name="contact_phone" />

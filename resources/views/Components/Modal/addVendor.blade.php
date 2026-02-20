@@ -18,42 +18,42 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">
                                 Vendor Name <span class="text-danger">*</span>
                             </label>
                             <input type="text" class="form-control" name="name" />
                         </div>
 
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">
                                 Contact Person <span class="text-danger">*</span>
                             </label>
                             <input type="text" class="form-control" name="contact_person" />
                         </div>
 
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">
                                 Contact Email <span class="text-danger">*</span>
                             </label>
                             <input type="email" class="form-control" name="contact_email" />
                         </div>
 
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">
                                 Contact Number <span class="text-danger">*</span>
                             </label>
                             <input type="tel" class="form-control" name="contact_number" />
                         </div>
 
-                        <div class="col-lg-6 ">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">
                                 Category <span class="text-danger">*</span>
                             </label>
                             <input type="text" class="form-control" name="category" />
                         </div>
 
-                        <div class="col-lg-6 ">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Status <span class="text-danger">*</span></label>
 
                             <select class="form-select" name="status" required>
@@ -69,10 +69,10 @@
 
             <!-- modal footer -->
             <div class="modal-footer border-0 px-4 pb-4">
-                <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-danger " data-bs-dismiss="modal">
                     Cancel
                 </button>
-                <button type="submit" class="btn btn-success px-4" form="vendorForm">
+                <button type="submit" class="btn btn-success" form="vendorForm">
                     Save
                 </button>
             </div>

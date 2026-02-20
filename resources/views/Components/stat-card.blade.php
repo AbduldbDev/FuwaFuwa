@@ -1,5 +1,5 @@
 @props([
-    'col' => 'col-lg-3 col-md-6 col-sm-12 mb-3',
+    'col' => 'col-12 col-md-6 col-xl-3 mb-3',
 ])
 
 <div class="{{ $col }}">

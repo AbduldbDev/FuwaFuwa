@@ -10,7 +10,7 @@
                 @if (Auth::user()->canAccess('Asset Request', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#requestAsset">
                         <i class="fa-solid fa-plus"></i>
-                        Request Asset
+                        <div class="btn-text">Request Asset</div>
                     </button>
                 @endif
 
@@ -19,7 +19,7 @@
         </div>
 
         <!-- numbers -->
-        <div class="row my-4">
+        <div class="row mb-2">
             <x-stat-card icon="fa-solid fa-file-circle-plus" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Request"
                 :value="$TotalRequests" />
 
@@ -97,7 +97,7 @@
                         };
                     @endphp
 
-                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4 request-card-wrapper"
+                    <div class="col-12 col-md-12 col-xl-4 mb-4 request-card-wrapper"
                         data-status="{{ strtolower($item->status) }}"
                         data-search="{{ strtolower($item->asset_type . ' ' . $item->model . ' ' . $item->request_id . ' ' . $item->status) }}">
                         <div class="request-card {{ $CardClass }}">
@@ -130,11 +130,11 @@
                                     <div class="asset-icon">
                                         <i class="fa-solid {{ $icon }}"></i>
                                     </div>
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">{{ $item->asset_type }} - {{ $item->model }}</h6>
+                                    <div class="request-info">
+                                        <h6>{{ $item->asset_type }} - {{ $item->model }}</h6>
                                         <small class="text-muted">{{ $item->request_id }}</small>
 
-                                        <div class="mt-1">
+                                        <div class="mobile-view">
                                             <span class="priority-badge low">{{ $item->status }}</span>
                                             <span
                                                 class="priority-badge  {{ $priorityClass }} low">{{ ucfirst($item->priority) }}
@@ -144,7 +144,7 @@
                                 </div>
 
                                 <!-- time and buttons -->
-                                <div class="d-flex flex-column align-items-end gap-3">
+                                <div class="d-flex flex-column align-items-end gap-2">
                                     <small class="text-muted">
                                         {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans(['short' => true, 'parts' => 1]) }}
                                     </small>

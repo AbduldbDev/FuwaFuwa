@@ -10,7 +10,7 @@
                 @if (Auth::user()->canAccess('User', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addUserModal">
                         <i class="fa-solid fa-plus"></i>
-                        Add New User
+                        <div class="btn-text">Add User</div>
                     </button>
                 @endif
 
@@ -20,13 +20,13 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-users" icon-color="#1E40AF"
-                icon-bg="#E0E7FF" title="Total Users" :value="$total" />
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-3" icon="fa-solid fa-users" icon-color="#1E40AF" icon-bg="#E0E7FF"
+                title="Total Users" :value="$total" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-user-check" icon-color="#166534"
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-3" icon="fa-solid fa-user-check" icon-color="#166534"
                 icon-bg="#DCFCE7" title="Active Users" :value="$active" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-user-xmark" icon-color="#92400E"
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-3" icon="fa-solid fa-user-xmark" icon-color="#92400E"
                 icon-bg="#FFEDD5" title="Inactive Users" :value="$inactive" />
 
         </div>
@@ -65,75 +65,76 @@
             </div>
 
             <!-- profiles -->
-            <div class="users-container">
 
-                <div class="row my-4">
-                    @foreach ($items as $item)
-                        <div class="col-lg-3 col-md-6 user-card mb-4" data-department="{{ $item->department }}"
-                            data-role="{{ $item->user_type }}" data-status="{{ ucfirst($item->status) }}">
+            <div class="row my-4">
+                @foreach ($items as $item)
+                    <div class="col-12 col-md-6 col-xl-3 user-card mb-3" data-department="{{ $item->department }}"
+                        data-role="{{ $item->user_type }}" data-status="{{ ucfirst($item->status) }}">
 
-                            <div class="profile-card">
-                                <!-- profile picture and name -->
-                                <div class="profile-info">
-                                    <div class="d-flex gap-3">
-                                        <!-- image -->
-                                        <img src="assets/user.png" alt="User" />
-                                        <!-- name -->
-                                        <div class="profile-name">
-                                            <strong>{{ $item->name }}</strong><br />
+                        <div class="profile-card">
+                            <!-- profile picture and name -->
+                            <div class="profile-info">
+                                <div class="d-flex  align-items-center gap-3">
+                                    <!-- image -->
+                                    <img src="assets/user.png" alt="User" />
+                                    <!-- name -->
+                                    <div class="profile-name">
+                                        <strong>{{ $item->name }}</strong>
+                                        <div>
                                             <span
                                                 class="user-status {{ $item->status === 'active' ? 'active-user' : 'inactive-user' }}">{{ ucfirst($item->status) }}</span>
                                         </div>
                                     </div>
-                                    @if (Auth::user()->canAccess('User', 'write'))
-                                        <div class="control-buttons d-flex">
-                                            <button class="icon-btn" data-bs-toggle="modal"
-                                                data-bs-target="#editUserModal{{ $item->id }}">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                            </button>
-                                            <!-- delete -->
-                                            <button class="delete-btn delete-user" title="Delete User"
-                                                data-url="{{ route('user-management.delete', $item->id) }}">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    @endif
+                                </div>
+                                @if (Auth::user()->canAccess('User', 'write'))
+                                    <div class="control-buttons d-flex">
+                                        <button class="icon-btn" data-bs-toggle="modal"
+                                            data-bs-target="#editUserModal{{ $item->id }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <!-- delete -->
+                                        <button class="delete-btn delete-user" title="Delete User"
+                                            data-url="{{ route('user-management.delete', $item->id) }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- profile contacts and button -->
+                            <div class="profile-contacts mt-4">
+                                <!-- user id -->
+                                <div class="info-row">
+                                    <span class="label">User ID</span>
+                                    <span class="value">USER{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
+
                                 </div>
 
-                                <!-- profile contacts and button -->
-                                <div class="profile-contacts mt-4">
-                                    <!-- user id -->
-                                    <div class="info-row">
-                                        <span class="label">User ID</span>
-                                        <span class="value">USER{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</span>
+                                <!-- email -->
+                                <div class="info-row">
+                                    <span class="label">Email</span>
+                                    <span class="value">{{ $item->email }}</span>
+                                </div>
 
-                                    </div>
+                                <!-- department -->
+                                <div class="info-row">
+                                    <span class="label">Department</span>
+                                    <span class="value">{{ $item->department }}</span>
+                                </div>
 
-                                    <!-- email -->
-                                    <div class="info-row">
-                                        <span class="label">Email</span>
-                                        <span class="value">{{ $item->email }}</span>
-                                    </div>
-
-                                    <!-- department -->
-                                    <div class="info-row">
-                                        <span class="label">Department</span>
-                                        <span class="value">{{ $item->department }}</span>
-                                    </div>
-
-                                    <!-- user type -->
-                                    <div class="info-row">
-                                        <span class="label">User Role</span>
-                                        <span class="value">{{ ucfirst($item->user_type) }}</span>
-                                    </div>
+                                <!-- user type -->
+                                <div class="info-row">
+                                    <span class="label">User Role</span>
+                                    <span class="value">{{ ucfirst($item->user_type) }}</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        @include('Components/Modal/edituser')
-                    @endforeach
-                </div>
+                    @include('Components/Modal/edituser')
+                @endforeach
             </div>
+
         </div>
     </div>
     @include('Components/Modal/adduser')

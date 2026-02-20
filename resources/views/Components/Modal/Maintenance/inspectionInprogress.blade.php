@@ -68,7 +68,7 @@
 
                 <!-- ===== maintenance schedule ===== -->
                 <section class="mb-4">
-                    <h6 class="fw-semibold mb-3">
+                    <h6 class="form label fw-semibold mb-3">
                         <i class="fa-solid fa-calendar-days me-2"></i>
                         Maintenance Schedule
                     </h6>
@@ -121,8 +121,8 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <h6 class="fw-semibold mb-3" style="font-size: 20px;">
-                            <i class="fa-solid fa-calendar-days me-2"></i>
+                        <h6 class="form-label fw-semibold mb-3">
+                            <i class="fa-solid fa-file-circle-check me-2"></i>
                             Action Taken
                         </h6>
                         <input type="hidden" name="technician" value="{{ $item->technician }}">

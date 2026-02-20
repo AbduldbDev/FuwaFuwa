@@ -19,13 +19,13 @@
                       </h6>
 
                       <div class="row g-3">
-                          <div class="col-md-6">
+                          <div class="col-12 col-md-6">
                               <label class="form-label text-muted">Requested By</label>
-                              <div class="fw-semibold">{{ $item->requested_by }}</div>
+                              <div class="description-text fw-semibold">{{ $item->requested_by }}</div>
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-12 col-md-6">
                               <label class="form-label text-muted">Department</label>
-                              <div class="fw-semibold">{{ $item->department }}</div>
+                              <div class="description-text fw-semibold">{{ $item->department }}</div>
                           </div>
                       </div>
                   </section>
@@ -40,25 +40,25 @@
                       </h6>
 
                       <div class="row g-3">
-                          <div class="col-lg-6">
+                          <div class="col-12 col-md-6 col-xl-6">
                               <label class="form-label text-muted">Asset Type</label>
-                              <div class="fw-semibold">{{ $item->asset_type }}</div>
+                              <div class="description-text fw-semibold">{{ $item->asset_type }}</div>
                           </div>
-                          <div class="col-lg-6">
+                          <div class="col-12 col-md-6 col-xl-6">
                               <label class="form-label text-muted">Asset Category</label>
-                              <div class="fw-semibold">{{ $item->asset_category }}</div>
+                              <div class="description-text fw-semibold">{{ $item->asset_category }}</div>
                           </div>
 
-                          <div class="col-lg-6">
+                          <div class="col-12 col-md-6 col-xl-6">
                               <label class="form-label text-muted">Quantity</label>
-                              <div class="fw-semibold">{{ $item->quantity }} Units</div>
+                              <div class="description-text fw-semibold">{{ $item->quantity }} Units</div>
                           </div>
 
-                          <div class="col-lg-6">
+                          <div class="col-12 col-md-6 col-xl-6">
                               <label class="form-label text-muted">
                                   Preferred Model / Specifications
                               </label>
-                              <div class="fw-semibold">
+                              <div class="description-text fw-semibold">
                                   {{ $item->model }}
                               </div>
                           </div>
@@ -76,12 +76,12 @@
 
                       <div class="mb-3">
                           <label class="form-label text-muted">Reason for Request</label>
-                          <div> {{ $item->request_reason }}</div>
+                          <div class="description-text fw-semibold"> {{ $item->request_reason }}</div>
                       </div>
 
                       <div>
                           <label class="form-label text-muted">Detailed Purpose</label>
-                          <p>
+                          <p class="description-text fw-semibold">
                               {{ $item->detailed_reason }}
                           </p>
                       </div>
@@ -149,7 +149,7 @@
 
               <!-- modal footer -->
               <div class="modal-footer">
-                  <button class="btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
+                  <button class="back-btn btn-outline-secondary shadow-none" data-bs-dismiss="modal">Close</button>
 
                   {{-- ADMIN ACTIONS --}}
                   @if (Auth::user()->canAccess('Asset Request', 'write') && Auth::user()->user_type === 'admin')

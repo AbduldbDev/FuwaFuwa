@@ -117,7 +117,7 @@
                  <hr />
 
                  <!-- ===== priority ===== -->
-                 <section class="mb-4">
+                 <section id="maintenance-priority" class="mb-4">
                      <h6 class="fw-semibold mb-3">
                          <i class="fa-solid fa-flag me-2"></i>
                          Priority Level
@@ -133,7 +133,7 @@
                          };
                      @endphp
 
-                     <span class="priority-badge low" style="font-size: 14px;">
+                     <span class="priority-badge {{ $priorityClass }}" style="font-size: 14px;">
                          {{ $item->priority }}
                      </span>
                  </section>
@@ -142,7 +142,7 @@
 
                  <!-- ===== maintenance schedule ===== -->
                  <section class="mb-4">
-                     <h6 class="fw-semibold mb-3">
+                     <h6 class="form label fw-semibold mb-3">
                          <i class="fa-solid fa-calendar-days me-2"></i>
                          Maintenance Schedule
                      </h6>

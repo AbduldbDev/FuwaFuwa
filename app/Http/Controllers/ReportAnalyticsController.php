@@ -23,14 +23,14 @@ class ReportAnalyticsController extends Controller
 
     private function authorizeRead(): void
     {
-        if (!user()->canAccess('Maintenance', 'read')) {
+        if (!user()->canAccess('Reports', 'read')) {
             abort(403, 'Unauthorized');
         }
     }
 
     private function authorizeWrite(): void
     {
-        if (!user()->canAccess('Maintenance', 'write')) {
+        if (!user()->canAccess('Reports', 'write')) {
             abort(403, 'Unauthorized');
         }
     }
@@ -38,7 +38,6 @@ class ReportAnalyticsController extends Controller
     public function index()
     {
         $this->authorizeRead();
-
 
         $data = $this->reportService->getDashboardData();
 
@@ -55,8 +54,10 @@ class ReportAnalyticsController extends Controller
 
         return Storage::download($report->file_path);
     }
+
     public function generateCustomReport(Request $request)
     {
+        $this->authorizeWrite();
         $reportType = $request->input('report_type');
         $columns = $request->input('columns', '');
         $startDate = $request->input('start_date');

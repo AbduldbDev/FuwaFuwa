@@ -15,9 +15,9 @@
 
                  <!-- ===== maintenance information ===== -->
                  <section class="mb-4">
-                     <h6 class="fw-semibold mb-3">
-                         <i class="fa-solid fa-tools me-2"></i>
-                         Maintenance Information
+                     <h6 class="form label fw-semibold mb-3">
+                         <i class="fa-solid fa-calendar-days me-2"></i>
+                         Maintenance Schedule
                      </h6>
 
                      <div class="row g-3">
@@ -63,11 +63,12 @@
                  <!-- ===== issue/task description ===== -->
 
                  <!-- ===== priority ===== -->
-                 <section class="mb-4">
+                 <section id="maintenance-priority" class="mb-4">
                      <h6 class="fw-semibold mb-3">
                          <i class="fa-solid fa-flag me-2"></i>
                          Priority Level
                      </h6>
+
                      @php
                          $priorityClass = match ($item->priority) {
                              'Low' => 'low',
@@ -78,7 +79,7 @@
                          };
                      @endphp
 
-                     <span class="priority-badge low" style="font-size: 14px;">
+                     <span class="priority-badge {{ $priorityClass }}" style="font-size: 14px;">
                          {{ $item->priority }}
                      </span>
                  </section>

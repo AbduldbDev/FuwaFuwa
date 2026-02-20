@@ -58,12 +58,12 @@
                                </div>
                            </div>
                            <div class="row mb-3">
-                               <div class="col-md-6">
+                               <div class="col-12 col-md-6 mb-3">
                                    <label class="form-label">Reported By <span class="text-danger">*</span></label>
                                    <div class="fw-semibold">{{ Auth::user()->name }}</div>
                                    <input type="hidden" class="form-control" value="{{ Auth::user()->name }}" readonly>
                                </div>
-                               <div class="col-md-6">
+                               <div class="col-12 col-md-6 mb-3">
                                    <label class="form-label">Department <span class="text-danger">*</span></label>
                                    <div class="fw-semibold">{{ Auth::user()->department }}</div>
                                    <input type="hidden" class="form-control" value="{{ Auth::user()->department }}"
@@ -90,7 +90,7 @@
 
                            <!-- Shared Asset Info -->
                            <div class="row mb-3">
-                               <div class="col-md-4">
+                               <div class="col-12 col-md-6 mb-3">
                                    <div class="position-relative">
                                        <label class="form-label">Asset Tags <span class="text-danger">*</span></label>
                                        <input type="text" id="assetInput" class="form-control"
@@ -111,11 +111,12 @@
                                    <input type="hidden" name="asset_tag">
 
                                </div>
-                               <div class="col-md-4">
+                               <div class="col-12 col-md-6 mb-3">
                                    <label class="form-label">Asset Name <span class="text-danger">*</span></label>
                                    <input type="text" name="asset_name" class="form-control" Asset Tags>
                                </div>
-                               <div class="col-md-4">
+
+                               <div class="col-12 col-md-6 mb-3">
                                    <label class="form-label">Last Maintenance Date </label>
                                    <input type="date" name="last_maintenance_date" class="form-control">
                                </div>

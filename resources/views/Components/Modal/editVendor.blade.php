@@ -20,32 +20,32 @@
                         <h6>Basic Information</h6>
                     </div>
                     <div class="mb-5 row">
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Vendor Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" value="{{ $item->name }}"
                                 required />
                         </div>
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Contact Person <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="contact_person"
                                 value="{{ $item->contact_person }}" required />
                         </div>
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Contact Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" name="contact_email"
                                 value="{{ $item->contact_email }}" required />
                         </div>
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Contact Number <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" name="contact_number"
                                 value="{{ $item->contact_number }}" required />
                         </div>
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Category <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="category" value="{{ $item->category }}"
                                 required />
                         </div>
-                        <div class="col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Status <span class="text-danger">*</span></label>
                             <select class="form-select" name="status" required>
                                 <option value="" disabled>Choose status</option>
@@ -98,9 +98,8 @@
             </div>
 
             <div class="modal-footer border-0 px-4 pb-4">
-                <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-success px-4"
-                    form="vendorForm{{ $item->id }}">Update</button>
+                <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" form="vendorForm{{ $item->id }}">Update</button>
             </div>
         </div>
     </div>

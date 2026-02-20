@@ -3,14 +3,14 @@
 @section('content')
     <div id="maintenance" class="content-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Maintenance & Repair</h2>
             <div class="group-box">
 
                 @if (Auth::user()->canAccess('Maintenance', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetIssueModal">
                         <i class="fa-solid fa-plus"></i>
-                        Asset Issue
+                        <div class="btn-text">Asset Issue</div>
                     </button>
                 @endif
                 <x-notification-dropdown />
@@ -18,7 +18,7 @@
         </div>
 
         <!-- numbers -->
-        <div class="row my-4">
+        <div class="row mb-4">
             <x-stat-card icon="fa-solid fa-tools" icon-color="#1E40AF" icon-bg="#E0E7FF" title="Total Maintenance"
                 :value="number_format($TotalMaintenance)" />
 
@@ -36,7 +36,7 @@
         <!-- calendar schedule -->
         <div class="maintenance-container mb-4">
             <div class="row g-4">
-                <div class="col-lg-4 col-md-12"> <!-- calendar -->
+                <div class="col-12 col-md-12 col-xl-4 mb-3"> <!-- calendar -->
                     <div class="calendar-card" style="position:relative;">
                         <!-- Header -->
                         <div class="calendar-header">
@@ -98,8 +98,8 @@
                     </div>
 
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <section class="repair-wrapper overflow-auto h-100">
+                <div class="col-12 col-md-6 col-xl-4 mb-3">
+                    <section class="repair-wrapper">
                         <header class="repair-header">
                             <h4>Findings <span>({{ $ForInspection->count() }})</span></h4>
                         </header>
@@ -107,18 +107,19 @@
                         @forelse ($ForInspection as $item)
                             <article class="repair-row">
                                 <div class="repair-info">
-                                    <div class="repair-top mb-1">
+                                    <div class="repair-top">
                                         <span class="repair-id">{{ $item->maintenance_id }}</span>
                                     </div>
                                     <span class="issue-reason">{{ $item->description }}</span>
                                     <div class="repair-meta">
-                                        <span>Asset: {{ $item->asset_tag }}</span>
-                                        <span>Issued by: {{ $item->reporter->name }}</span>
+                                        <span>Asset: <strong>{{ $item->asset_tag }}</strong></span>
+                                        <span>Issued by: <strong>{{ $item->reporter->name }}</strong></span>
                                     </div>
                                 </div>
                                 <button class="schedule-btn" data-bs-toggle="modal"
-                                    data-bs-target="#scheduleMaintenance{{ $item->id }}">Schedule
-                                    Maintenance</button>
+                                    data-bs-target="#scheduleMaintenance{{ $item->id }}"><i
+                                        class="fa-regular fa-calendar-check"></i>
+                                    <div class="btn-text">Schedule Maintenance</div>
                             </article>
                             @include('Components.Modal.Maintenance.inspectionRepair')
                         @empty
@@ -129,8 +130,9 @@
                         @endforelse
                     </section>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <section class="repair-wrapper overflow-auto h-100">
+
+                <div class="col-12 col-md-6 col-xl-4 mb-4">
+                    <section class="repair-wrapper">
                         <header class="repair-header">
                             <h4>For Repair <span>({{ $PendingCorrective->count() }})</span></h4>
                         </header>
@@ -169,37 +171,34 @@
         <!-- overview -->
         <div class="request-container">
             <!-- controls -->
-            <div class="request-control">
+            <div class="request-control ">
                 <h3 class="mb-3">Maintenance Overview</h3>
                 <input type="text" id="searchFilter" class="form-control form-control-sm w-25"
                     placeholder="Search maintenance id, asset tag, or name">
 
             </div>
 
-            <div class="d-flex gap-2 mb-4 justify-content-between">
+            <div class="filters d-flex gap-2 mb-4">
                 @php
                     $counts = $RequestStatusCounts ?? [];
                     $total = array_sum($counts);
                 @endphp
 
-                <div class="d-flex gap-2 mb-4">
+                <span class="filter-pill all active" data-status="all">
+                    All <strong>({{ $total }})</strong>
+                </span>
 
-                    <span class="filter-pill all active" data-status="all">
-                        All <strong>({{ $total }})</strong>
-                    </span>
+                <span class="filter-pill preventive" data-status="Preventive">
+                    Preventive <strong>({{ $counts['Preventive'] ?? 0 }})</strong>
+                </span>
 
-                    <span class="filter-pill preventive" data-status="Preventive">
-                        Preventive <strong>({{ $counts['Preventive'] ?? 0 }})</strong>
-                    </span>
+                <span class="filter-pill corrective" data-status="Corrective">
+                    Corrective <strong>({{ $counts['Corrective'] ?? 0 }})</strong>
+                </span>
 
-                    <span class="filter-pill corrective" data-status="Corrective">
-                        Corrective <strong>({{ $counts['Corrective'] ?? 0 }})</strong>
-                    </span>
-
-                    <span class="filter-pill completed" data-status="Completed">
-                        Completed <strong>({{ $counts['Completed'] ?? 0 }})</strong>
-                    </span>
-                </div>
+                <span class="filter-pill completed" data-status="Completed">
+                    Completed <strong>({{ $counts['Completed'] ?? 0 }})</strong>
+                </span>
 
                 <div>
                     <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
@@ -234,7 +233,7 @@
                         };
                     @endphp
 
-                    <div class="col-lg-4 mb-4">
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="request-card request-card-wrapper {{ $CardClass }}"
                             data-type="{{ strtolower($item->maintenance_type) }}"
                             data-status="{{ strtolower($item->status) }}"
@@ -248,7 +247,7 @@
                                         <i class="fa-solid fa-laptop"></i>
                                     </div>
                                     <div>
-                                        <h6 class="mb-1 fw-semibold">{{ $item->maintenance_id }}</h6>
+                                        <h6 class=" fw-semibold">{{ $item->maintenance_id }}</h6>
                                         <a style="text-decoration: none"
                                             href="{{ url('/asset/show/' . $item->asset_tag) }}"><small
                                                 class="text-muted">{{ $item->asset_tag ?? 'N/A' }}</small>
@@ -262,10 +261,10 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-column align-items-end gap-5">
+                                <div class="d-flex flex-column align-items-end gap-4">
                                     <small
                                         class="text-muted">{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans(['short' => true, 'parts' => 1]) }}</small>
-                                    <div class="d-flex gap-2">
+                                    <div class="d-flex">
                                         <button class="btn btn-outline-primary action-btn" data-bs-toggle="modal"
                                             data-bs-target="#viewCorrectiveMaintenance{{ $item->id }}">
                                             <i class="fa-solid fa-eye"></i>

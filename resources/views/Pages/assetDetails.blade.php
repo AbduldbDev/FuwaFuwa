@@ -3,13 +3,13 @@
 @section('content')
     <section id="asset-detail" class="asset-detail-section">
         <!-- navbar -->
-        <div class="navbar">
+        <div class="navbar mb-4">
             <h2>Asset Management</h2>
             <div class="group-box">
 
                 <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
                     <i class="fa-solid fa-plus"></i>
-                    Add New Asset
+                    <div class="btn-text">Add New Asset</div>
                 </button>
 
                 <x-notification-dropdown />
@@ -19,7 +19,7 @@
 
         <!-- asset name -->
         <div class="asset-header my-4">
-            <div class="d-flex justify-content-between">
+            <div class="asset-upper d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     @php
                         $icons = [
@@ -52,16 +52,16 @@
                     </div>
 
                     <!-- Asset Info -->
-                    <div>
+                    <div class="asset-information">
                         <div class="d-flex align-items-center gap-3">
-                            <h4 class="mb-1 fw-semibold">{{ $item->asset_tag }}</h4>
+                            <h4 class="fw-semibold">{{ $item->asset_tag }}</h4>
                             <span class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
                         </div>
 
                         <div class="asset-meta text-muted">
                             <span>{{ $item->asset_name }}</span>
                             <span class="divider">|</span>
-                            <span> <i class="fa-regular fa-user"></i> {{ $item->users->name }}</span>
+                            <span> <i class=" me-1 fa-regular fa-user"></i> {{ $item->users->name }}</span>
                             <span class="divider">|</span>
                             <span>{{ $item->asset_id }}</span>
                         </div>
@@ -117,13 +117,13 @@
 
                             <div class="section-body">
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Delete Reason</div>
-                                    <div class="col-8 value">{{ $item->delete_title }}</div>
+                                    <div class="col-5 label">Delete Reason</div>
+                                    <div class="col-7 value">{{ $item->delete_title }}</div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Reason Description</div>
-                                    <div class="col-8 value">{{ $item->delete_reason }}</div>
+                                    <div class="col-5 label">Reason Description</div>
+                                    <div class="col-7 value">{{ $item->delete_reason }}</div>
                                 </div>
                             </div>
                         </div>
@@ -153,24 +153,24 @@
 
                         <div class="section-body">
                             <div class="row detail-row">
-                                <div class="col-4 label">Asset Type</div>
-                                <div class="col-8 value">{{ $item->asset_type }}</div>
+                                <div class="col-5 label">Asset Type</div>
+                                <div class="col-7 value">{{ $item->asset_type }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Asset Category</div>
-                                <div class="col-8 value">{{ $item->asset_category }}</div>
+                                <div class="col-5 label">Asset Category</div>
+                                <div class="col-7 value">{{ $item->asset_category }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Asset Tag</div>
-                                <div class="col-8 value">{{ $item->asset_tag }}</div>
+                                <div class="col-5 label">Asset Tag</div>
+                                <div class="col-7 value">{{ $item->asset_tag }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Asset Name</div>
-                                <div class="col-8 value">{{ $item->asset_name }}</div>
+                                <div class="col-5 label">Asset Name</div>
+                                <div class="col-7 value">{{ $item->asset_name }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Operational Status</div>
-                                <div class="col-8 value">
+                                <div class="col-5 label">Operational Status</div>
+                                <div class="col-7 value">
                                     <span
                                         class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
                                 </div>
@@ -201,10 +201,10 @@
                         <div class="section-body">
                             @forelse ($item->technicalSpecifications as $spec)
                                 <div class="row detail-row">
-                                    <div class="col-4 label">
+                                    <div class="col-5 label">
                                         {{ ucwords(str_replace('_', ' ', $spec->spec_key)) }}
                                     </div>
-                                    <div class="col-8 value">{{ $spec->spec_value }}</div>
+                                    <div class="col-7 value">{{ $spec->spec_value }}</div>
                                 </div>
                             @empty
                                 <div class="row detail-row">
@@ -240,23 +240,23 @@
 
                             <div class="section-body">
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Assigned To</div>
-                                    <div class="col-8 value">{{ $item->assigned_to ?? 'N/A' }}</div>
+                                    <div class="col-5 label">Assigned To</div>
+                                    <div class="col-7 value">{{ $item->assigned_to ?? 'N/A' }}</div>
                                 </div>
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Department</div>
-                                    <div class="col-8 value">{{ $item->department ?? 'N/A' }}</div>
+                                    <div class="col-5 label">Department</div>
+                                    <div class="col-7 value">{{ $item->department ?? 'N/A' }}</div>
                                 </div>
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Location</div>
-                                    <div class="col-8 value">{{ $item->location ?? 'N/A' }}</div>
+                                    <div class="col-5 label">Location</div>
+                                    <div class="col-7 value">{{ $item->location ?? 'N/A' }}</div>
                                 </div>
                             </div>
                         </div>
                     @endif
 
                     <!-- purchase information -->
-                    <div class="section-card mb-4">
+                    <div class="section-card mb-3">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -279,20 +279,20 @@
 
                         <div class="section-body">
                             <div class="row detail-row">
-                                <div class="col-4 label">Vendor</div>
-                                <div class="col-8 value">
+                                <div class="col-5 label">Vendor</div>
+                                <div class="col-7 value">
                                     {{ $item->vendor->name ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Purchase Date</div>
-                                <div class="col-8 value">
+                                <div class="col-5 label">Purchase Date</div>
+                                <div class="col-7 value">
                                     {{ \Carbon\Carbon::parse($item->purchase_date)->format('F d, Y') }}
                                 </div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Purchase Cost</div>
-                                <div class="col-8 value">Php {{ number_format($item->purchase_cost, 2) }}
+                                <div class="col-5 label">Purchase Cost</div>
+                                <div class="col-7 value">Php {{ number_format($item->purchase_cost, 2) }}
                                 </div>
                             </div>
                         </div>
@@ -323,64 +323,64 @@
                             <div class="section-body">
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Purchase Year</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Purchase Year</div>
+                                    <div class="col-7 value">
                                         {{ $item->purchase_date ? $item->purchase_date->year : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Useful Life (Remaining)</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Useful Life (Remaining)</div>
+                                    <div class="col-7 value">
                                         {{ $item->remaining_life > 0 ? round($item->remaining_life, 2) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Years Used</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Years Used</div>
+                                    <div class="col-7 value">
                                         {{ $item->years_used > 0 ? round($item->years_used, 2) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Purchase Cost</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Purchase Cost</div>
+                                    <div class="col-7 value">
                                         {{ $item->purchase_cost > 0 ? 'Php ' . number_format($item->purchase_cost, 2) : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Salvage Value</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Salvage Value</div>
+                                    <div class="col-7 value">
                                         {{ $item->salvage_value > 0 ? 'Php ' . number_format($item->salvage_value, 2) : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Depreciation Rate</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Depreciation Rate</div>
+                                    <div class="col-7 value">
                                         {{ $item->depreciation_rate > 0 ? number_format($item->depreciation_rate, 2) . '% per year' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Annual Depreciation</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Annual Depreciation</div>
+                                    <div class="col-7 value">
                                         {{ $item->annual_depreciation > 0 ? 'Php ' . number_format($item->annual_depreciation, 2) : 'Php 0.00' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Current Book Value</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Current Book Value</div>
+                                    <div class="col-7 value">
                                         {{ $item->current_value > 0 ? 'Php ' . number_format($item->current_value, 2) : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Total Maintenance Cost</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Total Maintenance Cost</div>
+                                    <div class="col-7 value">
                                         {{ $item->total_maintenance_cost > 0 ? 'Php ' . number_format($item->total_maintenance_cost, 2) : 'Php 0.00' }}
                                     </div>
                                 </div>
@@ -390,7 +390,7 @@
                         </div>
                     @endif
                     <!-- pmaintenance & audit -->
-                    <div class="section-card mb-4">
+                    <div class="section-card mb-3">
                         <div class="section-toggle">
                             <!-- asset title header -->
                             <div class="asset-title" onclick="toggleSection(this)">
@@ -413,11 +413,11 @@
 
                         <div class="section-body">
                             <div class="row detail-row">
-                                <div class="col-4 label">Under Warranty</div>
-                                <div class="col-8 value">{{ $item->compliance_status }}</div>
+                                <div class="col-5 label">Under Warranty</div>
+                                <div class="col-7 value">{{ $item->compliance_status }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">
+                                <div class="col-5 label">
                                     @if ($item->asset_type === 'Digital Asset')
                                         Activation Date
                                     @else
@@ -425,13 +425,13 @@
                                     @endif
                                 </div>
 
-                                <div class="col-8 value">
+                                <div class="col-7 value">
 
                                     {{ $item->warranty_start ? \Carbon\Carbon::parse($item->warranty_start)->format('F d, Y') : 'N/A' }}
                                 </div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">
+                                <div class="col-5 label">
                                     @if ($item->asset_type === 'Digital Asset')
                                         Expiration Date
                                     @else
@@ -439,7 +439,7 @@
                                     @endif
                                 </div>
 
-                                <div class="col-8 value">
+                                <div class="col-7 value">
                                     {{ $item->warranty_end ? \Carbon\Carbon::parse($item->warranty_end)->format('F d, Y') : 'N/A' }}
                                 </div>
 
@@ -447,26 +447,26 @@
 
                             @if ($item->asset_type !== 'Digital Asset')
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Last Maintenance Schedule</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Last Maintenance Schedule</div>
+                                    <div class="col-7 value">
                                         {{ $item->last_maintenance ? \Carbon\Carbon::parse($item->last_maintenance)->format('F d, Y') : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
-                                    <div class="col-4 label">Next Maintenance Schedule</div>
-                                    <div class="col-8 value">
+                                    <div class="col-5 label">Next Maintenance Schedule</div>
+                                    <div class="col-7 value">
                                         {{ $item->next_maintenance ? \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') : 'N/A' }}
                                     </div>
                                 </div>
                             @endif
                             {{-- <div class="row detail-row">
-                                <div class="col-4 label">Useful Life (years)</div>
-                                <div class="col-8 value">{{ $item->useful_life_years }} years</div>
+                                <div class="col-5 label">Useful Life (years)</div>
+                                <div class="col-7 value">{{ $item->useful_life_years }} years</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-4 label">Salvage Value</div>
-                                <div class="col-8 value">Php {{ number_format($item->salvage_value, 2) }}</div>
+                                <div class="col-5 label">Salvage Value</div>
+                                <div class="col-7 value">Php {{ number_format($item->salvage_value, 2) }}</div>
                             </div> --}}
                         </div>
                     </div>
@@ -490,11 +490,11 @@
                         <div class="section-body">
                             @forelse ($item->documents as $doc)
                                 <div class="row detail-row" id="doc-row-{{ $doc->id }}">
-                                    <div class="col-4 label">
+                                    <div class="col-5 label">
                                         {{ $doc->name ?? 'Document' }}
                                     </div>
 
-                                    <div class="col-8 value d-flex align-items-center justify-content-between">
+                                    <div class="col-7 value d-flex align-items-center justify-content-between">
                                         @if (!empty($doc->file))
                                             <a href="{{ asset('storage/' . $doc->file) }}" target="_blank">
                                                 {{ basename($doc->file) }}

@@ -10,7 +10,7 @@
                 @if (Auth::user()->canAccess('Vendor', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#addVendorModal">
                         <i class="fa-solid fa-plus"></i>
-                        Add Vendor
+                        <div class="btn-text">New Vendor</div>
                     </button>
                 @endif
 
@@ -21,14 +21,14 @@
 
         <!-- numbers -->
         <div class="row my-4">
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-building" icon-color="#1E40AF" icon-bg="#E0E7FF"
-                title="Total Vendors" :value="$totalVendors" />
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-3" icon="fa-solid fa-building" icon-color="#1E40AF"
+                icon-bg="#E0E7FF" title="Total Vendors" :value="$totalVendors" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-3" icon="fa-solid fa-shop" icon-color="#166534" icon-bg="#DCFCE7"
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-3" icon="fa-solid fa-shop" icon-color="#166534" icon-bg="#DCFCE7"
                 title="Active Vendors" :value="$totalActive" />
 
-            <x-stat-card col="col-lg-4 col-md-6 col-sm-12 mb-4" icon="fa-solid fa-shop-slash" icon-color="#92400E" icon-bg="#FFEDD5"
-                title="Inactive Vendors" :value="$totalInactive" />
+            <x-stat-card col="col-12 col-md-6 col-xl-4 mb-4" icon="fa-solid fa-shop-slash" icon-color="#92400E"
+                icon-bg="#FFEDD5" title="Inactive Vendors" :value="$totalInactive" />
 
         </div>
 
@@ -49,9 +49,8 @@
                 </div>
             </div>
 
-            <div class="vendor-container">
-                <!-- profiles -->
-
+            <!-- profiles -->
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 @foreach ($items as $item)
                     <div class="vendor-card" data-status="{{ ucfirst($item->status) }}">
 
@@ -110,7 +109,6 @@
                     </div>
                     @include('Components/Modal/editVendor')
                 @endforeach
-
             </div>
 
         </div>

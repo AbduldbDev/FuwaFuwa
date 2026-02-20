@@ -13,7 +13,7 @@
 
         <!-- numbers -->
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -51,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="col-12 col-md-6 col-xl-3 mb-3">
                 <div class="card">
                     <!-- upper -->
                     <div class="d-flex align-items-center gap-3">
@@ -164,7 +164,7 @@
                 <div class="row g-4 justify-content-center">
 
                     <!-- Asset Category -->
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-12 col-md-12 col-xl-4">
                         <div class="chart-card">
                             <div class="chart-header">
                                 <h6>Asset Category</h6>
@@ -200,7 +200,7 @@
                     </div>
 
                     <!-- Compliance -->
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-12 col-md-12 col-xl-4">
                         <div class="chart-card">
                             <div class="chart-header my-2">
                             </div>
@@ -237,7 +237,7 @@
                     </div>
 
                     <!-- Users -->
-                    <div class="col-lg-4 col-md-12">
+                    <div class="col-12 col-md-12 col-xl-4">
                         <div class="chart-card">
                             <div class="chart-header">
                                 <h6>User Roles</h6>
@@ -359,7 +359,38 @@
         const complianceStatuses = @json($ComplianceStatuses);
         const usersByType = @json($usersByType);
 
-        // ASSET CATEGORY — Horizontal Bar
+        function getScreenType() {
+            const w = window.innerWidth;
+            if (w < 576) return "mobile";
+            if (w < 992) return "tablet";
+            if (w < 1400) return "laptop";
+            return "desktop";
+        }
+
+        function getFontSize() {
+            const screen = getScreenType();
+            if (screen === "mobile") return 8;
+            if (screen === "tablet") return 10;
+            if (screen === "laptop") return 11;
+            return 12;
+        }
+
+        function getBarThickness() {
+            const screen = getScreenType();
+            if (screen === "mobile") return 10;
+            if (screen === "tablet") return 14;
+            if (screen === "laptop") return 18;
+            return 22;
+        }
+
+        function getCutout() {
+            const screen = getScreenType();
+            if (screen === "mobile") return "65%";
+            if (screen === "tablet") return "70%";
+            return "72%";
+        }
+
+
         new Chart(document.getElementById("assetChart"), {
             type: "bar",
             data: {
@@ -368,25 +399,22 @@
                     data: Object.values(assetCategories),
                     backgroundColor: "#7C4DFF",
                     borderRadius: 10,
-                    barThickness: 18
+                    barThickness: getBarThickness()
                 }]
             },
             options: {
                 indexAxis: "y",
-                maintainAspectRatio: false,
                 responsive: true,
-
+                maintainAspectRatio: false,
                 layout: {
                     padding: {
                         right: 40
                     }
                 },
-
                 plugins: {
                     legend: {
                         display: false
                     },
-
                     datalabels: {
                         anchor: "end",
                         align: "right",
@@ -395,7 +423,7 @@
                         color: "#555",
                         font: {
                             weight: "600",
-                            size: 11
+                            size: getFontSize()
                         },
                         formatter: value => value
                     }
@@ -404,17 +432,20 @@
                 scales: {
                     x: {
                         display: false,
-                        suggestedMax: Math.max(...[28, 22, 15, 12, 10, 5, 8, 6]) + 5
+                        suggestedMax: 35
                     },
                     y: {
                         grid: {
                             display: false
                         },
                         ticks: {
+                            font: {
+                                size: getFontSize()
+                            },
                             callback: function(value) {
                                 const label = this.getLabelForValue(value);
-                                return label.length > 8 ?
-                                    label.substring(0, 8) + "…" :
+                                return label.length > 10 ?
+                                    label.substring(0, 10) + "…" :
                                     label;
                             }
                         }
@@ -422,7 +453,6 @@
                 }
             }
         });
-
 
         // COMPLIANCE STATUS — Doughnut
         new Chart(document.getElementById("complianceChart"), {
@@ -444,37 +474,29 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: "72%",
-
+                cutout: getCutout(),
                 plugins: {
                     legend: {
                         display: false
                     },
-
-                    // ✅ Hover shows ONLY label name
                     tooltip: {
                         callbacks: {
                             label: ctx => ctx.label
                         }
                     },
-
-                    // ✅ Numbers inside slices
                     datalabels: {
-                        display: true,
                         color: "#fff",
                         font: {
                             weight: "600",
-                            size: 12
+                            size: getFontSize()
                         },
                         anchor: "center",
                         align: "center",
-                        clamp: true,
                         formatter: value => value
                     }
                 }
             }
         });
-
 
         // USERS — Vertical Bar
         new Chart(document.getElementById("usersChart"), {
@@ -485,24 +507,21 @@
                     data: Object.values(usersByType),
                     backgroundColor: ["#FF5252", "#FF7043", "#FDD835"],
                     borderRadius: 12,
-                    barThickness: 32
+                    barThickness: getBarThickness()
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-
                 layout: {
                     padding: {
                         top: 30
                     }
                 },
-
                 plugins: {
                     legend: {
                         display: false
                     },
-
                     datalabels: {
                         anchor: "end",
                         align: "top",
@@ -510,24 +529,43 @@
                         clip: false,
                         font: {
                             weight: "600",
-                            size: 11
+                            size: getFontSize()
                         },
                         formatter: value => value
                     }
                 },
-
                 scales: {
                     x: {
                         grid: {
                             display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: getFontSize()
+                            }
                         }
                     },
                     y: {
                         display: false,
-                        suggestedMax: Math.max(...[35, 25, 20, 10]) + 10 // ✅ auto headroom
+                        suggestedMax: 45
                     }
                 }
             }
+        });
+
+        window.addEventListener("resize", () => {
+            assetChart.data.datasets[0].barThickness = getBarThickness();
+            usersChart.data.datasets[0].barThickness = getBarThickness();
+
+            assetChart.options.plugins.datalabels.font.size = getFontSize();
+            usersChart.options.plugins.datalabels.font.size = getFontSize();
+            complianceChart.options.plugins.datalabels.font.size = getFontSize();
+
+            complianceChart.options.cutout = getCutout();
+
+            assetChart.update();
+            usersChart.update();
+            complianceChart.update();
         });
     </script>
 

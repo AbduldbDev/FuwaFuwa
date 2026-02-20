@@ -35,7 +35,7 @@
                          </div>
 
                          <!-- role -->
-                         <div class="col-md-6 mb-4">
+                         <div class="col-md-6 col-6 mb-5">
                              <label class="form-label">Select User Role <span class="text-danger">*</span></label>
                              <select name="user_type" class="form-select">
                                  <option selected disabled>Choose role</option>
@@ -91,10 +91,10 @@
 
                  <!-- modal footer -->
                  <div class="modal-footer border-0 px-4 pb-4">
-                     <button type="submit" class="btn btn-danger px-4" data-bs-dismiss="modal">
+                     <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">
                          Cancel
                      </button>
-                     <button type="submit" class="btn btn-success px-4">
+                     <button type="submit" class="btn btn-success">
                          Save
                      </button>
                  </div>

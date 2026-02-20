@@ -127,6 +127,8 @@
         </i>
     </div>
 </div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- SIDEBAR TOGGLE -->
 <script>
     const sidebar = document.getElementById("admin-sidebar");
@@ -135,13 +137,12 @@
     sidebar.classList.add("collapsed");
 
     toggleBtn.addEventListener("click", () => {
-        if (window.innerWidth <= 768) {
-            // Mobile: slide in/out
-            sidebar.classList.toggle("open");
-        } else {
-            // Desktop: expand/collapse
-            sidebar.classList.toggle("collapsed");
-            sidebar.classList.toggle("expanded");
-        }
+        sidebar.classList.toggle("expanded");
+        overlay.classList.toggle("active");
+    });
+
+    overlay.addEventListener("click", () => {
+        sidebar.classList.remove("expanded");
+        overlay.classList.remove("active");
     });
 </script>
