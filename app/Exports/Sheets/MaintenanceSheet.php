@@ -20,8 +20,8 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
 
-        // Get all maintenance for the month
-        $maintenanceItems = Maintenance::with('reporter')
+        // Get all maintenance for the month WITH logs
+        $maintenanceItems = Maintenance::with(['reporter', 'logs'])
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->get();
 
@@ -29,20 +29,30 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         $totalScheduled = $maintenanceItems->count();
         $totalCompleted = $maintenanceItems->whereNotNull('completed_at')->count();
 
+        // 💰 Total monthly maintenance cost
+        $totalMonthlyCost = $maintenanceItems->sum(function ($m) {
+            return $m->logs?->sum(fn($log) => $log->cost ?? 0) ?? 0;
+        });
+
         $rows = [];
 
-        // Dashboard title (row 1)
+        /** =======================
+         * DASHBOARD SECTION
+         * ======================= */
         $rows[] = ['Maintenance Dashboard'];
 
-        // Dashboard counts (row 2)
         $rows[] = [
             'Total Scheduled Maintenance',
             $totalScheduled,
             'Total Completed Maintenance',
-            $totalCompleted
+            $totalCompleted,
+            'Total Maintenance Cost (₱)',
+            '₱' . number_format($totalMonthlyCost, 2),
         ];
 
-        // Header for maintenance details (row 3)
+        /** =======================
+         * TABLE HEADER
+         * ======================= */
         $rows[] = [
             'Reported By',
             'Maintenance Type',
@@ -51,20 +61,33 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             'Issue Description',
             'Action Taken',
             'Start Date',
-            'Completion Date'
+            'Completion Date',
+            'Maintenance Cost (₱)',
         ];
 
-        // Maintenance details start from row 4
+        /** =======================
+         * MAINTENANCE ROWS
+         * ======================= */
         foreach ($maintenanceItems as $m) {
+
+            $maintenanceCost = $m->logs
+                ? $m->logs->sum(fn($log) => $log->cost ?? 0)
+                : 0;
+
             $rows[] = [
                 $m->reporter->name ?? 'N/A',
                 $m->maintenance_type ?? 'N/A',
                 $m->asset_tag ?? 'N/A',
                 $m->asset_name ?? 'N/A',
-                $m->description ?? '0',
-                $m->post_description ?? '0',
-                $m->start_date ? Carbon::parse($m->start_date)->format('M d, Y') : '0',
-                $m->completed_at ? Carbon::parse($m->completed_at)->format('M d, Y') : '0',
+                $m->description ?? 'N/A',
+                $m->post_description ?? 'N/A',
+                $m->start_date
+                    ? Carbon::parse($m->start_date)->format('M d, Y')
+                    : 'N/A',
+                $m->completed_at
+                    ? Carbon::parse($m->completed_at)->format('M d, Y')
+                    : 'N/A',
+                '₱' . number_format($maintenanceCost, 2),
             ];
         }
 
@@ -96,7 +119,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         ]);
 
         // Dashboard counts (row 2)
-        $sheet->getStyle('A2:D2')->applyFromArray([
+        $sheet->getStyle('A2:I2')->applyFromArray([
             'font' => ['bold' => true, 'size' => 14],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -111,7 +134,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         ]);
 
         // Header for maintenance details (row 3)
-        $sheet->getStyle('A3:H3')->applyFromArray([
+        $sheet->getStyle('A3:I3')->applyFromArray([
             'font' => ['bold' => true],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -130,7 +153,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
         ]);
 
         // Data rows (row 4 to last)
-        $sheet->getStyle("A4:H{$highestRow}")->applyFromArray([
+        $sheet->getStyle("A4:I{$highestRow}")->applyFromArray([
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,

@@ -23,7 +23,8 @@ class AssetValueSheet implements FromArray, WithTitle, WithStyles
 
     public function array(): array
     {
-        $assets = Assets::where('operational_status', '!=', 'Archived')
+        $assets = Assets::with('maintenances.logs')
+            ->where('operational_status', '!=', 'Archived')
             ->latest('updated_at')
             ->take($this->limit)
             ->get();
@@ -39,35 +40,50 @@ class AssetValueSheet implements FromArray, WithTitle, WithStyles
             'Salvage Value (₱)',
             'Useful Life (Years)',
             'Years Used',
+            'Total Maintenance Cost (₱)',
             'Depreciation Expense (₱)',
             'Remaining Life',
             'Depreciation Rate (%)',
-            'Current Value (₱)'
+            'Current Value (₱)',
         ];
 
         foreach ($assets as $asset) {
+
+            // DIGITAL ASSETS (NO DEPRECIATION)
             if ($asset->asset_type === 'Digital Asset') {
-                $asset->depreciation_expense = 0;
-                $asset->current_value = 0;
-                $asset->years_used = 0;
-                $asset->remaining_life = $asset->useful_life_years ?? 0;
-                $asset->depreciation_rate = 0;
+                $yearsUsed = 0;
+                $remainingLife = $asset->useful_life_years ?? 0;
+                $totalMaintenanceCost = 0;
+                $depreciationExpense = 0;
+                $currentValue = 0;
+                $depreciationRate = 0;
             } else {
                 $cost = $asset->purchase_cost ?? 0;
                 $salvage = $asset->salvage_value ?? 0;
                 $usefulLife = $asset->useful_life_years ?? 1;
 
-                $purchaseDate = $asset->purchase_date instanceof Carbon ? $asset->purchase_date : Carbon::parse($asset->purchase_date);
-                $yearsUsed = $purchaseDate->diffInYears(now());
-                $depreciation = ($cost - $salvage) / $usefulLife;
-                $totalDepreciation = $depreciation * $yearsUsed;
-                $currentValue = max($cost - $totalDepreciation, $salvage);
+                $purchaseDate = $asset->purchase_date instanceof Carbon
+                    ? $asset->purchase_date
+                    : Carbon::parse($asset->purchase_date);
 
-                $asset->depreciation_expense = $depreciation;
-                $asset->current_value = $currentValue;
-                $asset->years_used = $yearsUsed;
-                $asset->remaining_life = max($usefulLife - $yearsUsed, 0);
-                $asset->depreciation_rate = (($cost - $salvage) / $cost / $usefulLife) * 100;
+                $yearsUsed = $purchaseDate->diffInYears(now());
+                $totalMaintenanceCost = 0;
+                if ($asset->maintenances) {
+                    foreach ($asset->maintenances as $maintenance) {
+                        if ($maintenance->logs) {
+                            $totalMaintenanceCost += $maintenance->logs->sum(fn($log) => $log->cost ?? 0);
+                        }
+                    }
+                }
+                $accumulatedDepreciation = (($cost - $salvage) / $usefulLife) * $yearsUsed;
+                $currentValue = max($cost - $accumulatedDepreciation, $salvage);
+                $remainingLife = max($usefulLife - $yearsUsed, 0);
+                $depreciationExpense = $remainingLife > 0
+                    ? ($currentValue + $totalMaintenanceCost) / $remainingLife
+                    : 0;
+                $depreciationRate = $cost > 0 && $usefulLife > 0
+                    ? (($cost - $salvage) / $cost / $usefulLife) * 100
+                    : 0;
             }
 
             $rows[] = [
@@ -77,11 +93,12 @@ class AssetValueSheet implements FromArray, WithTitle, WithStyles
                 '₱' . number_format($asset->purchase_cost ?? 0, 2),
                 '₱' . number_format($asset->salvage_value ?? 0, 2),
                 number_format($asset->useful_life_years ?? 0, 2),
-                number_format($asset->years_used, 2),
-                '₱' . number_format($asset->depreciation_expense, 2),
-                number_format($asset->remaining_life, 2),
-                number_format($asset->depreciation_rate, 2) . '%',
-                '₱' . number_format($asset->current_value, 2),
+                number_format($yearsUsed, 2),
+                '₱' . number_format($totalMaintenanceCost, 2),
+                '₱' . number_format($depreciationExpense, 2),
+                number_format($remainingLife, 2),
+                number_format($depreciationRate, 2) . '%',
+                '₱' . number_format($currentValue, 2),
             ];
         }
 
