@@ -58,9 +58,9 @@
                             <!-- Compliance Type -->
                             <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
                                 style="border-radius: 10px">
-                                <option value="all">All Compliance</option>
-                                <option value="Yes">Compliant</option>
-                                <option value="No">Non-Compliant</option>
+                                <option value="all">All Warranty Status</option>
+                                <option value="Yes">Under Warranty / Unexpired</option>
+                                <option value="No">Out of Warranty / Expired</option>
                             </select>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                                     <th>Category</th>
                                     <th>Model Name</th>
                                     <th>Status</th>
-                                    <th class="text-center">Under Warranty</th>
+                                    <th class="text-center">Under Warranty / Unexpired</th>
                                     <th>Purchase Cost</th>
                                     <th>Current Book Value</th>
                                 </tr>

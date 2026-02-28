@@ -25,6 +25,7 @@ class Maintenance extends Model
         'technician_notes',
         'status',
         'post_attachments',
+        'cost',
         'completed_at'
     ];
 

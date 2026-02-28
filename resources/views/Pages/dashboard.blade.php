@@ -207,7 +207,7 @@
                             <div class="chart-body mb-2">
                                 <canvas id="complianceChart"></canvas>
                                 <div class="chart-center-label">
-                                    <h6>Compliance Status</h6>
+                                    <h6>Total</h6>
                                     <div class="chart-sub">
                                         <h2>{{ array_sum($ComplianceStatuses) }}</h2>
                                     </div>
@@ -220,7 +220,7 @@
                                     <i class="fa-solid fa-file-circle-check icon"></i>
                                     <div class="total-assets">
                                         <span>{{ number_format($ComplianceStatuses['Yes'] ?? 0) }}</span>
-                                        <small>Compliant</small>
+                                        <small>Under Warranty</small>
                                     </div>
                                 </div>
 
@@ -229,7 +229,7 @@
                                     <i class="fa-solid fa-file-circle-xmark icon"></i>
                                     <div class="total-assets">
                                         <span>{{ number_format($ComplianceStatuses['No'] ?? 0) }}</span>
-                                        <small>Non-Compliant</small>
+                                        <small>Out of Warranty/Expired</small>
                                     </div>
                                 </div>
                             </div>
@@ -287,7 +287,7 @@
                                 <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter"
                                     style="border-radius: 10px">
                                     <option value="all">All Status</option>
-                                    <option value="Active">Active</option>
+                                    <option value="Assigned">Assigned</option>
                                     <option value="In Stock">In Stock</option>
                                     <option value="Under Maintenance">Under Maintenance</option>
                                 </select>
@@ -295,9 +295,9 @@
                                 <!-- Compliance Type -->
                                 <select class="form-select form-select-sm w-auto shadow-none" id="complianceFilter"
                                     style="border-radius: 10px">
-                                    <option value="all">All Compliance</option>
-                                    <option value="Yes">Compliant</option>
-                                    <option value="No">Non-Compliant</option>
+                                    <option value="all">All Warranty Status</option>
+                                    <option value="Yes">Under Warranty / Unexpired</option>
+                                    <option value="No">Out of Warranty / Expired</option>
                                 </select>
                             </div>
                         </div>
@@ -312,7 +312,7 @@
                                         <th>Category</th>
                                         <th>Model Name</th>
                                         <th>Status</th>
-                                        <th>Compliance Type</th>
+                                        <th>Under Warranty / Unexpired</th>
                                         <th>Purchase Cost</th>
                                         <th>Current Book Value</th>
                                     </tr>
@@ -335,11 +335,16 @@
                                                     N/A
                                                 @endif
                                             </td>
-                                            <td>{{ $item->operational_status }}</td>
+                                            <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
+                                            </td>
                                             <td
                                                 class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
                                                 {{ $item->compliance_status }}
                                             </td>
+                                            {{-- <td
+                                                class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
+                                                {{ $item->compliance_status === 'Yes' ? 'Under Warranty / Unexpired' : 'Out of Warranty / Expired' }}
+                                            </td> --}}
                                             <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                             <td>₱{{ number_format($item->current_value, 2) }}</td>
                                         </tr>

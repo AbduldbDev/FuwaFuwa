@@ -206,8 +206,14 @@
                              </div>
                          @endif
 
+                         <div class="col-12 col-md-6 mb-3">
+                             <label class="form-label text-muted">Repair/Upgrade Cost</label>
+                             <div class="description-text fw-semibold">{{ number_format($item->cost, 2) ?? 'N/A' }}
+                             </div>
+                         </div>
+
                          <!-- technician notes -->
-                         <div class="col-md-12 mb-3">
+                         <div class="col-12 col-md-6 mb-3">
                              <label class="form-label text-muted">Technician Notes</label>
                              <div class="description-text fw-semibold">{{ $item->technician_notes }}
                              </div>

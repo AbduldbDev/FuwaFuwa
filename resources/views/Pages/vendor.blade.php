@@ -50,67 +50,69 @@
             </div>
 
             <!-- profiles -->
-            <div class="col-12 col-md-6 col-xl-3 mb-3">
+            <div class="row">
                 @foreach ($items as $item)
-                    <div class="vendor-card" data-status="{{ ucfirst($item->status) }}">
+                    <div class="col-12 col-md-6 col-lg-3 mb-3">
+                        <div class="vendor-card" data-status="{{ ucfirst($item->status) }}">
 
-                        <!-- header -->
-                        <div class="vendor-header">
-                            <div class="vendor-avatar">
-                                <i class="fa-solid fa-store"></i>
-                            </div>
-                            <div class="vendor-main">
-                                <h5 class="vendor-name">{{ $item->name }}</h5>
-                                <span
-                                    class="vendor-status {{ $item->status === 'Active' ? 'active-vendor' : 'inactive-vendor' }}">{{ $item->status }}</span>
-                            </div>
-                            <div class="vendor-actions">
-                                @if (Auth::user()->canAccess('Vendor', 'write'))
-                                    <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
-                                        data-bs-target="#editVendorModal{{ $item->id }}">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </button>
+                            <!-- header -->
+                            <div class="vendor-header">
+                                <div class="vendor-avatar">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <div class="vendor-main">
+                                    <h5 class="vendor-name">{{ $item->name }}</h5>
+                                    <span
+                                        class="vendor-status {{ $item->status === 'Active' ? 'active-vendor' : 'inactive-vendor' }}">{{ $item->status }}</span>
+                                </div>
+                                <div class="vendor-actions">
+                                    @if (Auth::user()->canAccess('Vendor', 'write'))
+                                        <button class="icon-btn" title="Edit Vendor" data-bs-toggle="modal"
+                                            data-bs-target="#editVendorModal{{ $item->id }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
 
-                                    <button class="icon-btn delete-btn" title="DeleteVendor"
-                                        data-url="{{ route('vendors.delete', $item->id) }}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                @endif
+                                        <button class="icon-btn delete-btn" title="DeleteVendor"
+                                            data-url="{{ route('vendors.delete', $item->id) }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- body -->
+                            <div class="vendor-body">
+                                <div class="info-row">
+                                    <span class="label">Vendor ID</span>
+                                    <span class="value">{{ $item->vendor_id }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Contact Person</span>
+                                    <span class="value">{{ $item->contact_person }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Email</span>
+                                    <span class="value">{{ $item->contact_email }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Phone</span>
+                                    <span class="value">{{ $item->contact_number }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Category</span>
+                                    <span class="value">{{ $item->category }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Last Transaction</span>
+                                    <span class="value">Jan 20, 2026</span>
+                                </div>
                             </div>
                         </div>
+                        @include('Components/Modal/editVendor')
 
-                        <!-- body -->
-                        <div class="vendor-body">
-                            <div class="info-row">
-                                <span class="label">Vendor ID</span>
-                                <span class="value">{{ $item->vendor_id }}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Contact Person</span>
-                                <span class="value">{{ $item->contact_person }}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Email</span>
-                                <span class="value">{{ $item->contact_email }}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Phone</span>
-                                <span class="value">{{ $item->contact_number }}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Category</span>
-                                <span class="value">{{ $item->category }}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Last Transaction</span>
-                                <span class="value">Jan 20, 2026</span>
-                            </div>
-                        </div>
                     </div>
-                    @include('Components/Modal/editVendor')
                 @endforeach
             </div>
-
         </div>
     </div>
     <script src="{{ asset('/Js/Vendor/vendorFilter.js') }}?v={{ time() }}"></script>

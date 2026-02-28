@@ -70,7 +70,7 @@ class MaintenanceService
 
     public function getAllAssets()
     {
-        return Assets::where('operational_status', '!=', 'archived')
+        return Assets::with('technicalSpecifications')->where('operational_status', '!=', 'archived')
             ->where('asset_type', 'Physical Asset')
             ->whereDoesntHave('maintenances', function ($q) {
                 $q->where('status', '!=', 'Completed');
@@ -249,6 +249,7 @@ class MaintenanceService
             'post_replacements' => $data['post_replacements'],
             'technician_notes' => $data['technician_notes'],
             'post_attachments' => $data['post_attachments'] ?? '',
+            'cost' => $data['cost'] ?? null,
             'status' => 'Completed',
             'completed_at' => Carbon::now()
         ]);
@@ -302,6 +303,7 @@ class MaintenanceService
             'technician'       => !empty($data['technician']) ? $data['technician'] : $maintenance->technician,
             'description'      => $data['description'],
             'post_description' => $data['condition']  ?? null,
+            'cost' => $data['cost'] ?? null,
             'status'           => $status,
         ];
 

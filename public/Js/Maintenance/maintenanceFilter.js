@@ -15,52 +15,50 @@ document.addEventListener("DOMContentLoaded", function () {
             const priority = wrapper.dataset.priority;
             const search = wrapper.dataset.search;
 
-            // Type filter
             let typeMatch = true;
+
             if (activeType === "completed") {
                 typeMatch = status === "completed";
             } else if (activeType !== "all") {
-                typeMatch = type === activeType && status !== "completed";
+                typeMatch = status === activeType;
             }
 
-            // Priority filter
             const priorityMatch =
                 activePriority === "all" || priority === activePriority;
 
-            // Search filter
             const searchMatch =
                 searchText === "" || search.includes(searchText);
 
-            const column = wrapper.closest(".col-lg-4");
+            const column = wrapper.parentElement;
 
             column.style.display =
                 typeMatch && priorityMatch && searchMatch ? "" : "none";
         });
     }
 
-    // Status pills
+    // ✅ FIXED HERE
     filterPills.forEach((pill) => {
         pill.addEventListener("click", function () {
             filterPills.forEach((p) => p.classList.remove("active"));
             this.classList.add("active");
 
-            activeType = this.dataset.type;
+            activeType = this.dataset.status.toLowerCase(); // updated line
             applyFilters();
         });
     });
 
-    // Priority dropdown
     categoryFilter.addEventListener("change", function () {
         const val = this.value.toLowerCase();
         activePriority = val === "all priority" ? "all" : val;
         applyFilters();
     });
 
-    // Search input
-    searchInput.addEventListener("input", function () {
-        searchText = this.value.toLowerCase().trim();
-        applyFilters();
-    });
+    if (searchInput) {
+        searchInput.addEventListener("input", function () {
+            searchText = this.value.toLowerCase().trim();
+            applyFilters();
+        });
+    }
 
     applyFilters();
 });

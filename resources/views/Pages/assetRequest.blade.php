@@ -90,7 +90,7 @@
                             'For Review' => 'for-review',
                             'In Progress' => 'pending-approval',
                             'In Procurement' => 'in-procurement',
-                            'For Procurement' => 'procured',
+                            'For Procurement' => 'in-procurement',
                             'For Release' => 'procured',
                             'Closed' => 'closed',
                             default => 'for-review',
