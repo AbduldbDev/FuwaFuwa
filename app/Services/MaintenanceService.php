@@ -251,7 +251,7 @@ class MaintenanceService
             'post_attachments' => $data['post_attachments'] ?? '',
             'cost' => $data['cost'] ?? null,
             'status' => 'Completed',
-            'completed_at' => Carbon::now()
+            'completed_at' => Carbon::now(),
         ]);
 
         // Create new log for completion
@@ -268,6 +268,10 @@ class MaintenanceService
                 'technician_notes' => $data['technician_notes'],
             ]
         );
+
+        Assets::where('asset_tag', $maintenance->asset_tag)->update([
+            'last_maintenance' => Carbon::now(),
+        ]);
 
         $this->notification->notifyUsersWithModuleAccess(
             'Maintenance',
@@ -329,7 +333,8 @@ class MaintenanceService
             $updateData['completed_at'] = $completedAt;
 
             Assets::where('asset_tag', $maintenance->asset_tag)->update([
-                'next_maintenance' => $nextMaintenance
+                'next_maintenance' => $nextMaintenance,
+                'last_maintenance' => $completedAt,
             ]);
         }
 

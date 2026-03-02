@@ -346,7 +346,9 @@
                                                 {{ $item->compliance_status === 'Yes' ? 'Under Warranty / Unexpired' : 'Out of Warranty / Expired' }}
                                             </td> --}}
                                             <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
-                                            <td>₱{{ number_format($item->current_value, 2) }}</td>
+                                            <td>
+                                                ₱{{ $item->asset_category === 'License' ? number_format(0, 2) : number_format($item->current_value, 2) }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -50,7 +50,7 @@
                             <select class="form-select form-select-sm w-auto shadow-none" id="statusFilter"
                                 style="border-radius: 10px">
                                 <option value="all">All Status</option>
-                                <option value="Active">Active</option>
+                                <option value="Assigned">Assigned</option>
                                 <option value="In Stock">In Stock</option>
                                 <option value="Under Maintenance">Under Maintenance</option>
                             </select>
@@ -112,8 +112,7 @@
                                             @endif
                                         </td>
 
-                                        <td>
-                                            {{ ucwords($item->operational_status) }}
+                                        <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                         </td>
                                         <td
                                             class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }} text-center">
@@ -121,8 +120,7 @@
                                         </td>
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>
-                                            ₱{{ number_format($item->current_value, 2) }}
-
+                                            ₱{{ $item->asset_category === 'License' ? number_format(0, 2) : number_format($item->current_value, 2) }}
                                         </td>
                                     </tr>
 

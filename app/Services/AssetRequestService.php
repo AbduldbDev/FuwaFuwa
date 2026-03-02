@@ -70,7 +70,7 @@ class AssetRequestService
     }
 
     public function getDashboardData()
-    {
+    { 
         return [
             'items' => $this->getAllRequests(),
             'TotalProcured' => $this->getTotalProcured(),

@@ -130,7 +130,7 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- SIDEBAR TOGGLE -->
-<script>
+{{-- <script>
     const sidebar = document.getElementById("admin-sidebar");
     const toggleBtn = document.getElementById("sidebarToggle");
 
@@ -145,4 +145,4 @@
         sidebar.classList.remove("expanded");
         overlay.classList.remove("active");
     });
-</script>
+</script> --}}

@@ -70,13 +70,20 @@ class AssetService
         $totalMaintenanceCost = 0;
         $annualDepreciation = 0;
 
-        // Calculate depreciation if valid
+        // Calculate straight-line depreciation
         if ($purchaseCost > 0 && $usefulLife > 0) {
             $depreciationPerYear = ($purchaseCost - $salvageValue) / $usefulLife;
-            $depreciationRate = (($purchaseCost - $salvageValue) / $purchaseCost / $usefulLife) * 100;
-            $totalDepreciation = $depreciationPerYear * $yearsUsed;
+            $depreciationRate = ($depreciationPerYear / $purchaseCost) * 100;
+
+            $totalDepreciation = min($depreciationPerYear * $yearsUsed, $purchaseCost - $salvageValue);
+
             $currentValue = max($purchaseCost - $totalDepreciation, $salvageValue);
+
             $remainingLife = max($usefulLife - $yearsUsed, 0);
+
+            // Remaining annual depreciation
+            $remainingDepreciation = $purchaseCost - $salvageValue - $totalDepreciation;
+            $annualDepreciation = $remainingLife > 0 ? $remainingDepreciation / $remainingLife : 0;
         }
 
         // Sum all maintenance costs
@@ -87,11 +94,6 @@ class AssetService
                 }
             }
         }
-
-        // Annual depreciation including upgrades/maintenance (your formula)
-        $annualDepreciation = $remainingLife > 0
-            ? ($currentValue + $totalMaintenanceCost) / $remainingLife
-            : 0;
 
         // Attach calculated fields to the model
         $asset->years_used = $yearsUsed;

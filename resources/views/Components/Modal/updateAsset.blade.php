@@ -83,45 +83,59 @@
                         });
                     }
                     break;
-
                 case 'assignment-location':
                     modalFields.innerHTML = `
-                    <div class="mb-3">
-                        <label class="form-label">Assigned To</label>
-                        <select class="form-select" name="assigned_to">
-                            ${users.map(u => `
-                                <option value="${u.name}" ${u.name === asset.assigned_to ? 'selected' : ''}>
-                                    ${u.name}
+                        <div class="mb-3">
+                            <label class="form-label">Assigned To</label>
+                            <select class="form-select" name="assigned_to" id="assigned_to">
+                                ${users.map(u => `
+                                    <option value="${u.name}" 
+                                        data-department="${u.department}" 
+                                        ${u.name === asset.assigned_to ? 'selected' : ''}>
+                                        ${u.name}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <input type="text" 
+                                class="form-control" 
+                                name="department" 
+                                id="department" 
+                                readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <select class="form-select" name="location">
+                                <option value="">Select location</option>
+                                <option value="Main Office" ${asset.location === 'Main Office' ? 'selected' : ''}>
+                                    Main Office
                                 </option>
-                            `).join('')}
-                        </select>
-                    </div>
+                                <option value="Warehouse" ${asset.location === 'Warehouse' ? 'selected' : ''}>
+                                    Warehouse
+                                </option>
+                            </select>
+                        </div>
+                    `;
 
-                  <div class="mb-3">
-                    <label class="form-label">Department</label>
-                    <select class="form-select" name="department">
-                        <option value="IT Department" {{ ($asset->department ?? '') === 'IT Department' ? 'selected' : '' }}>IT Department</option>
-                        <option value="HR Department" {{ ($asset->department ?? '') === 'HR Department' ? 'selected' : '' }}>HR Department</option>
-                        <option value="Finance Department" {{ ($asset->department ?? '') === 'Finance Department' ? 'selected' : '' }}>Finance Department</option>
-                        <option value="Operations" {{ ($asset->department ?? '') === 'Operations' ? 'selected' : '' }}>Operations</option>
-                        <option value="Admin" {{ ($asset->department ?? '') === 'Admin' ? 'selected' : '' }}>Admin</option>
-                    </select>
-                </div>
+                    const assignedSelect = document.getElementById('assigned_to');
+                    const departmentInput = document.getElementById('department');
 
+                    function updateDepartment() {
+                        const selectedOption = assignedSelect.options[assignedSelect.selectedIndex];
+                        const dept = selectedOption.getAttribute('data-department');
+                        departmentInput.value = dept ?? '';
+                    }
 
-                   <div class="mb-3">
-                        <label class="form-label">Location</label>
-                        <select class="form-select" name="location">
-                            <option value="">Select location</option>
-                            <option value="Main Office" ${asset.location === 'Main Office' ? 'selected' : ''}>
-                                Main Office
-                            </option>
-                            <option value="Warehouse" ${asset.location === 'Warehouse' ? 'selected' : ''}>
-                                Warehouse
-                            </option>
-                        </select>
-                    </div>
-                `;
+                    // Set initial department when modal loads
+                    updateDepartment();
+
+                    // Update department when user changes
+                    assignedSelect.addEventListener('change', updateDepartment);
+
                     break;
 
                 case 'purchase-info':
