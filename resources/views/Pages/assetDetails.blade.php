@@ -453,12 +453,14 @@
                                     </div>
                                 </div>
 
-                                <div class="row detail-row">
-                                    <div class="col-5 label">Next Maintenance Schedule</div>
-                                    <div class="col-7 value">
-                                        {{ $item->next_maintenance ? \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') : 'N/A' }}
+                                @if ($item->next_maintenance)
+                                    <div class="row detail-row">
+                                        <div class="col-5 label">Next Maintenance Schedule</div>
+                                        <div class="col-7 value">
+                                            {{ $item->next_maintenance ? \Carbon\Carbon::parse($item->next_maintenance)->format('F d, Y') : 'N/A' }}
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
                             {{-- <div class="row detail-row">
                                 <div class="col-5 label">Useful Life (years)</div>
