@@ -57,13 +57,13 @@
                     <div class="mb-3">
                         <label class="form-label">Operational Status</label>
                         <select class="form-select" name="operational_status">
-                            ${['Active','Inactive','In Stock','Under Maintenance','Expired']
-                                .map(status => `
-                                    <option value="${status}" ${asset.operational_status === status ? 'selected' : ''}>
-                                        ${status}
-                                    </option>
-                                `).join('')}
-                        </select>
+    ${['Active','Inactive','In Stock','Under Maintenance','Expired']
+        .map(status => `
+            <option value="${status}" ${asset.operational_status === status ? 'selected' : ''}>
+                ${status === 'Active' ? 'Assigned' : status}
+            </option>
+        `).join('')}
+</select>
                     </div>
                 `;
                     break;

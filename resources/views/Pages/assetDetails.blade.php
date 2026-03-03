@@ -55,9 +55,10 @@
                     <div class="asset-information">
                         <div class="d-flex align-items-center gap-3">
                             <h4 class="fw-semibold">{{ $item->asset_tag }}</h4>
-                            <span class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
+                            <span class="badge {{ $badgeClass }}">
+                                {{ $item->operational_status === 'Active' ? 'Assigned' : ucwords($item->operational_status) }}
+                            </span>
                         </div>
-
                         <div class="asset-meta text-muted">
                             <span>{{ $item->asset_name }}</span>
                             <span class="divider">|</span>
@@ -171,8 +172,8 @@
                             <div class="row detail-row">
                                 <div class="col-5 label">Operational Status</div>
                                 <div class="col-7 value">
-                                    <span
-                                        class="badge {{ $badgeClass }}">{{ ucwords($item->operational_status) }}</span>
+                                    <span class="badge {{ $badgeClass }}">
+                                        {{ $item->operational_status === 'Active' ? 'Assigned' : ucwords($item->operational_status) }}</span>
                                 </div>
                             </div>
                         </div>

@@ -55,6 +55,20 @@ class ReportAnalyticsController extends Controller
         return Storage::download($report->file_path);
     }
 
+
+    public function delete($id)
+    {
+        $report = Report::findOrFail($id);
+
+        if ($report->file_path && Storage::exists($report->file_path)) {
+            Storage::delete($report->file_path);
+        }
+
+        $report->delete();
+
+        return back()->with('success', 'Report deleted successfully.');
+    }
+
     public function generateCustomReport(Request $request)
     {
         $this->authorizeWrite();

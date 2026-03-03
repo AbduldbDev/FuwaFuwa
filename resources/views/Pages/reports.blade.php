@@ -124,12 +124,22 @@
                     <!-- buttons -->
                     <div class="report-actions">
                         @if ($item->file_path)
-                            <div class="report-actions">
-                                <button class="download"
-                                    onclick="window.location.href='{{ route('reports-analytics.download', $item->id) }}'">
-                                    <i class="fa fa-download"></i>
+                            <button class="download"
+                                onclick="window.location.href='{{ route('reports-analytics.download', $item->id) }}'">
+                                <i class="fa fa-download"></i>
+                            </button>
+
+                            <form action="{{ route('reports-analytics.delete', $item->id) }}" method="POST"
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this item?');">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit" class="delete">
+                                    <i class="fa fa-trash"></i>
                                 </button>
-                            </div>
+                            </form>
                         @else
                             <button class="download btn btn-sm btn-secondary" disabled>
                                 <i class="fa fa-download"></i> Not Available

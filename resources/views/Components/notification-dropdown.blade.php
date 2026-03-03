@@ -1,6 +1,6 @@
 <div class="dropdown">
     <button class="btn position-relative" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false"
-        style="z-index: 1000">
+        style="z-index: 1000000">
         <i class="fa-regular fa-bell notif-bell"></i>
         @if ($unreadCount > 0)
             <span class="notif-badge"> {{ $unreadCount }}</span>

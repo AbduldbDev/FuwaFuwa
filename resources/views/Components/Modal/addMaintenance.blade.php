@@ -4,7 +4,7 @@
 
                <div class="modal-header">
                    <i class="fa-solid fa-bug me-2"></i>
-                   <h5 class="modal-title">Asset Issue</h5>
+                   <h5 class="modal-title">Add Asset</h5>
                    <button class="btn-close shadow-none" data-bs-dismiss="modal"></button>
                </div>
 

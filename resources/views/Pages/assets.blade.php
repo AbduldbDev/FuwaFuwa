@@ -10,7 +10,7 @@
                 @if (Auth::user()->canAccess('Assets', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
                         <i class="fa-solid fa-plus"></i>
-                        <div class="btn-text">Asset Issue</div>
+                        <div class="btn-text">Add Asset</div>
                     </button>
                 @endif
 

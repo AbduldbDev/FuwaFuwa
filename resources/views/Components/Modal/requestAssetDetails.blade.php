@@ -171,7 +171,7 @@
                               @csrf
                               @method('PUT')
                               <input type="hidden" name="status" value="available">
-                              <input type="text" name="asset_tag" id="assetTagValue{{ $item->id }}"
+                              <input type="hidden" name="asset_tag" id="assetTagValue{{ $item->id }}"
                                   value="">
                               <button class="btn btn-success shadow-none">
                                   <i class="fa-solid fa-xmark me-1"></i> Available
@@ -357,7 +357,7 @@
                           return (
                               displayName.includes(query) ||
                               (asset.asset_type?.toLowerCase() || '').includes(
-                              query) ||
+                                  query) ||
                               (asset.asset_tag?.toLowerCase() || '').includes(query)
                           );
                       });

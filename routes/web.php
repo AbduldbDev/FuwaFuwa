@@ -79,6 +79,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::get('/', 'index')->name('index');
         Route::get('/download/{id}', 'download')->name('download');
         Route::post('/custom-report', 'generateCustomReport')->name('generateCustomReport');
+        Route::delete('/delete/{id}', 'delete')->name('delete');
     });
 
     Route::prefix('/system-configuration')->name('system-configuration.')->controller(SystemConfigurationController::class)->group(function () {
