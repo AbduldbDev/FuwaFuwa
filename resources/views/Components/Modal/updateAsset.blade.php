@@ -192,10 +192,10 @@
 
                     modalFields.innerHTML = `
                         <div class="mb-3">
-                            <label class="form-label">Compliance Status</label>
-                            <select class="form-select" name="compliance_status">
-                                <option value="Yes" ${asset.compliance_status === 'Yes' ? 'selected' : ''}>Yes</option>
-                                <option value="No" ${asset.compliance_status === 'No' ? 'selected' : ''}>No</option>
+                            <label class="form-label">Under Warranty / Unexpired</label>
+                            <select class="form-select" name="warranty_status">
+                                <option value="Yes" ${asset.warranty_status === 'Yes' ? 'selected' : ''}>Yes</option>
+                                <option value="No" ${asset.warranty_status === 'No' ? 'selected' : ''}>No</option>
                             </select>
                         </div>
 

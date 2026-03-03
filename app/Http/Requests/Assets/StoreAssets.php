@@ -64,7 +64,7 @@ class StoreAssets extends FormRequest
             'useful_life_years.integer' => 'Useful life years must be a whole number.',
             'salvage_value.numeric'   => 'Salvage value must be a valid number.',
 
-            'compliance_status.string' => 'Compliance status must be a valid string.',
+            'warranty_status.string' => 'Compliance status must be a valid string.',
             'warranty_start.date'     => 'Warranty start date must be a valid date.',
             'warranty_end.date'       => 'Warranty end date must be a valid date.',
             'next_maintenance.date'   => 'Next maintenance must be a valid date.',

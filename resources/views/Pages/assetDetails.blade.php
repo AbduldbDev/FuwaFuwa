@@ -415,7 +415,7 @@
                         <div class="section-body">
                             <div class="row detail-row">
                                 <div class="col-5 label">Under Warranty</div>
-                                <div class="col-7 value">{{ $item->compliance_status }}</div>
+                                <div class="col-7 value">{{ $item->warranty_status }}</div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-5 label">

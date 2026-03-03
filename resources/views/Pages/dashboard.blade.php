@@ -338,12 +338,12 @@
                                             <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                             </td>
                                             <td
-                                                class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->compliance_status }}
+                                                class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
+                                                {{ $item->warranty_status }}
                                             </td>
                                             {{-- <td
-                                                class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->compliance_status === 'Yes' ? 'Under Warranty / Unexpired' : 'Out of Warranty / Expired' }}
+                                                class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
+                                                {{ $item->warranty_status === 'Yes' ? 'Under Warranty / Unexpired' : 'Out of Warranty / Expired' }}
                                             </td> --}}
                                             <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                             <td>

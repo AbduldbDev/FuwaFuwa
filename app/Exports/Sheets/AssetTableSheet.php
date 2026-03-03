@@ -39,7 +39,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
                     $techSpecs,
                     $asset->purchase_cost,
                     $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date)->format('M d, Y') : null,
-                    $asset->compliance_status,
+                    $asset->warranty_status,
                     $logs ?: 'No logs',
                 ];
             });

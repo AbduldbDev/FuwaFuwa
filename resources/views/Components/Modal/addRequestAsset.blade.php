@@ -527,7 +527,7 @@
 
                         <div class="mb-3" style="display: none">
                             <label class="form-label">Compliance Status <span class="text-danger">*</span></label>
-                            <select class="form-select" name="compliance_status">
+                            <select class="form-select" name="warranty_status">
                                 <option value="">Select status</option>
                                 <option>Compliant</option>
                                 <option>Non-Compliant</option>

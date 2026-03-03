@@ -58,6 +58,12 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
                     $value = $item->$column ?? 0;
                     $row[$column] = number_format($value, 2) . '%';
                 }
+                // } elseif ($column === 'warranty_status') {
+                //     $row[$column] = $item->$column === 'Under Warranty'
+                //         ? 'Under Warranty / Unexpired'
+                //         : $item->$column;
+                // }
+
                 // Default columns
                 else {
                     $row[$column] = $item->$column ?? '';
@@ -73,10 +79,14 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
     public function headings(): array
     {
         return array_map(function ($col) {
+
+            if ($col === 'warranty_status') {
+                return 'Under Warranty / Unexpired';
+            }
+
             return ucwords(str_replace('_', ' ', $col));
         }, $this->columns);
     }
-
     public function title(): string
     {
         return 'Custom Report';

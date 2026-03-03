@@ -24,7 +24,7 @@ class UpdateAssetRequest extends FormRequest
             'vendor_id' => 'sometimes|string|max:255',
             'purchase_date' => 'sometimes|date',
             'purchase_cost' => 'sometimes|numeric',
-            'compliance_status' => 'sometimes|string|max:255',
+            'warranty_status' => 'sometimes|string|max:255',
             'warranty_start' => 'sometimes|date',
             'warranty_end' => 'sometimes|date',
             'next_maintenance' => 'nullable',

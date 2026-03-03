@@ -161,9 +161,9 @@ class DashboardService
 
     public function getComplianceStatuses()
     {
-        return Assets::where('operational_status',  '!=', 'archived')->selectRaw('compliance_status, COUNT(*) as total')
-            ->groupBy('compliance_status')
-            ->pluck('total', 'compliance_status')
+        return Assets::where('operational_status',  '!=', 'archived')->selectRaw('warranty_status, COUNT(*) as total')
+            ->groupBy('warranty_status')
+            ->pluck('total', 'warranty_status')
             ->toArray();
     }
 

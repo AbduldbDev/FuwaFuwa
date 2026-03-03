@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('purchase_cost', 15, 2)->nullable();
             $table->integer('useful_life_years')->nullable();
             $table->decimal('salvage_value', 15, 2)->nullable();
-            $table->string('compliance_status')->nullable();
+            $table->string('warranty_status')->nullable();
             $table->date('warranty_start')->nullable();
             $table->date('warranty_end')->nullable();
             $table->date('next_maintenance')->nullable();

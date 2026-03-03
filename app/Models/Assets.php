@@ -26,7 +26,7 @@ class Assets extends Model
         'purchase_cost',
         'useful_life_years',
         'salvage_value',
-        'compliance_status',
+        'warranty_status',
         'warranty_start',
         'warranty_end',
         'next_maintenance',
@@ -97,7 +97,7 @@ class Assets extends Model
                 }
             }
 
-            $asset->compliance_status = $isNonCompliant ? 'No' : 'Yes';
+            $asset->warranty_status = $isNonCompliant ? 'No' : 'Yes';
             $asset->save();
         }
     }

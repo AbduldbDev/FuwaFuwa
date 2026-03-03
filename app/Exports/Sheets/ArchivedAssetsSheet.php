@@ -30,7 +30,7 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
                     $asset->technicalSpecifications
                         ->map(fn($spec) => ucwords(str_replace('_', ' ', $spec->spec_key)) . ': ' . $spec->spec_value)
                         ->implode("\n"),
-                    $asset->compliance_status,
+                    $asset->warranty_status,
                     $asset->delete_title,
                     $asset->delete_reason,
                 ];

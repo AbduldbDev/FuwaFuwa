@@ -82,7 +82,7 @@
                                                         <label>
                                                             <input type="checkbox" class="child-check"
                                                                 value="{{ $column }}">
-                                                            {{ $column === 'compliance_status' ? 'Warranty Status' : ucwords(str_replace('_', ' ', $column)) }}
+                                                            {{ $column === 'warranty_status' ? 'Warranty Status' : ucwords(str_replace('_', ' ', $column)) }}
                                                         </label>
                                                     @endforeach
                                                 </div>

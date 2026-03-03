@@ -63,7 +63,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
                         ->implode("\n"),
                     $asset->purchase_cost,
                     $asset->purchase_date,
-                    $asset->compliance_status,
+                    $asset->warranty_status,
                     $asset->logs->isNotEmpty()
                         ? $asset->logs
                         ->map(

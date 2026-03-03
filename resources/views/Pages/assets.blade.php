@@ -115,8 +115,8 @@
                                         <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                         </td>
                                         <td
-                                            class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }} text-center">
-                                            {{ $item->compliance_status }}
+                                            class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }} text-center">
+                                            {{ $item->warranty_status }}
                                         </td>
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>

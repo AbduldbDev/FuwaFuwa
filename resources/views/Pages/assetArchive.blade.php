@@ -83,9 +83,8 @@
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                         <td>{{ $item->asset_name }}</td>
                                         <td>{{ $item->delete_title }}</td>
-                                        <td
-                                            class="{{ $item->compliance_status === 'Yes' ? 'text-success' : 'text-danger' }}">
-                                            {{ $item->compliance_status }}
+                                        <td class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
+                                            {{ $item->warranty_status }}
                                         </td>
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>

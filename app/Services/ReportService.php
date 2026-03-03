@@ -39,8 +39,8 @@ class ReportService
                 'Operational Status' => [
                     'operational_status',
                 ],
-                'Compliance Status' => [
-                    'compliance_status',
+                'Warranty Status' => [
+                    'warranty_status',
                 ],
                 'Assignment and Location' => [
                     'assigned_to',
@@ -81,8 +81,8 @@ class ReportService
                 'Operational Status' => [
                     'operational_status'
                 ],
-                'Compliance Status' => [
-                    'compliance_status'
+                'Warranty Status' => [
+                    'warranty_status'
                 ],
                 'Assignment and Location' => [
                     'assigned_to',
