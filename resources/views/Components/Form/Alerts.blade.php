@@ -1,4 +1,4 @@
-<div id="floatingAlertsContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1055; min-width: 300px;"></div>
+<div id="floatingAlertsContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 999999999; min-width: 300px;"></div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
