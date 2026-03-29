@@ -127,23 +127,23 @@ body {
     min-height: 100vh;
     background: var(--body-bg);
 }
-
 .sidebar {
-    width: 60px;
-    height: 100%;
-    position: fixed;
+    width: 300px;
+    height: 100vh;
+    /* position: fixed; */
     left: 0;
     top: 0;
     background: #ffffff;
     display: flex;
     flex-direction: column;
     z-index: 1000;
-    transition: none;
+    transition: width 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow: 6px 0 18px rgba(0, 0, 0, 0.12);
 }
 
-.sidebar.expanded {
-    width: 300px;
-    box-shadow: 6px 0 18px rgba(0, 0, 0, 0.12);
+.sidebar.collapsed {
+    width: 60px;
+    box-shadow: none;
 }
 
 .sidebar-header {
@@ -152,9 +152,12 @@ body {
     align-items: center;
     padding: 22px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    transition:
-        justify-content 0.5s ease,
-        padding 0.5s ease;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-header {
+    justify-content: center;
+    padding: 22px 12px;
 }
 
 .sidebar-toggle {
@@ -162,6 +165,11 @@ body {
     cursor: pointer;
     border: none;
     font-size: var(--text-16px);
+    transition: transform 0.2s ease;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
 }
 
 .logo {
@@ -170,10 +178,10 @@ body {
     align-items: center;
     width: 80%;
     height: 10vh;
-    opacity: 0;
+    opacity: 1;
     transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .logo img {
@@ -182,12 +190,10 @@ body {
     object-fit: contain;
 }
 
-.sidebar.expanded .logo {
-    opacity: 1;
-    transform: translateX(0);
-    transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
+.sidebar.collapsed .logo {
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
 }
 
 /* ===== MENU ===== */
@@ -206,61 +212,74 @@ body {
     color: var(--black);
     text-decoration: none;
     white-space: nowrap;
-
-    transition:
-        padding 0.5s ease,
-        gap 0.5s ease,
-        background-color 0.5s ease,
-        color 0.5s ease;
+    transition: all 0.3s ease;
 }
 
 .menu-link i {
     font-size: var(--text-16px);
     min-width: 20px;
     text-align: center;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
 }
 
-/* icon only */
-.sidebar:not(.expanded) .menu-link {
+/* collapsed state - icon only */
+.sidebar.collapsed .menu-link {
     justify-content: center;
     padding: 12px 0;
     gap: 0;
 }
 
-.sidebar:not(.expanded) span,
-.sidebar:not(.expanded) .menu-section,
-.sidebar:not(.expanded) .user-info {
+.sidebar.collapsed .menu-link span {
+    display: none;
+}
+
+.sidebar.collapsed .menu-section {
     display: none;
 }
 
 .menu-link span {
     transition:
-        opacity 0.5s ease,
-        transform 0.5s ease;
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .menu-section {
-    padding: 12px 15px;
+    padding: 12px 20px;
     font-size: 12px;
     text-transform: uppercase;
     color: var(--text-gray);
+    transition: all 0.3s ease;
 }
 
+/* collapsed state - hide section headers */
+.sidebar.collapsed .menu-section {
+    display: none;
+}
+
+/* Footer */
 .sidebar-footer {
-    padding: 14px;
+    padding: 14px 20px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-footer {
+    padding: 14px 12px;
     justify-content: center;
-    transition: justify-content 0.5s ease;
 }
 
 .user-info {
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .user-info {
+    display: none;
 }
 
 .user-info .user-icon {
@@ -276,20 +295,20 @@ body {
 
 .logout-btn {
     cursor: pointer;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .logout-btn {
+    margin: 0;
 }
 
 .logout-btn:hover {
     transform: scale(1.1);
 }
 
-.sidebar.expanded .sidebar-footer {
-    justify-content: space-between;
-}
-
 /* ===== CONTENT (NEVER MOVES) ===== */
 .content {
-    margin-left: 60px;
+    /* margin-left: 60px; */
     padding: 20px 30px;
     width: calc(100% - 60px);
     min-height: 100vh;
@@ -2273,6 +2292,7 @@ select option {
         min-height: 60vh;
     }
 
+    /* Default collapsed state for mobile */
     .sidebar {
         width: 45px;
     }
@@ -2285,8 +2305,26 @@ select option {
         padding: 17px;
     }
 
+    .sidebar.expanded .sidebar-header {
+        padding: 17px;
+        justify-content: space-between;
+    }
+
+    .sidebar.collapsed .sidebar-header {
+        padding: 17px 12px;
+        justify-content: center;
+    }
+
     .sidebar-toggle {
         font-size: var(--text-12px);
+    }
+
+    .sidebar.expanded .sidebar-toggle {
+        transform: rotate(0deg);
+    }
+
+    .sidebar.collapsed .sidebar-toggle {
+        transform: rotate(0deg);
     }
 
     .menu::-webkit-scrollbar {
@@ -2297,6 +2335,28 @@ select option {
         font-size: var(--text-12px);
     }
 
+    /* Expanded state - show text */
+    .sidebar.expanded .menu-link {
+        justify-content: flex-start;
+        padding: 12px 20px;
+        gap: 16px;
+    }
+
+    .sidebar.expanded .menu-link span {
+        display: inline-block;
+    }
+
+    /* Collapsed state - icon only */
+    .sidebar.collapsed .menu-link {
+        justify-content: center;
+        padding: 12px 0;
+        gap: 0;
+    }
+
+    .sidebar.collapsed .menu-link span {
+        display: none;
+    }
+
     .menu-link i {
         font-size: var(--text-12px);
     }
@@ -2305,8 +2365,39 @@ select option {
         font-size: 10px;
     }
 
+    /* Expanded state - show section headers */
+    .sidebar.expanded .menu-section {
+        display: block;
+        padding: 12px 20px;
+    }
+
+    /* Collapsed state - hide section headers */
+    .sidebar.collapsed .menu-section {
+        display: none;
+    }
+
     .sidebar-footer {
+        padding: 8px 15px;
+    }
+
+    /* Expanded state - show user info */
+    .sidebar.expanded .sidebar-footer {
+        padding: 8px 15px;
+        justify-content: space-between;
+    }
+
+    .sidebar.expanded .user-info {
+        display: flex;
+    }
+
+    /* Collapsed state - hide user info, center logout */
+    .sidebar.collapsed .sidebar-footer {
         padding: 8px 10px;
+        justify-content: center;
+    }
+
+    .sidebar.collapsed .user-info {
+        display: none;
     }
 
     .user-info {
@@ -2323,8 +2414,25 @@ select option {
         font-size: var(--text-12px);
     }
 
+    /* Logo styling for mobile */
+    .logo {
+        width: 70%;
+        height: 8vh;
+    }
+
+    /* Expanded state - show logo */
+    .sidebar.expanded .logo {
+        opacity: 1;
+        display: flex;
+    }
+
+    /* Collapsed state - hide logo */
+    .sidebar.collapsed .logo {
+        opacity: 0;
+        display: none;
+        pointer-events: none;
+    }
     .content {
-        margin-left: 55px;
         padding: 15px 10px;
     }
 

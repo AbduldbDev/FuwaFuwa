@@ -127,22 +127,52 @@
         </i>
     </div>
 </div>
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+{{-- <div class="sidebar-overlay" id="sidebarOverlay"></div> --}}
 
-<!-- SIDEBAR TOGGLE -->
-{{-- <script>
+<script>
     const sidebar = document.getElementById("admin-sidebar");
     const toggleBtn = document.getElementById("sidebarToggle");
 
-    sidebar.classList.add("collapsed");
+    // Function to check if we're on mobile
+    function isMobile() {
+        return window.innerWidth <= 768; // Adjust breakpoint as needed
+    }
 
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("expanded");
-        overlay.classList.toggle("active");
+    // Set initial state based on screen size
+    function setInitialSidebarState() {
+        if (isMobile()) {
+            // Start collapsed on mobile
+            sidebar.classList.add("collapsed");
+            sidebar.classList.remove("expanded");
+        } else {
+            // Start expanded on desktop
+            sidebar.classList.add("expanded");
+            sidebar.classList.remove("collapsed");
+        }
+    }
+
+    // Toggle sidebar when button is clicked
+    toggleBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        if (sidebar.classList.contains("expanded")) {
+            sidebar.classList.remove("expanded");
+            sidebar.classList.add("collapsed");
+        } else {
+            sidebar.classList.remove("collapsed");
+            sidebar.classList.add("expanded");
+        }
     });
 
-    overlay.addEventListener("click", () => {
-        sidebar.classList.remove("expanded");
-        overlay.classList.remove("active");
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            setInitialSidebarState();
+        }, 250);
     });
-</script> --}}
+
+    // Initialize sidebar
+    setInitialSidebarState();
+</script>
