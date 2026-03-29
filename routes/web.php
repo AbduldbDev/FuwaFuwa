@@ -12,6 +12,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportAnalyticsController;
 use App\Http\Controllers\SystemConfigurationController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\AssetCategoryController;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -48,6 +50,14 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
     Route::prefix('/asset-archive')->name('assets-archive.')->controller(AssetArchiveController::class)->group(function () {
         Route::get('/', 'index')->name('index');
     });
+
+    Route::prefix('/asset-category')->name('asset-categories.')->controller(AssetCategoryController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/update/{id}', 'update')->name('update');
+        Route::delete('/delete/{id}', 'delete')->name('delete');
+    });
+
 
     Route::prefix('/asset-request')->name('asset-request.')->controller(AssetRequestController::class)->group(function () {
         Route::get('/', 'index')->name('index');

@@ -13,7 +13,7 @@ use App\Models\User;
 class SystemService
 {
     protected array $roles = ['admin', 'encoder', 'viewer'];
-    protected array $modules = ['Dashboard', 'Assets', 'Asset Request', 'Asset Archive', 'Maintenance', 'User', 'Vendor', 'Reports', 'System'];
+    protected array $modules = ['Dashboard', 'Assets', 'Asset Request', 'Asset Archive', 'Asset Category', 'Maintenance', 'User', 'Vendor', 'Reports', 'System'];
     protected array $accessTypes = ['none' => 'None', 'read' => 'Read', 'write' => 'Read/Write'];
 
     protected $notification;

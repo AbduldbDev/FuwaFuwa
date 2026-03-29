@@ -51,6 +51,13 @@
                 </a>
             @endif
 
+            @if (Auth::user()->canAccess('Asset Category', 'read'))
+                <a href="{{ route('asset-categories.index') }}"
+                    class="menu-link {{ request()->routeIs('asset-categories.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-tags"></i> <span>Asset Category</span>
+                </a>
+            @endif
+
             @if (Auth::user()->canAccess('Maintenance', 'read'))
                 <a href="{{ route('maintenance-repair.index') }}"
                     class="menu-link {{ request()->routeIs('maintenance-repair.*') ? 'active' : '' }}">
