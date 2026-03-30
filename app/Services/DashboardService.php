@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Assets;
 use App\Models\User;
+use App\Models\AssetCategory;
 
 class DashboardService
 {
@@ -93,6 +94,7 @@ class DashboardService
             'ComplianceStatuses' => $this->getComplianceStatuses(),
             'usersByType' => $this->getUsersByType(),
             'AssetCategories' => $this->getAssetCategories(),
+            'categories' => $this->getAssetCategory(),
         ];
     }
 
@@ -159,6 +161,11 @@ class DashboardService
         return Assets::where('operational_status',  '!=', 'archived')->where('asset_type', 'Digital Asset')->count();
     }
 
+    public function getAssetCategory()
+    {
+        return AssetCategory::latest()->get();
+    }
+
     public function getComplianceStatuses()
     {
         return Assets::where('operational_status',  '!=', 'archived')->selectRaw('warranty_status, COUNT(*) as total')
@@ -170,7 +177,6 @@ class DashboardService
     public function getAllAssetsWithDepreciation($limit = 10)
     {
         $assets = Assets::with([
-            'technicalSpecifications',
             'users',
             'vendor',
             'documents',

@@ -27,15 +27,9 @@
                             <!-- category -->
                             <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
                                 <option value="all">All Categories</option>
-                                <option value="PC">PC</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Router">Router</option>
-                                <option value="Firewall">Firewall</option>
-                                <option value="Switch">Switch</option>
-                                <option value="Modem">Modem</option>
-                                <option value="Communication Cabinet">Communication Cabinet</option>
-                                <option value="Server Cabinet">Server Cabinet</option>
-                                <option value="License">License</option>
+                                @foreach ($categories as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
 
                             </select>
 
@@ -88,7 +82,7 @@
                                         </td>
                                         <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                         <td>
-                                            ₱{{ $item->asset_category === 'License' ? number_format(0, 2) : number_format($item->current_value, 2) }}
+                                            ₱{{ $item->asset_category === 'License' ? number_format(0, 0) : number_format($item->current_value, 2) }}
                                         </td>
                                     </tr>
                                 @empty

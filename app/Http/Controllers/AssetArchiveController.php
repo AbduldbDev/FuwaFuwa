@@ -25,8 +25,10 @@ class AssetArchiveController extends Controller
     {
         $this->authorizeRead();
 
-        $items = $this->assetService->getAssetArchive();
+        $data = $this->assetService->getArchiveData();
 
-        return view('Pages/assetArchive', compact('items'));
+
+        // return response()->json($data);
+        return view('Pages/assetArchive', $data);
     }
 }

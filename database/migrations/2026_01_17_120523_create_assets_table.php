@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->string('vendor_id')->nullable()->constrained('vendors')->nullOnDelete();
+            $table->string('category_id')->nullable()->constrained('asset_categories')->nullOnDelete();
             $table->string('asset_id')->unique();
             $table->string('asset_tag')->unique();
             $table->string('asset_name');
             $table->string('asset_category');
             $table->string('asset_type');
+            $table->text('technical_specifications')->nullable();
             $table->string('operational_status')->nullable();
             $table->string('assigned_to')->nullable();
             $table->string('department')->nullable();

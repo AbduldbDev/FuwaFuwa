@@ -12,6 +12,7 @@ class AssetCategory extends Model
         'requested_by',
         'name',
         'type',
+        'icon',
     ];
 
     public function user()

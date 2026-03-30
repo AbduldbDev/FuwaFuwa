@@ -95,11 +95,11 @@ class ReportAnalyticsController extends Controller
         $reportModels = [
             'assets' => [
                 'model' => \App\Models\Assets::class,
-                'relations' => ['vendor', 'users', 'technicalSpecifications'],
+                'relations' => ['vendor', 'users'],
             ],
             'asset_archive' => [
                 'model' => \App\Models\Assets::class,
-                'relations' => ['vendor', 'users', 'technicalSpecifications'],
+                'relations' => ['vendor', 'users'],
                 'archived' => true,
             ],
             'asset_requests' => [

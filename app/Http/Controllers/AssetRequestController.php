@@ -136,4 +136,13 @@ class AssetRequestController extends Controller
             ]);
         }
     }
+
+
+    public function delete($id)
+    {
+        $request = AssetRequest::findOrFail($id);
+        $request->delete();
+
+        return back()->with('success', 'Asset request deleted successfully.');
+    }
 }

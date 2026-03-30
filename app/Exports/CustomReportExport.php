@@ -29,6 +29,7 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
         $this->columns = $columns;
     }
 
+
     public function collection()
     {
         return $this->data->map(function ($item) {
@@ -36,45 +37,60 @@ class CustomReportExport implements FromCollection, WithHeadings, WithTitle, Wit
 
             foreach ($this->columns as $column) {
 
-                if ($column === 'reported_by') {
-                    $row[$column] = $item->reporter->name ?? '';
-                } elseif (Str::endsWith($column, '_id')) {
-                    $relation = Str::replaceLast('_id', '', $column);
-                    $row[$column] = $item->$relation->name ?? '';
-                }
-                // Handle technicalSpecifications
-                elseif ($column === 'technical_specifications') {
-                    $row[$column] = $item->technicalSpecifications
-                        ->map(fn($s) => ucwords(str_replace('_', ' ', $s->spec_key)) . ': ' . $s->spec_value)
-                        ->implode("\n");
-                }
-                // Handle money/currency fields
-                elseif (in_array($column, ['purchase_cost', 'salvage_value', 'current_value'])) {
-                    $value = $item->$column ?? 0;
-                    $row[$column] = '₱' . number_format($value, 2);
-                }
-                // Handle percent fields
-                elseif (in_array($column, ['depreciation_rate'])) {
-                    $value = $item->$column ?? 0;
-                    $row[$column] = number_format($value, 2) . '%';
-                }
-                // } elseif ($column === 'warranty_status') {
-                //     $row[$column] = $item->$column === 'Under Warranty'
-                //         ? 'Under Warranty / Unexpired'
-                //         : $item->$column;
-                // }
+                $value = $item->$column ?? null;
 
+                // Reporter name
+                if ($column === 'reported_by') {
+                    $value = $item->reporter->name ?? null;
+                }
+                // Relations ending with _id
+                elseif (Str::endsWith($column, '_id')) {
+                    $relation = Str::replaceLast('_id', '', $column);
+                    $value = $item->$relation->name ?? null;
+                }
+                // Currency fields
+                elseif (in_array($column, ['purchase_cost', 'salvage_value', 'current_value', 'depreciation_expense'])) {
+                    $num = $item->$column ?? 0;
+                    $value = '₱' . number_format($num, 2);
+                }
+                // Percent fields
+                elseif (in_array($column, ['depreciation_rate'])) {
+                    $num = $item->$column ?? 0;
+                    $value = number_format($num, 0) . '%';
+                }
+                // Whole-number fields
+                elseif (in_array($column, ['years_used', 'remaining_life'])) {
+                    $num = $item->$column ?? 0;
+                    $value = (string) (int) $num; // 0.123 → 0, 1.231 → 1
+                }
+                // Date fields
+                elseif (in_array($column, ['purchase_date', 'warranty_start', 'warranty_end', 'last_maintenance', 'next_maintenance', 'last_maintenance_date', 'completed_at', 'start_date', 'created_at', 'updated_at'])) {
+                    if ($value) {
+                        $value = Carbon::parse($value)->format('M d, Y'); // Jan 20, 2025
+                    } else {
+                        $value = null;
+                    }
+                }
+                // Technical specifications (textarea, new line based)
+                elseif ($column === 'technical_specifications') {
+                    $value = $item->$column ?? null;
+                }
                 // Default columns
                 else {
-                    $row[$column] = $item->$column ?? '';
+                    $value = $item->$column ?? null;
                 }
+
+                // Fallback to "N/A" if empty or null
+                if ($value === null || (is_string($value) && trim($value) === '')) {
+                    $value = 'N/A';
+                }
+
+                $row[$column] = $value;
             }
 
             return $row;
         });
     }
-
-
 
     public function headings(): array
     {

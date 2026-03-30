@@ -37,7 +37,9 @@ class StatusBreakdownSheet implements FromArray, WithTitle, WithStyles
                     $countQuery->where('asset_type', $type);
                 }
                 $count = $countQuery->where('operational_status', $status)->count();
-                $row[] = $count ?: 0;
+
+                // Ensure 0 is displayed if no value
+                $row[] = (int) $count;
             }
             $rows[] = $row;
         }

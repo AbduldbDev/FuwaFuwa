@@ -13,11 +13,13 @@ class Assets extends Model
     protected $fillable = [
         'created_by',
         'vendor_id',
+        'category_id',
         'asset_id',
         'asset_tag',
         'asset_name',
         'asset_category',
         'asset_type',
+        'technical_specifications',
         'operational_status',
         'assigned_to',
         'department',
@@ -47,13 +49,6 @@ class Assets extends Model
         'salvage_value'     => 'decimal:2',
     ];
 
-
-
-    public function technicalSpecifications()
-    {
-        return $this->hasMany(TechnicalSpecification::class, 'asset_id');
-    }
-
     public function logs()
     {
         return $this->hasMany(AssetLogs::class, 'asset_id');
@@ -62,6 +57,11 @@ class Assets extends Model
     public function users()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(AssetCategory::class, 'category_id');
     }
 
     public function vendor()

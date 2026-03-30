@@ -54,424 +54,14 @@
                             <h6>Technical Specifications</h6>
                         </div>
 
-                        <!-- PC / Laptop -->
-                        <div class="tech-group" data-type="PC Laptop">
+                        <div class="tech-group">
                             <div class="mb-3">
-                                <label class="form-label">Asset Model
+                                <label class="form-label">Asset Specifications
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
+                                <textarea type="text" rows="10" class="form-control required-field" name="technical_specifications"></textarea>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Processor
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Processor]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">RAM
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[RAM]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Storage
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Storage]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Operating System
-                                </label>
-                                <input type="text" class="form-control required-field"
-                                    name="specs[Operating_System]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Serial Number
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Serial_Number]" />
-                            </div>
-                        </div>
 
-                        <!-- Router -->
-                        <div class="tech-group" data-type="Router">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Network Role
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Network_Role]">
-                                    <option value="">Select Network Role</option>
-                                    <option value="Core">Core</option>
-                                    <option value="Edge (Gateway)">Edge (Gateway)</option>
-                                    <option value="Branch / Remote Office">Branch / Remote Office</option>
-                                    <option value="Distribution">Distribution</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Firmware Version
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Firmware_Version]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Routing Protocols
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Routing_Protocols]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">WAN / LAN Ports
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[WAN/LAN_Ports]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Throughput Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Throughout_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Firewall -->
-                        <div class="tech-group" data-type="Firewall">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cabinet Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Cabinet_Type]">
-                                    <option value="">Select Cabinet Type</option>
-                                    <option>Wall Mount</option>
-                                    <option>Free Standing</option>
-                                    <option>Outdoor / Rugged</option>
-                                    <option>Acoustic (Soundproof)</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Rack_Units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Cooling_Type]">
-                                    <option value="">Select Cooling Type</option>
-                                    <option value="Passive (Vented)">Passive (Vented)</option>
-                                    <option value="Active (Fan Kits)">Active (Fan Kits)</option>
-                                    <option value="Precision AC">Precision AC</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">IDS / IPS Support
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[IDS/IPS_Support]">
-                                    <option value="">Select IDS/IPS Support</option>
-                                    <option value="Enabled">Enabled</option>
-                                    <option value="Disabled">Disabled</option>
-                                    <option value="Not Supported">Not Supported</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Throughput Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Throughput_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Switch -->
-                        <div class="tech-group" data-type="Switch">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Number of Ports
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="number" class="form-control required-field" data-required="true"
-                                    name="specs[Number_of_Ports]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">VLAN Configuration
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[VLAN_Configuration]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Switch Role
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Switch_Role]">
-                                    <option value="">Select Switch Role</option>
-                                    <option value="Access (End Device)">Access (End Device)</option>
-                                    <option value="Distribution">Distribution</option>
-                                    <option value="Core">Core</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Port Speed
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Port_Speed]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">PoE Support
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[PoE_Support]">
-                                    <option value="">Select PoE Support</option>
-                                    <option value="No PoE">No PoE</option>
-                                    <option value="PoE (802.3af)">PoE (802.3af)</option>
-                                    <option value="PoE+ (802.3at)">PoE+ (802.3at)</option>
-                                    <option value="UPOE / PoE++ (802.3bt)">UPOE / PoE++ (802.3bt)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- License -->
-                        <div class="tech-group" data-type="License">
-                            <div class="mb-3">
-                                <label class="form-label">License Name
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[License_Name]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Edition
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[License_Edition]">
-                                    <option value="">Select License Edition</option>
-                                    <option value="Basic / Starter">Basic / Starter</option>
-                                    <option value="Standard">Standard</option>
-                                    <option value="Professional">Professional</option>
-                                    <option value="Enterprise">Enterprise</option>
-                                    <option value="Ultimate / Premium">Ultimate / Premium</option>
-                                    <option value="Academic / Education">Academic / Education</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[License_Type]">
-                                    <option value="">Select License Type</option>
-                                    <option value="Volume">Volume</option>
-                                    <option value="Individual">Individual</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Subscription Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Subscription_Type]">
-                                    <option value="">Select Subscription Type</option>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Annual">Annual</option>
-                                    <option value="Annual">Perpetual</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Number of Seats
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="number" class="form-control required-field" data-required="true"
-                                    name="specs[Number_of_seats]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Key
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[License_Key]" />
-                            </div>
-                        </div>
-
-                        <!-- Modem -->
-                        <div class="tech-group" data-type="Modem">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ISP Name
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[ISP_Name]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Connection Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Connection_Type]">
-                                    <option value="">Select Connection Type</option>
-                                    <option value="Fiber Optic (GPON)">Fiber Optic (GPON)</option>
-                                    <option value="DSL (ADSL / VDSL)">DSL (ADSL / VDSL)</option>
-                                    <option value="Cable (DOCSIS)">Cable (DOCSIS)</option>
-                                    <option value="Satellite">Satellite</option>
-                                    <option value="LTE / 5G Wireless">LTE / 5G Wireless</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Speed Rating
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Speed_Rating]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Serial Number
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Serial_Number]" />
-                            </div>
-                        </div>
-
-                        <!-- Communication Cabinet -->
-                        <div class="tech-group" data-type="Communication Cabinet">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cabinet Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cabinet_type]">
-                                    <option value="">Select Cabinet Type</option>
-                                    <option value="Wall Mount">Wall Mount</option>
-                                    <option value="Free Standing">Free Standing</option>
-                                    <option value="Outdoor / Rugged">Outdoor / Rugged</option>
-                                    <option value="Acoustic (Soundproof)">Acoustic (Soundproof)</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[rack_units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cooling_type]">
-                                    <option value="">Select Cooling Type</option>
-                                    <option value="Passive (Vented)">Passive (Vented)</option>
-                                    <option value="Active (Fan Kits)">Active (Fan Kits)</option>
-                                    <option value="Precision AC">Precision AC</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Power Capacity (Amps / Watts)
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Power_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Server Cabinet -->
-                        <div class="tech-group" data-type="Server Cabinet">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[rack_units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling System
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cooling_system]">
-                                    <option value="">Select Cooling System</option>
-                                    <option value="Perforated Doors (Airflow)">Perforated Doors (Airflow)</option>
-                                    <option value="In-Row Cooling">In-Row Cooling</option>
-                                    <option value="Rear Door Heat Exchanger">Rear Door Heat Exchanger</option>
-                                    <option value="Liquid Cooled">Liquid Cooled</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">PDU Details
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[PDU_Details]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Weight Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Weight_Capacity]" />
-                            </div>
                         </div>
                     </div>
 
@@ -860,21 +450,12 @@
         }
 
         if (currentSlide === 3) {
-            // Technical Specifications - only validate visible fields
-            const visibleTechGroup = document.querySelector(
-                '.tech-group[style*="display: block"], .tech-group[style*="display:block"]',
-            );
-            if (!visibleTechGroup) {
-                alert("Please select an asset type first.");
-                return false;
-            }
-
-            // Get only visible required fields
-            const visibleRequiredFields = visibleTechGroup.querySelectorAll(
+            // Purchase Information - validate all required fields
+            const requiredFields = currentSlideElement.querySelectorAll(
                 '[data-required="true"]:not([disabled])',
             );
 
-            for (const field of visibleRequiredFields) {
+            for (const field of requiredFields) {
                 let value =
                     field.tagName === "SELECT" ? field.value : field.value.trim();
 
@@ -882,7 +463,7 @@
                     field.classList.add("error");
                     showError(field, "This field is required");
                     isValid = false;
-                    if (!document.querySelector(".error")) {
+                    if (!document.querySelector(".error:focus")) {
                         field.focus();
                     }
                 }
@@ -1027,7 +608,6 @@
         switch (currentSlide) {
             case 2: // Basic Information
                 showSlide(3);
-                showTechnicalFields();
                 break;
 
             case 3: // Technical Specifications
@@ -1051,17 +631,6 @@
                 break;
 
             case 7: // Assignment & Location (final slide)
-                // Disable hidden tech-group inputs before submission
-                document.querySelectorAll(".tech-group").forEach((group) => {
-                    if (
-                        group.style.display === "none" ||
-                        group.style.display === ""
-                    ) {
-                        group
-                            .querySelectorAll("input, select, textarea")
-                            .forEach((el) => (el.disabled = true));
-                    }
-                });
 
                 document.querySelector("#assetModal form").submit();
                 break;
@@ -1109,9 +678,6 @@
 
         showSlide(prev);
 
-        // Show technical fields when going back to slide 3
-        if (prev === 3) showTechnicalFields();
-
         // Handle special cases when going back to certain slides
         if (prev === 5) handleSlide6Extras();
     }
@@ -1133,7 +699,7 @@
 
         // Show technical fields if on slide 3
         if (slideNumber === 3) {
-            showTechnicalFields();
+
         }
 
         if (slideNumber === 4) {
@@ -1159,38 +725,6 @@
         }
     }
 
-    /* ===============================
-           TECHNICAL SPECIFICATIONS
-        =============================== */
-    function showTechnicalFields() {
-        // Hide all tech groups first
-        document.querySelectorAll(".tech-group").forEach((group) => {
-            group.style.display = "none";
-            // Disable all fields in hidden groups
-            group.querySelectorAll("input, select, textarea").forEach((input) => {
-                input.disabled = true;
-            });
-        });
-
-        // Determine which tech group to show
-        let targetType = selectedType;
-        if (selectedType === "PC" || selectedType === "Laptop") {
-            targetType = "PC Laptop";
-        }
-
-        const techGroup = document.querySelector(
-            `.tech-group[data-type="${targetType}"]`,
-        );
-        if (techGroup) {
-            techGroup.style.display = "block";
-            // Enable all fields in visible group
-            techGroup
-                .querySelectorAll("input, select, textarea")
-                .forEach((input) => {
-                    input.disabled = false;
-                });
-        }
-    }
 
     function handleAssignedToChange(select) {
         const departmentSelect = document.getElementById("departmentdropdown");

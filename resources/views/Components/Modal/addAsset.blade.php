@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Name <span class="text-danger">*</span></label>
+                            <label class="form-label">Asset Model <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="asset_name" required />
                         </div>
 
@@ -78,425 +78,14 @@
                             <h6>Technical Specifications</h6>
                         </div>
 
-                        <!-- PC / Laptop -->
-                        <div class="tech-group" data-type="PC Laptop">
+                        <div class="tech-group">
                             <div class="mb-3">
-                                <label class="form-label">Asset Model
+                                <label class="form-label">Asset Specifications
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Processor
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Processor]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">RAM
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[RAM]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Storage
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Storage]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Operating System
-                                </label>
-                                <input type="text" class="form-control required-field"
-                                    name="specs[Operating_System]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Serial Number
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Serial_Number]" />
-                            </div>
-                        </div>
-
-                        <!-- Router -->
-                        <div class="tech-group" data-type="Router">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Network Role
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Network_Role]">
-                                    <option value="">Select Network Role</option>
-                                    <option value="Core">Core</option>
-                                    <option value="Edge (Gateway)">Edge (Gateway)</option>
-                                    <option value="Branch / Remote Office">Branch / Remote Office</option>
-                                    <option value="Distribution">Distribution</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Firmware Version
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Firmware_Version]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Routing Protocols
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Routing_Protocols]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">WAN / LAN Ports
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[WAN/LAN_Ports]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Throughput Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Throughout_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Firewall -->
-                        <div class="tech-group" data-type="Firewall">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cabinet Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Cabinet_Type]">
-                                    <option value="">Select Cabinet Type</option>
-                                    <option>Wall Mount</option>
-                                    <option>Free Standing</option>
-                                    <option>Outdoor / Rugged</option>
-                                    <option>Acoustic (Soundproof)</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Rack_Units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Cooling_Type]">
-                                    <option value="">Select Cooling Type</option>
-                                    <option value="Passive (Vented)">Passive (Vented)</option>
-                                    <option value="Active (Fan Kits)">Active (Fan Kits)</option>
-                                    <option value="Precision AC">Precision AC</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">IDS / IPS Support
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[IDS/IPS_Support]">
-                                    <option value="">Select IDS/IPS Support</option>
-                                    <option value="Enabled">Enabled</option>
-                                    <option value="Disabled">Disabled</option>
-                                    <option value="Not Supported">Not Supported</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Throughput Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Throughput_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Switch -->
-                        <div class="tech-group" data-type="Switch">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Asset_Model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Number of Ports
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="number" class="form-control required-field" data-required="true"
-                                    name="specs[Number_of_Ports]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">VLAN Configuration
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[VLAN_Configuration]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Switch Role
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Switch_Role]">
-                                    <option value="">Select Switch Role</option>
-                                    <option value="Access (End Device)">Access (End Device)</option>
-                                    <option value="Distribution">Distribution</option>
-                                    <option value="Core">Core</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Port Speed
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Port_Speed]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">PoE Support
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[PoE_Support]">
-                                    <option value="">Select PoE Support</option>
-                                    <option value="No PoE">No PoE</option>
-                                    <option value="PoE (802.3af)">PoE (802.3af)</option>
-                                    <option value="PoE+ (802.3at)">PoE+ (802.3at)</option>
-                                    <option value="UPOE / PoE++ (802.3bt)">UPOE / PoE++ (802.3bt)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- License -->
-                        <div class="tech-group" data-type="License">
-                            <div class="mb-3">
-                                <label class="form-label">License Name
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[License_Name]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Edition
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[License_Edition]">
-                                    <option value="">Select License Edition</option>
-                                    <option value="Basic / Starter">Basic / Starter</option>
-                                    <option value="Standard">Standard</option>
-                                    <option value="Professional">Professional</option>
-                                    <option value="Enterprise">Enterprise</option>
-                                    <option value="Ultimate / Premium">Ultimate / Premium</option>
-                                    <option value="Academic / Education">Academic / Education</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[License_Type]">
-                                    <option value="">Select License Type</option>
-                                    <option value="Volume">Volume</option>
-                                    <option value="Individual">Individual</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Subscription Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Subscription_Type]">
-                                    <option value="">Select Subscription Type</option>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Annual">Annual</option>
-                                    <option value="Annual">Perpetual</option>
-                                </select>
+                                <textarea type="text" rows="10" class="form-control required-field" name="technical_specifications"></textarea>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Number of Seats
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="number" class="form-control required-field" data-required="true"
-                                    name="specs[Number_of_seats]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">License Key
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[License_Key]" />
-                            </div>
-                        </div>
-
-                        <!-- Modem -->
-                        <div class="tech-group" data-type="Modem">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">ISP Name
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[ISP_Name]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Connection Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[Connection_Type]">
-                                    <option value="">Select Connection Type</option>
-                                    <option value="Fiber Optic (GPON)">Fiber Optic (GPON)</option>
-                                    <option value="DSL (ADSL / VDSL)">DSL (ADSL / VDSL)</option>
-                                    <option value="Cable (DOCSIS)">Cable (DOCSIS)</option>
-                                    <option value="Satellite">Satellite</option>
-                                    <option value="LTE / 5G Wireless">LTE / 5G Wireless</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Speed Rating
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Speed_Rating]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Serial Number
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Serial_Number]" />
-                            </div>
-                        </div>
-
-                        <!-- Communication Cabinet -->
-                        <div class="tech-group" data-type="Communication Cabinet">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cabinet Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cabinet_type]">
-                                    <option value="">Select Cabinet Type</option>
-                                    <option value="Wall Mount">Wall Mount</option>
-                                    <option value="Free Standing">Free Standing</option>
-                                    <option value="Outdoor / Rugged">Outdoor / Rugged</option>
-                                    <option value="Acoustic (Soundproof)">Acoustic (Soundproof)</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[rack_units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling Type
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cooling_type]">
-                                    <option value="">Select Cooling Type</option>
-                                    <option value="Passive (Vented)">Passive (Vented)</option>
-                                    <option value="Active (Fan Kits)">Active (Fan Kits)</option>
-                                    <option value="Precision AC">Precision AC</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Power Capacity (Amps / Watts)
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Power_Capacity]" />
-                            </div>
-                        </div>
-
-                        <!-- Server Cabinet -->
-                        <div class="tech-group" data-type="Server Cabinet">
-                            <div class="mb-3">
-                                <label class="form-label">Asset Model
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[asset_model]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Rack Units
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[rack_units]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Cooling System
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select required-field" data-required="true"
-                                    name="specs[cooling_system]">
-                                    <option value="">Select Cooling System</option>
-                                    <option value="Perforated Doors (Airflow)">Perforated Doors (Airflow)</option>
-                                    <option value="In-Row Cooling">In-Row Cooling</option>
-                                    <option value="Rear Door Heat Exchanger">Rear Door Heat Exchanger</option>
-                                    <option value="Liquid Cooled">Liquid Cooled</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">PDU Details
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[PDU_Details]" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Weight Capacity
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control required-field" data-required="true"
-                                    name="specs[Weight_Capacity]" />
-                            </div>
                         </div>
                     </div>
 
@@ -663,19 +252,6 @@
                             </select>
                         </div>
 
-                        {{-- 
-                        <div class="mb-3">
-                            <label class="form-label">Department</label>
-                            <select class="form-select" name="department">
-                                <option value="">Select department</option>
-                                <option value="IT Department">IT Department</option>
-                                <option value="HR Department">HR Department</option>
-                                <option value="Finance Department">Finance Department</option>
-                                <option value="Operations">Operations</option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                        </div> --}}
-
                         <div class="mb-3">
                             <label class="form-label">Location</label>
                             <select class="form-select" name="location">
@@ -698,4 +274,637 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('/Js/Assets/addAsset.js') }}?v={{ time() }}"></script>
+<script>
+    let selectedCategory = "";
+    let selectedType = "";
+    let currentSlide = 1;
+
+    function handleVendorChange(select) {
+        if (select.value === "__add_vendor__") {
+            window.location.href = "/vendors";
+        }
+    }
+
+    function addDocument() {
+        const name = document.getElementById("docName").value;
+        const fileInput = document.getElementById("docFile");
+
+        if (!name || !fileInput.files.length) {
+            alert("Please complete all document fields.");
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const table = document.getElementById("docTableBody");
+
+        // Generate a unique identifier for this document row
+        const docId =
+            "doc_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+
+        const row = document.createElement("tr");
+        row.setAttribute("data-doc-id", docId);
+        row.innerHTML = `
+        <td>${name}</td>
+        <td>
+            <span class="file-name">${file.name}</span>
+            <input type="hidden" name="documents[name][]" value="${name}">
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </td>
+    `;
+
+        table.appendChild(row);
+
+        const fileClone = fileInput.cloneNode(true);
+        fileClone.name = "documents[file][]";
+        fileClone.id = "";
+        fileClone.style.display = "none";
+        fileClone.removeAttribute("onchange");
+
+        document.getElementById("assetForm").appendChild(fileClone);
+        fileInput.value = "";
+        document.getElementById("docName").value = "";
+    }
+
+    // Optional: Add remove document function
+    function removeDocument(docId) {
+        const row = document.querySelector(`tr[data-doc-id="${docId}"]`);
+        if (row) {
+            row.remove();
+        }
+    }
+
+    function validateDocuments() {
+        const docTableBody = document.getElementById("docTableBody");
+        const docName = document.getElementById("docName");
+        const docFile = document.getElementById("docFile");
+
+        // Clear previous errors
+        [docName, docFile].forEach((field) => {
+            field.classList.remove("error");
+            const errorMsg = field.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains("error-message")) {
+                errorMsg.remove();
+            }
+        });
+
+        // Check if at least one document is added
+        if (!docTableBody || docTableBody.children.length === 0) {
+            showError(docName, "Please add at least one document");
+            docName.classList.add("error");
+            docName.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    const assetTypes = @json(
+        $categories->groupBy('type')->map(function ($group) {
+            return $group->pluck('name')->toArray();
+        }));
+
+    const operationalStatusOptions = {
+        "Physical Asset": ["Active", "In Stock", "Under Maintenance", "Retired"],
+        "Digital Asset": ["Active", "Inactive", "Expired"],
+    };
+
+    /* ===============================
+           CATEGORY & TYPE SELECTION
+        =============================== */
+    function selectCategory(category, element) {
+        selectedCategory = category;
+
+        document
+            .querySelectorAll(".asset-option")
+            .forEach((opt) => opt.classList.remove("active"));
+        element.classList.add("active");
+
+        const assetTypeSelect = document.getElementById("assetType");
+        assetTypeSelect.disabled = false;
+        assetTypeSelect.innerHTML = '<option value="">Select Category</option>';
+
+        assetTypes[category].forEach((type) => {
+            const option = document.createElement("option");
+            option.value = type;
+            option.textContent = type;
+            assetTypeSelect.appendChild(option);
+        });
+    }
+
+    function populateOperationalStatus() {
+        const statusSelect = document.getElementById("operationalStatus");
+        statusSelect.innerHTML = '<option value="">Select Status</option>';
+
+        operationalStatusOptions[selectedCategory].forEach((status) => {
+            const option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            statusSelect.appendChild(option);
+        });
+    }
+
+    /* ===============================
+           VALIDATION FUNCTIONS
+        =============================== */
+    function validateCurrentSlide() {
+        const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+        let isValid = true;
+
+        // Remove previous error styles from ALL fields in current slide
+        currentSlideElement
+            .querySelectorAll('[data-required="true"], [required]')
+            .forEach((field) => {
+                field.classList.remove("error");
+                const errorMsg = field.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
+            });
+
+        // Special handling for each slide
+        if (currentSlide === 1) {
+            return validateSlide1();
+        }
+
+        if (currentSlide === 2) {
+            // Basic Information slide
+            const assetName = document.querySelector(
+                '#slide2 input[name="asset_name"]',
+            );
+            const operationalStatus = document.querySelector(
+                '#slide2 select[name="operational_status"]',
+            );
+
+            if (!assetName.value.trim()) {
+                assetName.classList.add("error");
+                showError(assetName, "Asset model is required");
+                isValid = false;
+                assetName.focus();
+            }
+
+            return isValid;
+        }
+
+        if (currentSlide === 3) {
+            // Purchase Information - validate all required fields
+            const requiredFields = currentSlideElement.querySelectorAll(
+                '[data-required="true"]:not([disabled])',
+            );
+
+            for (const field of requiredFields) {
+                let value =
+                    field.tagName === "SELECT" ? field.value : field.value.trim();
+
+                if (!value) {
+                    field.classList.add("error");
+                    showError(field, "This field is required");
+                    isValid = false;
+                    if (!document.querySelector(".error:focus")) {
+                        field.focus();
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        if (currentSlide === 4) {
+            // Purchase Information - validate all required fields
+            const requiredFields = currentSlideElement.querySelectorAll(
+                '[data-required="true"]:not([disabled])',
+            );
+
+            for (const field of requiredFields) {
+                let value =
+                    field.tagName === "SELECT" ? field.value : field.value.trim();
+
+                if (!value) {
+                    field.classList.add("error");
+                    showError(field, "This field is required");
+                    isValid = false;
+                    if (!document.querySelector(".error:focus")) {
+                        field.focus();
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        if (currentSlide === 5) {
+            // Maintenance & Audit - validate all required fields
+            const requiredFields = currentSlideElement.querySelectorAll(
+                '[data-required="true"]:not([disabled])',
+            );
+
+            for (const field of requiredFields) {
+                let value =
+                    field.tagName === "SELECT" ? field.value : field.value.trim();
+
+                if (!value) {
+                    field.classList.add("error");
+                    showError(field, "This field is required");
+                    isValid = false;
+                    if (!document.querySelector(".error:focus")) {
+                        field.focus();
+                    }
+                }
+            }
+
+            return isValid;
+        }
+
+        if (currentSlide === 6) {
+            // Documents validation
+            return validateDocuments();
+        }
+
+        if (currentSlide === 7) {
+            // Assignment & Location - no required fields (optional)
+            return true;
+        }
+
+        return true;
+    }
+
+    function showError(field, message) {
+        // Remove existing error message
+        const existingError = field.nextElementSibling;
+        if (existingError && existingError.classList.contains("error-message")) {
+            existingError.remove();
+        }
+
+        // Add new error message
+        const errorMsg = document.createElement("div");
+        errorMsg.className = "error-message";
+        errorMsg.textContent = message;
+        field.parentNode.insertBefore(errorMsg, field.nextSibling);
+    }
+
+    function validateSlide1() {
+        const type = document.getElementById("assetType").value;
+
+        if (!selectedCategory) {
+            alert("Please select an Asset Type (Physical or Digital).");
+            return false;
+        }
+
+        if (!type) {
+            alert("Please select an Asset Category.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function handleSlide5Extras() {
+        const depreciationTab = document.getElementById("depreciation-tab");
+        if (!depreciationTab) return;
+
+        if (selectedType === "License") {
+            depreciationTab.style.display = "none";
+        } else {
+            depreciationTab.style.display = ""; // show normally
+        }
+    }
+
+    function handleSlide6Extras() {
+        // Don't check currentSlide here - let it run whenever called
+        const slide5 = document.getElementById("slide5"); // Note: this is for Maintenance & Audit (slide 5)
+        if (!slide5) return;
+
+        const warrantyStartText = document.getElementById("warranty_start_date");
+        const warrantyEndText = document.getElementById("warranty_end_date");
+        const lastMaintenanceDiv = document
+            .getElementById("last_schedule_maintenance")
+            ?.closest(".mb-3");
+        const nextMaintenanceDiv = document
+            .getElementById("next_schedule_maintenance")
+            ?.closest(".mb-3");
+
+        if (selectedType === "License") {
+            // Change labels for License
+            if (warrantyStartText) {
+                warrantyStartText.textContent = "Activation Date";
+            }
+
+            if (warrantyEndText) {
+                warrantyEndText.textContent = "Expiration Date";
+            }
+
+            // Hide maintenance fields for License
+            if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "none";
+            if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "none";
+        } else {
+            // Reset to default labels for non-License
+            if (warrantyStartText) {
+                warrantyStartText.textContent = "Warranty Start Date";
+            }
+
+            if (warrantyEndText) {
+                warrantyEndText.textContent = "Warranty End Date";
+            }
+
+            // Show maintenance fields for non-License
+            if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "";
+            if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "";
+        }
+    }
+    /* ===============================
+           SLIDE NAVIGATION
+        =============================== */
+    function nextSlide() {
+        // Validate current slide
+        if (!validateCurrentSlide()) return;
+
+        switch (currentSlide) {
+            case 1: // Asset Category and Type
+                selectedType = document.getElementById("assetType").value;
+                document.getElementById("summaryCategory").value = selectedCategory;
+                document.getElementById("summaryType").value = selectedType;
+
+                populateOperationalStatus();
+                showSlide(2);
+                break;
+
+            case 2: // Basic Information
+                showSlide(3);
+                break;
+
+            case 3: // Technical Specifications
+                showSlide(4); // Purchase Information
+                handleSlide5Extras();
+                break;
+
+            case 4: // Purchase Information
+                showSlide(5); // Maintenance & Audit
+                handleSlide6Extras();
+                break;
+
+            case 5: // Maintenance & Audit
+                showSlide(6); // Documents
+
+                break;
+
+            case 6: // Documents
+                if (!validateDocuments()) return;
+                showSlide(7); // Assignment & Location
+                break;
+
+            case 7: // Assignment & Location (final slide)
+                // Disable hidden tech-group inputs before submission
+
+                document.querySelector("#assetModal form").submit();
+                break;
+        }
+    }
+
+    function prevSlide() {
+        let prev = currentSlide - 1;
+
+        // Handle going back from Assignment & Location (slide 7) to Documents (slide 6)
+        if (currentSlide === 7) {
+            prev = 6;
+        }
+        // Handle going back from Documents (slide 6) to Maintenance & Audit (slide 5)
+        else if (currentSlide === 6) {
+            prev = 5;
+        }
+        // Handle going back from Maintenance & Audit (slide 5) to Purchase Information (slide 4)
+        else if (currentSlide === 5) {
+            prev = 4;
+        }
+        // Handle going back from Purchase Information (slide 4) to Technical Specifications (slide 3)
+        else if (currentSlide === 4) {
+            prev = 3;
+        }
+        // Handle going back from Technical Specifications (slide 3) to Basic Information (slide 2)
+        else if (currentSlide === 3) {
+            prev = 2;
+        }
+        // Handle going back from Basic Information (slide 2) to Category/Type (slide 1)
+        else if (currentSlide === 2) {
+            prev = 1;
+        }
+
+        if (prev < 1) return; // prevent going before first slide
+
+        // Remove error styles
+        const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+        currentSlideElement.querySelectorAll(".error").forEach((field) => {
+            field.classList.remove("error");
+            const errorMsg = field.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains("error-message")) {
+                errorMsg.remove();
+            }
+        });
+
+        showSlide(prev);
+
+        // Show technical fields when going back to slide 3
+
+        // Handle special cases when going back to certain slides
+        if (prev === 5) handleSlide5Extras();
+        if (prev === 6) handleSlide6Extras();
+    }
+
+    /* ===============================
+           SHOW/HIDE SLIDES
+        =============================== */
+    function showSlide(slideNumber) {
+        // Hide all slides
+        document.querySelectorAll('[id^="slide"]').forEach((slide) => {
+            slide.style.display = "none";
+        });
+
+        // Show the requested slide
+        const slideToShow = document.getElementById(`slide${slideNumber}`);
+        if (slideToShow) {
+            slideToShow.style.display = "block";
+        }
+
+
+        if (slideNumber === 4) {
+            handleSlide5Extras();
+        }
+
+        if (slideNumber === 5) {
+            handleSlide6Extras();
+        }
+
+        currentSlide = slideNumber;
+
+        const nextButton = document.querySelector(".next-btn, .submit-btn");
+        if (nextButton) {
+            if (slideNumber === 7) {
+                // Assignment & Location is the last slide
+                nextButton.textContent = "Submit";
+                nextButton.className = "submit-btn";
+            } else {
+                nextButton.textContent = "Next";
+                nextButton.className = "next-btn";
+            }
+        }
+    }
+
+    function handleAssignedToChange(select) {
+        const departmentSelect = document.getElementById("departmentdropdown");
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (select.value && selectedOption.dataset.department) {
+            // Get the department from the selected employee's data attribute
+            const employeeDepartment = selectedOption.dataset.department;
+
+            // Auto-fill department from selected employee
+            departmentSelect.value = employeeDepartment;
+
+            // Check if the value was set successfully
+            if (departmentSelect.value === employeeDepartment) {
+                // Make it readonly and style it
+                departmentSelect.disabled = true;
+                departmentSelect.style.backgroundColor = "#e9ecef";
+                departmentSelect.style.cursor = "not-allowed";
+            } else {}
+        } else {
+            // Clear department if no employee selected
+            departmentSelect.value = "";
+            departmentSelect.disabled = false;
+            departmentSelect.style.backgroundColor = "";
+            departmentSelect.style.cursor = "";
+        }
+    }
+    /* ===============================
+           RESET MODAL
+        =============================== */
+    function resetAssetModal() {
+        selectedCategory = "";
+        selectedType = "";
+        currentSlide = 1;
+
+        // Hide all slides except slide 1
+        document.querySelectorAll('[id^="slide"]').forEach((slide, index) => {
+            slide.style.display = index === 0 ? "block" : "none";
+        });
+
+        // Reset asset options
+        document
+            .querySelectorAll(".asset-option")
+            .forEach((opt) => opt.classList.remove("active"));
+
+        const assetTypeSelect = document.getElementById("assetType");
+        assetTypeSelect.disabled = true;
+        assetTypeSelect.innerHTML =
+            '<option value="">Select Asset Type First</option>';
+
+        const operationalStatus = document.getElementById("operationalStatus");
+        if (operationalStatus)
+            operationalStatus.innerHTML = '<option value="">Select Status</option>';
+
+        // Reset all inputs and remove error styles
+        document
+            .querySelectorAll(
+                "#assetModal input, #assetModal select, #assetModal textarea",
+            )
+            .forEach((el) => {
+                el.classList.remove("error");
+                el.disabled = false; // Enable all fields first
+
+                if (el.type === "checkbox" || el.type === "radio") {
+                    el.checked = false;
+                } else {
+                    el.value = "";
+                }
+
+                // Remove error messages
+                const errorMsg = el.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
+            });
+
+        // Reset department field state
+        const departmentSelect = document.getElementById("departmentdropdown");
+        if (departmentSelect) {
+            departmentSelect.value = "";
+            departmentSelect.disabled = false;
+            departmentSelect.style.backgroundColor = "";
+            departmentSelect.style.cursor = "";
+        }
+
+        // Reset assigned to select
+        const assignedToSelect = document.getElementById("assignedTo");
+        if (assignedToSelect) {
+            assignedToSelect.value = "";
+        }
+
+        // Hide all technical spec groups
+        document.querySelectorAll(".tech-group").forEach((group) => {
+            group.style.display = "none";
+        });
+
+        // Disable all fields except in slide 1
+        document
+            .querySelectorAll(
+                "#slide2 input, #slide2 select, #slide2 textarea, " +
+                "#slide3 input, #slide3 select, #slide3 textarea, " +
+                "#slide4 input, #slide4 select, #slide4 textarea, " +
+                "#slide5 input, #slide5 select, #slide5 textarea, " +
+                "#slide6 input, #slide5 select, #slide5 textarea, " +
+                "#slide7 input, #slide6 select, #slide6 textarea",
+            )
+            .forEach((el) => {
+                el.disabled = true;
+            });
+
+        // Reset button text
+        const nextButton = document.querySelector(".next-btn, .submit-btn");
+        if (nextButton) {
+            nextButton.textContent = "Next";
+            nextButton.className = "next-btn";
+        }
+    }
+    /* ===============================
+           BOOTSTRAP MODAL EVENT
+        =============================== */
+    const assetModal = document.getElementById("assetModal");
+    if (assetModal) {
+        assetModal.addEventListener("hidden.bs.modal", resetAssetModal);
+    }
+
+    // Initialize first slide correctly
+    showSlide(1);
+
+    // Add real-time validation to remove error styles when user starts typing
+    document.addEventListener("input", function(e) {
+        if (e.target.classList.contains("error")) {
+            const value =
+                e.target.tagName === "SELECT" ?
+                e.target.value :
+                e.target.value.trim();
+            if (value) {
+                e.target.classList.remove("error");
+                const errorMsg = e.target.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
+            }
+        }
+    });
+
+    // Also validate on change for select elements
+    document.addEventListener("change", function(e) {
+        if (e.target.tagName === "SELECT" && e.target.classList.contains("error")) {
+            if (e.target.value) {
+                e.target.classList.remove("error");
+                const errorMsg = e.target.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
+            }
+        }
+    });
+</script>

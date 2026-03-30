@@ -16,16 +16,11 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
     public function collection()
     {
         $now = \Carbon\Carbon::now();
-        return Assets::with(['technicalSpecifications', 'logs.user'])
+        return Assets::with(['logs.user'])
             ->whereYear('created_at', $now->year)
             ->whereMonth('created_at', $now->month)
             ->get()
             ->map(function ($asset) {
-                // Format technical specifications
-                $techSpecs = $asset->technicalSpecifications
-                    ->map(fn($spec) => ucwords(str_replace('_', ' ', $spec->spec_key)) . ': ' . $spec->spec_value)
-                    ->implode("\n");
-
                 // Format asset logs
                 $logs = $asset->logs
                     ->map(fn($log) => "{$log->user->name} | {$log->action} | {$log->field_name}: '{$log->old_value}' → '{$log->new_value}'")
@@ -36,8 +31,8 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
                     $asset->asset_name,
                     $asset->asset_category,
                     $asset->asset_type,
-                    $techSpecs,
-                    $asset->purchase_cost,
+                    $asset->technical_specifications,
+                    '₱' . number_format($asset->purchase_cost, 2),
                     $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date)->format('M d, Y') : null,
                     $asset->warranty_status,
                     $logs ?: 'No logs',
@@ -55,7 +50,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
             'Technical Specification',
             'Purchase Cost',
             'Purchase Date',
-            'Compliance Status',
+            'Under Warranty / Unexpired',
             'Asset Logs',
         ];
     }

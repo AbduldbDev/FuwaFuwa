@@ -27,9 +27,7 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
                     $asset->asset_name,
                     $asset->asset_category,
                     $asset->asset_type,
-                    $asset->technicalSpecifications
-                        ->map(fn($spec) => ucwords(str_replace('_', ' ', $spec->spec_key)) . ': ' . $spec->spec_value)
-                        ->implode("\n"),
+                    $asset->technical_specifications,
                     $asset->warranty_status,
                     $asset->delete_title,
                     $asset->delete_reason,
@@ -45,7 +43,7 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
             'Asset Category',
             'Asset Type',
             'Technical Specification',
-            'Compliance Status',
+            'Under Warranty / Unexpired',
             'Archive Status',
             'Archive Reason',
         ];

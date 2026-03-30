@@ -69,13 +69,13 @@
                     <div class="col-md-6 form-group">
                         <label>Physical Tag Prefix</label>
                         <input type="text" value="{{ $settings->physical_tag_prefix ?? '' }}" class="form-control"
-                            required name="physical_tag_prefix" />
+                            name="physical_tag_prefix" />
                     </div>
 
                     <div class="col-md-6 form-group">
                         <label>Digital Tag Prefix</label>
                         <input type="text" value="{{ $settings->digital_tag_prefix ?? '' }}" class="form-control"
-                            required name="digital_tag_prefix" />
+                            name="digital_tag_prefix" />
                     </div>
                 </div>
 

@@ -48,13 +48,7 @@
                               <label class="form-label text-muted">Asset Category</label>
                               <div class="description-text fw-semibold">{{ $item->asset_category }}</div>
                           </div>
-
-                          <div class="col-12 col-md-6 col-xl-6">
-                              <label class="form-label text-muted">Quantity</label>
-                              <div class="description-text fw-semibold">{{ $item->quantity }} Units</div>
-                          </div>
-
-                          <div class="col-12 col-md-6 col-xl-6">
+                          <div class="col-12 ">
                               <label class="form-label text-muted">
                                   Preferred Model / Specifications
                               </label>
@@ -83,6 +77,13 @@
                           <label class="form-label text-muted">Detailed Purpose</label>
                           <p class="description-text fw-semibold">
                               {{ $item->detailed_reason }}
+                          </p>
+                      </div>
+
+                      <div>
+                          <label class="form-label text-muted">Remarks</label>
+                          <p class="description-text fw-semibold">
+                              {{ $item->remarks }}
                           </p>
                       </div>
                   </section>
@@ -225,11 +226,13 @@
                           </button>
                       @endif
 
-                      <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
-                          data-bs-target="#assignModal" data-request-id="{{ $item->id }}"
-                          data-asset-tag="{{ $item->asset_tag }}">
-                          <i class="fa-solid fa-plus me-1"></i> Assign Asset
-                      </button>
+                      @if ($item->is_procured === 0)
+                          <button type="button" class="btn btn-success shadow-none" data-bs-toggle="modal"
+                              data-bs-target="#assignModal" data-request-id="{{ $item->id }}"
+                              data-asset-tag="{{ $item->asset_tag }}">
+                              <i class="fa-solid fa-plus me-1"></i> Assign Asset
+                          </button>
+                      @endif
                   @endif
 
               </div>
@@ -271,24 +274,7 @@
                   function getDisplayName(asset) {
                       let displayName = asset.asset_name || 'N/A';
 
-                      if (asset.technical_specifications?.length) {
-                          const specKeyMap = {
-                              "Physical Asset": "Asset_Model",
-                              "Digital Asset": "License_Name"
-                          };
 
-                          const neededKey = specKeyMap[asset.asset_type];
-
-                          if (neededKey) {
-                              const spec = asset.technical_specifications.find(
-                                  s => s.spec_key === neededKey
-                              );
-
-                              if (spec?.spec_value) {
-                                  displayName = spec.spec_value;
-                              }
-                          }
-                      }
 
                       return displayName;
                   }

@@ -19,10 +19,10 @@ class StoreAssetRequest extends FormRequest
             'asset_category'  => 'required|string|max:255',
             'asset_type'      => 'required|string|max:255',
             'model'           => 'required|string|max:255',
-            'quantity'        => 'required|integer|min:1',
             'request_reason'  => 'required|string|max:255',
             'priority'        => 'required|string|max:255',
             'detailed_reason' => 'required|string',
+            'remarks'         => 'nullable|string',
 
         ];
     }
@@ -34,7 +34,6 @@ class StoreAssetRequest extends FormRequest
             'department.required'     => 'Department is required.',
             'asset_category.required' => 'Asset category is required.',
             'asset_type.required'     => 'Asset type is required.',
-            'quantity.min'            => 'Quantity must be at least 1.',
         ];
     }
 }

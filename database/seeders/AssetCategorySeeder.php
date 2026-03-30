@@ -12,29 +12,30 @@ class AssetCategorySeeder extends Seeder
     {
         $assetTypes = [
             "Physical Asset" => [
-                "PC",
-                "Laptop",
-                "Router",
-                "Firewall",
-                "Switch",
-                "Modem",
-                "Communication Cabinet",
-                "Server Cabinet",
+                ["name" => "PC", "icon" => "fa-desktop"],
+                ["name" => "Laptop", "icon" => "fa-laptop"],
+                ["name" => "Router", "icon" => "fa-wifi"],
+                ["name" => "Firewall", "icon" => "fa-shield-halved"],
+                ["name" => "Switch", "icon" => "fa-network-wired"],
+                ["name" => "Modem", "icon" => "fa-plug"],
+                ["name" => "Communication Cabinet", "icon" => "fa-box"],
+                ["name" => "Server Cabinet", "icon" => "fa-server"],
             ],
             "Digital Asset" => [
-                "License"
+                ["name" => "License", "icon" => "fa-key"],
             ],
         ];
 
         foreach ($assetTypes as $type => $items) {
-            foreach ($items as $name) {
+            foreach ($items as $item) {
                 AssetCategory::updateOrInsert(
                     [
                         'type' => $type,
-                        'name' => $name,
+                        'name' => $item['name'],
                     ],
                     [
                         'requested_by' => 1,
+                        'icon' => $item['icon'],
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]

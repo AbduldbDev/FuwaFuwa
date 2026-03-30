@@ -289,7 +289,7 @@
         </div>
     </div>
 
-    @include('Components/Modal/addMaintenance')
+    @include('Components/Modal/Maintenance/addMaintenance')
     <!-- CALENDAR -->
     <script>
         const maintenanceEvents = @json($maintenanceEvents);

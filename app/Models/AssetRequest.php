@@ -12,11 +12,11 @@ class AssetRequest extends Model
         'request_id',
         'asset_tag',
         'user_id',
+        'category_id',
         'requested_by',
         'department',
         'asset_category',
         'asset_type',
-        'quantity',
         'model',
         'request_reason',
         'detailed_reason',
@@ -25,7 +25,7 @@ class AssetRequest extends Model
         'priority',
         'is_approved',
         'is_added',
-
+        'is_procured',
     ];
 
     public function user()
@@ -36,5 +36,10 @@ class AssetRequest extends Model
     public function asset()
     {
         return $this->belongsTo(Assets::class, 'asset_tag', 'asset_tag');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(AssetCategory::class, 'category_id');
     }
 }

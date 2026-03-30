@@ -15,21 +15,21 @@ return new class extends Migration
             $table->id();
             $table->string('request_id')->unique();
             $table->string('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('category_id')->nullable()->constrained('asset_categories')->nullOnDelete();
             $table->string('asset_tag')->nullable();
             $table->string('requested_by');
             $table->string('department');
             $table->string('asset_category');
             $table->string('asset_type');
-            $table->integer('quantity');
             $table->string('model')->nullable();
             $table->string('request_reason');
             $table->text('detailed_reason')->nullable();
-            // $table->decimal('cost', 10, 2)->nullable();
             $table->enum('priority', ['low', 'medium', 'high',  'emergency'])->default('low');
             $table->string('status')->default('For Review');
             $table->text('remarks')->nullable();
             $table->string('is_approved')->default('pending');
             $table->boolean('is_added')->default(false);
+            $table->boolean('is_procured')->default(false);
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@
                 <x-notification-dropdown />
             </div>
         </div>
-        @include('Components.Modal.AssetCategory.addAsset')
+        @include('Components.Modal.AssetCategory.addCategory')
 
         <div class="row">
             <div class="container mt-4">
@@ -59,7 +59,10 @@
                                     <tr>
                                         <td class="text-center">{{ $index + 1 }}</td>
                                         <td>{{ $item->type }}</td>
-                                        <td>{{ $item->name }}</td>
+                                        <td>
+                                            <i class="fa-solid {{ $item->icon }} me-2"></i>
+                                            <span>{{ $item->name }}</span>
+                                        </td>
                                         <td>{{ $item->user->name }}</td>
 
                                         <td style="">

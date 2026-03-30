@@ -33,8 +33,7 @@ class UpdateAssetRequest extends FormRequest
             'salvage_value' => 'sometimes|numeric|min:0',
             'documents.name.*'   => 'sometimes|string',
             'documents.file.*'   => 'file|max:25600',
-            'technical' => 'sometimes|array',
-            'technical.*' => 'nullable|string|max:255',
+            'technical_specifications' => 'sometimes|string',
             'note' => 'sometimes|string|max:255',
         ];
     }

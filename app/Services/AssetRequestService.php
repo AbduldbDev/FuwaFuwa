@@ -6,6 +6,7 @@ use App\Models\Assets;
 use App\Models\AssetRequest;
 use App\Models\User;
 use App\Models\Vendors;
+use App\Models\AssetCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,7 +24,7 @@ class AssetRequestService
 
     public function getAllRequests()
     {
-        return AssetRequest::latest('updated_at')->get();
+        return AssetRequest::with('category')->latest('updated_at')->get();
     }
 
     public function getTotalProcured()
@@ -66,11 +67,16 @@ class AssetRequestService
 
     public function getAvailableAsset()
     {
-        return Assets::with(['technicalSpecifications'])->whereNull('assigned_to')->get();
+        return Assets::whereNull('assigned_to')->get();
+    }
+
+    public function getAssetCategories()
+    {
+        return AssetCategory::latest()->get();
     }
 
     public function getDashboardData()
-    { 
+    {
         return [
             'items' => $this->getAllRequests(),
             'TotalProcured' => $this->getTotalProcured(),
@@ -81,6 +87,7 @@ class AssetRequestService
             'vendors' => $this->getActiveVendors(),
             'AvailableAsset' => $this->getAvailableAsset(),
             'RequestStatusCounts' => $this->getRequestStatusCounts(),
+            'categories' => $this->getAssetCategories(),
         ];
     }
 
@@ -88,7 +95,11 @@ class AssetRequestService
     {
         $data['request_id'] = $this->generateRequestId();
         $data['user_id'] = Auth::id();
+        $cateogry = AssetCategory::where('name', $data['asset_category'])->first();
+        $data['category_id'] = $cateogry->id;
+
         $assetRequest =  AssetRequest::create($data);
+
 
         $this->notification->notifyUsersWithModuleAccess(
             'Asset Request',
@@ -113,6 +124,10 @@ class AssetRequestService
 
         if ($request->status === 'For Review') {
             $updateData['is_added'] = $isAvailable ? 1 : 0;
+        }
+
+        if ($request->status === 'For Procurement') {
+            $updateData['is_procured'] = 1;
         }
 
         $request->update($updateData);

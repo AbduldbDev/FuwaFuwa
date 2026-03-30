@@ -77,4 +77,5 @@ class AssetCategoryController extends Controller
 
         return back()->with('success', 'Asset Category deleted successfully.');
     }
+    
 }

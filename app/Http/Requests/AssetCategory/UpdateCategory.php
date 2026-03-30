@@ -16,6 +16,7 @@ class UpdateCategory extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:asset_categories,name,' . $this->id,
             'type' => 'required|string|max:255',
+            'icon' => 'required|string|max:255',
         ];
     }
 }

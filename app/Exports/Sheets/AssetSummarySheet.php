@@ -31,7 +31,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
         /** ========= DATA ========= */
         $now = Carbon::now();
 
-        $assets = Assets::with(['technicalSpecifications', 'logs.user'])
+        $assets = Assets::with(['logs.user'])
             ->whereYear('created_at', $now->year)
             ->whereMonth('created_at', $now->month)
             ->orderBy('asset_type')
@@ -48,7 +48,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
                 'Technical Specifications',
                 'Purchase Cost',
                 'Purchase Date',
-                'Compliance Status',
+                'Under Warranty / Unexpired',
                 'Logs',
             ];
 
@@ -58,11 +58,9 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
                     $asset->asset_name,
                     $asset->asset_category,
                     $asset->asset_type,
-                    $asset->technicalSpecifications
-                        ->map(fn($s) => ucwords(str_replace('_', ' ', $s->spec_key)) . ': ' . $s->spec_value)
-                        ->implode("\n"),
-                    $asset->purchase_cost,
-                    $asset->purchase_date,
+                    $asset->technical_specifications,
+                    '₱' . number_format($asset->purchase_cost, 2), // formatted with peso sign
+                    $asset->purchase_date ? Carbon::parse($asset->purchase_date)->format('M d, Y') : '', // formatted date
                     $asset->warranty_status,
                     $asset->logs->isNotEmpty()
                         ? $asset->logs

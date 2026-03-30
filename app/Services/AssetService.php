@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AssetCategory;
 use App\Models\AssetLogs;
 use App\Models\AssetRequest;
 use App\Models\Assets;
@@ -48,9 +49,14 @@ class AssetService
         return AssetLogs::where('asset_id', $id)->with(['asset', 'user'])->latest()->get();
     }
 
+    public function getAssetCategories()
+    {
+        return AssetCategory::latest()->get();
+    }
+
     public function getAssetByTag(string $assetTag): Assets
     {
-        $asset = Assets::with(['technicalSpecifications', 'users', 'vendor', 'documents', 'maintenances.logs'])
+        $asset = Assets::with(['category', 'users', 'vendor', 'documents', 'maintenances.logs'])
             ->where('asset_tag', $assetTag)
             ->firstOrFail();
 
@@ -161,6 +167,14 @@ class AssetService
     }
 
 
+    public function getArchiveData()
+    {
+        return [
+            'items'   =>  $this->getAssetArchive(),
+            'categories' => $this->getAssetCategories(),
+        ];
+    }
+
 
     public function getIndexData(): array
     {
@@ -168,6 +182,7 @@ class AssetService
             'items'   => $this->getAllAssetsWithDepreciation(),
             'users'   => $this->getActiveUsers(),
             'vendors' => $this->getActiveVendors(),
+            'categories' => $this->getAssetCategories(),
         ];
     }
 
@@ -181,6 +196,7 @@ class AssetService
             'vendors'   => $this->getActiveVendors(),
             'AssetLogs' => $this->getAssetLogs($asset->id),
             'maintenance' => $this->getMaintenanceByTag($asset->asset_tag),
+            'categories' => $this->getAssetCategories(),
         ];
     }
 
@@ -189,6 +205,10 @@ class AssetService
         $data['created_by'] = Auth::id();
         $data['asset_tag']  = $this->generateAssetTag($data['asset_type']);
         $data['asset_id']   = $this->generateAssetId();
+
+        $cateogry = AssetCategory::where('name', $data['asset_category'])->first();
+
+        $data['category_id'] = $cateogry->id;
 
         if (($data['asset_type'] ?? null) === 'Physical Asset' && empty($data['assigned_to'])) {
             $data['location'] = $data['location'] ?? 'Warehouse';
@@ -205,19 +225,6 @@ class AssetService
         }
 
         $asset = Assets::create($data);
-
-        if (!empty($data['specs'])) {
-            foreach ($data['specs'] as $key => $value) {
-                if ($value !== null && $value !== '') {
-                    TechnicalSpecification::create([
-                        'asset_id'   => $asset->id,
-                        'spec_key'   => $key,
-                        'spec_value' => $value,
-                    ]);
-                }
-            }
-        }
-
 
         if (!empty($data['documents']) && !empty($data['documents']['name'])) {
             $this->storeDocuments($asset->id, $data['documents']);
@@ -276,19 +283,6 @@ class AssetService
     public function updateAsset(Assets $asset, array $data): Assets
     {
         $original = $asset->getOriginal();
-
-        if (isset($data['technical'])) {
-            foreach ($data['technical'] as $specId => $value) {
-                $spec = $asset->technicalSpecifications()->find($specId);
-
-                if ($spec && $spec->spec_value != $value) {
-                    $this->logAssetChange($asset, 'changed', 'Technical spec: ' . $spec->spec_key, $spec->spec_value, $value);
-                    $spec->update(['spec_value' => $value]);
-                }
-            }
-            unset($data['technical']);
-        }
-
 
         foreach ($data as $field => $newValue) {
             if (

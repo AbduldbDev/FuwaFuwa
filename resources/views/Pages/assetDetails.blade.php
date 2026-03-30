@@ -22,17 +22,7 @@
             <div class="asset-upper d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     @php
-                        $icons = [
-                            'PC' => 'fa-desktop',
-                            'Laptop' => 'fa-laptop',
-                            'Router' => 'fa-wifi',
-                            'Firewall' => 'fa-shield-halved',
-                            'Switch' => 'fa-network-wired',
-                            'Modem' => 'fa-signal',
-                            'Communication Cabinet' => 'fa-server',
-                            'Server Cabinet' => 'fa-server',
-                            'License' => 'fa-key',
-                        ];
+
                         $statusColors = [
                             'Active' => 'bg-success',
                             'Inactive' => 'bg-secondary',
@@ -44,7 +34,7 @@
                         ];
 
                         $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
-                        $icon = $icons[$item->asset_category] ?? 'fa-box';
+                        $icon = $item->category->icon ?? 'fa-box';
                     @endphp
 
                     <div class="asset-icon">
@@ -200,19 +190,82 @@
                         </div>
 
                         <div class="section-body">
-                            @forelse ($item->technicalSpecifications as $spec)
-                                <div class="row detail-row">
-                                    <div class="col-5 label">
-                                        {{ ucwords(str_replace('_', ' ', $spec->spec_key)) }}
-                                    </div>
-                                    <div class="col-7 value">{{ $spec->spec_value }}</div>
-                                </div>
-                            @empty
-                                <div class="row detail-row">
-                                    <div class="col-12 text-muted">No technical specifications available.</div>
-                                </div>
-                            @endforelse
+                            @php
+                                function maskSpec($text)
+                                {
+                                    $lines = preg_split('/\r\n|\r|\n/', $text);
+                                    $result = [];
+                                    $pendingKey = null;
 
+                                    foreach ($lines as $line) {
+                                        $trimmed = trim($line);
+
+                                        // Handle multiline (key: \n value)
+                                        if ($pendingKey) {
+                                            $value = $trimmed;
+
+                                            if (preg_match('/\bkey\b/i', $pendingKey)) {
+                                                $masked =
+                                                    strlen($value) > 3
+                                                        ? str_repeat('*', strlen($value) - 3) . substr($value, -3)
+                                                        : str_repeat('*', strlen($value));
+
+                                                $result[] = $pendingKey . ' ' . $masked;
+                                            } else {
+                                                $result[] = $pendingKey . ' ' . $value;
+                                            }
+
+                                            $pendingKey = null;
+                                            continue;
+                                        }
+
+                                        // ✅ Only real separators (: ; | =)
+                                        if (preg_match('/^(.+?)([:;\|=]+)(.+)$/', $trimmed, $matches)) {
+                                            $leftSide = trim($matches[1]);
+                                            $separator = $matches[2];
+                                            $value = trim($matches[3]);
+
+                                            if (preg_match('/\bkey\b/i', $leftSide)) {
+                                                $masked =
+                                                    strlen($value) > 3
+                                                        ? str_repeat('*', strlen($value) - 3) . substr($value, -3)
+                                                        : str_repeat('*', strlen($value));
+
+                                                $result[] = $leftSide . $separator . ' ' . $masked;
+                                            } else {
+                                                $result[] = $leftSide . $separator . ' ' . $value;
+                                            }
+                                        }
+                                        // Match "key:" only (value next line)
+                                        elseif (preg_match('/^(.+?)([:;\|=])$/', $trimmed, $matches)) {
+                                            $pendingKey = trim($matches[1]) . $matches[2];
+                                        } else {
+                                            // ✅ Leave normal sentences untouched
+                                            $result[] = $line;
+                                        }
+                                    }
+
+                                    return implode("\n", $result);
+                                }
+                            @endphp
+
+                            @if ($item->technical_specifications)
+                                <div class="row detail-row">
+                                    <div class="col-12 value">
+                                        @if (Auth::user()->user_type === 'viewer')
+                                            {!! nl2br(e(maskSpec($item->technical_specifications))) !!}
+                                        @else
+                                            {!! nl2br(e($item->technical_specifications)) !!}
+                                        @endif
+                                    </div>
+                                </div>
+                            @else
+                                <div class="row detail-row">
+                                    <div class="col-12 text-muted">
+                                        No technical specifications available.
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -333,14 +386,14 @@
                                 <div class="row detail-row">
                                     <div class="col-5 label">Useful Life (Remaining)</div>
                                     <div class="col-7 value">
-                                        {{ $item->remaining_life > 0 ? round($item->remaining_life, 2) . ' yrs' : 'N/A' }}
+                                        {{ $item->remaining_life > 0 ? round($item->remaining_life, 0) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
                                 <div class="row detail-row">
                                     <div class="col-5 label">Years Used</div>
                                     <div class="col-7 value">
-                                        {{ $item->years_used > 0 ? round($item->years_used, 2) . ' yrs' : 'N/A' }}
+                                        {{ $item->years_used > 0 ? round($item->years_used, 0) . ' yrs' : 'N/A' }}
                                     </div>
                                 </div>
 
@@ -743,7 +796,7 @@
         </div>
 
     </section>
-    @include('Components/Modal/updateAsset')
+    @include('Components.Modal.AssetDetails.editAsset')
     <script src="{{ asset('/Js/AssetDetails/Accordion.js') }}?v={{ time() }}"></script>
 @endsection
 

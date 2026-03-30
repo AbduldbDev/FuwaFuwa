@@ -69,19 +69,12 @@
                     break;
 
                 case 'technical-specs':
-                    if (asset.technical_specifications?.length) {
-                        asset.technical_specifications.forEach(spec => {
-                            modalFields.innerHTML += `
+                    modalFields.innerHTML += `
                             <div class="mb-3">
-                                <label class="form-label">${spec.spec_key.replace(/_/g,' ').toUpperCase()}</label>
-                                <input type="text"
-                                    name="technical[${spec.id}]"
-                                    class="form-control"
-                                    value="${spec.spec_value ?? ''}">
+                                <label class="form-label">Technical Specification</label>
+                               <textarea type="text" rows="10" class="form-control required-field" name="technical_specifications" >${asset.technical_specifications ?? ''}</textarea>
                             </div>
                         `;
-                        });
-                    }
                     break;
                 case 'assignment-location':
                     modalFields.innerHTML = `

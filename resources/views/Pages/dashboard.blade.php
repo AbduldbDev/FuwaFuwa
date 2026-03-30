@@ -273,14 +273,9 @@
                                 <!-- category -->
                                 <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
                                     <option value="all">All Categories</option>
-                                    <option value="PC">PC</option>
-                                    <option value="Laptop">Laptop</option>
-                                    <option value="Router">Router</option>
-                                    <option value="Switch">Switch</option>
-                                    <option value="Modem">Modem</option>
-                                    <option value="Communication Cabinet">Communication Cabinet</option>
-                                    <option value="Server Cabinet">Server Cabinet</option>
-                                    <option value="License">License</option>
+                                    @foreach ($categories as $item)
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
                                 </select>
 
                                 <!-- Status -->
@@ -327,13 +322,7 @@
                                             <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}
                                             </td>
                                             <td>
-                                                @if ($item->asset_type === 'Physical Asset')
-                                                    {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'Asset_Model'))->spec_value ?? 'N/A' }}
-                                                @elseif ($item->asset_type === 'Digital Asset')
-                                                    {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'License_Name'))->spec_value ?? 'N/A' }}
-                                                @else
-                                                    N/A
-                                                @endif
+                                                {{ $item->asset_name }}
                                             </td>
                                             <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                             </td>
@@ -341,10 +330,6 @@
                                                 class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
                                                 {{ $item->warranty_status }}
                                             </td>
-                                            {{-- <td
-                                                class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
-                                                {{ $item->warranty_status === 'Yes' ? 'Under Warranty / Unexpired' : 'Out of Warranty / Expired' }}
-                                            </td> --}}
                                             <td>₱{{ number_format($item->purchase_cost, 2) }}</td>
                                             <td>
                                                 ₱{{ $item->asset_category === 'License' ? number_format(0, 2) : number_format($item->current_value, 2) }}

@@ -41,6 +41,8 @@ class AssetController extends Controller
         $this->authorizeRead();
 
         $data =  $this->assetService->getIndexData();
+
+        // return response()->json($data);
         return view('Pages.assets', $data);
     }
 

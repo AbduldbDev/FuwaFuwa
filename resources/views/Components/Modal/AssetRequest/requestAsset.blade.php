@@ -47,29 +47,14 @@
                         <div class="col-lg-6 mb-3">
                             <label class="form-label">Asset Category <span class="text-danger">*</span></label>
                             <select class="form-select" name="asset_category" required>
-                                <option value="PC">PC</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Router">Router</option>
-                                <option value="Firewall">Firewall</option>
-                                <option value="Switch">Switch</option>
-                                <option value="Modem">Modem</option>
-                                <option value="Communication Cabinet">Communication Cabinet</option>
-                                <option value="Server Cabinet">Server Cabinet</option>
-                                <option value="License">License</option>
-
+                                @foreach ($categories as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
-                        <!-- quantity -->
-                        <div class="col-lg-6 mb-3">
-                            <label class="form-label">
-                                Quantity <span class="text-danger">*</span>
-                            </label>
-                            <input type="number" class="form-control" name="quantity" required />
-                        </div>
-
                         <!-- prefered model/specs -->
-                        <div class="col-lg-6 mb-4">
+                        <div class="col-lg-12 mb-4">
                             <label class="form-label">
                                 Preferred Model/Specs <span class="text-danger">*</span>
                             </label>
@@ -140,6 +125,13 @@
                         </label>
                         <textarea class="form-control" rows="4" placeholder="Enter detailed purpose..." name="detailed_reason"
                             required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Remarks <span class="text-danger">*</span>
+                        </label>
+                        <textarea class="form-control" rows="4" placeholder="Enter remarks..." name="remarks" required></textarea>
                     </div>
                 </div>
 
@@ -227,5 +219,7 @@
         });
     });
 </script>
-
+<script>
+    const categories = @json($categories);
+</script>
 <script src="{{ asset('/Js/Assets/assetCategorySelect.js') }}"></script>

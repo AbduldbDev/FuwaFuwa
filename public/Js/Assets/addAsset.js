@@ -85,20 +85,6 @@ function validateDocuments() {
     return true;
 }
 
-const assetTypes = {
-    "Physical Asset": [
-        "PC",
-        "Laptop",
-        "Router",
-        "Firewall",
-        "Switch",
-        "Modem",
-        "Communication Cabinet",
-        "Server Cabinet",
-    ],
-    "Digital Asset": ["License"],
-};
-
 const operationalStatusOptions = {
     "Physical Asset": ["Active", "In Stock", "Under Maintenance", "Retired"],
     "Digital Asset": ["Active", "Inactive", "Expired"],

@@ -70,7 +70,7 @@ class MaintenanceService
 
     public function getAllAssets()
     {
-        return Assets::with('technicalSpecifications')->where('operational_status', '!=', 'archived')
+        return Assets::with('category')->where('operational_status', '!=', 'archived')
             ->where('asset_type', 'Physical Asset')
             ->whereDoesntHave('maintenances', function ($q) {
                 $q->where('status', '!=', 'Completed');

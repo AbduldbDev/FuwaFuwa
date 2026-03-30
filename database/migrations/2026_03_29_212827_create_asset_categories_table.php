@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('requested_by')->nullable()->constrained('users')->nullOnDelete();
             $table->string('name');
             $table->string('type');
+            $table->string('icon');
             $table->timestamps();
         });
     }

@@ -99,18 +99,11 @@
                                        <div id="assetDropdown" class="list-group position-absolute w-100 d-none"
                                            style="max-height:200px; overflow:auto; z-index:1055;">
                                            @foreach ($Assets as $item)
-                                               @php
-                                                   $assetModel =
-                                                       $item->technicalSpecifications
-                                                           ->where('spec_key', 'Asset_Model')
-                                                           ->first()?->spec_value ?? 'N/A';
-                                               @endphp
-
                                                <button type="button" class="list-group-item list-group-item-action"
-                                                   data-tag="{{ $item->asset_tag }}" data-name="{{ $assetModel }}"
+                                                   data-tag="{{ $item->asset_tag }}" data-name="{{ $item->asset_name }}"
                                                    data-next="{{ $item->last_maintenance }}">
 
-                                                   {{ $item->asset_tag }} - {{ $assetModel }}
+                                                   {{ $item->asset_tag }} - {{ $item->asset_name }}
                                                </button>
                                            @endforeach
                                        </div>

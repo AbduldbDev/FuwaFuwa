@@ -71,10 +71,7 @@
 
 @php
     $jsAssets = $AvailableAsset->map(function ($asset) {
-        $displayName =
-            $asset->asset_type === 'Physical Asset'
-                ? optional($asset->technicalSpecifications->firstWhere('spec_key', 'Asset_Model'))->spec_value
-                : optional($asset->technicalSpecifications->firstWhere('spec_key', 'License_Name'))->spec_value;
+        $displayName = $asset->asset_name;
 
         // Get asset_tag
         $assetTag = $asset->asset_tag ?? '';

@@ -6,7 +6,6 @@
         <div class="navbar mb-4">
             <h2>Asset Management</h2>
             <div class="group-box">
-
                 @if (Auth::user()->canAccess('Assets', 'write'))
                     <button class="add-btn" data-bs-toggle="modal" data-bs-target="#assetModal">
                         <i class="fa-solid fa-plus"></i>
@@ -35,15 +34,9 @@
                             <!-- category -->
                             <select class="form-select form-select-sm w-auto shadow-none" id="categoryFilter">
                                 <option value="all">All Categories</option>
-                                <option value="PC">PC</option>
-                                <option value="Laptop">Laptop</option>
-                                <option value="Router">Router</option>
-                                <option value="Firewall">Firewall</option>
-                                <option value="Switch">Switch</option>
-                                <option value="Modem">Modem</option>
-                                <option value="Communication Cabinet">Communication Cabinet</option>
-                                <option value="Server Cabinet">Server Cabinet</option>
-                                <option value="License">License</option>
+                                @foreach ($categories as $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
 
                             <!-- Status -->
@@ -67,7 +60,6 @@
 
                     <!-- Table -->
                     <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
-
                         <table class="table table-borderless table-striped  align-middle" id="assetTable">
                             <thead class="border-bottom">
                                 <tr>
@@ -93,7 +85,6 @@
                                             'Expired' => 'bg-danger',
                                             'archived' => 'bg-danger',
                                         ];
-
                                         $badgeClass = $statusColors[$item->operational_status] ?? 'bg-light text-dark';
                                     @endphp
                                     <tr>
@@ -103,15 +94,8 @@
                                         </td>
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                         <td>
-                                            @if ($item->asset_type === 'Physical Asset')
-                                                {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'Asset_Model'))->spec_value ?? 'N/A' }}
-                                            @elseif ($item->asset_type === 'Digital Asset')
-                                                {{ optional($item->technicalSpecifications->firstWhere('spec_key', 'License_Name'))->spec_value ?? 'N/A' }}
-                                            @else
-                                                N/A
-                                            @endif
+                                            {{ $item->asset_name }}
                                         </td>
-
                                         <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                         </td>
                                         <td
@@ -123,7 +107,6 @@
                                             ₱{{ $item->asset_category === 'License' ? number_format(0, 2) : number_format($item->current_value, 2) }}
                                         </td>
                                     </tr>
-
                                 @empty
                                     <tr>
                                         <td colspan="8" class="text-center py-5">
@@ -146,7 +129,6 @@
             </div>
         </div>
     </section>
-
     <script src="{{ asset('/Js/Assets/assetFilter.js') }}?v={{ time() }}"></script>
 @endsection
 

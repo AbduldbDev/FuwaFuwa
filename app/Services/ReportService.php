@@ -34,7 +34,7 @@ class ReportService
                     'asset_category',
                     'asset_tag',
                     'asset_name',
-                    'technical_specifications', // mapped from technicalSpecifications relation
+                    'technical_specifications',
                 ],
                 'Operational Status' => [
                     'operational_status',
@@ -113,7 +113,7 @@ class ReportService
 
             'asset_requests' => [
                 'Requester Information' => ['requested_by', 'department'],
-                'Asset Specification' => ['asset_type', 'asset_category', 'quantity', 'model'],
+                'Asset Specification' => ['asset_type', 'asset_category', 'model'],
                 'Justification' => ['request_reason', 'detailed_reason'],
                 'Asset Request Status' => ['status'],
             ],

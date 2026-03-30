@@ -67,6 +67,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
         Route::put('/status/{assetRequest}', 'updateStatus')->name('statusupdate');
         Route::put('/approve/{assetRequest}', 'approveStatus')->name('approveStatus');
         Route::put('/reject/{assetRequest}', 'rejectStatus')->name('rejectStatus');
+        Route::delete('/delete/{id}', 'delete')->name('delete');
     });
 
     Route::prefix('/user-management')->name('user-management.')->controller(AccountController::class)->group(function () {

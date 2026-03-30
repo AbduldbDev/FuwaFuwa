@@ -105,17 +105,6 @@
                                 <!-- asset-info -->
                                 <div class="d-flex align-items-center gap-3">
                                     @php
-                                        $icons = [
-                                            'PC' => 'fa-desktop',
-                                            'Laptop' => 'fa-laptop',
-                                            'Router' => 'fa-wifi',
-                                            'Firewall' => 'fa-shield-halved',
-                                            'Switch' => 'fa-network-wired',
-                                            'Modem' => 'fa-signal',
-                                            'Communication Cabinet' => 'fa-server',
-                                            'Server Cabinet' => 'fa-server',
-                                            'License' => 'fa-key',
-                                        ];
 
                                         $priorityClass = match ($item->priority) {
                                             'low' => 'bg-primary text-white',
@@ -125,10 +114,10 @@
                                             default => 'bg-secondary text-white',
                                         };
 
-                                        $icon = $icons[$item->asset_category] ?? 'fa-box';
+                                        $icon = $item->category->icon ?? 'fa-box';
                                     @endphp
                                     <div class="asset-icon">
-                                        <i class="fa-solid {{ $icon }}"></i>
+                                        <i class="fas {{ $icon }}"></i>
                                     </div>
                                     <div class="request-info">
                                         <h6>{{ $item->asset_type }} - {{ $item->model }}</h6>
@@ -151,25 +140,39 @@
 
                                     <!-- action buttons -->
                                     <div class="d-flex gap-2">
+                                        <!-- View -->
                                         <button class="btn btn-outline-primary action-btn" data-bs-toggle="modal"
                                             data-bs-target="#requestDetailsModal{{ $item->id }}">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
+
+                                        @if ($item->status == 'For Review' && Auth::user()->id == $item->user_id)
+                                            <a class="btn btn-outline-warning action-btn">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+
+                                            <button class="btn btn-outline-danger action-btn delete-asset-btn"
+                                                data-url="{{ route('asset-request.delete', $item->id) }}"
+                                                data-name="{{ $item->asset_name }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @include('Components.Modal.requestAssetDetails')
+                    @include('Components.Modal.AssetRequest.requestAssetDetails')
                 @endforeach
             </div>
         </div>
     </div>
 
-    @include('Components.Modal.requestAsset')
-    @include('Components.Modal.addRequestAsset')
-    @include('Components.Modal.assignAsset')
+    @include('Components.Modal.AssetRequest.requestAsset')
+    @include('Components.Modal.AssetRequest.addRequestAsset')
+    @include('Components.Modal.AssetRequest.assignAsset')
     <script src="{{ asset('/Js/Assets/assetRequestFilter.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('/Js/SweetAlert/DeleteRequest.js') }}?v={{ time() }}"></script>
 @endsection
 
 @push('css')
