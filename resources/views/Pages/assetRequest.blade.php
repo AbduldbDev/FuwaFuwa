@@ -147,7 +147,8 @@
                                         </button>
 
                                         @if ($item->status == 'For Review' && Auth::user()->id == $item->user_id)
-                                            <a class="btn btn-outline-warning action-btn">
+                                            <a class="btn btn-outline-warning action-btn" data-bs-toggle="modal"
+                                                data-bs-target="#editRequest{{ $item->id }}">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
 
@@ -163,6 +164,7 @@
                         </div>
                     </div>
                     @include('Components.Modal.AssetRequest.requestAssetDetails')
+                    @include('Components.Modal.AssetRequest.editRequest')
                 @endforeach
             </div>
         </div>

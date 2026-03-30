@@ -49,12 +49,12 @@ class AssetRequestService
 
     public function getActiveUsers()
     {
-        return User::where('status', 'active')->get();
+        return User::where('status', 'active')->orderBy('name', 'asc')->get();
     }
 
     public function getActiveVendors()
     {
-        return Vendors::where('status', 'Active')->get();
+        return Vendors::where('status', 'Active')->orderBy('name', 'asc')->get();
     }
 
     public function getRequestStatusCounts()
@@ -72,7 +72,7 @@ class AssetRequestService
 
     public function getAssetCategories()
     {
-        return AssetCategory::latest()->get();
+        return AssetCategory::orderBy('name', 'asc')->get();
     }
 
     public function getDashboardData()
@@ -106,6 +106,26 @@ class AssetRequestService
             'read',
             'New Asset Request',
             "New asset request #" . $assetRequest->request_id . " has been submitted by " . Auth::user()->name . ".",
+            'info'
+        );
+
+        return $assetRequest;
+    }
+
+
+    public function update($id, array $data)
+    {
+        $cateogry = AssetCategory::where('name', $data['asset_category'])->first();
+        $data['category_id'] = $cateogry->id;
+
+        $assetRequest =  AssetRequest::find($id);
+        $assetRequest->update($data);
+
+        $this->notification->notifyUsersWithModuleAccess(
+            'Asset Request',
+            'read',
+            'New Asset Request',
+            "New asset request #" . $assetRequest->request_id . " has been updated by " . Auth::user()->name . ".",
             'info'
         );
 

@@ -33,7 +33,8 @@
 
                         <div>
                             <label class="form-label">Asset Category</label>
-                            <select class="form-select shadow-none" id="assetType" disabled>
+                            <select class="form-select shadow-none searchable-select" id="assetType" disabled
+                                style="width: 100%;">
                                 <option value="">Select asset category first</option>
                             </select>
                         </div>
@@ -80,7 +81,8 @@
 
                         <div class="tech-group">
                             <div class="mb-3">
-                                <label class="form-label">Asset Specifications
+                                <label class="form-label">
+                                    Asset Specifications
                                     <span class="text-danger">*</span>
                                 </label>
                                 <textarea type="text" rows="10" class="form-control required-field" name="technical_specifications"></textarea>
@@ -98,12 +100,13 @@
 
                         <div class="mb-3">
                             <label class="form-label">Vendor <span class="text-danger">*</span></label>
-                            <select class="form-select" name="vendor_id" onchange="handleVendorChange(this)">
+                            <select class="form-select searchable-select" name="vendor_id" id="vendor_id"
+                                onchange="handleVendorChange(this)" style="width: 100%;">
                                 <option value="">Select vendor</option>
                                 @foreach ($vendors as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
-                                <option value="__add_vendor__"> Add New Vendor</option>
+                                <option value="__add_vendor__">+ Add New Vendor</option>
                             </select>
                         </div>
 
@@ -199,7 +202,7 @@
                                     data-required="true">
                             </div>
 
-                            <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn  btn-sm save-btn "
+                            <button type="button" class="col-lg-4 mb-3 h-100 p-2 btn btn-sm save-btn "
                                 onclick="addDocument()">
                                 + Add Document
                             </button>
@@ -232,19 +235,21 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to" id="assignedTo"
-                                onchange="handleAssignedToChange(this)">
+                            <select class="form-control searchable-select" name="assigned_to" id="assignedTo"
+                                onchange="handleAssignedToChange(this)" style="width: 100%;">
                                 <option value="">Select Employee</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->name }}" data-department="{{ $user->department }}">
-                                        {{ $user->name }}</option>
+                                        {{ $user->name }} ({{ $user->department }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Department</label>
-                            <select class="form-select" name="department" id="departmentdropdown">
+                            <select class="form-select searchable-select" name="department" id="departmentdropdown"
+                                style="width: 100%;">
                                 <option selected disabled>Choose department</option>
                                 <option value="IT">IT</option>
                                 <option value="HR">HR</option>
@@ -254,7 +259,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Location</label>
-                            <select class="form-select" name="location">
+                            <select class="form-select searchable-select" name="location" style="width: 100%;">
                                 <option value="">Select location</option>
                                 <option>Main Office</option>
                                 <option>Warehouse</option>
@@ -278,6 +283,53 @@
     let selectedCategory = "";
     let selectedType = "";
     let currentSlide = 1;
+
+    function initializeSelect2() {
+        $('.searchable-select').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            dropdownParent: $('#assetModal'),
+            placeholder: function() {
+                return $(this).data('placeholder') || 'Select option';
+            },
+            allowClear: true,
+            templateSelection: function(state) {
+                if (!state.id) return state.text;
+                return $('<span style="color: #000;"></span>').text(state.text);
+            },
+            templateResult: function(state) {
+                if (!state.id) return state.text;
+                return $('<span style="color: #000;"></span>').text(state.text);
+            }
+        });
+
+        // Apply default styling (no border)
+        $('.searchable-select').each(function() {
+            const $select2 = $(this).next('.select2-container');
+            $select2.find('.select2-selection').css({
+                'background-color': '#efefef',
+                'border': '1px solid #d1d1d1', // neutral border
+                'color': 'black',
+                'height': '38px',
+                'line-height': '36px',
+                'box-shadow': 'none',
+                'outline': 'none',
+                'transition': 'border-color 0.2s' // smooth border change
+            });
+
+            // Add focus/blur events to change border only on focus
+            $select2.find('.select2-selection').on('focus click', function() {
+                $(this).css('border-color', '#f0ab4b');
+            }).on('blur', function() {
+                $(this).css('border-color', 'transparent');
+            });
+        });
+    }
+
+    // Reinitialize Select2 when modal is shown
+    $('#assetModal').on('shown.bs.modal', function() {
+        initializeSelect2();
+    });
 
     function handleVendorChange(select) {
         if (select.value === "__add_vendor__") {
@@ -304,17 +356,17 @@
         const row = document.createElement("tr");
         row.setAttribute("data-doc-id", docId);
         row.innerHTML = `
-        <td>${name}</td>
-        <td>
-            <span class="file-name">${file.name}</span>
-            <input type="hidden" name="documents[name][]" value="${name}">
-        </td>
-        <td>
-            <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </td>
-    `;
+            <td>${name}</td>
+            <td>
+                <span class="file-name">${file.name}</span>
+                <input type="hidden" name="documents[name][]" value="${name}">
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        `;
 
         table.appendChild(row);
 
@@ -768,6 +820,10 @@
                 departmentSelect.disabled = true;
                 departmentSelect.style.backgroundColor = "#e9ecef";
                 departmentSelect.style.cursor = "not-allowed";
+                // Update Select2 if initialized
+                if ($(departmentSelect).hasClass('select2-hidden-accessible')) {
+                    $(departmentSelect).trigger('change');
+                }
             } else {}
         } else {
             // Clear department if no employee selected
@@ -775,6 +831,10 @@
             departmentSelect.disabled = false;
             departmentSelect.style.backgroundColor = "";
             departmentSelect.style.cursor = "";
+            // Update Select2 if initialized
+            if ($(departmentSelect).hasClass('select2-hidden-accessible')) {
+                $(departmentSelect).trigger('change');
+            }
         }
     }
     /* ===============================
@@ -866,6 +926,13 @@
             nextButton.textContent = "Next";
             nextButton.className = "next-btn";
         }
+
+        // Destroy and reinitialize Select2 to reset state
+        $('.searchable-select').each(function() {
+            if ($(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2('destroy');
+            }
+        });
     }
     /* ===============================
            BOOTSTRAP MODAL EVENT

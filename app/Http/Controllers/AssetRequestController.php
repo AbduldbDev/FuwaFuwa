@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\AssetRequestService;
 use App\Http\Requests\AssetRequest\StoreAssetRequest;
 use App\Http\Requests\AssetRequest\UpdateAssetRequestStatus;
+use App\Http\Requests\AssetRequest\UpdateAssetRequest;
 use App\Models\AssetRequest;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class AssetRequestController extends Controller
         return view('Pages/assetRequest', $data);
     }
 
-    public function store(StoreAssetRequest $request)
+    public function store(StoreAssetRequest $request,)
     {
         $this->authorizeWrite();
 
@@ -55,6 +56,23 @@ class AssetRequestController extends Controller
             ]);
         }
     }
+
+    public function update(UpdateAssetRequest $request, $id)
+    {
+        $this->authorizeWrite();
+
+        try {
+            $this->assetRequestService->update($id, $request->validated());
+
+            return redirect()->back()->with('success', 'Asset Request updated successfully.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->withErrors([
+                'system' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
 
     public function forreview(UpdateAssetRequestStatus $request, AssetRequest $assetRequest)
     {

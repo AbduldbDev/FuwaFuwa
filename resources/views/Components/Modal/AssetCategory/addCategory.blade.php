@@ -77,7 +77,7 @@
 
                  <!-- modal footer -->
                  <div class="modal-footer border-0 px-4 pb-4">
-                     <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">
+                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                          Cancel
                      </button>
                      <button type="submit" class="btn btn-success">

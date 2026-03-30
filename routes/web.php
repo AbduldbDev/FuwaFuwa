@@ -62,6 +62,7 @@ Route::middleware(['auth', 'UserType:admin,encoder,viewer'])->group(function () 
     Route::prefix('/asset-request')->name('asset-request.')->controller(AssetRequestController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
+        Route::put('/update/{id}', 'update')->name('update');
         Route::post('/store', 'store')->name('store');
         Route::put('/for-review/{assetRequest}', 'forreview')->name('forreview');
         Route::put('/status/{assetRequest}', 'updateStatus')->name('statusupdate');

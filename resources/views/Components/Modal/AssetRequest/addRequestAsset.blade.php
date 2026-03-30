@@ -74,7 +74,8 @@
 
                         <div class="mb-3">
                             <label class="form-label">Vendor</label>
-                            <select class="form-select" name="vendor_id" onchange="handleVendorChange(this)">
+                            <select class="form-select searchable-select" name="vendor_id"
+                                onchange="handleVendorChange(this)">
                                 <option value="">Select vendor</option>
                                 @foreach ($vendors as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -207,7 +208,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Assigned To</label>
-                            <select class="form-control" name="assigned_to" id="assignedTo"
+                            <select class="form-control searchable-select" name="assigned_to" id="assignedTo"
                                 onchange="handleAssignedToChange(this)">
                                 <option value="">Select Employee</option>
                                 @foreach ($users as $user)
@@ -219,7 +220,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Department</label>
-                            <select class="form-select" name="department" id="departmentdropdown">
+                            <select class="form-select searchable-select" name="department" id="departmentdropdown">
                                 <option selected disabled>Choose department</option>
                                 <option value="IT">IT</option>
                                 <option value="HR">HR</option>
@@ -229,7 +230,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Location</label>
-                            <select class="form-select" name="location">
+                            <select class="form-select searchable-select" name="location">
                                 <option value="">Select location</option>
                                 <option>Main Office</option>
                                 <option>Warehouse</option>
@@ -260,9 +261,90 @@
     let selectedCategory = "";
     let selectedType = "";
     let currentSlide = 2; // Starting from slide 2
+    let select2Initialized = false;
+
+    function initializeSelect2() {
+        // Check if Select2 is available
+        if (typeof $.fn.select2 === 'undefined') {
+            console.error('Select2 not loaded');
+            return;
+        }
+
+        // Destroy any existing Select2 instances first
+        $('.searchable-select').each(function() {
+            if ($(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2('destroy');
+            }
+        });
+
+        // Initialize Select2 for all searchable selects
+        $('.searchable-select').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            dropdownParent: $('#assetModal'),
+            placeholder: function() {
+                return $(this).data('placeholder') || 'Select option';
+            },
+            allowClear: true,
+            // Custom template for selection to apply styles
+            templateSelection: function(state) {
+                if (!state.id) { // placeholder
+                    return state.text;
+                }
+                return $('<span style="color: #000;"></span>').text(state.text);
+            },
+            // Custom template for dropdown options
+            templateResult: function(state) {
+                if (!state.id) return state.text;
+                return $('<span style="color: #000;"></span>').text(state.text);
+            }
+        });
+
+        // Apply styling to Select2 elements
+        // Apply default styling (no border)
+        $('.searchable-select').each(function() {
+            const $select2 = $(this).next('.select2-container');
+            $select2.find('.select2-selection').css({
+                'background-color': '#efefef',
+                'border': '1px solid #d1d1d1', // neutral border
+                'color': 'black',
+                'height': '38px',
+                'line-height': '36px',
+                'box-shadow': 'none',
+                'outline': 'none',
+                'transition': 'border-color 0.2s' // smooth border change
+            });
+
+            // Add focus/blur events to change border only on focus
+            $select2.find('.select2-selection').on('focus click', function() {
+                $(this).css('border-color', '#f0ab4b');
+            }).on('blur', function() {
+                $(this).css('border-color', 'transparent');
+            });
+        });
+
+        select2Initialized = true;
+    }
+
+    // Reinitialize Select2 when modal is shown
+    $('#assetModal').on('shown.bs.modal', function() {
+        // Small delay to ensure DOM is ready
+        setTimeout(function() {
+            initializeSelect2();
+        }, 100);
+    });
+
+    // Also initialize when modal is about to be shown (for populating data)
+    $('#assetModal').on('show.bs.modal', function() {
+        setTimeout(function() {
+            initializeSelect2();
+        }, 50);
+    });
 
     // Function to populate modal with data from button
     function populateModalFromButton(button) {
+        if (!button) return;
+
         // Get data attributes
         const assetType = button.getAttribute('data-asset-type');
         const assetCategory = button.getAttribute('data-asset-category');
@@ -272,24 +354,30 @@
         const requestId = button.getAttribute('data-request-id');
 
         // Set values in the form
-        document.getElementById("summaryCategory").value = assetType || '';
-        document.getElementById("summaryType").value = assetCategory || '';
-        document.getElementById("assetName").value = assetName || '';
-        document.getElementById("assetQuantity").value = quantity || '';
-        document.querySelector('input[name="purchase_cost"]').value = cost || '';
-        document.getElementById("AssetRequestId").value = requestId || '';
+        const summaryCategory = document.getElementById("summaryCategory");
+        const summaryType = document.getElementById("summaryType");
+        const assetNameField = document.getElementById("assetName");
+        const assetQuantityField = document.getElementById("assetQuantity");
+        const purchaseCostField = document.querySelector('input[name="purchase_cost"]');
+        const assetRequestIdField = document.getElementById("AssetRequestId");
+
+        if (summaryCategory) summaryCategory.value = assetType || '';
+        if (summaryType) summaryType.value = assetCategory || '';
+        if (assetNameField) assetNameField.value = assetName || '';
+        if (assetQuantityField) assetQuantityField.value = quantity || '';
+        if (purchaseCostField) purchaseCostField.value = cost || '';
+        if (assetRequestIdField) assetRequestIdField.value = requestId || '';
 
         // Set selected category and type for technical specs
         selectedCategory = assetType || '';
         selectedType = assetCategory || '';
-
     }
 
     function addDocument() {
-        const name = document.getElementById("docName").value;
+        const name = document.getElementById("docName");
         const fileInput = document.getElementById("docFile");
 
-        if (!name || !fileInput.files.length) {
+        if (!name || !fileInput || !name.value || !fileInput.files.length) {
             alert("Please complete all document fields.");
             return;
         }
@@ -297,16 +385,19 @@
         const file = fileInput.files[0];
         const table = document.getElementById("docTableBody");
 
+        if (!table) return;
+
         // Generate a unique identifier for this document row
         const docId = "doc_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
 
         const row = document.createElement("tr");
         row.setAttribute("data-doc-id", docId);
         row.innerHTML = `
-            <td>${name}</td>
+            <td>${name.value}</td>
             <td>
                 <span class="file-name">${file.name}</span>
-                <input type="hidden" name="documents[name][]" value="${name}">
+                <input type="hidden" name="documents[name][]" value="${name.value}">
+                <input type="hidden" name="documents[file_name][]" value="${file.name}">
             </td>
             <td>
                 <button type="button" class="btn btn-sm btn-danger" onclick="removeDocument('${docId}')">
@@ -317,22 +408,36 @@
 
         table.appendChild(row);
 
-        const fileClone = fileInput.cloneNode(true);
-        fileClone.name = "documents[file][]";
-        fileClone.id = "";
-        fileClone.style.display = "none";
-        fileClone.removeAttribute("onchange");
+        // Store file data
+        const fileData = new FormData();
+        fileData.append('file', file);
+        fileData.append('docId', docId);
+        fileData.append('name', name.value);
 
-        document.getElementById("assetForm").appendChild(fileClone);
+        // You might want to store this in a global array or send to server
+        if (!window.documentFiles) {
+            window.documentFiles = [];
+        }
+        window.documentFiles.push({
+            id: docId,
+            name: name.value,
+            file: file
+        });
+
         fileInput.value = "";
-        document.getElementById("docName").value = "";
+        name.value = "";
     }
 
-    // Optional: Add remove document function
+    // Remove document function
     function removeDocument(docId) {
         const row = document.querySelector(`tr[data-doc-id="${docId}"]`);
         if (row) {
             row.remove();
+        }
+
+        // Remove from stored files
+        if (window.documentFiles) {
+            window.documentFiles = window.documentFiles.filter(doc => doc.id !== docId);
         }
     }
 
@@ -343,18 +448,22 @@
 
         // Clear previous errors
         [docName, docFile].forEach((field) => {
-            field.classList.remove("error");
-            const errorMsg = field.nextElementSibling;
-            if (errorMsg && errorMsg.classList.contains("error-message")) {
-                errorMsg.remove();
+            if (field) {
+                field.classList.remove("error");
+                const errorMsg = field.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains("error-message")) {
+                    errorMsg.remove();
+                }
             }
         });
 
         // Check if at least one document is added
         if (!docTableBody || docTableBody.children.length === 0) {
-            showError(docName, "Please add at least one document");
-            docName.classList.add("error");
-            docName.focus();
+            if (docName) {
+                showError(docName, "Please add at least one document");
+                docName.classList.add("error");
+                docName.focus();
+            }
             return false;
         }
 
@@ -381,45 +490,12 @@
     };
 
     /* ===============================
-           CATEGORY & TYPE SELECTION
-        =============================== */
-    function selectCategory(category, element) {
-        selectedCategory = category;
-
-        document
-            .querySelectorAll(".asset-option")
-            .forEach((opt) => opt.classList.remove("active"));
-        element.classList.add("active");
-
-        const assetTypeSelect = document.getElementById("assetType");
-        assetTypeSelect.disabled = false;
-        assetTypeSelect.innerHTML = '<option value="">Select Category</option>';
-
-        assetTypes[category].forEach((type) => {
-            const option = document.createElement("option");
-            option.value = type;
-            option.textContent = type;
-            assetTypeSelect.appendChild(option);
-        });
-    }
-
-    function populateOperationalStatus() {
-        const statusSelect = document.getElementById("operationalStatus");
-        statusSelect.innerHTML = '<option value="">Select Status</option>';
-
-        operationalStatusOptions[selectedCategory].forEach((status) => {
-            const option = document.createElement("option");
-            option.value = status;
-            option.textContent = status;
-            statusSelect.appendChild(option);
-        });
-    }
-
-    /* ===============================
            VALIDATION FUNCTIONS
         =============================== */
     function validateCurrentSlide() {
         const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+        if (!currentSlideElement) return true;
+
         let isValid = true;
 
         // Remove previous error styles from ALL fields in current slide
@@ -435,75 +511,28 @@
 
         if (currentSlide === 2) {
             // Basic Information slide
-            const assetName = document.querySelector(
-                '#slide2 input[name="asset_model"]',
-            );
+            const assetName = document.querySelector('#slide2 input[name="asset_model"]');
 
-            if (!assetName.value.trim()) {
-                assetName.classList.add("error");
-                showError(assetName, "Asset Model is required");
+            if (!assetName || !assetName.value.trim()) {
+                if (assetName) {
+                    assetName.classList.add("error");
+                    showError(assetName, "Asset Model is required");
+                }
                 isValid = false;
-                assetName.focus();
+                if (assetName) assetName.focus();
             }
 
             return isValid;
         }
 
-        if (currentSlide === 3) {
-            // Purchase Information - validate all required fields
+        if (currentSlide === 3 || currentSlide === 4 || currentSlide === 5) {
+            // Validate all required fields
             const requiredFields = currentSlideElement.querySelectorAll(
                 '[data-required="true"]:not([disabled])',
             );
 
             for (const field of requiredFields) {
-                let value =
-                    field.tagName === "SELECT" ? field.value : field.value.trim();
-
-                if (!value) {
-                    field.classList.add("error");
-                    showError(field, "This field is required");
-                    isValid = false;
-                    if (!document.querySelector(".error:focus")) {
-                        field.focus();
-                    }
-                }
-            }
-
-            return isValid;
-        }
-
-        if (currentSlide === 4) {
-            // Purchase Information - validate all required fields
-            const requiredFields = currentSlideElement.querySelectorAll(
-                '[data-required="true"]:not([disabled])',
-            );
-
-            for (const field of requiredFields) {
-                let value =
-                    field.tagName === "SELECT" ? field.value : field.value.trim();
-
-                if (!value) {
-                    field.classList.add("error");
-                    showError(field, "This field is required");
-                    isValid = false;
-                    if (!document.querySelector(".error:focus")) {
-                        field.focus();
-                    }
-                }
-            }
-
-            return isValid;
-        }
-
-        if (currentSlide === 5) {
-            // Maintenance & Audit - validate all required fields
-            const requiredFields = currentSlideElement.querySelectorAll(
-                '[data-required="true"]:not([disabled])',
-            );
-
-            for (const field of requiredFields) {
-                let value =
-                    field.tagName === "SELECT" ? field.value : field.value.trim();
+                let value = field.tagName === "SELECT" ? field.value : field.value.trim();
 
                 if (!value) {
                     field.classList.add("error");
@@ -532,6 +561,8 @@
     }
 
     function showError(field, message) {
+        if (!field) return;
+
         // Remove existing error message
         const existingError = field.nextElementSibling;
         if (existingError && existingError.classList.contains("error-message")) {
@@ -541,6 +572,9 @@
         // Add new error message
         const errorMsg = document.createElement("div");
         errorMsg.className = "error-message";
+        errorMsg.style.color = "#dc3545";
+        errorMsg.style.fontSize = "12px";
+        errorMsg.style.marginTop = "4px";
         errorMsg.textContent = message;
         field.parentNode.insertBefore(errorMsg, field.nextSibling);
     }
@@ -552,49 +586,28 @@
         if (selectedType === "License") {
             depreciationTab.style.display = "none";
         } else {
-            depreciationTab.style.display = ""; // show normally
+            depreciationTab.style.display = "block";
         }
     }
 
     function handleSlide6Extras() {
-        const slide5 = document.getElementById("slide5");
-        if (!slide5) return;
-
         const warrantyStartText = document.getElementById("warranty_start_date");
         const warrantyEndText = document.getElementById("warranty_end_date");
-        const lastMaintenanceDiv = document
-            .getElementById("last_schedule_maintenance")
-            ?.closest(".mb-3");
-        const nextMaintenanceDiv = document
-            .getElementById("next_schedule_maintenance")
-            ?.closest(".mb-3");
+        const lastMaintenanceDiv = document.getElementById("last_schedule_maintenance")?.closest(".mb-3");
+        const nextMaintenanceDiv = document.getElementById("next_schedule_maintenance")?.closest(".mb-3");
 
         if (selectedType === "License") {
             // Change labels for License
-            if (warrantyStartText) {
-                warrantyStartText.textContent = "Activation Date";
-            }
-
-            if (warrantyEndText) {
-                warrantyEndText.textContent = "Expiration Date";
-            }
-
-            // Hide maintenance fields for License
+            if (warrantyStartText) warrantyStartText.textContent = "Activation Date";
+            if (warrantyEndText) warrantyEndText.textContent = "Expiration Date";
             if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "none";
             if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "none";
         } else {
             // Reset to default labels for non-License
-            if (warrantyStartText) {
-                warrantyStartText.textContent = "Warranty Start Date";
-            }
-
-            if (warrantyEndText) {
-                warrantyEndText.textContent = "Warranty End Date";
-            }
-
-            // Show maintenance fields for non-License
-            if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "";
-            if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "";
+            if (warrantyStartText) warrantyStartText.textContent = "Warranty Start Date";
+            if (warrantyEndText) warrantyEndText.textContent = "Warranty End Date";
+            if (lastMaintenanceDiv) lastMaintenanceDiv.style.display = "block";
+            if (nextMaintenanceDiv) nextMaintenanceDiv.style.display = "block";
         }
     }
 
@@ -609,29 +622,22 @@
             case 2: // Basic Information
                 showSlide(3);
                 break;
-
             case 3: // Technical Specifications
-                showSlide(4); // Purchase Information
+                showSlide(4);
                 handleSlide5Extras();
                 break;
-
             case 4: // Purchase Information
-                showSlide(5); // Maintenance & Audit
+                showSlide(5);
                 handleSlide6Extras();
                 break;
-
-
             case 5: // Maintenance & Audit
                 showSlide(6);
                 break;
-
             case 6: // Documents
                 if (!validateDocuments()) return;
-                showSlide(7); // Assignment & Location
+                showSlide(7);
                 break;
-
             case 7: // Assignment & Location (final slide)
-
                 document.querySelector("#assetModal form").submit();
                 break;
         }
@@ -639,30 +645,7 @@
 
     function prevSlide() {
         let prev = currentSlide - 1;
-
-        // Handle going back from Assignment & Location (slide 7) to Documents (slide 6)
-        if (currentSlide === 7) {
-            prev = 6;
-        }
-        // Handle going back from Documents (slide 6) to Maintenance & Audit (slide 5)
-        else if (currentSlide === 6) {
-            prev = 5;
-        }
-        // Handle going back from Maintenance & Audit (slide 5) to Purchase Information (slide 4)
-        else if (currentSlide === 5) {
-            prev = 4;
-        }
-        // Handle going back from Purchase Information (slide 4) to Technical Specifications (slide 3)
-        else if (currentSlide === 4) {
-            prev = 3;
-        }
-        // Handle going back from Technical Specifications (slide 3) to Basic Information (slide 2)
-        else if (currentSlide === 3) {
-            prev = 2;
-        }
-        // Can't go back from Basic Information (slide 2) since there's no slide 1
-
-        if (prev < 2) return; // prevent going before slide 2
+        if (prev < 2) return;
 
         // Remove error styles
         const currentSlideElement = document.getElementById(`slide${currentSlide}`);
@@ -697,15 +680,6 @@
             slideToShow.style.display = "block";
         }
 
-        // Show technical fields if on slide 3
-        if (slideNumber === 3) {
-
-        }
-
-        if (slideNumber === 4) {
-            // No need for handleSlide5Extras in this modal
-        }
-
         if (slideNumber === 5) {
             handleSlide6Extras();
         }
@@ -715,7 +689,6 @@
         const nextButton = document.querySelector(".next-btn, .submit-btn");
         if (nextButton) {
             if (slideNumber === 7) {
-                // Assignment & Location is the last slide
                 nextButton.textContent = "Submit";
                 nextButton.className = "submit-btn";
             } else {
@@ -723,33 +696,40 @@
                 nextButton.className = "next-btn";
             }
         }
-    }
 
+        // Reinitialize Select2 after showing slide
+        setTimeout(function() {
+            initializeSelect2();
+        }, 100);
+    }
 
     function handleAssignedToChange(select) {
         const departmentSelect = document.getElementById("departmentdropdown");
+        if (!departmentSelect || !select) return;
+
         const selectedOption = select.options[select.selectedIndex];
 
-        if (select.value && selectedOption.dataset.department) {
-            // Get the department from the selected employee's data attribute
+        if (select.value && selectedOption && selectedOption.dataset.department) {
             const employeeDepartment = selectedOption.dataset.department;
-
-            // Auto-fill department from selected employee
             departmentSelect.value = employeeDepartment;
+            departmentSelect.disabled = true;
+            departmentSelect.style.backgroundColor = "#e9ecef";
+            departmentSelect.style.cursor = "not-allowed";
 
-            // Check if the value was set successfully
-            if (departmentSelect.value === employeeDepartment) {
-                // Make it readonly and style it
-                departmentSelect.disabled = true;
-                departmentSelect.style.backgroundColor = "#e9ecef";
-                departmentSelect.style.cursor = "not-allowed";
-            } else {}
+            // Update Select2 if initialized
+            if ($(departmentSelect).hasClass('select2-hidden-accessible')) {
+                $(departmentSelect).val(employeeDepartment).trigger('change');
+            }
         } else {
-            // Clear department if no employee selected
             departmentSelect.value = "";
             departmentSelect.disabled = false;
             departmentSelect.style.backgroundColor = "";
             departmentSelect.style.cursor = "";
+
+            // Update Select2 if initialized
+            if ($(departmentSelect).hasClass('select2-hidden-accessible')) {
+                $(departmentSelect).val("").trigger('change');
+            }
         }
     }
 
@@ -759,7 +739,7 @@
     function resetAssetModal() {
         selectedCategory = "";
         selectedType = "";
-        currentSlide = 2; // Reset to slide 2 instead of 1
+        currentSlide = 2;
 
         // Hide all slides except slide 2
         document.querySelectorAll('[id^="slide"]').forEach((slide) => {
@@ -768,67 +748,46 @@
 
         // Show slide 2
         const slide2 = document.getElementById("slide2");
-        if (slide2) {
-            slide2.style.display = "block";
-        }
-
-        // Reset asset options if they exist
-        const assetOptions = document.querySelectorAll(".asset-option");
-        if (assetOptions.length > 0) {
-            assetOptions.forEach((opt) => opt.classList.remove("active"));
-        }
-
-        const assetTypeSelect = document.getElementById("assetType");
-        if (assetTypeSelect) {
-            assetTypeSelect.disabled = true;
-            assetTypeSelect.innerHTML = '<option value="">Select Asset Type First</option>';
-        }
-
-        const operationalStatus = document.getElementById("operationalStatus");
-        if (operationalStatus) {
-            operationalStatus.innerHTML = '<option value="">Select Status</option>';
-        }
+        if (slide2) slide2.style.display = "block";
 
         // Reset all inputs and remove error styles
-        document
-            .querySelectorAll(
-                "#assetModal input, #assetModal select, #assetModal textarea",
-            )
-            .forEach((el) => {
-                el.classList.remove("error");
-                el.disabled = false;
+        document.querySelectorAll("#assetModal input, #assetModal select, #assetModal textarea").forEach((el) => {
+            el.classList.remove("error");
+            el.disabled = false;
 
-                if (el.type === "checkbox" || el.type === "radio") {
-                    el.checked = false;
-                } else {
-                    el.value = "";
-                }
+            if (el.type !== "checkbox" && el.type !== "radio") {
+                el.value = "";
+            } else if (el.type === "checkbox" || el.type === "radio") {
+                el.checked = false;
+            }
 
-                // Remove error messages
-                const errorMsg = el.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains("error-message")) {
-                    errorMsg.remove();
-                }
-            });
-
-        // Hide all technical spec groups
-        document.querySelectorAll(".tech-group").forEach((group) => {
-            group.style.display = "none";
+            // Remove error messages
+            const errorMsg = el.nextElementSibling;
+            if (errorMsg && errorMsg.classList.contains("error-message")) {
+                errorMsg.remove();
+            }
         });
 
-        // Disable fields in slides beyond slide 2
-        for (let i = 3; i <= 7; i++) {
-            document.querySelectorAll(`#slide${i} input, #slide${i} select, #slide${i} textarea`)
-                .forEach((el) => {
-                    el.disabled = true;
-                });
-        }
+        // Clear document table
+        const docTableBody = document.getElementById("docTableBody");
+        if (docTableBody) docTableBody.innerHTML = "";
+
+        // Clear stored files
+        window.documentFiles = [];
 
         // Reset button text
         const nextButton = document.querySelector(".next-btn, .submit-btn");
         if (nextButton) {
             nextButton.textContent = "Next";
             nextButton.className = "next-btn";
+        }
+
+        // Reset department dropdown
+        const departmentSelect = document.getElementById("departmentdropdown");
+        if (departmentSelect) {
+            departmentSelect.disabled = false;
+            departmentSelect.style.backgroundColor = "";
+            departmentSelect.style.cursor = "";
         }
     }
 
@@ -839,10 +798,7 @@
     if (assetModal) {
         // When modal is about to be shown
         assetModal.addEventListener('show.bs.modal', function(event) {
-            // Get the button that triggered the modal
             const button = event.relatedTarget;
-
-            // Populate modal with data from button
             populateModalFromButton(button);
         });
 
@@ -857,11 +813,8 @@
 
     // Add real-time validation to remove error styles when user starts typing
     document.addEventListener("input", function(e) {
-        if (e.target.classList.contains("error")) {
-            const value =
-                e.target.tagName === "SELECT" ?
-                e.target.value :
-                e.target.value.trim();
+        if (e.target.classList && e.target.classList.contains("error")) {
+            const value = e.target.tagName === "SELECT" ? e.target.value : e.target.value.trim();
             if (value) {
                 e.target.classList.remove("error");
                 const errorMsg = e.target.nextElementSibling;
@@ -874,7 +827,7 @@
 
     // Also validate on change for select elements
     document.addEventListener("change", function(e) {
-        if (e.target.tagName === "SELECT" && e.target.classList.contains("error")) {
+        if (e.target.tagName === "SELECT" && e.target.classList && e.target.classList.contains("error")) {
             if (e.target.value) {
                 e.target.classList.remove("error");
                 const errorMsg = e.target.nextElementSibling;

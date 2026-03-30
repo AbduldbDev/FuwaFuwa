@@ -31,12 +31,12 @@ class AssetService
 
     public function getActiveUsers()
     {
-        return User::where('status', 'active')->get();
+        return User::where('status', 'active')->orderBy('name', 'asc')->get();
     }
 
     public function getActiveVendors()
     {
-        return Vendors::where('status', 'Active')->get();
+        return Vendors::where('status', 'Active')->orderBy('name', 'asc')->get();
     }
 
     public function getAssetArchive()
@@ -51,7 +51,7 @@ class AssetService
 
     public function getAssetCategories()
     {
-        return AssetCategory::latest()->get();
+        return AssetCategory::orderBy('name', 'asc')->get();
     }
 
     public function getAssetByTag(string $assetTag): Assets
@@ -113,8 +113,6 @@ class AssetService
 
         return $asset;
     }
-
-
 
     public function getMaintenanceByTag(string $assetTag)
     {
