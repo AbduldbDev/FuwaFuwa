@@ -16,7 +16,7 @@ class Assets extends Model
         'category_id',
         'asset_id',
         'asset_tag',
-        'asset_name',
+        'asset_model',
         'asset_category',
         'asset_type',
         'technical_specifications',

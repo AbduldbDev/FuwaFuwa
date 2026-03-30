@@ -153,7 +153,7 @@
 
                                             <button class="btn btn-outline-danger action-btn delete-asset-btn"
                                                 data-url="{{ route('asset-request.delete', $item->id) }}"
-                                                data-name="{{ $item->asset_name }}">
+                                                data-name="{{ $item->asset_model }}">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         @endif

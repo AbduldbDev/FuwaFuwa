@@ -46,8 +46,8 @@
                              <div class="description-text fw-semibold">{{ $item->asset_tag }}</div>
                          </div>
                          <div class="col-lg-6">
-                             <label class="form-label text-muted">Asset Name</label>
-                             <div class="description-text fw-semibold">{{ $item->asset_name }}</div>
+                             <label class="form-label text-muted">Asset Model</label>
+                             <div class="description-text fw-semibold">{{ $item->asset_model }}</div>
                          </div>
                          <div class="col-lg-6">
                              <label class="form-label text-muted">Last Maintenance Date</label>

@@ -272,7 +272,7 @@
                      Helper: Get Correct Display Name
                   -----------------------------------------*/
                   function getDisplayName(asset) {
-                      let displayName = asset.asset_name || 'N/A';
+                      let displayName = asset.asset_model || 'N/A';
 
 
 

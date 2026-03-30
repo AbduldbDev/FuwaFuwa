@@ -24,7 +24,7 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
             ->map(function ($asset) {
                 return [
                     $asset->asset_tag,
-                    $asset->asset_name,
+                    $asset->asset_model,
                     $asset->asset_category,
                     $asset->asset_type,
                     $asset->technical_specifications,
@@ -39,7 +39,7 @@ class ArchivedAssetsSheet implements FromCollection, WithHeadings, WithTitle, Wi
     {
         return [
             'Asset Tag',
-            'Asset Name',
+            'Asset Model',
             'Asset Category',
             'Asset Type',
             'Technical Specification',

@@ -18,7 +18,7 @@ class StoreMaintenanceRequest extends FormRequest
             'description' => 'nullable|string',
             'document.*' => 'nullable|file|max:25600',
             'asset_tag' => ['required', 'string', 'max:100', 'exists:assets,asset_tag'],
-            'asset_name' => 'required|string|max:255',
+            'asset_model' => 'required|string|max:255',
             'last_maintenance_date' => 'nullable|date',
             'priority' => 'required|in:Low,Medium,High,Emergency',
             'start_date' => 'nullable|date',

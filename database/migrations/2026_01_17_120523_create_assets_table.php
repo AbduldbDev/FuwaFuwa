@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('category_id')->nullable()->constrained('asset_categories')->nullOnDelete();
             $table->string('asset_id')->unique();
             $table->string('asset_tag')->unique();
-            $table->string('asset_name');
+            $table->string('asset_model');
             $table->string('asset_category');
             $table->string('asset_type');
             $table->text('technical_specifications')->nullable();

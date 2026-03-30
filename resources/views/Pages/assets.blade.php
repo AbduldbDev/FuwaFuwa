@@ -94,7 +94,7 @@
                                         </td>
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
                                         <td>
-                                            {{ $item->asset_name }}
+                                            {{ $item->asset_model }}
                                         </td>
                                         <td>{{ $item->operational_status === 'Active' ? 'Assigned' : $item->operational_status }}
                                         </td>

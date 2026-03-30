@@ -100,10 +100,11 @@
                                            style="max-height:200px; overflow:auto; z-index:1055;">
                                            @foreach ($Assets as $item)
                                                <button type="button" class="list-group-item list-group-item-action"
-                                                   data-tag="{{ $item->asset_tag }}" data-name="{{ $item->asset_name }}"
+                                                   data-tag="{{ $item->asset_tag }}"
+                                                   data-name="{{ $item->asset_model }}"
                                                    data-next="{{ $item->last_maintenance }}">
 
-                                                   {{ $item->asset_tag }} - {{ $item->asset_name }}
+                                                   {{ $item->asset_tag }} - {{ $item->asset_model }}
                                                </button>
                                            @endforeach
                                        </div>
@@ -114,7 +115,7 @@
                                </div>
                                <div class="col-12 col-md-6 mb-3">
                                    <label class="form-label">Asset Model <span class="text-danger">*</span></label>
-                                   <input type="text" name="asset_name" class="form-control" Asset Tags>
+                                   <input type="text" name="asset_model" class="form-control" Asset Tags>
                                </div>
 
                                <div class="col-12 col-md-6 mb-3">
@@ -214,8 +215,8 @@
                    // Put the asset_tag in hidden for form submission
                    hidden.value = btn.dataset.tag;
 
-                   // Fill asset name
-                   document.querySelector('input[name="asset_name"]').value =
+                   // Fill Asset Model
+                   document.querySelector('input[name="asset_model"]').value =
                        btn.dataset.name || '';
 
                    // Fill next maintenance date (YYYY-MM-DD)

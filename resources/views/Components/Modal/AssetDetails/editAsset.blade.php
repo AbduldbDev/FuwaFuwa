@@ -50,8 +50,8 @@
                 case 'asset-details':
                     modalFields.innerHTML = `
                     <div class="mb-3">
-                        <label class="form-label">Asset Name</label>
-                        <input type="text" name="asset_name" class="form-control" value="${asset.asset_name ?? ''}">
+                        <label class="form-label">Asset Model</label>
+                        <input type="text" name="asset_model" class="form-control" value="${asset.asset_model ?? ''}">
                     </div>
 
                     <div class="mb-3">

@@ -151,7 +151,7 @@ function validateCurrentSlide() {
     if (currentSlide === 2) {
         // Basic Information slide
         const assetName = document.querySelector(
-            '#slide2 input[name="asset_name"]',
+            '#slide2 input[name="asset_model"]',
         );
         const operationalStatus = document.querySelector(
             '#slide2 select[name="operational_status"]',
@@ -159,7 +159,7 @@ function validateCurrentSlide() {
 
         if (!assetName.value.trim()) {
             assetName.classList.add("error");
-            showError(assetName, "Asset Name is required");
+            showError(assetName, "Asset Model is required");
             isValid = false;
             assetName.focus();
         }

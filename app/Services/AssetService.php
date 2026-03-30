@@ -250,7 +250,7 @@ class AssetService
             'Created',
             'asset',
             null,
-            $asset->asset_name
+            $asset->asset_model
         );
 
         return $asset;

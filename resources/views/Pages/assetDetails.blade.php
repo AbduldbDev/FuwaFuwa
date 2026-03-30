@@ -17,7 +17,7 @@
         </div>
         @include('Components/Modal/addAsset')
 
-        <!-- asset name -->
+        <!-- Asset Model -->
         <div class="asset-header my-4">
             <div class="asset-upper d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-3">
@@ -50,7 +50,7 @@
                             </span>
                         </div>
                         <div class="asset-meta text-muted">
-                            <span>{{ $item->asset_name }}</span>
+                            <span>{{ $item->asset_model }}</span>
                             <span class="divider">|</span>
                             <span> <i class=" me-1 fa-regular fa-user"></i> {{ $item->users->name }}</span>
                             <span class="divider">|</span>
@@ -156,8 +156,8 @@
                                 <div class="col-7 value">{{ $item->asset_tag }}</div>
                             </div>
                             <div class="row detail-row">
-                                <div class="col-5 label">Asset Name</div>
-                                <div class="col-7 value">{{ $item->asset_name }}</div>
+                                <div class="col-5 label">Asset Model</div>
+                                <div class="col-7 value">{{ $item->asset_model }}</div>
                             </div>
                             <div class="row detail-row">
                                 <div class="col-5 label">Operational Status</div>

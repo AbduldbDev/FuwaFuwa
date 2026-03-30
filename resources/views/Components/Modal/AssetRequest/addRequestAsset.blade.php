@@ -22,8 +22,8 @@
                         <input type="hidden" name="AssetRequestId" id="AssetRequestId">
 
                         <div class="mb-3">
-                            <label class="form-label">Asset Name <span class="text-danger">*</span></label>
-                            <input type="text" id="assetName" class="form-control" name="asset_name" required />
+                            <label class="form-label">Asset Model <span class="text-danger">*</span></label>
+                            <input type="text" id="assetName" class="form-control" name="asset_model" required />
                             <input type="hidden" id="assetQuantity" name="assetQuantity">
                         </div>
 
@@ -436,12 +436,12 @@
         if (currentSlide === 2) {
             // Basic Information slide
             const assetName = document.querySelector(
-                '#slide2 input[name="asset_name"]',
+                '#slide2 input[name="asset_model"]',
             );
 
             if (!assetName.value.trim()) {
                 assetName.classList.add("error");
-                showError(assetName, "Asset Name is required");
+                showError(assetName, "Asset Model is required");
                 isValid = false;
                 assetName.focus();
             }

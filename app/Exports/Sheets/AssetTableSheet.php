@@ -28,7 +28,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
 
                 return [
                     $asset->asset_tag,
-                    $asset->asset_name,
+                    $asset->asset_model,
                     $asset->asset_category,
                     $asset->asset_type,
                     $asset->technical_specifications,
@@ -44,7 +44,7 @@ class AssetTableSheet implements FromCollection, WithHeadings, WithTitle, WithSt
     {
         return [
             'Asset Tag',
-            'Asset Name',
+            'Asset Model',
             'Asset Category',
             'Asset Type',
             'Technical Specification',

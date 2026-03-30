@@ -75,7 +75,7 @@
                                                 href="{{ url('asset/show/' . $item->asset_tag) }}">{{ $item->asset_tag }}</a>
                                         </td>
                                         <td data-category="{{ $item->asset_category }}">{{ $item->asset_category }}</td>
-                                        <td>{{ $item->asset_name }}</td>
+                                        <td>{{ $item->asset_model }}</td>
                                         <td>{{ $item->delete_title }}</td>
                                         <td class="{{ $item->warranty_status === 'Yes' ? 'text-success' : 'text-danger' }}">
                                             {{ $item->warranty_status }}

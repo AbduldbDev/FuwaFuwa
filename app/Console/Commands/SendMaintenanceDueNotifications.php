@@ -61,14 +61,14 @@ class SendMaintenanceDueNotifications extends Command
                             ->where('type', 'maintenance_due')
                             ->where('title', "Maintenance Due Alert ({$alertName})")
                             ->whereDate('created_at', $today)
-                            ->where('message', 'like', "%{$asset->asset_name}%")
+                            ->where('message', 'like', "%{$asset->asset_model}%")
                             ->exists();
 
                         if (!$exists) {
                             Notification::create([
                                 'user_id' => $user->id,
                                 'title'   => "Maintenance Due Alert ({$alertName})",
-                                'message' => "The asset {$asset->asset_name} is scheduled for maintenance in {$remainingDays} day(s).",
+                                'message' => "The asset {$asset->asset_model} is scheduled for maintenance in {$remainingDays} day(s).",
                                 'type'    => 'maintenance_due',
                                 'module'  => 'asset_management',
                             ]);
@@ -76,7 +76,7 @@ class SendMaintenanceDueNotifications extends Command
                     }
 
                     $this->info(
-                        "Daily maintenance alert ({$alertName}) sent for {$asset->asset_name} — {$remainingDays} day(s) remaining."
+                        "Daily maintenance alert ({$alertName}) sent for {$asset->asset_model} — {$remainingDays} day(s) remaining."
                     );
                 }
             }

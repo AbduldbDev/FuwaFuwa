@@ -57,7 +57,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
             'Reported By',
             'Maintenance Type',
             'Asset Tag',
-            'Asset Name',
+            'Asset Model',
             'Issue Description',
             'Action Taken',
             'Start Date',
@@ -78,7 +78,7 @@ class MaintenanceSheet implements FromArray, WithTitle, WithStyles
                 $m->reporter->name ?? 'N/A',
                 $m->maintenance_type ?? 'N/A',
                 $m->asset_tag ?? 'N/A',
-                $m->asset_name ?? 'N/A',
+                $m->asset_model ?? 'N/A',
                 $m->description ?? 'N/A',
                 $m->post_description ?? 'N/A',
                 $m->start_date

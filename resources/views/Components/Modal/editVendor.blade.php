@@ -68,7 +68,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Asset Tag</th>
-                                    <th>Asset Name</th>
+                                    <th>Asset Model</th>
                                     <th>Asset Type</th>
                                     <th>Asset Category</th>
                                     <th>Operational Status</th>
@@ -82,7 +82,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $purchase->asset_tag }}</td>
-                                        <td>{{ $purchase->asset_name }}</td>
+                                        <td>{{ $purchase->asset_model }}</td>
                                         <td>{{ $purchase->asset_category }}</td>
                                         <td>{{ $purchase->asset_type }}</td>
                                         <td>{{ $purchase->operational_status }}</td>

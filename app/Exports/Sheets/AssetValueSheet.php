@@ -34,7 +34,7 @@ class AssetValueSheet implements FromArray, WithTitle, WithStyles
         // Header row
         $rows[] = [
             'Asset Tag',
-            'Asset Name',
+            'Asset Model',
             'Asset Type',
             'Purchase Cost (₱)',
             'Salvage Value (₱)',
@@ -88,7 +88,7 @@ class AssetValueSheet implements FromArray, WithTitle, WithStyles
 
             $rows[] = [
                 $asset->asset_tag,
-                $asset->asset_name,
+                $asset->asset_model,
                 $asset->asset_type,
                 '₱' . number_format($asset->purchase_cost ?? 0, 2),
                 '₱' . number_format($asset->salvage_value ?? 0, 2),

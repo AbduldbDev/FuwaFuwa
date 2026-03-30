@@ -42,7 +42,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
             $rows[] = [$assetType];
             $rows[] = [
                 'Asset Tag',
-                'Asset Name',
+                'Asset Model',
                 'Category',
                 'Asset Type',
                 'Technical Specifications',
@@ -55,7 +55,7 @@ class AssetSummarySheet implements FromArray, WithTitle, WithStyles
             foreach ($items as $asset) {
                 $rows[] = [
                     $asset->asset_tag,
-                    $asset->asset_name,
+                    $asset->asset_model,
                     $asset->asset_category,
                     $asset->asset_type,
                     $asset->technical_specifications,

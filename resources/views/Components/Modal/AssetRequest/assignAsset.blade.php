@@ -71,14 +71,14 @@
 
 @php
     $jsAssets = $AvailableAsset->map(function ($asset) {
-        $displayName = $asset->asset_name;
+        $displayName = $asset->asset_model;
 
         // Get asset_tag
         $assetTag = $asset->asset_tag ?? '';
 
         return [
             'id' => $asset->id,
-            'asset_name' => $displayName,
+            'asset_model' => $displayName,
             'asset_category' => $asset->asset_category,
             'asset_type' => $asset->asset_type,
             'asset_tag' => $assetTag,
@@ -101,7 +101,7 @@
     // Function to format asset display text
     function formatAssetDisplay(asset) {
         let displayText =
-            `${asset.asset_name || 'N/A'} (${asset.asset_category || 'N/A'}) (${asset.asset_type || 'N/A'})`;
+            `${asset.asset_model || 'N/A'} (${asset.asset_category || 'N/A'}) (${asset.asset_type || 'N/A'})`;
         if (asset.asset_tag) {
             displayText += ` [${asset.asset_tag}]`;
         }

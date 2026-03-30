@@ -14,7 +14,7 @@ class UpdateAssetRequest extends FormRequest
     public function rules()
     {
         return [
-            'asset_name' => 'sometimes|string|max:255',
+            'asset_model' => 'sometimes|string|max:255',
             'asset_type' => 'sometimes|string|max:255',
             'asset_category' => 'sometimes|string|max:255',
             'operational_status' => 'sometimes|string|max:50',

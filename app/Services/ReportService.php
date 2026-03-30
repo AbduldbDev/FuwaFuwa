@@ -33,7 +33,7 @@ class ReportService
                     'asset_type',
                     'asset_category',
                     'asset_tag',
-                    'asset_name',
+                    'asset_model',
                     'technical_specifications',
                 ],
                 'Operational Status' => [
@@ -75,7 +75,7 @@ class ReportService
                     'asset_type',
                     'asset_category',
                     'asset_tag',
-                    'asset_name',
+                    'asset_model',
                     'technical_specifications'
                 ],
                 'Operational Status' => [
@@ -125,7 +125,7 @@ class ReportService
                     'reported_by',
                     'description',
                     'asset_tag',
-                    'asset_name',
+                    'asset_model',
                     'last_maintenance_date',
                     'priority',
                     'frequency',

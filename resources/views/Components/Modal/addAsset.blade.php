@@ -48,7 +48,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Asset Model <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="asset_name" required />
+                            <input type="text" class="form-control" name="asset_model" required />
                         </div>
 
                         <div class="mb-3">
@@ -433,7 +433,7 @@
         if (currentSlide === 2) {
             // Basic Information slide
             const assetName = document.querySelector(
-                '#slide2 input[name="asset_name"]',
+                '#slide2 input[name="asset_model"]',
             );
             const operationalStatus = document.querySelector(
                 '#slide2 select[name="operational_status"]',

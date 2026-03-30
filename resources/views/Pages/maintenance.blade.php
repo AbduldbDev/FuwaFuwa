@@ -145,7 +145,7 @@
                                     </div>
                                     <span class="issue-reason">{{ $item->description }}</span>
                                     <div class="repair-meta">
-                                        <span>Asset: {{ $item->asset_name }}</span>
+                                        <span>Asset: {{ $item->asset_model }}</span>
                                         <span>Issued by: {{ $item->reporter->name }}</span>
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@
                             data-type="{{ strtolower($item->maintenance_type) }}"
                             data-status="{{ strtolower($item->status) }}"
                             data-priority="{{ strtolower($item->priority) }}"
-                            data-search="{{ strtolower($item->maintenance_id . ' ' . ($item->asset_tag ?? '') . ' ' . ($item->asset_name ?? '')) }}">
+                            data-search="{{ strtolower($item->maintenance_id . ' ' . ($item->asset_tag ?? '') . ' ' . ($item->asset_model ?? '')) }}">
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- asset-info -->
@@ -253,7 +253,7 @@
                                                 class="text-muted">{{ $item->asset_tag ?? 'N/A' }}</small>
                                         </a>
                                         <br>
-                                        <small class="text-muted">{{ $item->asset_name ?? 'N/A' }}</small>
+                                        <small class="text-muted">{{ $item->asset_model ?? 'N/A' }}</small>
                                         <div class="mt-1">
                                             <span
                                                 class="priority-badge {{ $priorityClass }}">{{ $item->priority }}</span>
@@ -362,8 +362,8 @@
                                 content +=
                                     `<p><strong>Asset Tag:</strong></p>
                                     <p>${ev.asset_tag ?? 'N/A'}</p>
-                                    <p><strong>Asset Name:</strong></p>
-                                    <p> ${ev.asset_name?? 'N/A'}</p>`;
+                                    <p><strong>Asset Model:</strong></p>
+                                    <p> ${ev.asset_model?? 'N/A'}</p>`;
                             });
                             content += "</div>";
 

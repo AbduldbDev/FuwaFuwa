@@ -84,21 +84,21 @@ class SendLicenseExpiryNotifications extends Command
                             ->where('module', 'asset_management')
                             ->where('type', 'license_expiry')
                             ->where('title', "License Expiry Alert ({$alertName})")
-                            ->where('message', 'like', "%{$asset->asset_name}%")
+                            ->where('message', 'like', "%{$asset->asset_model}%")
                             ->exists();
 
                         if (!$exists) {
                             Notification::create([
                                 'user_id' => $user->id,
                                 'title' => "License Expiry Alert ({$alertName})",
-                                'message' => "The license for asset {$asset->asset_name} will expire in {$daysBefore} day(s).",
+                                'message' => "The license for asset {$asset->asset_model} will expire in {$daysBefore} day(s).",
                                 'type' => 'license_expiry',
                                 'module' => 'asset_management',
                             ]);
                         }
                     }
 
-                    $this->info("Notification sent for asset: {$asset->asset_name} ({$subscriptionType}) to all users for {$alertName}.");
+                    $this->info("Notification sent for asset: {$asset->asset_model} ({$subscriptionType}) to all users for {$alertName}.");
                 }
             }
         }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('documents')->nullable();
             $table->string('asset_tag')->nullable();
-            $table->string('asset_name')->nullable();
+            $table->string('asset_model')->nullable();
             $table->date('last_maintenance_date')->nullable();
             $table->enum('priority', ['Low', 'Medium', 'High', 'Emergency']);
             $table->date('start_date')->nullable();

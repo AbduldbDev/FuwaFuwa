@@ -14,7 +14,7 @@ class Maintenance extends Model
         'description',
         'documents',
         'asset_tag',
-        'asset_name',
+        'asset_model',
         'last_maintenance_date',
         'priority',
         'start_date',

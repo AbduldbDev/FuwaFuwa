@@ -14,7 +14,7 @@ class StoreAssets extends FormRequest
     public function rules(): array
     {
         return [
-            'asset_name'         => 'required|string|max:255',
+            'asset_model'         => 'required|string|max:255',
             'vendor_id'          => ['required', 'exists:vendors,id'],
             'asset_category'     => 'required|string',
             'asset_type'         => 'required|string',
@@ -45,9 +45,9 @@ class StoreAssets extends FormRequest
     public function messages(): array
     {
         return [
-            'asset_name.required'     => 'Asset name is required.',
-            'asset_name.string'       => 'Asset name must be a valid string.',
-            'asset_name.max'          => 'Asset name must not exceed 255 characters.',
+            'asset_model.required'     => 'Asset Model is required.',
+            'asset_model.string'       => 'Asset Model must be a valid string.',
+            'asset_model.max'          => 'Asset Model must not exceed 255 characters.',
 
             'asset_category.required' => 'Asset category is required.',
             'asset_category.string'   => 'Asset category must be a valid string.',
